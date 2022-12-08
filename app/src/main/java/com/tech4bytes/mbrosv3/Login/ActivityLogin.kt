@@ -1,19 +1,10 @@
-package com.tech4bytes.mbrosv3
+package com.tech4bytes.mbrosv3.Login
 
 import androidx.appcompat.app.AppCompatActivity
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.view.MotionEvent
-import android.view.View
-import android.view.WindowInsets
-import android.widget.LinearLayout
-import android.widget.TextView
-import com.tech4bytes.mbrosv3.Login.Roles
-import com.tech4bytes.mbrosv3.databinding.ActivityFullscreenBinding
+import com.tech4bytes.mbrosv3.Loading.ActivityDeliveringLoad
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.

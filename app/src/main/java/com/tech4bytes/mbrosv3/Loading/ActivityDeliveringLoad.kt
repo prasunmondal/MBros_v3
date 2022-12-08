@@ -1,9 +1,11 @@
-package com.tech4bytes.mbrosv3
+package com.tech4bytes.mbrosv3.Loading
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import com.tech4bytes.mbrosv3.Delivering.ActivityDeliveringDeliver
+import com.tech4bytes.mbrosv3.R
 
 class ActivityDeliveringLoad : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -17,7 +17,7 @@ import com.tech4bytes.mbrosv3.databinding.ActivityFullscreenBinding
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-class FullscreenActivity : AppCompatActivity() {
+class ActivityLogin : AppCompatActivity() {
 
     private lateinit var binding: ActivityFullscreenBinding
     private lateinit var fullscreenContent: TextView

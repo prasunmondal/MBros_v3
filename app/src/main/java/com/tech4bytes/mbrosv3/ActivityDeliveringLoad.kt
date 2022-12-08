@@ -9,9 +9,21 @@ class ActivityDeliveringLoad : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_delivering_load)
+
+        if(isLoadingComplete()) {
+            goToDeliveringDeliverPage()
+        }
     }
 
-    fun goToDeliveringDeliverPage(view: View) {
+    private fun isLoadingComplete(): Boolean {
+        return false
+    }
+
+    fun onClickDeliverButton(view: View) {
+        goToDeliveringDeliverPage()
+    }
+
+    fun goToDeliveringDeliverPage() {
         val switchActivityIntent = Intent(this, ActivityDeliveringDeliver::class.java)
         startActivity(switchActivityIntent)
     }

@@ -14,6 +14,7 @@ import com.tech4bytes.mbrosv3.Loading.ActivityDeliveringLoad
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.DeviceInfoUtils
+import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 import java.time.Instant
 import java.time.ZoneOffset
@@ -30,7 +31,9 @@ class ActivityLogin : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        when (getRole()) {
+        val role = getRole()
+        LogMe.log("Got Role: $role")
+        when (role) {
             Roles.ADMIN -> goToAdminRole()
             Roles.DELIVERY -> goToDeliveryRole()
             Roles.COLLECTOR -> goToCollectorRole()
@@ -82,7 +85,10 @@ class ActivityLogin : AppCompatActivity() {
         deviceList.reverse()
 
         deviceList.forEach {
-            if(getPhoneId() == it.id) {
+            LogMe.log(it.toString())
+        }
+        deviceList.forEach {
+            if(getPhoneId() == it.device_id) {
                 return Roles.valueOf(it.role)
             }
         }

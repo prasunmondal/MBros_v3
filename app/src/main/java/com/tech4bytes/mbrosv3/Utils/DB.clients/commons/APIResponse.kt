@@ -27,7 +27,7 @@ open class APIResponse {
         return parser.parse(responsePayload).asJsonObject
     }
 
-    fun parseToObject(jsonString: String?, type: Type): ArrayList<*> {
+    fun <T> parseToObject(jsonString: String?, type: Type): ArrayList<T> {
         Log.e("parsing to object ", jsonString!!)
         var arrayLabel = JsonTags.RESPONSE_DATA_CODE
         var jsonarray: JsonArray? = null
@@ -36,7 +36,7 @@ open class APIResponse {
         } catch (e: Exception) {
             Log.e("parseJSONObject", "Error while parsing")
         }
-        val result: ArrayList<*> = GsonBuilder().create().fromJson(jsonarray.toString(), type)
+        val result: ArrayList<T> = GsonBuilder().create().fromJson(jsonarray.toString(), type)
         return result
     }
 

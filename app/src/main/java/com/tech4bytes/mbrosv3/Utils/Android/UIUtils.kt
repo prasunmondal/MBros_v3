@@ -42,9 +42,12 @@ class UIUtils: AppCompatActivity() {
                 MaterialAutoCompleteTextView::class.simpleName,
                 AppCompatTextView::class.simpleName,
                 MaterialTextView::class.simpleName -> (uIElement as TextView).text = value
+
                 AppCompatEditText::class.simpleName -> (uIElement as EditText).setText(value)
+
                 Switch::class.simpleName -> (uIElement as Switch).isChecked = value.toBoolean()
                 SwitchCompat::class.simpleName -> (uIElement as SwitchCompat).isChecked = value.toBoolean()
+
                 AppCompatImageView::class.simpleName -> {
                     var colorToSet = R.color.button_disabled
                     var tag = false.toString()

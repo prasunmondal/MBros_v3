@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.widget.doOnTextChanged
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.gson.reflect.TypeToken
 import com.prasunmondal.postjsontosheets.clients.delete.Delete
@@ -39,29 +40,18 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_get_order_estimates)
         AppContexts.set(this, this)
-        containerView = findViewById<LinearLayout>(R.id.activity_get_order_estimates__order_list_container)
+        containerView = findViewById<LinearLayout>(R.id.activity_get_order_estimates__parent_view)
 
         populateCustomerList()
         getOrderData().forEach {
             createEstimatesView(it)
         }
+        updateTotalPc()
+        updateTotalKg()
     }
 
     private fun createEstimatesView(customerName: String) {
-        val listContainer = findViewById<LinearLayout>(R.id.activity_get_order_estimates__order_list_container)
-        val layoutInflater = LayoutInflater.from(AppContexts.get())
-        val entry = layoutInflater.inflate(R.layout.activity_get_order_estimates_fragment_customer_order, null)
-
-        entry.findViewById<TextView>(R.id.fragment_customer_order_name).text = customerName
-
-        val deleteBtn = entry.findViewById<ImageButton>(R.id.fragment_customer_order_delete_record_button)
-        deleteBtn.setOnClickListener {
-            uiEntriesList.remove(entry)
-            listContainer.removeView(entry)
-        }
-
-        uiEntriesList.add(entry)
-        listContainer.addView(entry)
+        createEstimatesView(OrderEstimateModel(name = customerName))
     }
 
     private fun createEstimatesView(order: OrderEstimateModel) {
@@ -69,11 +59,21 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
         val layoutInflater = LayoutInflater.from(AppContexts.get())
         val entry = layoutInflater.inflate(R.layout.activity_get_order_estimates_fragment_customer_order, null)
 
+        val pcElement = entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_pc)
+        val kgElement = entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_kg)
         UIUtils.setUIElementValue(this, entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_sl_no), order.seqNo)
         UIUtils.setUIElementValue(this, entry.findViewById<AppCompatTextView>(R.id.fragment_customer_order_name), order.name)
-        UIUtils.setUIElementValue(this, entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_pc), order.estimatePc)
-        UIUtils.setUIElementValue(this, entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_kg), order.estimateKg)
+        UIUtils.setUIElementValue(this, pcElement, order.estimatePc)
+        UIUtils.setUIElementValue(this, kgElement, order.estimateKg)
         UIUtils.setUIElementValue(this, entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_rate), order.rate)
+
+        pcElement.doOnTextChanged { text, start, before, count ->
+            updateTotalPc()
+        }
+
+        kgElement.doOnTextChanged { text, start, before, count ->
+            updateTotalKg()
+        }
 
         val deleteBtn = entry.findViewById<ImageButton>(R.id.fragment_customer_order_delete_record_button)
         deleteBtn.setOnClickListener {
@@ -83,6 +83,30 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
 
         uiEntriesList.add(entry)
         listContainer.addView(entry)
+    }
+
+    private fun updateTotalKg() {
+        var sum = 0.0
+        uiEntriesList.forEach {
+            val kg = "0${UIUtils.getUIElementValue(it.findViewById<AppCompatEditText>(R.id.fragment_customer_order_kg))}"
+            sum += kg.toDouble()
+        }
+        LogMe.log(sum.toString())
+        UIUtils.setUIElementValue(this, containerView.findViewById(R.id.activity_get_order_estimates__total_kg), "$sum kg")
+    }
+
+    private fun updateTotalPc() {
+        LogMe.log("a")
+        var sum = 0
+        uiEntriesList.forEach {
+            LogMe.log("b")
+            val pc = "0${UIUtils.getUIElementValue(it.findViewById<AppCompatEditText>(R.id.fragment_customer_order_pc))}"
+            LogMe.log("c: $pc")
+            sum += pc.toInt()
+            LogMe.log("d: $sum")
+        }
+        LogMe.log("e: $sum.toString()")
+        UIUtils.setUIElementValue(this, containerView.findViewById(R.id.activity_get_order_estimates__total_pc), "$sum pc")
     }
 
     private fun getCustomerNamesAsStringList(): List<String> {

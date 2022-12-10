@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import com.prasunmondal.postjsontosheets.clients.delete.Delete
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.ProjectConfig
@@ -80,7 +81,11 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
     }
 
     fun deleteAll() {
-
+        Delete.builder()
+            .scriptId(ProjectConfig.dBServerScriptURL)
+            .sheetId(ProjectConfig.DB_SHEET_ID)
+            .tabName(GetOrdersConfig.SHEET_TAB_NAME)
+            .build().execute()
     }
 
     fun createNGetObjectsFromUI(): List<OrderEstimateModel> {
@@ -125,6 +130,7 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
     }
 
     fun onClickSaveBtn(view: View) {
+        deleteAll()
         saveToServer()
     }
 }

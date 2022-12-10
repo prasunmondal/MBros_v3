@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
@@ -68,10 +69,13 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
 
         dropDown.setOnItemClickListener { parent, arg1, position, arg3 ->
             val item = parent.getItemAtPosition(position)
-            LogMe.log("Selected Customer: ${item}")
-            if(isOnList(item.toString())) {
+            LogMe.log("Selected Customer: $item")
+            if(!isOnList(item.toString())) {
                 createEstimatesView(item.toString())
+            } else {
+                Toast.makeText(this, "Already on list", Toast.LENGTH_SHORT).show()
             }
+            dropDown.text.clear()
         }
     }
 

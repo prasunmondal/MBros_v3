@@ -12,39 +12,47 @@ data class CustomerKYCModel(var date: String,
                             var nameBeng: String,
                             var phNo1: String,
                             var phNo2: String,
-                            var address: String)
+                            var address: String) {
+
+    fun getDisplayName(): String {
+        return this.nameEng
+    }
+}
 
 class CustomerKYC {
+    companion object {
 
-    fun getAllCustomers(useCache: Boolean = true): List<CustomerKYCModel> {
-        val cacheKey = "allCustomersList"
-        val cacheResults = CentralCache.get<ArrayList<CustomerKYCModel>>(AppContexts.get(), cacheKey, useCache)
+        fun getAllCustomers(useCache: Boolean = true): List<CustomerKYCModel> {
+            val cacheKey = "allCustomersList"
+            val cacheResults = CentralCache.get<ArrayList<CustomerKYCModel>>(AppContexts.get(), cacheKey, useCache)
 
-        return if (cacheResults != null) {
-            cacheResults
-        } else {
-            val resultFromServer = getCustomerListFromServer()
-            CentralCache.put(cacheKey, resultFromServer)
-            resultFromServer
+            return if (cacheResults != null) {
+                cacheResults
+            } else {
+                val resultFromServer = getCustomerListFromServer()
+                CentralCache.put(cacheKey, resultFromServer)
+                resultFromServer
+            }
         }
-    }
 
-    fun getCustomerByEngName(engName: String): CustomerKYCModel? {
-        getAllCustomers().forEach {
-            if(it.nameEng == engName)
-                return it
+        fun getCustomerByEngName(engName: String): CustomerKYCModel? {
+            getAllCustomers().forEach {
+                if (it.nameEng == engName)
+                    return it
+            }
+            return null
         }
-        return null
-    }
 
-    private fun getCustomerListFromServer(): List<CustomerKYCModel> {
-        val result: GetResponse = Get.builder()
-            .scriptId(ProjectConfig.dBServerScriptURL)
-            .sheetId(ProjectConfig.DB_SHEET_ID)
-            .tabName(Customer_Config.SHEET_TAB_NAME)
-            .build().execute()
+        private fun getCustomerListFromServer(): List<CustomerKYCModel> {
+            val result: GetResponse = Get.builder()
+                .scriptId(ProjectConfig.dBServerScriptURL)
+                .sheetId(ProjectConfig.DB_SHEET_ID)
+                .tabName(Customer_Config.SHEET_TAB_NAME)
+                .build().execute()
 
-        return result.parseToObject(result.getRawResponse(),
-            object : TypeToken<ArrayList<CustomerKYCModel>?>() {}.type)
+            return result.parseToObject(result.getRawResponse(),
+                object : TypeToken<ArrayList<CustomerKYCModel>?>() {}.type
+            )
+        }
     }
 }

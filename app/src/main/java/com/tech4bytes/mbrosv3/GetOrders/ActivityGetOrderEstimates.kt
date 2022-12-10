@@ -69,7 +69,9 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
         dropDown.setOnItemClickListener { parent, arg1, position, arg3 ->
             val item = parent.getItemAtPosition(position)
             LogMe.log("Selected Customer: ${item}")
-            createEstimatesView(item.toString())
+            if(isOnList(item.toString())) {
+                createEstimatesView(item.toString())
+            }
         }
     }
 
@@ -98,7 +100,16 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
         return list
     }
 
-    private fun save() {
+    private fun isOnList(name: String): Boolean {
+        uiEntriesList.forEach {
+            val nameFromList = UIUtils.getUIElementValue(it.findViewById<AppCompatTextView>(R.id.fragment_customer_order_name))
+            if(nameFromList == name)
+                return true
+        }
+        return false
+    }
+
+    private fun saveToServer() {
         createNGetObjectsFromUI().forEach {
             PostObject.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
@@ -110,6 +121,6 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
     }
 
     fun onClickSaveBtn(view: View) {
-        save()
+        saveToServer()
     }
 }

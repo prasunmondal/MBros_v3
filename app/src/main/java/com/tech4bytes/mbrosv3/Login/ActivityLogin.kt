@@ -10,6 +10,8 @@ import com.google.gson.reflect.TypeToken
 import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
+import com.tech4bytes.mbrosv3.Delivering.ActivityDeliveringDeliver
+import com.tech4bytes.mbrosv3.GetOrders.ActivityGetOrderEstimates
 import com.tech4bytes.mbrosv3.Loading.ActivityDeliveringLoad
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
@@ -64,7 +66,8 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     private fun goToAdminRole() {
-        TODO("Not yet implemented")
+        val switchActivityIntent = Intent(this, ActivityGetOrderEstimates::class.java)
+        startActivity(switchActivityIntent)
     }
 
     private fun getPhoneId(): String {

@@ -12,7 +12,7 @@ data class CustomerKYCModel(var date: String,
                             var nameBeng: String,
                             var phNo1: String,
                             var phNo2: String,
-                            var address: String) {
+                            var address: String): java.io.Serializable {
 
     fun getDisplayName(): String {
         return this.nameEng

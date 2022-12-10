@@ -4,9 +4,11 @@ import android.content.Context
 import android.view.View
 import android.widget.EditText
 import android.widget.Switch
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
@@ -24,7 +26,8 @@ class UIUtils: AppCompatActivity() {
             LogMe.log("Getting value from: " + view.javaClass.simpleName)
             when (view.javaClass.simpleName) {
                 MaterialAutoCompleteTextView::class.simpleName -> return "" + (view as EditText).text
-                MaterialTextView::class.simpleName -> return "" + (view as MaterialTextView).text.toString()
+                MaterialTextView::class.simpleName,
+                AppCompatTextView::class.simpleName -> return "" + (view as TextView).text.toString()
                 AppCompatEditText::class.simpleName -> return "" + (view as AppCompatEditText).text
                 TextInputEditText::class.simpleName -> return "" + (view as TextInputEditText).text
                 Switch::class.simpleName -> return "" + (view as Switch).isChecked.toString()

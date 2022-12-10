@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:onClick="onClickSaveBtn"
     tools:context=".GetOrders.ActivityGetOrderEstimates">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -32,10 +33,23 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/activity_get_order_estimates__save_date_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activity_get_order_estimates__customer_selection_dropdown">
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/activity_get_order_estimates__save_date_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:onClick="onClickSaveBtn"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/activity_get_order_estimates__customer_selection_dropdown"></LinearLayout>
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

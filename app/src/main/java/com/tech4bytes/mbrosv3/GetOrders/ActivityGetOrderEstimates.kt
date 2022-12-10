@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -42,8 +44,16 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
         val entry = layoutInflater.inflate(R.layout.activity_get_order_estimates_fragment_customer_order, null)
 
         entry.findViewById<TextView>(R.id.fragment_customer_order_name).text = customerName
+
+        val deleteBtn = entry.findViewById<ImageButton>(R.id.fragment_customer_order_delete_record_button)
+        deleteBtn.setOnClickListener {
+            uiEntriesList.remove(entry)
+            listContainer.removeView(entry)
+        }
+
         uiEntriesList.add(entry)
         listContainer.addView(entry)
+
     }
 
     private fun getCustomerNamesAsStringList(): List<String> {
@@ -103,7 +113,6 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
                 estimateKg = kg,
                 rate = rate,
                 due = "0")
-
             list.add(obj)
         }
         return list

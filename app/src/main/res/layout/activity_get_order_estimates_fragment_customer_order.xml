@@ -58,7 +58,7 @@
             android:textColor="#B6B6B6" />
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/fragment_customer_order_delete_record_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight=".01"

@@ -1,12 +1,14 @@
 package com.tech4bytes.mbrosv3.GetOrders
 
-import androidx.appcompat.app.AppCompatActivity
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
+
 
 class ActivityGetOrderEstimates : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,13 +18,9 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
         populateCustomerList()
     }
 
-//    fun createEstimatesView() {
-//        ExpenseData.get_filterable_attributes().forEach {
-//            val layoutInflater = LayoutInflater.from(this)
-//            val item: View = layoutInflater.inflate(R.layout.fragment_popup_menu_item, null)
-//        }
-//
-//    }
+    fun createEstimatesView(customerName: String) {
+
+    }
 
     fun getCustomerNames(): ArrayList<String> {
         var list: ArrayList<String> = ArrayList()
@@ -30,6 +28,7 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
         list.add("Mondal")
         return list
     }
+    @SuppressLint("ClickableViewAccessibility")
     fun populateCustomerList() {
         val dropDown = findViewById<MaterialAutoCompleteTextView>(R.id.activity_get_order_estimates__customer_selection_dropdown)
         val adapter: ArrayAdapter<String> =
@@ -41,6 +40,12 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
                 dropDown.requestFocus()
                 false
             }
+
+        dropDown.setOnItemClickListener { parent, arg1, position, arg3 ->
+            val item = parent.getItemAtPosition(position)
+            LogMe.log("Selected Customer: ${item.toString()}")
+            createEstimatesView(item.toString())
+        }
     }
 
     fun deleteAll() {

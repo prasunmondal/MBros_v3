@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/fragment_customer_order_sl_no"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight=".01"
+            android:hint="Seq No."
+            android:textColor="#B6B6B6" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/fragment_customer_order_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_weight=".5"
+            android:paddingLeft="5dp"
+            android:textColor="#F8BD66"
+            android:textSize="20sp" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/fragment_customer_order_kg"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight=".2"
+            android:hint="kg"
+            android:textColor="#B6B6B6" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/fragment_customer_order_pc"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight=".1"
+            android:hint="pc"
+            android:textColor="#B6B6B6" />
+
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/fragment_customer_order_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight=".1"
+            android:hint="rate"
+            android:textColor="#B6B6B6" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

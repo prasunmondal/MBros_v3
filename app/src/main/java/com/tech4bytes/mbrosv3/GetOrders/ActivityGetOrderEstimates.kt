@@ -2,7 +2,10 @@ package com.tech4bytes.mbrosv3.GetOrders
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.tech4bytes.mbrosv3.R
@@ -19,6 +22,14 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
     }
 
     fun createEstimatesView(customerName: String) {
+        val listContainer = findViewById<LinearLayout>(R.id.activity_get_order_estimates__order_list_container)
+        val layoutInflater = LayoutInflater.from(AppContexts.get())
+        val entry = layoutInflater.inflate(R.layout.activity_get_order_estimates_fragment_customer_order, null)
+
+        entry.findViewById<TextView>(R.id.fragment_customer_order_name).text = customerName
+        listContainer.addView(entry)
+
+
 
     }
 

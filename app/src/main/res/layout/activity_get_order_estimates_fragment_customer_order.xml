@@ -17,9 +17,8 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/fragment_customer_order_sl_no"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:layout_weight=".01"
             android:hint="Seq No."
             android:textColor="#B6B6B6" />
 
@@ -30,7 +29,7 @@
             android:layout_marginLeft="5dp"
             android:layout_weight=".5"
             android:paddingLeft="5dp"
-            android:textColor="#F8BD66"
+            android:textColor="#231602"
             android:textSize="20sp" />
 
         <androidx.appcompat.widget.AppCompatEditText

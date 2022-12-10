@@ -14,9 +14,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import com.google.gson.reflect.TypeToken
 import com.prasunmondal.postjsontosheets.clients.delete.Delete
+import com.prasunmondal.postjsontosheets.clients.get.Get
+import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
+import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
+import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
+import com.tech4bytes.mbrosv3.Customer.Customer_Config
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
@@ -36,6 +42,9 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
         containerView = findViewById<LinearLayout>(R.id.activity_get_order_estimates__order_list_container)
 
         populateCustomerList()
+        getOrderData().forEach {
+            createEstimatesView(it)
+        }
     }
 
     private fun createEstimatesView(customerName: String) {
@@ -53,7 +62,27 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
 
         uiEntriesList.add(entry)
         listContainer.addView(entry)
+    }
 
+    private fun createEstimatesView(order: OrderEstimateModel) {
+        val listContainer = findViewById<LinearLayout>(R.id.activity_get_order_estimates__order_list_container)
+        val layoutInflater = LayoutInflater.from(AppContexts.get())
+        val entry = layoutInflater.inflate(R.layout.activity_get_order_estimates_fragment_customer_order, null)
+
+        UIUtils.setUIElementValue(this, entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_sl_no), order.seqNo)
+        UIUtils.setUIElementValue(this, entry.findViewById<AppCompatTextView>(R.id.fragment_customer_order_name), order.name)
+        UIUtils.setUIElementValue(this, entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_pc), order.estimatePc)
+        UIUtils.setUIElementValue(this, entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_kg), order.estimateKg)
+        UIUtils.setUIElementValue(this, entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_rate), order.rate)
+
+        val deleteBtn = entry.findViewById<ImageButton>(R.id.fragment_customer_order_delete_record_button)
+        deleteBtn.setOnClickListener {
+            uiEntriesList.remove(entry)
+            listContainer.removeView(entry)
+        }
+
+        uiEntriesList.add(entry)
+        listContainer.addView(entry)
     }
 
     private fun getCustomerNamesAsStringList(): List<String> {
@@ -138,8 +167,34 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
         }
     }
 
+    private fun getFromServer(): List<OrderEstimateModel> {
+
+        val result: GetResponse = Get.builder()
+            .scriptId(ProjectConfig.dBServerScriptURL)
+            .sheetId(ProjectConfig.DB_SHEET_ID)
+            .tabName(GetOrdersConfig.SHEET_TAB_NAME)
+            .build().execute()
+
+        return result.parseToObject(result.getRawResponse(),
+            object : TypeToken<ArrayList<OrderEstimateModel>?>() {}.type
+        )
+    }
+
     fun onClickSaveBtn(view: View) {
         deleteAll()
         saveToServer()
+    }
+
+    fun getOrderData(useCache: Boolean = true): List<OrderEstimateModel> {
+        val cacheKey = "allCustomersList"
+        val cacheResults = CentralCache.get<ArrayList<OrderEstimateModel>>(AppContexts.get(), GetOrdersConfig.CACHE_KEY__ORDERS, useCache)
+
+        return if (cacheResults != null) {
+            cacheResults
+        } else {
+            val resultFromServer = getFromServer()
+            CentralCache.put(cacheKey, resultFromServer)
+            resultFromServer
+        }
     }
 }

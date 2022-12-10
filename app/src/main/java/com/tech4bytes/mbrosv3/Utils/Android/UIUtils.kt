@@ -37,10 +37,11 @@ class UIUtils: AppCompatActivity() {
         }
 
         fun setUIElementValue(context: Context, view: View, value: String) {
-            var uIElement = view
+            val uIElement = view
             when (uIElement.javaClass.simpleName) {
-                MaterialAutoCompleteTextView::class.simpleName -> (uIElement as MaterialAutoCompleteTextView).setText(value)
-                MaterialTextView::class.simpleName -> (uIElement as MaterialTextView).text = value
+                MaterialAutoCompleteTextView::class.simpleName,
+                AppCompatTextView::class.simpleName,
+                MaterialTextView::class.simpleName -> (uIElement as TextView).text = value
                 AppCompatEditText::class.simpleName -> (uIElement as EditText).setText(value)
                 Switch::class.simpleName -> (uIElement as Switch).isChecked = value.toBoolean()
                 SwitchCompat::class.simpleName -> (uIElement as SwitchCompat).isChecked = value.toBoolean()

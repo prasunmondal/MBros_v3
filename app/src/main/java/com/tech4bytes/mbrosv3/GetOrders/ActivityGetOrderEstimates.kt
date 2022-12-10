@@ -79,6 +79,8 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
         deleteBtn.setOnClickListener {
             uiEntriesList.remove(entry)
             listContainer.removeView(entry)
+            updateTotalPc()
+            updateTotalKg()
         }
 
         uiEntriesList.add(entry)

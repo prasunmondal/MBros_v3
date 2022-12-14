@@ -50,13 +50,14 @@
             android:text="Save"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
 
         <LinearLayout
             android:id="@+id/constraintLayout2"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            app:layout_constraintBottom_toTopOf="@+id/activity_get_order_estimates__save_date_btn"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
             app:layout_constraintEnd_toEndOf="@+id/activity_get_order_estimates__save_date_btn"
             app:layout_constraintStart_toStartOf="parent">
 
@@ -88,11 +89,68 @@
                 android:id="@+id/activity_get_order_estimates__total_kg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
                 android:layout_weight=".5"
                 android:text="0 kg"
                 android:textSize="20sp"
                 tools:layout_editor_absoluteX="79dp"
                 tools:layout_editor_absoluteY="7dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/constraintLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/activity_get_order_estimates__save_date_btn">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:foregroundGravity="center_vertical"
+                android:gravity="center_vertical"
+                android:text="Load:"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/activity_get_order_estimates__load_pc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_weight=".5"
+                android:inputType="number"
+                android:textSize="20sp"
+                tools:layout_editor_absoluteX="79dp"
+                tools:layout_editor_absoluteY="7dp" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:text="pc"
+                android:textSize="20sp" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/activity_get_order_estimates__load_kg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_weight=".5"
+                android:inputType="number"
+                android:textSize="20sp"
+                tools:layout_editor_absoluteX="79dp"
+                tools:layout_editor_absoluteY="7dp" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:text="Kg"
+                android:textSize="20sp" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

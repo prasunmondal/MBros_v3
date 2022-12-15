@@ -44,8 +44,8 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
         val loadOrderObj = OrdersTotalModel.get(true)
         val kg = loadOrderObj.requiredKg + ""
         val pc = loadOrderObj.requiredPc + ""
-        UIUtils.setUIElementValue(this, OrdersTotalModel.getUiElement(containerView, OrdersTotalModel::requiredKg), kg)
-        UIUtils.setUIElementValue(this, OrdersTotalModel.getUiElement(containerView, OrdersTotalModel::requiredPc), pc)
+        UIUtils.setUIElementValue(this, OrdersTotalModel.getUiElementFromOrderingPage(containerView, OrdersTotalModel::requiredKg), kg)
+        UIUtils.setUIElementValue(this, OrdersTotalModel.getUiElementFromOrderingPage(containerView, OrdersTotalModel::requiredPc), pc)
     }
 
     private fun createEstimatesView(customerName: String) {

@@ -38,16 +38,16 @@ class ActivityDeliveringLoad : AppCompatActivity() {
         val loadOrderObject = OrdersTotalModel.get(true)
         val loadOrderKg = loadOrderObject.requiredKg
         val loadOrderPc = loadOrderObject.requiredPc
-        UIUtils.setUIElementValue(this, LoadingOrdersTotalModel.getUiElement(view, OrdersTotalModel::requiredPc), loadOrderPc.toString())
-        UIUtils.setUIElementValue(this, LoadingOrdersTotalModel.getUiElement(view, OrdersTotalModel::requiredKg), loadOrderKg.toString())
+        UIUtils.setUIElementValue(this, OrdersTotalModel.getUiElementFromLoadingPage(view, OrdersTotalModel::requiredPc), loadOrderPc.toString())
+        UIUtils.setUIElementValue(this, OrdersTotalModel.getUiElementFromLoadingPage(view, OrdersTotalModel::requiredKg), loadOrderKg.toString())
     }
 
     private fun addListeners() {
-        (LoadingOrdersTotalModel.getUiElement(view, OrdersTotalModel::actualPc) as EditText).addTextChangedListener {
+        (OrdersTotalModel.getUiElementFromLoadingPage(view, OrdersTotalModel::actualPc) as EditText).addTextChangedListener {
             updateAvgWeightText()
         }
 
-        (LoadingOrdersTotalModel.getUiElement(view, OrdersTotalModel::actualKg) as EditText).addTextChangedListener {
+        (OrdersTotalModel.getUiElementFromLoadingPage(view, OrdersTotalModel::actualKg) as EditText).addTextChangedListener {
             updateAvgWeightText()
         }
     }
@@ -55,10 +55,10 @@ class ActivityDeliveringLoad : AppCompatActivity() {
     @SuppressLint("DefaultLocale")
     private fun updateAvgWeightText() {
         try {
-            LogMe.log((LoadingOrdersTotalModel.getUiElement(view, OrdersTotalModel::actualKg) as EditText).text.toString())
-            LogMe.log((LoadingOrdersTotalModel.getUiElement(view, OrdersTotalModel::actualPc) as EditText).text.toString())
-            val actualKg = UIUtils.getUIElementValue(LoadingOrdersTotalModel.getUiElement(view, OrdersTotalModel::actualKg)).toDouble()
-            val actualPc = UIUtils.getUIElementValue(LoadingOrdersTotalModel.getUiElement(view, OrdersTotalModel::actualPc)).toInt()
+            LogMe.log((OrdersTotalModel.getUiElementFromLoadingPage(view, OrdersTotalModel::actualKg) as EditText).text.toString())
+            LogMe.log((OrdersTotalModel.getUiElementFromLoadingPage(view, OrdersTotalModel::actualPc) as EditText).text.toString())
+            val actualKg = UIUtils.getUIElementValue(OrdersTotalModel.getUiElementFromLoadingPage(view, OrdersTotalModel::actualKg)).toDouble()
+            val actualPc = UIUtils.getUIElementValue(OrdersTotalModel.getUiElementFromLoadingPage(view, OrdersTotalModel::actualPc)).toInt()
             val avgWt = actualKg/actualPc
             UIUtils.setUIElementValue(this, view.findViewById<TextView>(R.id.activity_delivering_load_actualAvgWt), format("%.3f", avgWt))
         } catch (e: NumberFormatException) {

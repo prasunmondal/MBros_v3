@@ -22,20 +22,35 @@ data class OrderEstimateModel(var id: String = "",
     }
 
     companion object {
-        fun getOrderData(useCache: Boolean = true): List<OrderEstimateModel> {
-            val cacheKey = "allCustomersList"
+
+        val cacheKey = "allCustomersList"
+
+        fun get(useCache: Boolean = true): List<OrderEstimateModel> {
             val cacheResults = CentralCache.get<ArrayList<OrderEstimateModel>>(AppContexts.get(), GetOrdersConfig.CACHE_KEY__ORDERS, useCache)
 
             return if (cacheResults != null) {
                 cacheResults
             } else {
-                val resultFromServer = OrderEstimateModel.getFromServer()
+                val resultFromServer = getFromServer()
                 CentralCache.put(cacheKey, resultFromServer)
                 resultFromServer
             }
         }
 
-        fun saveObjectsToServer(objects: List<OrderEstimateModel>) {
+        fun save(objects: List<OrderEstimateModel>) {
+            saveObjectsToServer(objects)
+            saveToLocal(objects)
+        }
+
+        fun deleteAll() {
+            Delete.builder()
+                .scriptId(ProjectConfig.dBServerScriptURL)
+                .sheetId(ProjectConfig.DB_SHEET_ID)
+                .tabName(GetOrdersConfig.SHEET_TAB_NAME)
+                .build().execute()
+        }
+
+        private fun saveObjectsToServer(objects: List<OrderEstimateModel>) {
             objects.forEach {
                 PostObject.builder()
                     .scriptId(ProjectConfig.dBServerScriptURL)
@@ -44,6 +59,10 @@ data class OrderEstimateModel(var id: String = "",
                     .dataObject(it as Any)
                     .build().execute()
             }
+        }
+
+        private fun saveToLocal(objects: List<OrderEstimateModel>) {
+            CentralCache.put(cacheKey, objects)
         }
 
         private fun getFromServer(): List<OrderEstimateModel> {
@@ -56,14 +75,6 @@ data class OrderEstimateModel(var id: String = "",
             return result.parseToObject(result.getRawResponse(),
                 object : TypeToken<ArrayList<OrderEstimateModel>?>() {}.type
             )
-        }
-
-        fun deleteAll() {
-            Delete.builder()
-                .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.DB_SHEET_ID)
-                .tabName(GetOrdersConfig.SHEET_TAB_NAME)
-                .build().execute()
         }
     }
 }

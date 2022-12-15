@@ -32,7 +32,7 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
         containerView = findViewById<LinearLayout>(R.id.activity_get_order_estimates__parent_view)
 
         populateCustomerList()
-        OrderEstimateModel.getOrderData().forEach {
+        OrderEstimateModel.get().forEach {
             createEstimatesView(it)
         }
         updateTotalPc()
@@ -165,6 +165,6 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
 
     fun onClickSaveBtn(view: View) {
         OrderEstimateModel.deleteAll()
-        OrderEstimateModel.saveObjectsToServer(createNGetObjectsFromUI())
+        OrderEstimateModel.save(createNGetObjectsFromUI())
     }
 }

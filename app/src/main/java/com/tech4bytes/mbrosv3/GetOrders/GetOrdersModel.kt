@@ -9,13 +9,13 @@ import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 
-data class OrderEstimateModel(var id: String = "",
-                              var name: String = "",
-                              var seqNo: String = "",
-                              var estimatePc: String = "",
-                              var estimateKg: String = "",
-                              var rate: String = "",
-                              var due: String = ""): java.io.Serializable {
+data class GetOrdersModel(var id: String = "",
+                          var name: String = "",
+                          var seqNo: String = "",
+                          var estimatePc: String = "",
+                          var estimateKg: String = "",
+                          var rate: String = "",
+                          var due: String = ""): java.io.Serializable {
 
     override fun toString(): String {
         return "OrderEstimateModel(id='$id', name='$name', estimatePc='$estimatePc', rate='$rate', due='$due', estimateKg='$estimateKg')"
@@ -23,8 +23,8 @@ data class OrderEstimateModel(var id: String = "",
 
     companion object {
 
-        fun get(useCache: Boolean = true): List<OrderEstimateModel> {
-            val cacheResults = CentralCache.get<ArrayList<OrderEstimateModel>>(AppContexts.get(), GetOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, useCache)
+        fun get(useCache: Boolean = true): List<GetOrdersModel> {
+            val cacheResults = CentralCache.get<ArrayList<GetOrdersModel>>(AppContexts.get(), GetOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, useCache)
 
             return if (cacheResults != null) {
                 cacheResults
@@ -35,7 +35,7 @@ data class OrderEstimateModel(var id: String = "",
             }
         }
 
-        fun save(objects: List<OrderEstimateModel>) {
+        fun save(objects: List<GetOrdersModel>) {
             saveObjectsToServer(objects)
             saveToLocal(objects)
         }
@@ -49,7 +49,7 @@ data class OrderEstimateModel(var id: String = "",
             saveToLocal(listOf())
         }
 
-        private fun saveObjectsToServer(objects: List<OrderEstimateModel>) {
+        private fun saveObjectsToServer(objects: List<GetOrdersModel>) {
             objects.forEach {
                 PostObject.builder()
                     .scriptId(ProjectConfig.dBServerScriptURL)
@@ -60,11 +60,11 @@ data class OrderEstimateModel(var id: String = "",
             }
         }
 
-        private fun saveToLocal(objects: List<OrderEstimateModel>) {
+        private fun saveToLocal(objects: List<GetOrdersModel>) {
             CentralCache.put(GetOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, objects)
         }
 
-        private fun getFromServer(): List<OrderEstimateModel> {
+        private fun getFromServer(): List<GetOrdersModel> {
             val result: GetResponse = Get.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
                 .sheetId(ProjectConfig.DB_SHEET_ID)
@@ -72,7 +72,7 @@ data class OrderEstimateModel(var id: String = "",
                 .build().execute()
 
             return result.parseToObject(result.getRawResponse(),
-                object : TypeToken<ArrayList<OrderEstimateModel>?>() {}.type
+                object : TypeToken<ArrayList<GetOrdersModel>?>() {}.type
             )
         }
     }

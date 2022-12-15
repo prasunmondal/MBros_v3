@@ -14,6 +14,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.doOnTextChanged
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
+import com.tech4bytes.mbrosv3.Loading.LoadModel
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -32,7 +33,7 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
         containerView = findViewById<LinearLayout>(R.id.activity_get_order_estimates__parent_view)
 
         populateCustomerList()
-        OrderEstimateModel.get().forEach {
+        GetOrdersModel.get().forEach {
             createEstimatesView(it)
         }
         setTotalLoadOrder()
@@ -41,18 +42,18 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
     }
 
     private fun setTotalLoadOrder() {
-        val loadOrderObj = OrdersTotalModel.get(true)
+        val loadOrderObj = LoadModel.get(true)
         val kg = loadOrderObj.requiredKg + ""
         val pc = loadOrderObj.requiredPc + ""
-        UIUtils.setUIElementValue(this, OrdersTotalModel.getUiElementFromOrderingPage(containerView, OrdersTotalModel::requiredKg), kg)
-        UIUtils.setUIElementValue(this, OrdersTotalModel.getUiElementFromOrderingPage(containerView, OrdersTotalModel::requiredPc), pc)
+        UIUtils.setUIElementValue(this, LoadModel.getUiElementFromOrderingPage(containerView, LoadModel::requiredKg), kg)
+        UIUtils.setUIElementValue(this, LoadModel.getUiElementFromOrderingPage(containerView, LoadModel::requiredPc), pc)
     }
 
     private fun createEstimatesView(customerName: String) {
-        createEstimatesView(OrderEstimateModel(name = customerName))
+        createEstimatesView(GetOrdersModel(name = customerName))
     }
 
-    private fun createEstimatesView(order: OrderEstimateModel) {
+    private fun createEstimatesView(order: GetOrdersModel) {
         val listContainer = findViewById<LinearLayout>(R.id.activity_get_order_estimates__order_list_container)
         val layoutInflater = LayoutInflater.from(AppContexts.get())
         val entry = layoutInflater.inflate(R.layout.activity_get_order_estimates_fragment_customer_order, null)
@@ -143,15 +144,15 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
         }
     }
 
-    fun createNGetObjectsFromUI(): List<OrderEstimateModel> {
-        val list = mutableListOf<OrderEstimateModel>()
+    fun createNGetObjectsFromUI(): List<GetOrdersModel> {
+        val list = mutableListOf<GetOrdersModel>()
         uiEntriesList.forEach {
             val seqNo = UIUtils.getUIElementValue(it.findViewById<AppCompatEditText>(R.id.fragment_customer_order_sl_no))
             val name = UIUtils.getUIElementValue(it.findViewById<AppCompatTextView>(R.id.fragment_customer_order_name))
             val pc = UIUtils.getUIElementValue(it.findViewById<AppCompatEditText>(R.id.fragment_customer_order_pc))
             val kg = UIUtils.getUIElementValue(it.findViewById<AppCompatEditText>(R.id.fragment_customer_order_kg))
             val rate = UIUtils.getUIElementValue(it.findViewById<AppCompatEditText>(R.id.fragment_customer_order_rate))
-            val obj = OrderEstimateModel(id = System.currentTimeMillis().toString(),
+            val obj = GetOrdersModel(id = System.currentTimeMillis().toString(),
                 name = name,
                 seqNo = seqNo,
                 estimatePc = pc,
@@ -173,8 +174,8 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
     }
 
     fun onClickSaveBtn(view: View) {
-        OrderEstimateModel.deleteAll()
-        OrderEstimateModel.save(createNGetObjectsFromUI())
-        OrdersTotalModel.save(containerView)
+        GetOrdersModel.deleteAll()
+        GetOrdersModel.save(createNGetObjectsFromUI())
+        LoadModel.save(containerView)
     }
 }

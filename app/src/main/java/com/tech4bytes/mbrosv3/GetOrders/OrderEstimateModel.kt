@@ -23,16 +23,14 @@ data class OrderEstimateModel(var id: String = "",
 
     companion object {
 
-        val cacheKey = "allCustomersList"
-
         fun get(useCache: Boolean = true): List<OrderEstimateModel> {
-            val cacheResults = CentralCache.get<ArrayList<OrderEstimateModel>>(AppContexts.get(), GetOrdersConfig.CACHE_KEY__ORDERS, useCache)
+            val cacheResults = CentralCache.get<ArrayList<OrderEstimateModel>>(AppContexts.get(), GetOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, useCache)
 
             return if (cacheResults != null) {
                 cacheResults
             } else {
                 val resultFromServer = getFromServer()
-                CentralCache.put(cacheKey, resultFromServer)
+                CentralCache.put(GetOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, resultFromServer)
                 resultFromServer
             }
         }
@@ -46,8 +44,9 @@ data class OrderEstimateModel(var id: String = "",
             Delete.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
                 .sheetId(ProjectConfig.DB_SHEET_ID)
-                .tabName(GetOrdersConfig.SHEET_TAB_NAME)
+                .tabName(GetOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
                 .build().execute()
+            saveToLocal(listOf())
         }
 
         private fun saveObjectsToServer(objects: List<OrderEstimateModel>) {
@@ -55,21 +54,21 @@ data class OrderEstimateModel(var id: String = "",
                 PostObject.builder()
                     .scriptId(ProjectConfig.dBServerScriptURL)
                     .sheetId(ProjectConfig.DB_SHEET_ID)
-                    .tabName(GetOrdersConfig.SHEET_TAB_NAME)
+                    .tabName(GetOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
                     .dataObject(it as Any)
                     .build().execute()
             }
         }
 
         private fun saveToLocal(objects: List<OrderEstimateModel>) {
-            CentralCache.put(cacheKey, objects)
+            CentralCache.put(GetOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, objects)
         }
 
         private fun getFromServer(): List<OrderEstimateModel> {
             val result: GetResponse = Get.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
                 .sheetId(ProjectConfig.DB_SHEET_ID)
-                .tabName(GetOrdersConfig.SHEET_TAB_NAME)
+                .tabName(GetOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
                 .build().execute()
 
             return result.parseToObject(result.getRawResponse(),

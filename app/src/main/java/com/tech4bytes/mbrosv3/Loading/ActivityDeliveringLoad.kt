@@ -37,8 +37,8 @@ class ActivityDeliveringLoad : AppCompatActivity() {
         val loadOrderObject = LoadModel.get(true)
         val loadOrderKg = loadOrderObject.requiredKg
         val loadOrderPc = loadOrderObject.requiredPc
-        UIUtils.setUIElementValue(this, LoadModel.getUiElementFromLoadingPage(view, LoadModel::requiredPc), loadOrderPc.toString())
-        UIUtils.setUIElementValue(this, LoadModel.getUiElementFromLoadingPage(view, LoadModel::requiredKg), loadOrderKg.toString())
+        UIUtils.setUIElementValue(this, LoadModel.getUiElementFromLoadingPage(view, LoadModel::requiredPc), loadOrderPc)
+        UIUtils.setUIElementValue(this, LoadModel.getUiElementFromLoadingPage(view, LoadModel::requiredKg), loadOrderKg)
     }
 
     private fun addListeners() {
@@ -72,7 +72,22 @@ class ActivityDeliveringLoad : AppCompatActivity() {
     }
 
     fun onClickDeliverButton(view: View) {
+        saveLoadActuals()
         goToDeliveringDeliverPage()
+    }
+
+    private fun saveLoadActuals() {
+        LoadModel.save(getObjectFromUI(view))
+    }
+
+    private fun getObjectFromUI(view: View): LoadModel {
+        val id = System.currentTimeMillis()
+        return LoadModel(id.toString(),
+            UIUtils.getUIElementValue(LoadModel.getUiElementFromLoadingPage(view, LoadModel::requiredKg)),
+            UIUtils.getUIElementValue(LoadModel.getUiElementFromLoadingPage(view, LoadModel::requiredPc)),
+            UIUtils.getUIElementValue(LoadModel.getUiElementFromLoadingPage(view, LoadModel::actualPc)),
+            UIUtils.getUIElementValue(LoadModel.getUiElementFromLoadingPage(view, LoadModel::actualKg)),
+        )
     }
 
     fun goToDeliveringDeliverPage() {

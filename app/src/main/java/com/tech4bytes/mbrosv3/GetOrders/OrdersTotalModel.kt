@@ -14,7 +14,7 @@ import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import kotlin.reflect.KMutableProperty1
 
-data class OrdersTotalModel(var id: String, var kg: String, var pc: String) {
+data class OrdersTotalModel(var id: String, var requiredKg: String, var requiredPc: String, var actualPc: String = "", var actualKg: String = "") {
 
     companion object {
         fun get(useCache: Boolean = true): OrdersTotalModel {
@@ -51,8 +51,8 @@ data class OrdersTotalModel(var id: String, var kg: String, var pc: String) {
 
         fun getUiElement(view: View, attribute: KMutableProperty1<OrdersTotalModel, *>): View {
             return when (attribute) {
-                OrdersTotalModel::kg -> view.findViewById<TextView>(R.id.activity_get_order_estimates__load_kg)
-                OrdersTotalModel::pc -> view.findViewById<TextView>(R.id.activity_get_order_estimates__load_pc)
+                OrdersTotalModel::requiredKg -> view.findViewById<TextView>(R.id.activity_get_order_estimates__load_kg)
+                OrdersTotalModel::requiredPc -> view.findViewById<TextView>(R.id.activity_get_order_estimates__load_pc)
                 else -> null!!
             }
         }
@@ -69,8 +69,8 @@ data class OrdersTotalModel(var id: String, var kg: String, var pc: String) {
         private fun getObjectFromUI(view: View): OrdersTotalModel {
             val id = System.currentTimeMillis()
             return OrdersTotalModel(id.toString(),
-                UIUtils.getUIElementValue(getUiElement(view, OrdersTotalModel::kg)),
-                UIUtils.getUIElementValue(getUiElement(view, OrdersTotalModel::pc)))
+                UIUtils.getUIElementValue(getUiElement(view, OrdersTotalModel::requiredKg)),
+                UIUtils.getUIElementValue(getUiElement(view, OrdersTotalModel::requiredPc)))
         }
 
         private fun saveToLocal(objects: OrdersTotalModel?) {

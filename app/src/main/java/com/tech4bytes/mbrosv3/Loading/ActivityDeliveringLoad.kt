@@ -32,11 +32,11 @@ class ActivityDeliveringLoad : AppCompatActivity() {
     }
 
     private fun addListeners() {
-        (LoadingDataModel.getUiElement(view, LoadingDataModel::actualPc) as EditText).addTextChangedListener {
+        (LoadingOrdersTotalModel.getUiElement(view, LoadingDataModel::actualPc) as EditText).addTextChangedListener {
             updateAvgWeightText()
         }
 
-        (LoadingDataModel.getUiElement(view, LoadingDataModel::actualKg) as EditText).addTextChangedListener {
+        (LoadingOrdersTotalModel.getUiElement(view, LoadingDataModel::actualKg) as EditText).addTextChangedListener {
             updateAvgWeightText()
         }
     }
@@ -44,15 +44,15 @@ class ActivityDeliveringLoad : AppCompatActivity() {
     @SuppressLint("DefaultLocale")
     private fun updateAvgWeightText() {
         try {
-            LogMe.log((LoadingDataModel.getUiElement(view, LoadingDataModel::actualKg) as EditText).text.toString())
-            LogMe.log((LoadingDataModel.getUiElement(view, LoadingDataModel::actualPc) as EditText).text.toString())
-            val actualKg = UIUtils.getUIElementValue(LoadingDataModel.getUiElement(view, LoadingDataModel::actualKg)).toDouble()
-            val actualPc = UIUtils.getUIElementValue(LoadingDataModel.getUiElement(view, LoadingDataModel::actualPc)).toInt()
+            LogMe.log((LoadingOrdersTotalModel.getUiElement(view, LoadingDataModel::actualKg) as EditText).text.toString())
+            LogMe.log((LoadingOrdersTotalModel.getUiElement(view, LoadingDataModel::actualPc) as EditText).text.toString())
+            val actualKg = UIUtils.getUIElementValue(LoadingOrdersTotalModel.getUiElement(view, LoadingDataModel::actualKg)).toDouble()
+            val actualPc = UIUtils.getUIElementValue(LoadingOrdersTotalModel.getUiElement(view, LoadingDataModel::actualPc)).toInt()
             val avgWt = actualKg/actualPc
-            UIUtils.setUIElementValue(this, LoadingDataModel.getUiElement(view, LoadingDataModel::avgWeight), format("%.3f", avgWt))
+            UIUtils.setUIElementValue(this, LoadingOrdersTotalModel.getUiElement(view, LoadingDataModel::avgWeight), format("%.3f", avgWt))
         } catch (e: NumberFormatException) {
             LogMe.log(e)
-            UIUtils.setUIElementValue(this, LoadingDataModel.getUiElement(view, LoadingDataModel::avgWeight), "--.---")
+            UIUtils.setUIElementValue(this, LoadingOrdersTotalModel.getUiElement(view, LoadingDataModel::avgWeight), "--.---")
         }
 
     }

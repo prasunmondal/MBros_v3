@@ -9,4 +9,8 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_delivering_deliver)
     }
+
+    fun updateOrderedLoadDetails() {
+
+    }
 }

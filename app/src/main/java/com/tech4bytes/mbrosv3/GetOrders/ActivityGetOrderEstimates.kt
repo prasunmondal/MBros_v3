@@ -42,10 +42,10 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
 
     private fun setTotalLoadOrder() {
         val loadOrderObj = OrdersTotalModel.get(true)
-        val kg = loadOrderObj.kg + ""
-        val pc = loadOrderObj.pc + ""
-        UIUtils.setUIElementValue(this, OrdersTotalModel.getUiElement(containerView, OrdersTotalModel::kg), kg)
-        UIUtils.setUIElementValue(this, OrdersTotalModel.getUiElement(containerView, OrdersTotalModel::pc), pc)
+        val kg = loadOrderObj.requiredKg + ""
+        val pc = loadOrderObj.requiredPc + ""
+        UIUtils.setUIElementValue(this, OrdersTotalModel.getUiElement(containerView, OrdersTotalModel::requiredKg), kg)
+        UIUtils.setUIElementValue(this, OrdersTotalModel.getUiElement(containerView, OrdersTotalModel::requiredPc), pc)
     }
 
     private fun createEstimatesView(customerName: String) {

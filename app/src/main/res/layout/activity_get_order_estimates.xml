@@ -77,9 +77,10 @@
             <TextView
                 android:id="@+id/activity_get_order_estimates__total_pc"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="20dp"
                 android:layout_weight=".5"
+                android:gravity="center_vertical"
                 android:text="0 pc"
                 android:textSize="20sp"
                 tools:layout_editor_absoluteX="79dp"
@@ -88,9 +89,10 @@
             <TextView
                 android:id="@+id/activity_get_order_estimates__total_kg"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="20dp"
                 android:layout_weight=".5"
+                android:gravity="center_vertical"
                 android:text="0 kg"
                 android:textSize="20sp"
                 tools:layout_editor_absoluteX="79dp"

@@ -5,26 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.doOnTextChanged
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
-import com.google.gson.reflect.TypeToken
-import com.prasunmondal.postjsontosheets.clients.delete.Delete
-import com.prasunmondal.postjsontosheets.clients.get.Get
-import com.prasunmondal.postjsontosheets.clients.get.GetResponse
-import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
-import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
-import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
-import com.tech4bytes.mbrosv3.Customer.Customer_Config
-import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -43,7 +32,7 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
         containerView = findViewById<LinearLayout>(R.id.activity_get_order_estimates__parent_view)
 
         populateCustomerList()
-        getOrderData().forEach {
+        OrderEstimateModel.getOrderData().forEach {
             createEstimatesView(it)
         }
         updateTotalPc()
@@ -145,14 +134,6 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
         }
     }
 
-    fun deleteAll() {
-        Delete.builder()
-            .scriptId(ProjectConfig.dBServerScriptURL)
-            .sheetId(ProjectConfig.DB_SHEET_ID)
-            .tabName(GetOrdersConfig.SHEET_TAB_NAME)
-            .build().execute()
-    }
-
     fun createNGetObjectsFromUI(): List<OrderEstimateModel> {
         val list = mutableListOf<OrderEstimateModel>()
         uiEntriesList.forEach {
@@ -182,45 +163,8 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
         return false
     }
 
-    private fun saveToServer() {
-        createNGetObjectsFromUI().forEach {
-            PostObject.builder()
-                .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.DB_SHEET_ID)
-                .tabName(GetOrdersConfig.SHEET_TAB_NAME)
-                .dataObject(it as Any)
-                .build().execute()
-        }
-    }
-
-    private fun getFromServer(): List<OrderEstimateModel> {
-
-        val result: GetResponse = Get.builder()
-            .scriptId(ProjectConfig.dBServerScriptURL)
-            .sheetId(ProjectConfig.DB_SHEET_ID)
-            .tabName(GetOrdersConfig.SHEET_TAB_NAME)
-            .build().execute()
-
-        return result.parseToObject(result.getRawResponse(),
-            object : TypeToken<ArrayList<OrderEstimateModel>?>() {}.type
-        )
-    }
-
     fun onClickSaveBtn(view: View) {
-        deleteAll()
-        saveToServer()
-    }
-
-    fun getOrderData(useCache: Boolean = true): List<OrderEstimateModel> {
-        val cacheKey = "allCustomersList"
-        val cacheResults = CentralCache.get<ArrayList<OrderEstimateModel>>(AppContexts.get(), GetOrdersConfig.CACHE_KEY__ORDERS, useCache)
-
-        return if (cacheResults != null) {
-            cacheResults
-        } else {
-            val resultFromServer = getFromServer()
-            CentralCache.put(cacheKey, resultFromServer)
-            resultFromServer
-        }
+        OrderEstimateModel.deleteAll()
+        OrderEstimateModel.saveObjectsToServer(createNGetObjectsFromUI())
     }
 }

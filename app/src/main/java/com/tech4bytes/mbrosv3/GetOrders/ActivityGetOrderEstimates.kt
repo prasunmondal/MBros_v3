@@ -35,8 +35,17 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
         OrderEstimateModel.get().forEach {
             createEstimatesView(it)
         }
+        setTotalLoadOrder()
         updateTotalPc()
         updateTotalKg()
+    }
+
+    private fun setTotalLoadOrder() {
+        val loadOrderObj = OrdersTotalModel.get(true)
+        val kg = loadOrderObj.kg + ""
+        val pc = loadOrderObj.pc + ""
+        UIUtils.setUIElementValue(this, OrdersTotalModel.getUiElement(containerView, OrdersTotalModel::kg), kg)
+        UIUtils.setUIElementValue(this, OrdersTotalModel.getUiElement(containerView, OrdersTotalModel::pc), pc)
     }
 
     private fun createEstimatesView(customerName: String) {
@@ -166,5 +175,6 @@ class ActivityGetOrderEstimates : AppCompatActivity() {
     fun onClickSaveBtn(view: View) {
         OrderEstimateModel.deleteAll()
         OrderEstimateModel.save(createNGetObjectsFromUI())
+        OrdersTotalModel.save(containerView)
     }
 }

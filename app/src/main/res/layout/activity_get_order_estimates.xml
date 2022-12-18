@@ -5,7 +5,6 @@
     android:id="@+id/activity_get_order_estimates__parent_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:onClick="onClickSaveBtn"
     tools:context=".CustomerOrders.GetOrders.ActivityGetCustomerOrders">
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -5,7 +5,7 @@
     android:id="@+id/activity_delivering_deliver_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CustomerOrders.DeliverOrders.ActivityDeliveringDeliver" >
+    tools:context=".CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders" >
 
     <LinearLayout
         android:id="@+id/activity_delivering_deliver_order_list"

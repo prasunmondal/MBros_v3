@@ -1,4 +1,4 @@
-package com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders
+package com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer
 
 class DeliverOrdersConfig {
     companion object {

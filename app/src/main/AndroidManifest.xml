@@ -20,7 +20,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".CustomerOrders.DeliverOrders.ActivityDeliveringDeliver"
+            android:name=".CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

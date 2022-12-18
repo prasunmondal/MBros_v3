@@ -1,15 +1,5 @@
-package com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders
+package com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer
 
-import android.view.View
-import android.widget.EditText
-import android.widget.Switch
-import android.widget.TextView
-import androidx.appcompat.widget.AppCompatEditText
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
-import com.google.android.material.textfield.MaterialAutoCompleteTextView
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textview.MaterialTextView
 import com.google.gson.reflect.TypeToken
 import com.prasunmondal.postjsontosheets.clients.delete.Delete
 import com.prasunmondal.postjsontosheets.clients.get.Get
@@ -18,7 +8,6 @@ import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
-import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 
 data class DeliverCustomerOrders(var id: String, var Timestamp: String, var name: String, var pc: String, var kg: String, var rate: String, var total: String, var prevDue: String, var totalDue: String, var paid: String, var due: String): java.io.Serializable {
     

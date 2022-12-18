@@ -1,10 +1,13 @@
 package com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.appcompat.widget.AppCompatTextView
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.ActivityDeliveringDeliver
+import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
@@ -21,7 +24,7 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
     }
 
     fun showOrders() {
-        var orders = GetCustomerOrders.get()
+        val orders = GetCustomerOrders.get()
         orders.forEach { order ->
             LogMe.log(order.toString())
 
@@ -39,9 +42,19 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
             UIUtils.setUIElementValue(this, pcElement, order.estimatePc)
             UIUtils.setUIElementValue(this, kgElement, order.estimateKg)
 
+            entry.setOnClickListener {
+                goTo_ActivityDeliveringDeliver(order.name)
+            }
+
             listContainer.addView(entry)
         }
 
+    }
+
+    private fun goTo_ActivityDeliveringDeliver(name: String) {
+        val switchActivityIntent = Intent(this, ActivityDeliveringDeliver::class.java)
+
+        startActivity(switchActivityIntent)
     }
 
 //    private fun createEstimatesView(order: GetCustomerOrders) {

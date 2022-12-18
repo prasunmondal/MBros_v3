@@ -42,7 +42,6 @@ data class LoadModel(var id: String,
         }
 
         fun save(obj: LoadModel) {
-            obj.loadingStatus = LoadConfig.string_tag__loadingStatus_completed
             saveObjectsToServer(obj)
             saveToLocal(obj)
         }

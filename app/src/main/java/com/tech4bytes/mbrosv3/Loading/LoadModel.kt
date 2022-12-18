@@ -15,7 +15,7 @@ import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import kotlin.reflect.KMutableProperty1
 
-data class LoadModel(var id: String, var requiredKg: String, var requiredPc: String, var actualPc: String = "", var actualKg: String = "") {
+data class LoadModel(var id: String, var requiredKg: String, var requiredPc: String, var actualPc: String = "", var actualKg: String = ""): java.io.Serializable {
 
     companion object {
         fun get(useCache: Boolean = true): LoadModel {

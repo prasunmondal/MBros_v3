@@ -30,7 +30,7 @@ data class DeliverCustomerOrders(
     var deliveryStatus: String): java.io.Serializable {
     
     companion object {
-        fun get(useCache: Boolean = true): List<DeliverCustomerOrders> {
+        fun get(useCache: Boolean = true): MutableList<DeliverCustomerOrders> {
             val cacheResults = CentralCache.get<ArrayList<DeliverCustomerOrders>>(AppContexts.get(), DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, useCache)
 
             return if (cacheResults != null) {
@@ -38,13 +38,15 @@ data class DeliverCustomerOrders(
             } else {
                 val resultFromServer = getFromServer<DeliverCustomerOrders>()
                 CentralCache.put(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, resultFromServer)
-                resultFromServer
+                resultFromServer as MutableList
             }
         }
 
-        fun save(objects: List<DeliverCustomerOrders>) {
-            saveObjectsToServer(objects)
-            saveToLocal(objects)
+        fun save(obj: DeliverCustomerOrders) {
+            saveObjectToServer(obj)
+            val tempList = get()
+            tempList.add(obj)
+            saveToLocal(tempList)
         }
 
         fun deleteAll() {
@@ -56,7 +58,7 @@ data class DeliverCustomerOrders(
             saveToLocal(listOf())
         }
 
-        fun getUiElementFromDeliveringPage(view: View, attribute: KMutableProperty1<DeliverCustomerOrders, *>): View {
+        fun getUiElementFromDeliveringPage(view: View, attribute: KMutableProperty1<DeliverCustomerOrders, *>): View? {
             return when (attribute) {
                 DeliverCustomerOrders::name -> view.findViewById<TextView>(R.id.activity_delivering_deliver_name)
                 DeliverCustomerOrders::orderedPc -> view.findViewById<TextView>(R.id.activity_delivering_deliver_ordered_pc)
@@ -68,19 +70,17 @@ data class DeliverCustomerOrders(
                 DeliverCustomerOrders::totalDue -> view.findViewById<TextView>(R.id.activity_delivering_deliver_all_total)
                 DeliverCustomerOrders::paid -> view.findViewById<TextView>(R.id.activity_delivering_deliver_paid)
                 DeliverCustomerOrders::balanceDue -> view.findViewById<TextView>(R.id.activity_delivering_deliver_balance_due)
-                else -> null!!
+                else -> null
             }
         }
 
-        private fun <T> saveObjectsToServer(objects: List<T>) {
-            objects.forEach {
+        private fun <T> saveObjectToServer(obj: T) {
                 PostObject.builder()
                     .scriptId(ProjectConfig.dBServerScriptURL)
                     .sheetId(ProjectConfig.DB_SHEET_ID)
                     .tabName(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
-                    .dataObject(it as Any)
+                    .dataObject(obj as Any)
                     .build().execute()
-            }
         }
 
         private fun saveToLocal(objects: List<DeliverCustomerOrders>) {

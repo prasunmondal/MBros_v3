@@ -8,8 +8,10 @@ import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 
 data class GetCustomerOrders(var id: String = "",
+                             var timestamp: String = "",
                              var name: String = "",
                              var seqNo: String = "",
                              var estimatePc: String = "",
@@ -33,6 +35,9 @@ data class GetCustomerOrders(var id: String = "",
         }
 
         fun save(objects: List<GetCustomerOrders>) {
+            objects.forEach {
+                it.timestamp = DateUtils.getCurrentTimestamp()
+            }
             saveObjectsToServer(objects)
             saveToLocal(objects)
         }

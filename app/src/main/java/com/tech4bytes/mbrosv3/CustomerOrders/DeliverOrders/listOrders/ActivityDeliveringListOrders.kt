@@ -53,7 +53,9 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
 
     private fun goTo_ActivityDeliveringDeliver(name: String) {
         val switchActivityIntent = Intent(this, ActivityDeliveringDeliver::class.java)
-
+        val bundle = Bundle()
+        bundle.putString("name", name)
+        switchActivityIntent.putExtras(bundle)
         startActivity(switchActivityIntent)
     }
 

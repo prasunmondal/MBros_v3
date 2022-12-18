@@ -174,8 +174,10 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
     }
 
     fun onClickSaveBtn(view: View) {
+        Toast.makeText(this, "Saving Data", Toast.LENGTH_SHORT).show()
         GetCustomerOrders.deleteAll()
         GetCustomerOrders.save(createNGetObjectsFromUI())
         LoadModel.save(containerView)
+        Toast.makeText(this, "Data save complete!", Toast.LENGTH_LONG).show()
     }
 }

@@ -30,6 +30,16 @@ data class DeliverCustomerOrders(
     var deliveryStatus: String): java.io.Serializable {
     
     companion object {
+
+        fun getByName(inputName: String): DeliverCustomerOrders? {
+            DeliverCustomerOrders.get().forEach {
+                if(it.name == inputName) {
+                    return it
+                }
+            }
+            return null
+        }
+
         fun get(useCache: Boolean = true): MutableList<DeliverCustomerOrders> {
             val cacheResults = CentralCache.get<ArrayList<DeliverCustomerOrders>>(AppContexts.get(), DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, useCache)
 

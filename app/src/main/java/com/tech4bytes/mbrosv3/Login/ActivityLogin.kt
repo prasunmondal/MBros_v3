@@ -9,7 +9,7 @@ import com.google.gson.reflect.TypeToken
 import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
-import com.tech4bytes.mbrosv3.CustomerOrdersGet.GetCustomerOrdersActivity
+import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
 import com.tech4bytes.mbrosv3.Loading.ActivityDeliveringLoad
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
@@ -57,7 +57,7 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     private fun goToAdminRole() {
-        val switchActivityIntent = Intent(this, GetCustomerOrdersActivity::class.java)
+        val switchActivityIntent = Intent(this, ActivityGetCustomerOrders::class.java)
         startActivity(switchActivityIntent)
     }
 

@@ -1,4 +1,4 @@
-package com.tech4bytes.mbrosv3.CustomerOrdersGet
+package com.tech4bytes.mbrosv3.CustomerOrders.GetOrders
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -14,7 +14,6 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.doOnTextChanged
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
-import com.tech4bytes.mbrosv3.CustomerOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Loading.LoadModel
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
@@ -22,7 +21,7 @@ import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 
 
-class GetCustomerOrdersActivity : AppCompatActivity() {
+class ActivityGetCustomerOrders : AppCompatActivity() {
 
     lateinit var containerView: View
     var uiEntriesList = mutableListOf<View>()

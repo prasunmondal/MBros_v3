@@ -9,7 +9,19 @@ import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 
-data class DeliverCustomerOrders(var id: String, var Timestamp: String, var name: String, var pc: String, var kg: String, var rate: String, var total: String, var prevDue: String, var totalDue: String, var paid: String, var due: String): java.io.Serializable {
+data class DeliverCustomerOrders(
+    var id: String,
+    var Timestamp: String,
+    var name: String,
+    var pc: String,
+    var kg: String,
+    var rate: String,
+    var total: String,
+    var prevDue: String,
+    var totalDue: String,
+    var paid: String,
+    var due: String,
+    var deliveryStatus: String): java.io.Serializable {
     
     companion object {
         fun <T> get(useCache: Boolean = true): List<T> {

@@ -1,9 +1,8 @@
 package com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders

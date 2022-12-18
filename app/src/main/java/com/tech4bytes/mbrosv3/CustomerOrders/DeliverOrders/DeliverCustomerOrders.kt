@@ -20,7 +20,7 @@ import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 
-data class DeliverCustomerOrders(var id: String, var Timestamp: String, var name: String, var pc: String, var kg: String, var rate: String, var total: String, var prevDue: String, var totalDue: String, var paid: String, var due: String) {
+data class DeliverCustomerOrders(var id: String, var Timestamp: String, var name: String, var pc: String, var kg: String, var rate: String, var total: String, var prevDue: String, var totalDue: String, var paid: String, var due: String): java.io.Serializable {
     
     companion object {
         fun <T> get(useCache: Boolean = true): List<T> {

@@ -20,6 +20,7 @@
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:hint="Seq No."
+            android:inputType="textNoSuggestions|number"
             android:textColor="#B6B6B6" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -38,6 +39,7 @@
             android:layout_height="match_parent"
             android:layout_weight=".2"
             android:hint="kg"
+            android:inputType="textNoSuggestions|number"
             android:textColor="#B6B6B6" />
 
         <androidx.appcompat.widget.AppCompatEditText
@@ -46,6 +48,7 @@
             android:layout_height="match_parent"
             android:layout_weight=".1"
             android:hint="pc"
+            android:inputType="textNoSuggestions|number"
             android:textColor="#B6B6B6" />
 
 
@@ -55,6 +58,7 @@
             android:layout_height="match_parent"
             android:layout_weight=".1"
             android:hint="rate"
+            android:inputType="textNoSuggestions|number"
             android:textColor="#B6B6B6" />
 
         <ImageButton

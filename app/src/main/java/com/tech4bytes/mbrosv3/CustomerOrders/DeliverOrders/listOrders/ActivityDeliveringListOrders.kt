@@ -14,7 +14,7 @@ import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 class ActivityDeliveringListOrders : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_delivering_deliver)
+        setContentView(R.layout.activity_delivering_list)
         AppContexts.set(this, this)
 
         showOrders()
@@ -27,7 +27,7 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
 
             val listContainer = findViewById<LinearLayout>(R.id.activity_delivering_deliver_order_list)
             val layoutInflater = LayoutInflater.from(AppContexts.get())
-            val entry = layoutInflater.inflate(R.layout.activity_delivering_deliver_fragment_order_details, null)
+            val entry = layoutInflater.inflate(R.layout.activity_delivering_list_fragment_order_details, null)
 
             val seqNoElement = entry.findViewById<AppCompatTextView>(R.id.activity_delivering_deliver_fragment_customer_seq_no)
             val nameElement = entry.findViewById<AppCompatTextView>(R.id.activity_delivering_deliver_fragment_customer_name)

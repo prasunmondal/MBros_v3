@@ -3,26 +3,17 @@ package com.tech4bytes.mbrosv3.Login
 import androidx.appcompat.app.AppCompatActivity
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings.Secure
 import com.google.gson.reflect.TypeToken
 import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
-import com.tech4bytes.mbrosv3.Delivering.ActivityDeliveringDeliver
-import com.tech4bytes.mbrosv3.GetOrders.ActivityGetOrderEstimates
+import com.tech4bytes.mbrosv3.CustomerOrdersGet.GetCustomerOrdersActivity
 import com.tech4bytes.mbrosv3.Loading.ActivityDeliveringLoad
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
-import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.DeviceInfoUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
-import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
-import java.time.Instant
-import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
-import java.util.Date
-import java.util.stream.Collectors
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -66,7 +57,7 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     private fun goToAdminRole() {
-        val switchActivityIntent = Intent(this, ActivityGetOrderEstimates::class.java)
+        val switchActivityIntent = Intent(this, GetCustomerOrdersActivity::class.java)
         startActivity(switchActivityIntent)
     }
 

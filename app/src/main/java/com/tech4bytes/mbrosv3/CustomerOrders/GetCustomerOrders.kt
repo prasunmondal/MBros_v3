@@ -1,4 +1,4 @@
-package com.tech4bytes.mbrosv3.GetOrders
+package com.tech4bytes.mbrosv3.CustomerOrders
 
 import com.google.gson.reflect.TypeToken
 import com.prasunmondal.postjsontosheets.clients.delete.Delete
@@ -6,33 +6,34 @@ import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
+import com.tech4bytes.mbrosv3.CustomerOrdersGet.GetCustomerOrdersConfig
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 
-data class GetOrdersModel(var id: String = "",
-                          var name: String = "",
-                          var seqNo: String = "",
-                          var estimatePc: String = "",
-                          var estimateKg: String = "",
-                          var rate: String = "",
-                          var due: String = ""): java.io.Serializable {
+data class GetCustomerOrders(var id: String = "",
+                             var name: String = "",
+                             var seqNo: String = "",
+                             var estimatePc: String = "",
+                             var estimateKg: String = "",
+                             var rate: String = "",
+                             var due: String = ""): java.io.Serializable {
 
 
     companion object {
 
-        fun get(useCache: Boolean = true): List<GetOrdersModel> {
-            val cacheResults = CentralCache.get<ArrayList<GetOrdersModel>>(AppContexts.get(), GetOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, useCache)
+        fun get(useCache: Boolean = true): List<GetCustomerOrders> {
+            val cacheResults = CentralCache.get<ArrayList<GetCustomerOrders>>(AppContexts.get(), GetCustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, useCache)
 
             return if (cacheResults != null) {
                 cacheResults
             } else {
                 val resultFromServer = getFromServer()
-                CentralCache.put(GetOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, resultFromServer)
+                CentralCache.put(GetCustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, resultFromServer)
                 resultFromServer
             }
         }
 
-        fun save(objects: List<GetOrdersModel>) {
+        fun save(objects: List<GetCustomerOrders>) {
             saveObjectsToServer(objects)
             saveToLocal(objects)
         }
@@ -41,35 +42,35 @@ data class GetOrdersModel(var id: String = "",
             Delete.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
                 .sheetId(ProjectConfig.DB_SHEET_ID)
-                .tabName(GetOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
+                .tabName(GetCustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
                 .build().execute()
             saveToLocal(listOf())
         }
 
-        private fun saveObjectsToServer(objects: List<GetOrdersModel>) {
+        private fun saveObjectsToServer(objects: List<GetCustomerOrders>) {
             objects.forEach {
                 PostObject.builder()
                     .scriptId(ProjectConfig.dBServerScriptURL)
                     .sheetId(ProjectConfig.DB_SHEET_ID)
-                    .tabName(GetOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
+                    .tabName(GetCustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
                     .dataObject(it as Any)
                     .build().execute()
             }
         }
 
-        private fun saveToLocal(objects: List<GetOrdersModel>) {
-            CentralCache.put(GetOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, objects)
+        private fun saveToLocal(objects: List<GetCustomerOrders>) {
+            CentralCache.put(GetCustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, objects)
         }
 
-        private fun getFromServer(): List<GetOrdersModel> {
+        private fun getFromServer(): List<GetCustomerOrders> {
             val result: GetResponse = Get.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
                 .sheetId(ProjectConfig.DB_SHEET_ID)
-                .tabName(GetOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
+                .tabName(GetCustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
                 .build().execute()
 
             return result.parseToObject(result.getRawResponse(),
-                object : TypeToken<ArrayList<GetOrdersModel>?>() {}.type
+                object : TypeToken<ArrayList<GetCustomerOrders>?>() {}.type
             )
         }
     }

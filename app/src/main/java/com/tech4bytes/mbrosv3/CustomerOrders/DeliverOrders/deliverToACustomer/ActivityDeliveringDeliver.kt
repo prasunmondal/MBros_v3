@@ -14,6 +14,7 @@ import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 class ActivityDeliveringDeliver : AppCompatActivity() {
 
     lateinit var mainView: View
+    lateinit var record: DeliverCustomerOrders
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,12 +24,11 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
 
         val inputName = intent.extras!!.get("name") as String
         LogMe.log("Delivering to: $inputName")
-        initiallizeUI(inputName)
+        record = getRecord(inputName)
+        initiallizeUI()
     }
 
-    fun initiallizeUI(inputName: String) {
-        val record = getRecord(inputName)
-
+    fun initiallizeUI() {
         // Get UI Elements
         val nameElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::name)
         val orderedPcElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::orderedPc)
@@ -55,12 +55,12 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
 
         // Add Listeners
         (deliveredKgElement as AppCompatEditText).doOnTextChanged { text, start, before, count ->
-            reCalculateNUpdateValues(record)
+            reCalculateNUpdateValues()
         }
-        (paidElement as AppCompatEditText).doOnTextChanged { text, start, before, count -> reCalculateNUpdateValues(record) }
+        (paidElement as AppCompatEditText).doOnTextChanged { text, start, before, count -> reCalculateNUpdateValues() }
     }
 
-    private fun reCalculateNUpdateValues(record: DeliverCustomerOrders) {
+    private fun reCalculateNUpdateValues() {
         LogMe.log("Re-calculating...")
         val deliveredKgElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredKg)
         val todaysAmountElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::todaysAmount)

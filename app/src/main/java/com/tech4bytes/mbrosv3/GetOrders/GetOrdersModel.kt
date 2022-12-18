@@ -17,9 +17,6 @@ data class GetOrdersModel(var id: String = "",
                           var rate: String = "",
                           var due: String = ""): java.io.Serializable {
 
-    override fun toString(): String {
-        return "OrderEstimateModel(id='$id', name='$name', estimatePc='$estimatePc', rate='$rate', due='$due', estimateKg='$estimateKg')"
-    }
 
     companion object {
 
@@ -75,5 +72,9 @@ data class GetOrdersModel(var id: String = "",
                 object : TypeToken<ArrayList<GetOrdersModel>?>() {}.type
             )
         }
+    }
+
+    override fun toString(): String {
+        return "GetOrdersModel(id='$id', name='$name', seqNo='$seqNo', estimatePc='$estimatePc', estimateKg='$estimateKg', rate='$rate', due='$due')"
     }
 }

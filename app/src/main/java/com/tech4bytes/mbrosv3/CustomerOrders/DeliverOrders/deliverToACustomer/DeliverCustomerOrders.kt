@@ -15,7 +15,7 @@ import kotlin.reflect.KMutableProperty1
 
 data class DeliverCustomerOrders(
     var id: String,
-    var Timestamp: String,
+    var timestamp: String,
     var name: String,
     var orderedPc: String,
     var orderedKg: String,

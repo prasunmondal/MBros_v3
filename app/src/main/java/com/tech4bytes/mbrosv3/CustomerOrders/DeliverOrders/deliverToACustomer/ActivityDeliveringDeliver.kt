@@ -9,6 +9,7 @@ import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 
 class ActivityDeliveringDeliver : AppCompatActivity() {
@@ -143,5 +144,11 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
             }
         }
         return null
+    }
+
+    fun onClickSubmitDeliveredRecord(view: View) {
+        record.id = System.currentTimeMillis().toString()
+        record.timestamp = DateUtils.getCurrentTimestamp()
+
     }
 }

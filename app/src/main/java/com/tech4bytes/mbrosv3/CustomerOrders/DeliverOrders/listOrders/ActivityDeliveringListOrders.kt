@@ -48,7 +48,7 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
             }
 
             if(isDelivered(order.name)) {
-                findViewById<LinearLayout>(R.id.activity_delivering_deliver_fragment_container).setBackgroundColor(ContextCompat.getColor(this, R.color.delivery_completed))
+                entry.findViewById<LinearLayout>(R.id.activity_delivering_deliver_fragment_container).setBackgroundColor(ContextCompat.getColor(this, R.color.delivery_completed))
             }
 
             listContainer.addView(entry)

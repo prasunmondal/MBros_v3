@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.ActivityDeliveringDeliver
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
@@ -45,9 +47,17 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
                 goTo_ActivityDeliveringDeliver(order.name)
             }
 
+            if(isDelivered(order.name)) {
+                findViewById<LinearLayout>(R.id.activity_delivering_deliver_fragment_container).setBackgroundColor(ContextCompat.getColor(this, R.color.delivery_completed))
+            }
+
             listContainer.addView(entry)
         }
+    }
 
+    fun isDelivered(name: String): Boolean {
+        val obj = DeliverCustomerOrders.getByName(name)
+        return (obj != null && obj.deliveryStatus == "DELIVERED")
     }
 
     private fun goTo_ActivityDeliveringDeliver(name: String) {

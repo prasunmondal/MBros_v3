@@ -15,17 +15,7 @@ import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import kotlin.reflect.KMutableProperty1
 
-data class LoadModel(var id: String,
-                     var requiredKg: String,
-                     var requiredPc: String,
-                     var actualPc: String = "",
-                     var actualKg: String = "",
-                     var loadingStatus: String = ""
-): java.io.Serializable {
-
-    fun isDone(): Boolean {
-        return this.loadingStatus == LoadConfig.string_tag__loadingStatus_completed
-    }
+data class LoadModel(var id: String, var requiredKg: String, var requiredPc: String, var actualPc: String = "", var actualKg: String = ""): java.io.Serializable {
 
     companion object {
         fun get(useCache: Boolean = true): LoadModel {
@@ -42,7 +32,6 @@ data class LoadModel(var id: String,
         }
 
         fun save(obj: LoadModel) {
-            obj.loadingStatus = LoadConfig.string_tag__loadingStatus_completed
             saveObjectsToServer(obj)
             saveToLocal(obj)
         }

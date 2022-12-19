@@ -18,7 +18,7 @@
 
 
     <!--    CUSTOM COLORS -->
-    <color name="delivery_completed">#9BAE9C</color>
+    <color name="delivery_completed">#C3CAC4</color>
     <color name="delivery_pending">#EDF3AC45</color>
 
 </resources>

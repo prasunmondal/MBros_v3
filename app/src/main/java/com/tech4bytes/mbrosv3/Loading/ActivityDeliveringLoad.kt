@@ -15,7 +15,6 @@ import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import java.lang.String.format
 
-
 class ActivityDeliveringLoad : AppCompatActivity() {
 
     lateinit var view: View
@@ -27,16 +26,16 @@ class ActivityDeliveringLoad : AppCompatActivity() {
         AppContexts.set(this, this)
         addListeners()
 
-        showLoadOrderData()
-        if(isLoadingComplete()) {
+        val loadObj = LoadModel.get(true)
+        showLoadOrderData(loadObj)
+        if(isLoadingComplete(loadObj)) {
             goToDeliveringDeliverPage()
         }
     }
 
-    private fun showLoadOrderData() {
-        val loadOrderObject = LoadModel.get(true)
-        val loadOrderKg = loadOrderObject.requiredKg
-        val loadOrderPc = loadOrderObject.requiredPc
+    private fun showLoadOrderData(loadObj: LoadModel) {
+        val loadOrderKg = loadObj.requiredKg
+        val loadOrderPc = loadObj.requiredPc
         UIUtils.setUIElementValue(this, LoadModel.getUiElementFromLoadingPage(view, LoadModel::requiredPc), loadOrderPc)
         UIUtils.setUIElementValue(this, LoadModel.getUiElementFromLoadingPage(view, LoadModel::requiredKg), loadOrderKg)
     }
@@ -67,8 +66,8 @@ class ActivityDeliveringLoad : AppCompatActivity() {
 
     }
 
-    private fun isLoadingComplete(): Boolean {
-        return false
+    private fun isLoadingComplete(loadObj: LoadModel): Boolean {
+        return (loadObj != null && loadObj.isDone())
     }
 
     fun onClickDeliverButton(view: View) {

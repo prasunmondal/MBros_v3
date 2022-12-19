@@ -6,7 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.widget.doOnTextChanged
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
+import com.tech4bytes.mbrosv3.ActivityDeliveringDeliveryComplete
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
@@ -144,11 +144,11 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         record.timestamp = DateUtils.getCurrentTimestamp()
         record.deliveryStatus = "DELIVERED"
         DeliverCustomerOrders.save(record)
-        goToActivityDeliveringListOrders()
+        goToActivityDeliveringDeliveryComplete()
     }
 
-    private fun goToActivityDeliveringListOrders() {
-        val switchActivityIntent = Intent(this, ActivityDeliveringListOrders::class.java)
+    private fun goToActivityDeliveringDeliveryComplete() {
+        val switchActivityIntent = Intent(this, ActivityDeliveringDeliveryComplete::class.java)
         startActivity(switchActivityIntent)
     }
 

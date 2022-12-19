@@ -47,6 +47,12 @@ data class DeliverCustomerOrders(
             saveToLocal(objects)
         }
 
+        fun save(obj: DeliverCustomerOrders) {
+            val tempList = get() + obj
+            saveToLocal(tempList)
+            saveObjectsToServer(tempList)
+        }
+
         fun deleteAll() {
             Delete.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
@@ -56,7 +62,7 @@ data class DeliverCustomerOrders(
             saveToLocal(listOf())
         }
 
-        fun getUiElementFromDeliveringPage(view: View, attribute: KMutableProperty1<DeliverCustomerOrders, *>): View {
+        fun getUiElementFromDeliveringPage(view: View, attribute: KMutableProperty1<DeliverCustomerOrders, *>): View? {
             return when (attribute) {
                 DeliverCustomerOrders::name -> view.findViewById<TextView>(R.id.activity_delivering_deliver_name)
                 DeliverCustomerOrders::orderedPc -> view.findViewById<TextView>(R.id.activity_delivering_deliver_ordered_pc)
@@ -68,7 +74,7 @@ data class DeliverCustomerOrders(
                 DeliverCustomerOrders::totalDue -> view.findViewById<TextView>(R.id.activity_delivering_deliver_all_total)
                 DeliverCustomerOrders::paid -> view.findViewById<TextView>(R.id.activity_delivering_deliver_paid)
                 DeliverCustomerOrders::balanceDue -> view.findViewById<TextView>(R.id.activity_delivering_deliver_balance_due)
-                else -> null!!
+                else -> null
             }
         }
 

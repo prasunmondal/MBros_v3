@@ -11,6 +11,9 @@ import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
+import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ReflectionUtils
+import kotlin.reflect.KMutableProperty1
+import kotlin.reflect.full.declaredMemberProperties
 
 class ActivityDeliveringDeliver : AppCompatActivity() {
 
@@ -31,16 +34,16 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
 
     fun initiallizeUI() {
         // Get UI Elements
-        val nameElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::name)
-        val orderedPcElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::orderedPc)
-        val orderedKgElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::orderedKg)
-        val deliveredPcElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredPc)
-        val deliveredKgElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredKg)
-        val todaysAmountElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::todaysAmount)
-        val prevDueElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::prevDue)
-        val totalDueElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::totalDue)
-        val paidElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::paid)
-        val balanceDueElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::balanceDue)
+        val nameElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::name)!!
+        val orderedPcElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::orderedPc)!!
+        val orderedKgElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::orderedKg)!!
+        val deliveredPcElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredPc)!!
+        val deliveredKgElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredKg)!!
+        val todaysAmountElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::todaysAmount)!!
+        val prevDueElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::prevDue)!!
+        val totalDueElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::totalDue)!!
+        val paidElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::paid)!!
+        val balanceDueElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::balanceDue)!!
 
         // Set UI Values
         UIUtils.setUIElementValue(this, nameElement, record.name)
@@ -63,11 +66,11 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
 
     private fun reCalculateNUpdateValues() {
         LogMe.log("Re-calculating...")
-        val deliveredKgElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredKg)
-        val todaysAmountElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::todaysAmount)
-        val totalDueElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::totalDue)
-        val paidElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::paid)
-        val balanceDueElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::balanceDue)
+        val deliveredKgElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredKg)!!
+        val todaysAmountElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::todaysAmount)!!
+        val totalDueElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::totalDue)!!
+        val paidElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::paid)!!
+        val balanceDueElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::balanceDue)!!
 
         val calcDeliveredKg = UIUtils.getUIElementValue(deliveredKgElement)
         val paidStr = UIUtils.getUIElementValue(paidElement)
@@ -99,7 +102,7 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
     }
 
 
-    fun getRecord(inputName: String): DeliverCustomerOrders {
+    private fun getRecord(inputName: String): DeliverCustomerOrders {
         var deliveryObj: DeliverCustomerOrders? = getDataFromDeliveringRecords(inputName)
         if(deliveryObj != null) {
             return deliveryObj
@@ -147,8 +150,23 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
     }
 
     fun onClickSubmitDeliveredRecord(view: View) {
+        getAllAttributesOfClass<DeliverCustomerOrders>().forEach { kMutableProperty ->
+            val uiElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, kMutableProperty)
+            if(uiElement != null) {
+                ReflectionUtils.setAttribute(record, kMutableProperty, UIUtils.getUIElementValue(uiElement))
+            }
+        }
         record.id = System.currentTimeMillis().toString()
         record.timestamp = DateUtils.getCurrentTimestamp()
+        record.deliveryStatus = "DELIVERED"
+        DeliverCustomerOrders.save(record)
+    }
 
+    fun <T> getAllAttributesOfClass(): ArrayList<KMutableProperty1<T, String>> {
+        val list: ArrayList<KMutableProperty1<T, String>> = arrayListOf()
+        (DeliverCustomerOrders::class).declaredMemberProperties.forEach {
+            list.add(it as KMutableProperty1<T, String>)
+        }
+        return list
     }
 }

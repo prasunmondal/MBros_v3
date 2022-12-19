@@ -1,10 +1,12 @@
 package com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.widget.doOnTextChanged
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
@@ -142,6 +144,12 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         record.timestamp = DateUtils.getCurrentTimestamp()
         record.deliveryStatus = "DELIVERED"
         DeliverCustomerOrders.save(record)
+        goToActivityDeliveringListOrders()
+    }
+
+    private fun goToActivityDeliveringListOrders() {
+        val switchActivityIntent = Intent(this, ActivityDeliveringListOrders::class.java)
+        startActivity(switchActivityIntent)
     }
 
     fun <T> getAllAttributesOfClass(): ArrayList<KMutableProperty1<T, String>> {

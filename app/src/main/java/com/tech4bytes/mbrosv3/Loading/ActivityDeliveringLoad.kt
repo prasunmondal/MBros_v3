@@ -76,7 +76,9 @@ class ActivityDeliveringLoad : AppCompatActivity() {
     }
 
     private fun saveLoadActuals() {
-        LoadModel.save(getObjectFromUI(view))
+        val obj = getObjectFromUI(view)
+        obj.loadingStatus = LoadConfig.string_tag__loadingStatus_completed
+        LoadModel.save(obj)
     }
 
     private fun getObjectFromUI(view: View): LoadModel {

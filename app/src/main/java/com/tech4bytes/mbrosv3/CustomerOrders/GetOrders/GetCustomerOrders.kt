@@ -34,15 +34,6 @@ data class GetCustomerOrders(var id: String = "",
             }
         }
 
-        fun getByName(inputName: String): GetCustomerOrders? {
-            get().forEach {
-                if(it.name == inputName) {
-                    return it
-                }
-            }
-            return null
-        }
-
         fun save(objects: List<GetCustomerOrders>) {
             objects.forEach {
                 it.timestamp = DateUtils.getCurrentTimestamp()

@@ -101,14 +101,13 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         UIUtils.setUIElementValue(this, balanceDueElement, "$calcBalanceDue")
     }
 
-
-    private fun getRecord(inputName: String): DeliverCustomerOrders {
-        var deliveryObj: DeliverCustomerOrders? = getDataFromDeliveringRecords(inputName)
+    fun getRecord(inputName: String): DeliverCustomerOrders {
+        var deliveryObj: DeliverCustomerOrders? = DeliverCustomerOrders.getByName(inputName)
         if(deliveryObj != null) {
             return deliveryObj
         }
 
-        val orderObj: GetCustomerOrders? = getDataFromOrderRecords(inputName)
+        val orderObj: GetCustomerOrders? = GetCustomerOrders.getByName(inputName)
         if(orderObj != null) {
             deliveryObj = DeliverCustomerOrders("",
                 "",
@@ -131,23 +130,6 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         return null!!
     }
 
-    fun getDataFromDeliveringRecords(inputName: String): DeliverCustomerOrders? {
-        DeliverCustomerOrders.get().forEach {
-            if(it.name == inputName) {
-                return it
-            }
-        }
-        return null
-    }
-
-    fun getDataFromOrderRecords(inputName: String): GetCustomerOrders? {
-        GetCustomerOrders.get().forEach {
-            if(it.name == inputName) {
-                return it
-            }
-        }
-        return null
-    }
 
     fun onClickSubmitDeliveredRecord(view: View) {
         getAllAttributesOfClass<DeliverCustomerOrders>().forEach { kMutableProperty ->

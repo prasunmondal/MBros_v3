@@ -15,6 +15,7 @@ import kotlin.reflect.KMutableProperty1
 
 data class DeliverCustomerOrders(
     var id: String,
+    var date: String,
     var timestamp: String,
     var name: String,
     var orderedPc: String,
@@ -32,7 +33,7 @@ data class DeliverCustomerOrders(
     companion object {
 
         fun getByName(inputName: String): DeliverCustomerOrders? {
-            DeliverCustomerOrders.get().forEach {
+            get().forEach {
                 if(it.name == inputName) {
                     return it
                 }
@@ -41,12 +42,12 @@ data class DeliverCustomerOrders(
         }
 
         fun get(useCache: Boolean = true): List<DeliverCustomerOrders> {
-            val cacheResults = CentralCache.get<ArrayList<DeliverCustomerOrders>>(AppContexts.get(), DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, useCache)
+            val cacheResults = CentralCache.get<List<DeliverCustomerOrders>>(AppContexts.get(), DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, useCache)
 
-            return if (cacheResults != null) {
+            return if (cacheResults != null && cacheResults.isNotEmpty()) {
                 cacheResults
             } else {
-                val resultFromServer = getFromServer<DeliverCustomerOrders>()
+                val resultFromServer = getFromServer()
                 CentralCache.put(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, resultFromServer)
                 resultFromServer
             }
@@ -60,7 +61,7 @@ data class DeliverCustomerOrders(
         fun save(obj: DeliverCustomerOrders) {
             val tempList = get() + obj
             saveToLocal(tempList)
-            saveObjectsToServer(tempList)
+            saveObjectsToServer(obj)
         }
 
         fun deleteAll() {
@@ -88,22 +89,20 @@ data class DeliverCustomerOrders(
             }
         }
 
-        private fun <T> saveObjectsToServer(objects: List<T>) {
-            objects.forEach {
-                PostObject.builder()
-                    .scriptId(ProjectConfig.dBServerScriptURL)
-                    .sheetId(ProjectConfig.DB_SHEET_ID)
-                    .tabName(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
-                    .dataObject(it as Any)
-                    .build().execute()
-            }
+        private fun <T> saveObjectsToServer(obj: T) {
+            PostObject.builder()
+                .scriptId(ProjectConfig.dBServerScriptURL)
+                .sheetId(ProjectConfig.DB_SHEET_ID)
+                .tabName(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
+                .dataObject(obj as Any)
+                .build().execute()
         }
 
         private fun saveToLocal(objects: List<DeliverCustomerOrders>) {
             CentralCache.put(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, objects)
         }
 
-        private fun <T> getFromServer(): List<T> {
+        private fun getFromServer(): List<DeliverCustomerOrders> {
             val result: GetResponse = Get.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
                 .sheetId(ProjectConfig.DB_SHEET_ID)
@@ -111,7 +110,7 @@ data class DeliverCustomerOrders(
                 .build().execute()
 
             return result.parseToObject(result.getRawResponse(),
-                object : TypeToken<ArrayList<T>?>() {}.type
+                object : TypeToken<ArrayList<DeliverCustomerOrders>?>() {}.type
             )
         }
     }

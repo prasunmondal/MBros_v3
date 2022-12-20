@@ -2,6 +2,7 @@ package com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
@@ -18,28 +19,29 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         setContentView(R.layout.activity_admin_delivery_dashboard)
         AppContexts.set(this)
 
-        updateLoadInfo()
-        updateDeliveredInfo()
+        updateDashboard(true)
+        updateDashboard(false)
     }
 
-    fun updateLoadInfo() {
+    fun updateLoadInfo(useCache: Boolean) {
         val totalPcElement = findViewById<TextView>(R.id.activity_admin_delivery_dashboard_total_pc)
         val totalKgElement = findViewById<TextView>(R.id.activity_admin_delivery_dashboard_loaded_kg)
         val avgWtElement = findViewById<TextView>(R.id.activity_admin_delivery_dashboard_total_loaded_avg_wt)
 
-        UIUtils.setUIElementValue(this, totalPcElement, LoadModel.get().actualPc)
-        UIUtils.setUIElementValue(this, totalKgElement, LoadModel.get().actualKg)
+        val loadData = LoadModel.get(useCache)
+        UIUtils.setUIElementValue(this, totalPcElement, loadData.actualPc)
+        UIUtils.setUIElementValue(this, totalKgElement, loadData.actualKg)
 
         try {
-            val avgWt = NumberUtils.getDoubleOrZero(LoadModel.get().actualKg) / NumberUtils.getDoubleOrZero(LoadModel.get().actualPc)
+            val avgWt = NumberUtils.getDoubleOrZero(loadData.actualKg) / NumberUtils.getDoubleOrZero(loadData.actualPc)
             UIUtils.setUIElementValue(this, avgWtElement, "${WeightUtils.roundOff3places(avgWt)}")
         } catch (e: Exception) {
             UIUtils.setUIElementValue(this, avgWtElement, "---")
         }
     }
 
-    fun updateDeliveredInfo() {
-        val countersDelivered = DeliverCustomerOrders.get()
+    fun updateDeliveredInfo(useCache: Boolean) {
+        val countersDelivered = DeliverCustomerOrders.get(useCache)
         val numberOfCustomersDelivered = countersDelivered.size
         val totalNumberOfCustomers = GetCustomerOrders.getNumberOfCustomersOrdered()
         val deliveredPc = DeliverCustomerOrders.getTotalPcDelivered()
@@ -56,5 +58,14 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
             "$deliveredPc pc - $deliveredKg kg")
         UIUtils.setUIElementValue(this, deliveredAvgWtElement,
             "${WeightUtils.roundOff3places(avgWt)} kg/pc")
+    }
+
+    fun onClickUpdateDashboard(view: View) {
+        updateDashboard(false)
+    }
+
+    fun updateDashboard(useCache: Boolean) {
+        updateLoadInfo(useCache)
+        updateDeliveredInfo(useCache)
     }
 }

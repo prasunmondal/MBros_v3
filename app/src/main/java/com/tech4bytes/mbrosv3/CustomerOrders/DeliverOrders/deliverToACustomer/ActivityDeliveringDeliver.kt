@@ -16,6 +16,7 @@ import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ReflectionUtils
+import kotlin.math.roundToInt
 import kotlin.reflect.KMutableProperty1
 import kotlin.reflect.full.declaredMemberProperties
 
@@ -76,39 +77,41 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         if(!RolesModel.isEligibleToViewHiddenDue() && !CustomerKYC.showBalance(UIUtils.getUIElementValue(name)))
             return
 
-        val deliveredKgElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredKg)!!
         val todaysAmountElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::todaysAmount)!!
         val totalDueElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::totalDue)!!
-        val paidElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::paid)!!
         val balanceDueElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::balanceDue)!!
 
-        val calcDeliveredKg = UIUtils.getUIElementValue(deliveredKgElement)
-        val paidStr = UIUtils.getUIElementValue(paidElement)
+        UIUtils.setUIElementValue(this, todaysAmountElement, "${calculateTodaysAmount()}")
+        UIUtils.setUIElementValue(this, totalDueElement, "${calculateTotalAmount()}")
+        UIUtils.setUIElementValue(this, balanceDueElement, "${calculateBalanceDue()}")
+    }
 
-        // Get Today's Amount
+    private fun calculateBalanceDue(): Double {
+        val paidElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::paid)!!
+        val paidStr = UIUtils.getUIElementValue(paidElement)
+        var calcPaid = 0.0
+        if (paidStr.isNotEmpty()) {
+            calcPaid = paidStr.toDouble()
+        }
+        return calculateTotalAmount() - calcPaid
+    }
+
+    private fun calculateTotalAmount(): Double {
+        var calcPrevDue = 0.0
+        if (record.prevDue.isNotEmpty()) {
+            calcPrevDue = record.prevDue.toDouble()
+        }
+        return calcPrevDue + calculateTodaysAmount()
+    }
+
+    private fun calculateTodaysAmount(): Int {
+        val deliveredKgElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredKg)!!
+        val calcDeliveredKg = UIUtils.getUIElementValue(deliveredKgElement)
         var calcTodaysAmount = 0.0
         if(calcDeliveredKg.isNotEmpty() && calcDeliveredKg.toDouble() > 0) {
             calcTodaysAmount = calcDeliveredKg.toDouble() * record.rate.toDouble()
         }
-
-        // Get Total Amount
-        var calcPrevDue = 0.0
-        if(record.prevDue.isNotEmpty()) {
-            calcPrevDue = record.prevDue.toDouble()
-        }
-        val calcTotalAmount = calcPrevDue + calcTodaysAmount
-
-
-        // Get Balance Due Amount
-        var calcPaid = 0.0
-        if(paidStr.isNotEmpty()) {
-            calcPaid = paidStr.toDouble()
-        }
-        val calcBalanceDue = calcTotalAmount - calcPaid
-
-        UIUtils.setUIElementValue(this, todaysAmountElement, "$calcTodaysAmount")
-        UIUtils.setUIElementValue(this, totalDueElement, "$calcTotalAmount")
-        UIUtils.setUIElementValue(this, balanceDueElement, "$calcBalanceDue")
+        return calcTodaysAmount.roundToInt()
     }
 
     fun getRecord(inputName: String): DeliverCustomerOrders {
@@ -152,6 +155,10 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         record.id = System.currentTimeMillis().toString()
         record.timestamp = DateUtils.getCurrentTimestamp()
         record.deliveryStatus = "DELIVERED"
+        record.todaysAmount = "${calculateTodaysAmount()}"
+        record.totalDue = "${calculateTotalAmount()}"
+        record.balanceDue = "${calculateBalanceDue()}"
+
         DeliverCustomerOrders.save(record)
         goToActivityDeliveringDeliveryComplete()
     }

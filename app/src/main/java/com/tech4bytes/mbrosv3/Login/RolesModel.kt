@@ -5,4 +5,11 @@ data class RolesModel(val id: String, val timestamp: String, val device_id: Stri
     override fun toString(): String {
         return "\nRolesModel(id='$id', timestamp='$timestamp', device_id='$device_id', role='$role')"
     }
+
+    companion object {
+
+        fun isEligibleToViewHiddenDue(): Boolean {
+            return false
+        }
+    }
 }

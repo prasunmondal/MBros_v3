@@ -14,6 +14,12 @@ class AppContexts {
             contexts[className] = context
         }
 
+        fun set(context: Context) {
+            val className = context.javaClass.canonicalName.replace(".Companion", "")
+            LogMe.log("Setting context: $className")
+            contexts[className] = context
+        }
+
         @JvmStatic
         fun get(): Context {
             val getCallerClassname = getCaller()

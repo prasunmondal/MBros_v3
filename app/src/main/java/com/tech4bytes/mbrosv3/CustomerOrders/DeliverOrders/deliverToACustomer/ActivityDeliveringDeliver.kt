@@ -122,21 +122,15 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
 
         val orderObj: GetCustomerOrders? = GetCustomerOrders.getByName(inputName)
         if(orderObj != null) {
-            deliveryObj = DeliverCustomerOrders("",
-                "",
-                "",
-                orderObj.name,
-                orderObj.estimatePc,
-                orderObj.estimateKg,
-                "",
-                "",
-                orderObj.rate,
-                "",
-                orderObj.due,
-                "",
-                "",
-                "",
-                "DELIVERING")
+            deliveryObj = DeliverCustomerOrders(
+                id = "${System.currentTimeMillis()}",
+                timestamp = DateUtils.getCurrentTimestamp(),
+                name = orderObj.name,
+                orderedPc = orderObj.estimatePc,
+                orderedKg = orderObj.estimateKg,
+                rate = orderObj.rate,
+                prevDue = orderObj.due,
+                deliveryStatus = "DELIVERING")
 
             return deliveryObj
         }

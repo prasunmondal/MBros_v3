@@ -12,8 +12,7 @@ data class CustomerKYCModel(var date: String,
                             var nameBeng: String,
                             var phNo1: String,
                             var phNo2: String,
-                            var address: String,
-                            var showDue: String): java.io.Serializable {
+                            var address: String): java.io.Serializable {
 
     fun getDisplayName(): String {
         return this.nameEng
@@ -34,14 +33,6 @@ class CustomerKYC {
                 CentralCache.put(cacheKey, resultFromServer)
                 resultFromServer
             }
-        }
-
-        fun showBalance(engName: String): Boolean {
-            getAllCustomers().forEach {
-                if (it.nameEng == engName)
-                    return it.showDue.toBoolean()
-            }
-            return true
         }
 
         fun getCustomerByEngName(engName: String): CustomerKYCModel? {

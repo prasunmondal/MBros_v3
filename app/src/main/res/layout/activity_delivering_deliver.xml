@@ -143,6 +143,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:text="Total"
+                android:textColor="#ED5959"
                 android:textSize="20sp" />
 
             <TextView
@@ -151,6 +152,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:text="0.00"
+                android:textColor="#ED5959"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -187,6 +189,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:text="Balance Due"
+                android:textColor="#F62B2B"
                 android:textSize="20sp" />
 
             <TextView
@@ -195,6 +198,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:text="0.00"
+                android:textColor="#F62B2B"
                 android:textSize="20sp" />
         </LinearLayout>
 

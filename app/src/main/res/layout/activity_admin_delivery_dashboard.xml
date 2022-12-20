@@ -55,7 +55,7 @@
                         android:paddingHorizontal="10dp">
 
                         <TextView
-                            android:id="@+id/textView10"
+                            android:id="@+id/activity_admin_delivery_dashboard_total_pc"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="30dp"
@@ -73,7 +73,7 @@
                             android:textSize="20sp" />
 
                         <TextView
-                            android:id="@+id/textView17"
+                            android:id="@+id/activity_admin_delivery_dashboard_loaded_kg"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="30dp"
@@ -100,7 +100,7 @@
                         android:paddingHorizontal="10dp">
 
                         <TextView
-                            android:id="@+id/textView19"
+                            android:id="@+id/activity_admin_delivery_dashboard_total_loaded_avg_wt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="30dp"
@@ -159,19 +159,19 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/textView22"
+                        android:id="@+id/activity_admin_delivery_dashboard_delivered_number"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="2/10 Counters" />
 
                     <TextView
-                        android:id="@+id/textView23"
+                        android:id="@+id/activity_admin_delivery_dashboard_delivered_pc_kg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="1 pc 10 kg" />
 
                     <TextView
-                        android:id="@+id/textView24"
+                        android:id="@+id/activity_admin_delivery_dashboard_delivered_avg_wt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Avg Wt. 1.123 kg/pc" />
@@ -195,14 +195,14 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/textView27"
+                        android:id="@+id/activity_admin_delivery_dashboard_projected_shortage"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Shortage"
                         android:textColor="#EFE7FB" />
 
                     <TextView
-                        android:id="@+id/textView28"
+                        android:id="@+id/activity_admin_delivery_dashboard_projected_profit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Profit"

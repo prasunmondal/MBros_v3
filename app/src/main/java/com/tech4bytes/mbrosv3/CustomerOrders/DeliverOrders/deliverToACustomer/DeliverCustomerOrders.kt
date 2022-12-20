@@ -11,6 +11,8 @@ import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
+import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 import kotlin.reflect.KMutableProperty1
 
 data class DeliverCustomerOrders(
@@ -45,12 +47,40 @@ data class DeliverCustomerOrders(
             val cacheResults = CentralCache.get<List<DeliverCustomerOrders>>(AppContexts.get(), DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, useCache)
 
             return if (cacheResults != null && cacheResults.isNotEmpty()) {
-                cacheResults
+                filterToOnlyLatest(cacheResults)
             } else {
                 val resultFromServer = getFromServer()
                 CentralCache.put(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, resultFromServer)
-                resultFromServer
+                filterToOnlyLatest(resultFromServer)
             }
+        }
+
+        fun getTotalPcDelivered(): Int {
+            var sum = 0
+            get().forEach {
+                sum += NumberUtils.getIntOrZero(it.deliveredPc)
+            }
+            return sum
+        }
+
+        fun getTotalKgDelivered(): Double {
+            var sum = 0.0
+            get().forEach {
+                sum += NumberUtils.getDoubleOrZero(it.deliveredKg)
+            }
+            return sum
+        }
+
+        fun filterToOnlyLatest(resultFromServer: List<DeliverCustomerOrders>): List<DeliverCustomerOrders> {
+            val sorted = ListUtils.sortListByAttribute(resultFromServer, DeliverCustomerOrders::id).reversed()
+            val map = mutableMapOf<String, DeliverCustomerOrders>()
+
+            sorted.forEach {
+                if(!map.containsKey(it.name)) {
+                    map.put(it.name, it)
+                }
+            }
+            return map.values.toList()
         }
 
         fun save(objects: List<DeliverCustomerOrders>) {

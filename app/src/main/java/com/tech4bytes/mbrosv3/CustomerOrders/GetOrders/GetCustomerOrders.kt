@@ -34,6 +34,10 @@ data class GetCustomerOrders(var id: String = "",
             }
         }
 
+        fun getNumberOfCustomersOrdered(): Int {
+            return get().size
+        }
+
         fun getByName(inputName: String): GetCustomerOrders? {
             get().forEach {
                 if(it.name == inputName) {

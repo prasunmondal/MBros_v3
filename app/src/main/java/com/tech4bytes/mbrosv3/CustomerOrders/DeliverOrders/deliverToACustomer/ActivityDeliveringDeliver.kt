@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.ActivityDeliveringDeliveryComplete
+import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
@@ -68,6 +69,12 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
 
     private fun reCalculateNUpdateValues() {
         LogMe.log("Re-calculating...")
+        val name = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::name)!!
+
+        // do not update UI if show balances is false
+        if(!CustomerKYC.showBalance(UIUtils.getUIElementValue(name)))
+            return
+
         val deliveredKgElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredKg)!!
         val todaysAmountElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::todaysAmount)!!
         val totalDueElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::totalDue)!!

@@ -34,8 +34,8 @@ data class GetCustomerOrders(var id: String = "",
             }
         }
 
-        fun getNumberOfCustomersOrdered(): Int {
-            return get().size
+        fun getNumberOfCustomersOrdered(useCache: Boolean): Int {
+            return get(useCache).size
         }
 
         fun getByName(inputName: String): GetCustomerOrders? {

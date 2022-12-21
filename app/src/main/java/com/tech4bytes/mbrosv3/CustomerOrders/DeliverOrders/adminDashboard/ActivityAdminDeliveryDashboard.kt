@@ -43,7 +43,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     fun updateDeliveredInfo(useCache: Boolean) {
         val countersDelivered = DeliverCustomerOrders.get(useCache)
         val numberOfCustomersDelivered = countersDelivered.size
-        val totalNumberOfCustomers = GetCustomerOrders.getNumberOfCustomersOrdered()
+        val totalNumberOfCustomers = GetCustomerOrders.getNumberOfCustomersOrdered(useCache)
         val deliveredPc = DeliverCustomerOrders.getTotalPcDelivered()
         val deliveredKg = DeliverCustomerOrders.getTotalKgDelivered()
         val avgWt = deliveredKg / deliveredPc
@@ -67,9 +67,9 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     fun updateDashboard(useCache: Boolean) {
         LoadModel.get(useCache)
         DeliverCustomerOrders.get(useCache)
+        GetCustomerOrders.get(useCache)
 
-        updateLoadInfo(true)
-
+        updateLoadInfo(useCache)
         updateDeliveredInfo(useCache)
         updateProjectedInfo(useCache)
     }

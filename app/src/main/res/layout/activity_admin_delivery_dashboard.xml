@@ -165,21 +165,24 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:text="2/10 Counters"
-                        android:textColor="#2E1C02" />
+                        android:textColor="#2E1C02"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/activity_admin_delivery_dashboard_delivered_pc_kg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="1 pc 10 kg"
-                        android:textColor="#2E1C02" />
+                        android:text="1 pc - 10 kg"
+                        android:textColor="#2E1C02"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/activity_admin_delivery_dashboard_delivered_avg_wt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Avg Wt. 1.123 kg/pc"
-                        android:textColor="#2E1C02" />
+                        android:textColor="#2E1C02"
+                        android:textSize="20sp" />
                 </LinearLayout>
 
                 <LinearLayout

@@ -146,45 +146,50 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_weight=".5"
                     android:background="#FFC107"
                     android:orientation="vertical"
-                    android:padding="10dp"
-                    android:weightSum="1">
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/textView21"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Delivered"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/activity_admin_delivery_dashboard_delivered_number"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="2/10 Counters" />
+                        android:layout_marginTop="10dp"
+                        android:text="2/10 Counters"
+                        android:textColor="#2E1C02" />
 
                     <TextView
                         android:id="@+id/activity_admin_delivery_dashboard_delivered_pc_kg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="1 pc 10 kg" />
+                        android:text="1 pc 10 kg"
+                        android:textColor="#2E1C02" />
 
                     <TextView
                         android:id="@+id/activity_admin_delivery_dashboard_delivered_avg_wt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Avg Wt. 1.123 kg/pc" />
+                        android:text="Avg Wt. 1.123 kg/pc"
+                        android:textColor="#2E1C02" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
+                    android:layout_weight=".5"
                     android:background="#673AB7"
                     android:orientation="vertical"
-                    android:padding="10dp"
-                    android:weightSum="1">
+                    android:padding="10dp">
 
                     <TextView
                         android:id="@+id/textView26"
@@ -192,11 +197,13 @@
                         android:layout_height="wrap_content"
                         android:text="Projections"
                         android:textColor="#D9C7F4"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:text="Shortage"
                         android:textColor="#D9C9F1" />
 
@@ -209,13 +216,6 @@
                         android:textSize="34sp"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/activity_admin_delivery_dashboard_projected_profit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Profit"
-                        android:textColor="#855AD3"
-                        android:textSize="4dp" />
                 </LinearLayout>
 
             </LinearLayout>

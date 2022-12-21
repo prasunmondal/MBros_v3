@@ -65,7 +65,27 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     }
 
     fun updateDashboard(useCache: Boolean) {
-        updateLoadInfo(useCache)
+        LoadModel.get(useCache)
+        DeliverCustomerOrders.get(useCache)
+
+        updateLoadInfo(true)
+
         updateDeliveredInfo(useCache)
+        updateProjectedInfo(useCache)
+    }
+
+    private fun updateProjectedInfo(useCache: Boolean) {
+        val projectedShortageElement = findViewById<TextView>(R.id.activity_admin_delivery_dashboard_projected_shortage)
+        try {
+            val deliveredPc = DeliverCustomerOrders.getTotalPcDelivered()
+            val deliveredKg = DeliverCustomerOrders.getTotalKgDelivered()
+            val deliveredAvgWt = deliveredKg / deliveredPc
+
+            val loadData = LoadModel.get(useCache)
+            val avgWt = NumberUtils.getDoubleOrZero(loadData.actualKg) / NumberUtils.getDoubleOrZero(loadData.actualPc)
+            UIUtils.setUIElementValue(this, projectedShortageElement, "${WeightUtils.roundOff3places(avgWt)}")
+        } catch (e: Exception) {
+            UIUtils.setUIElementValue(this, projectedShortageElement, "N/A")
+        }
     }
 }

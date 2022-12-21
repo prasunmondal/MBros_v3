@@ -191,22 +191,31 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Projections"
-                        android:textColor="#EFE7FB"
+                        android:textColor="#D9C7F4"
                         android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Shortage"
+                        android:textColor="#D9C9F1" />
 
                     <TextView
                         android:id="@+id/activity_admin_delivery_dashboard_projected_shortage"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Shortage"
-                        android:textColor="#EFE7FB" />
+                        android:text="N/A"
+                        android:textColor="#D6CBE8"
+                        android:textSize="34sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/activity_admin_delivery_dashboard_projected_profit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Profit"
-                        android:textColor="#EFE7FB" />
+                        android:textColor="#855AD3"
+                        android:textSize="4dp" />
                 </LinearLayout>
 
             </LinearLayout>

@@ -58,11 +58,13 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         UIUtils.setUIElementValue(this, orderedKgElement, record.orderedKg)
         UIUtils.setUIElementValue(this, deliveredPcElement, record.deliveredPc)
         UIUtils.setUIElementValue(this, deliveredKgElement, record.deliveredKg)
-        UIUtils.setUIElementValue(this, todaysAmountElement, record.todaysAmount)
         UIUtils.setUIElementValue(this, prevDueElement, record.prevDue)
         UIUtils.setUIElementValue(this, totalDueElement, record.totalDue)
         UIUtils.setUIElementValue(this, paidElement, record.paid)
         UIUtils.setUIElementValue(this, balanceDueElement, record.balanceDue)
+
+        // Don't show Today's Amount for privacy reasons
+        // UIUtils.setUIElementValue(this, todaysAmountElement, record.todaysAmount)
 
         // Add Listeners
         (deliveredKgElement as AppCompatEditText).doOnTextChanged { text, start, before, count ->

@@ -99,7 +99,7 @@
     <LinearLayout
         android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_weight="1"
         android:orientation="horizontal"
@@ -107,78 +107,98 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
-        <EditText
-            android:id="@+id/activity_delivering_deliver_delivering_pc"
-            android:layout_width="180dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="0 pc"
-            android:inputType="number" />
-
-        <EditText
-            android:id="@+id/activity_delivering_deliver_delivering_kg"
+        <LinearLayout
+            android:id="@+id/linearLayout6"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:ems="10"
-            android:hint="0 kg"
-            android:inputType="number" />
+            android:background="#FBDEDE"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/activity_delivering_deliver_label_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:gravity="center_vertical"
+                android:text="দর"
+                android:textSize="17sp" />
+
+            <EditText
+                android:id="@+id/activity_delivering_deliver_rate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Rs."
+                android:inputType="number" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="#FBDEDE"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:text="pc"
+                android:textSize="17sp" />
+
+            <EditText
+                android:id="@+id/activity_delivering_deliver_delivering_pc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:hint="0 pc"
+                android:inputType="number" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="#FBDEDE"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:text="kg"
+                android:textSize="17sp" />
+
+            <EditText
+                android:id="@+id/activity_delivering_deliver_delivering_kg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="0 kg"
+                android:inputType="numberDecimal" />
+
+        </LinearLayout>
 
     </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
-
-        <TextView
-            android:id="@+id/activity_delivering_deliver_label_rate"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:inputType="number"
-            android:text="Rate: "
-            android:textSize="20sp" />
-
-        <EditText
-            android:id="@+id/activity_delivering_deliver_rate"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:ems="10"
-            android:hint="Rs."
-            android:inputType="number" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:background="#530101"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout6"></LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="10dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -189,8 +209,9 @@
                 android:id="@+id/textView11"
                 android:layout_width="180dp"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
                 android:gravity="center_vertical"
-                android:text="Prev Due"
+                android:text="জের"
                 android:textSize="20sp" />
 
             <TextView
@@ -211,8 +232,9 @@
                 android:id="@+id/textView12"
                 android:layout_width="180dp"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
                 android:gravity="center_vertical"
-                android:text="Today's Amount"
+                android:text="আজকের দাম"
                 android:textSize="20sp" />
 
             <TextView
@@ -222,7 +244,16 @@
                 android:gravity="center_vertical"
                 android:text="0.00"
                 android:textSize="20sp" />
+
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="#530101"
+            android:orientation="horizontal"></LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -233,8 +264,10 @@
                 android:id="@+id/textView13"
                 android:layout_width="180dp"
                 android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:text="Total"
+                android:layout_marginLeft="10dp"
+                android:gravity="right|center_vertical"
+                android:paddingRight="10dp"
+                android:text="="
                 android:textColor="#ED5959"
                 android:textSize="20sp" />
 
@@ -251,14 +284,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:background="#FBDEDE"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/textView14"
                 android:layout_width="180dp"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
                 android:gravity="center_vertical"
-                android:text="Paid"
+                android:text="জমা"
                 android:textSize="20sp" />
 
             <EditText
@@ -279,8 +314,9 @@
                 android:id="@+id/textView15"
                 android:layout_width="180dp"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
                 android:gravity="center_vertical"
-                android:text="Balance Due"
+                android:text="বাকি"
                 android:textColor="#F62B2B"
                 android:textSize="20sp" />
 
@@ -291,7 +327,8 @@
                 android:gravity="center_vertical"
                 android:text="0.00"
                 android:textColor="#F62B2B"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </LinearLayout>
@@ -306,12 +343,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="251dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

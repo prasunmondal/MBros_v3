@@ -60,10 +60,13 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         UIUtils.setUIElementValue(this, orderedKgElement, record.orderedKg.ifEmpty { "--" })
         UIUtils.setUIElementValue(this, deliveredPcElement, record.deliveredPc)
         UIUtils.setUIElementValue(this, deliveredKgElement, record.deliveredKg)
-        UIUtils.setUIElementValue(this, prevDueElement, record.prevDue)
         UIUtils.setUIElementValue(this, totalDueElement, record.totalDue)
         UIUtils.setUIElementValue(this, paidElement, record.paid)
         UIUtils.setUIElementValue(this, balanceDueElement, record.balanceDue)
+
+        if (RolesModel.isEligibleToViewHiddenDue() || CustomerKYC.showBalance(UIUtils.getUIElementValue(nameElement))) {
+            UIUtils.setUIElementValue(this, prevDueElement, record.prevDue)
+        }
 
         // Don't show Today's Amount for privacy reasons
         // UIUtils.setUIElementValue(this, todaysAmountElement, record.todaysAmount)
@@ -80,13 +83,17 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         LogMe.log("Re-calculating...")
         val name = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::name)!!
 
-        // do not update UI if show balances is false
-        if(!RolesModel.isEligibleToViewHiddenDue() && !CustomerKYC.showBalance(UIUtils.getUIElementValue(name)))
-            return
-
         val todaysAmountElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::todaysAmount)!!
         val totalDueElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::totalDue)!!
         val balanceDueElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::balanceDue)!!
+
+        // do not update UI if show balances is false
+        if(!RolesModel.isEligibleToViewHiddenDue() && !CustomerKYC.showBalance(UIUtils.getUIElementValue(name))) {
+            UIUtils.setUIElementValue(this, todaysAmountElement, "0.00")
+            UIUtils.setUIElementValue(this, totalDueElement, "0.00")
+            UIUtils.setUIElementValue(this, balanceDueElement, "0.00")
+            return
+        }
 
         UIUtils.setUIElementValue(this, todaysAmountElement, "${calculateTodaysAmount()}")
         UIUtils.setUIElementValue(this, totalDueElement, "${calculateTotalAmount()}")
@@ -118,7 +125,7 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         if(calcDeliveredKg.isNotEmpty() && calcDeliveredKg.toDouble() > 0) {
             calcTodaysAmount = calcDeliveredKg.toDouble() * NumberUtils.getIntOrZero(UIUtils.getUIElementValue(DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::rate)!!))
         }
-        return calcTodaysAmount.roundToInt()
+        return calcTodaysAmount.toInt()
     }
 
     fun getRecord(inputName: String): DeliverCustomerOrders {

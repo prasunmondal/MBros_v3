@@ -106,6 +106,7 @@ data class DeliverCustomerOrders(
         fun getUiElementFromDeliveringPage(view: View, attribute: KMutableProperty1<DeliverCustomerOrders, *>): View? {
             return when (attribute) {
                 DeliverCustomerOrders::name -> view.findViewById<TextView>(R.id.activity_delivering_deliver_name)
+                DeliverCustomerOrders::rate -> view.findViewById<TextView>(R.id.activity_delivering_deliver_rate)
                 DeliverCustomerOrders::orderedPc -> view.findViewById<TextView>(R.id.activity_delivering_deliver_ordered_pc)
                 DeliverCustomerOrders::orderedKg -> view.findViewById<TextView>(R.id.activity_delivering_deliver_ordered_kg)
                 DeliverCustomerOrders::deliveredPc -> view.findViewById<TextView>(R.id.activity_delivering_deliver_delivering_pc)

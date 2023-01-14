@@ -158,7 +158,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
                 estimatePc = pc,
                 estimateKg = kg,
                 rate = rate,
-                due = "0")
+                prevDue = "0")
             list.add(obj)
         }
         return list

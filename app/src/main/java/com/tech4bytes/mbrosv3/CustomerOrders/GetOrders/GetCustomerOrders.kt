@@ -17,7 +17,7 @@ data class GetCustomerOrders(var id: String = "",
                              var estimatePc: String = "",
                              var estimateKg: String = "",
                              var rate: String = "",
-                             var due: String = ""): java.io.Serializable {
+                             var prevDue: String = ""): java.io.Serializable {
 
 
     companion object {
@@ -93,6 +93,6 @@ data class GetCustomerOrders(var id: String = "",
     }
 
     override fun toString(): String {
-        return "GetOrdersModel(id='$id', name='$name', seqNo='$seqNo', estimatePc='$estimatePc', estimateKg='$estimateKg', rate='$rate', due='$due')"
+        return "GetOrdersModel(id='$id', name='$name', seqNo='$seqNo', estimatePc='$estimatePc', estimateKg='$estimateKg', rate='$rate', due='$prevDue')"
     }
 }

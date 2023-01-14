@@ -104,7 +104,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:ems="10"
-            android:hint="Rs 100"
+            android:hint="Rs."
             android:inputType="number" />
 
     </LinearLayout>

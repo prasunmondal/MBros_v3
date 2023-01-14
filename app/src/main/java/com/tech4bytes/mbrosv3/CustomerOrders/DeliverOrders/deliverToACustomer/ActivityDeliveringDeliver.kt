@@ -15,6 +15,7 @@ import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
+import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ReflectionUtils
 import kotlin.math.roundToInt
 import kotlin.reflect.KMutableProperty1
@@ -44,6 +45,7 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         val orderedKgElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::orderedKg)!!
         val deliveredPcElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredPc)!!
         val deliveredKgElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredKg)!!
+        val rate = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::rate)!!
         val todaysAmountElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::todaysAmount)!!
         val prevDueElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::prevDue)!!
         val totalDueElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::totalDue)!!
@@ -67,6 +69,7 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
             reCalculateNUpdateValues()
         }
         (paidElement as AppCompatEditText).doOnTextChanged { text, start, before, count -> reCalculateNUpdateValues() }
+        (rate as AppCompatEditText).doOnTextChanged { text, start, before, count -> reCalculateNUpdateValues() }
     }
 
     private fun reCalculateNUpdateValues() {
@@ -109,7 +112,7 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         val calcDeliveredKg = UIUtils.getUIElementValue(deliveredKgElement)
         var calcTodaysAmount = 0.0
         if(calcDeliveredKg.isNotEmpty() && calcDeliveredKg.toDouble() > 0) {
-            calcTodaysAmount = calcDeliveredKg.toDouble() * record.rate.toDouble()
+            calcTodaysAmount = calcDeliveredKg.toDouble() * NumberUtils.getIntOrZero(UIUtils.getUIElementValue(DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::rate)!!))
         }
         return calcTodaysAmount.roundToInt()
     }
@@ -129,7 +132,7 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
                 orderedPc = orderObj.estimatePc,
                 orderedKg = orderObj.estimateKg,
                 rate = orderObj.rate,
-                prevDue = orderObj.due,
+                prevDue = orderObj.prevDue,
                 deliveryStatus = "DELIVERING")
 
             return deliveryObj

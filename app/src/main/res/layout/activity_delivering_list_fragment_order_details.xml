@@ -21,10 +21,11 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/activity_delivering_deliver_fragment_customer_seq_no"
-            android:layout_width="50dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_weight=".1"
             android:gravity="center_vertical"
-            android:hint="Seq No."
+            android:hint="0."
             android:textColor="#000000"
             android:textSize="16sp" />
 
@@ -36,7 +37,7 @@
             android:gravity="center_vertical"
             android:hint="pc"
             android:textColor="#EC1909"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/activity_delivering_deliver_fragment_order_kg"
@@ -45,7 +46,8 @@
             android:layout_weight=".2"
             android:gravity="center_vertical"
             android:hint="kg"
-            android:textColor="#0318C8" />
+            android:textColor="#0318C8"
+            android:textSize="16sp" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/activity_delivering_deliver_fragment_customer_name"

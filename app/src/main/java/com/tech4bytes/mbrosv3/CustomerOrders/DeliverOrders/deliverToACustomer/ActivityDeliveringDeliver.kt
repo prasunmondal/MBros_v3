@@ -52,10 +52,12 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         val paidElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::paid)!!
         val balanceDueElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::balanceDue)!!
 
+        var orderedPcText =
+
         // Set UI Values
         UIUtils.setUIElementValue(this, nameElement, record.name)
-        UIUtils.setUIElementValue(this, orderedPcElement, record.orderedPc)
-        UIUtils.setUIElementValue(this, orderedKgElement, record.orderedKg)
+        UIUtils.setUIElementValue(this, orderedPcElement, record.orderedPc.ifEmpty { "--" })
+        UIUtils.setUIElementValue(this, orderedKgElement, record.orderedPc.ifEmpty { "--" })
         UIUtils.setUIElementValue(this, deliveredPcElement, record.deliveredPc)
         UIUtils.setUIElementValue(this, deliveredKgElement, record.deliveredKg)
         UIUtils.setUIElementValue(this, prevDueElement, record.prevDue)

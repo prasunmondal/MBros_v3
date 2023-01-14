@@ -34,8 +34,7 @@
                 android:layout_marginLeft="20dp"
                 android:text="Piece"
                 android:textColor="#EC1909"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textSize="20sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -58,8 +57,7 @@
                 android:layout_height="wrap_content"
                 android:text="Kg"
                 android:textColor="#0318C8"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textSize="20sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -82,8 +80,7 @@
                 android:layout_height="wrap_content"
                 android:text="Name"
                 android:textColor="#250101"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+                android:textSize="28sp" />
         </LinearLayout>
 
     </LinearLayout>

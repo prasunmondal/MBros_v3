@@ -1,12 +1,15 @@
 package com.tech4bytes.extrack.centralCache
 
 import android.content.Context
+import android.text.format.DateUtils
 import com.tech4bytes.extrack.centralCache.utils.CacheUtils
 import com.tech4bytes.extrack.centralCache.utils.ClassDetailsUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Files.IOObjectToFile
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.centralCache.CacheModel
+import java.time.LocalDateTime
+import java.util.Date
 import kotlin.reflect.KClass
 
 @Suppress("UNCHECKED_CAST")
@@ -58,16 +61,27 @@ class CentralCache {
             val cacheClassKey = CacheUtils.getClassKey()
             LogMe.log("Getting data from Cache - key: $cacheObjectKey")
             var classElements = centralCache.cache[cacheClassKey]
+
             if (classElements != null && classElements.containsKey(cacheObjectKey)) {
                 LogMe.log("Cache Hit (key:$cacheObjectKey)- Local Memory")
-                return classElements[cacheObjectKey]!!.content as T
+                val cacheObj = classElements[cacheObjectKey]!!
+                if(cacheObj.expiryTime.isBefore(LocalDateTime.now())) {
+                    LogMe.log("Data Expired (key:$cacheObjectKey)- Local Memory: ${cacheObj.toString()}")
+                    return null
+                }
+                return cacheObj.content as T
             }
 
             centralCache.cache = centralCache.getCacheDataFromFile(context)
             classElements = centralCache.cache[cacheClassKey]
             if (classElements != null && classElements.containsKey(cacheObjectKey)) {
                 LogMe.log("Cache Hit (key:$cacheObjectKey)- File")
-                return classElements[cacheObjectKey]!!.content as T
+                val cacheObj = classElements[cacheObjectKey]!!
+                if(cacheObj.expiryTime.isBefore(LocalDateTime.now())) {
+                    LogMe.log("Data Expired (key:$cacheObjectKey)- Local Memory")
+                    return null
+                }
+                return cacheObj.content as T
             }
 
             LogMe.log("Cache Miss (key:$cacheObjectKey)")

@@ -239,7 +239,7 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         return calcTodaysAmount.toInt()
     }
 
-    fun getRecord(inputName: String): DeliverCustomerOrders {
+    private fun getRecord(inputName: String): DeliverCustomerOrders {
         var deliveryObj: DeliverCustomerOrders? = DeliverCustomerOrders.getByName(inputName)
         if(deliveryObj != null) {
             return deliveryObj

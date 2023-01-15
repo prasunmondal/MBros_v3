@@ -90,6 +90,7 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
             reCalculateNUpdateValues()
         }
         (paidElement as AppCompatEditText).doOnTextChanged { text, start, before, count ->
+            showSellingDataValidation()
             validatePaid()
             reCalculateNUpdateValues()
         }
@@ -111,6 +112,11 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         setValidityColors(deliveredRateContainer, isValid)
         setValidityColors(deliveredPcContainer, isValid)
         setValidityColors(deliveredKgContainer, isValid)
+
+        val nameElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::name)!!
+        if (!RolesModel.isEligibleToViewHiddenDue() && !CustomerKYC.showBalance(UIUtils.getUIElementValue(nameElement))) {
+            setValidityColors(deliveredRateContainer, true)
+        }
     }
 
     private fun getDeliveredRate(): Double {

@@ -3,8 +3,11 @@ package com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.ActivityDeliveringDeliveryComplete
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
@@ -17,7 +20,6 @@ import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ReflectionUtils
-import kotlin.math.roundToInt
 import kotlin.reflect.KMutableProperty1
 import kotlin.reflect.full.declaredMemberProperties
 
@@ -71,12 +73,115 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         // Don't show Today's Amount for privacy reasons
         // UIUtils.setUIElementValue(this, todaysAmountElement, record.todaysAmount)
 
+        showSellingDataValidation()
+        validatePaid()
+
         // Add Listeners
-        (deliveredKgElement as AppCompatEditText).doOnTextChanged { text, start, before, count ->
+        (rate as AppCompatEditText).doOnTextChanged { text, start, before, count ->
+            validateSellingData()
+            showSellingDataValidation()
             reCalculateNUpdateValues()
         }
-        (paidElement as AppCompatEditText).doOnTextChanged { text, start, before, count -> reCalculateNUpdateValues() }
-        (rate as AppCompatEditText).doOnTextChanged { text, start, before, count -> reCalculateNUpdateValues() }
+        (deliveredPcElement as AppCompatEditText).doOnTextChanged { text, start, before, count ->
+            showSellingDataValidation()
+        }
+        (deliveredKgElement as AppCompatEditText).doOnTextChanged { text, start, before, count ->
+            showSellingDataValidation()
+            reCalculateNUpdateValues()
+        }
+        (paidElement as AppCompatEditText).doOnTextChanged { text, start, before, count ->
+            validatePaid()
+            reCalculateNUpdateValues()
+        }
+    }
+
+    private fun showSellingDataValidation() {
+        val deliveredRateContainer = findViewById<LinearLayout>(R.id.activity_delivering_deliver_delivering_rate_container)
+        val deliveredPcContainer = findViewById<LinearLayout>(R.id.activity_delivering_deliver_delivering_pc_container)
+        val deliveredKgContainer = findViewById<LinearLayout>(R.id.activity_delivering_deliver_delivering_kg_container)
+
+        val isValid: Boolean =
+            if(getDeliveredRate() == 0.0 && getDeliveredKg() == 0.0 &&
+                getDeliveredPc() == 0 && getPaidAmountText().isEmpty()) {
+                false
+            } else {
+                validateSellingData()
+            }
+
+        setValidityColors(deliveredRateContainer, isValid)
+        setValidityColors(deliveredPcContainer, isValid)
+        setValidityColors(deliveredKgContainer, isValid)
+    }
+
+    private fun getDeliveredRate(): Double {
+        val deliveredRateElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::rate)!!
+        val deliveredRateText = NumberUtils.getDoubleOrZero(UIUtils.getUIElementValue(deliveredRateElement))
+        return deliveredRateText
+    }
+
+    private fun getDeliveredKg(): Double {
+        val deliveredKgElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredKg)!!
+        val deliveredKgText = NumberUtils.getDoubleOrZero(UIUtils.getUIElementValue(deliveredKgElement))
+        return deliveredKgText
+    }
+
+    private fun getDeliveredPc(): Int {
+        val deliveredPcElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredPc)!!
+        val deliveredPcText = NumberUtils.getIntOrZero(UIUtils.getUIElementValue(deliveredPcElement))
+        return deliveredPcText
+    }
+
+    private fun getPaidAmountText(): String {
+        val deliveredPaidElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::paid)!!
+        val deliveredPaidText = UIUtils.getUIElementValue(deliveredPaidElement)
+        return deliveredPaidText
+    }
+
+    private fun validateSellingData(): Boolean {
+        val nameElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::name)!!
+
+        if (!CustomerKYC.showBalance(UIUtils.getUIElementValue(nameElement))) {
+            if(getDeliveredKg() == 0.0 && getDeliveredPc() == 0)
+                return true
+
+            if(getDeliveredKg() == 0.0 || getDeliveredPc() == 0)
+                return false
+
+            return true
+        }
+
+        if(getDeliveredKg() == 0.0 && getDeliveredPc() == 0 && getDeliveredRate() == 0.0)
+            return true
+
+        if(getDeliveredKg() == 0.0 || getDeliveredPc() == 0 || getDeliveredRate() == 0.0)
+            return false
+
+        return true
+    }
+
+    private fun validatePaid() {
+        val nameElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::name)!!
+        val deliveredPaidContainer = findViewById<LinearLayout>(R.id.activity_delivering_deliver_delivering_paid_container)
+
+        if (!CustomerKYC.showBalance(UIUtils.getUIElementValue(nameElement))) {
+            setValidityColors(deliveredPaidContainer, true)
+            return
+        }
+
+        if(getDeliveredRate() == 0.0 && getDeliveredKg() == 0.0 && getDeliveredPc() == 0 && getPaidAmountText().isEmpty()) {
+            setValidityColors(deliveredPaidContainer, false)
+            return
+        }
+
+        setValidityColors(deliveredPaidContainer, getPaidAmountText().isNotEmpty())
+    }
+
+    private fun setValidityColors(element: View, isValid: Boolean) {
+        if(isValid) {
+            element.setBackgroundColor(ContextCompat.getColor(this, R.color.delivery_input_valid))
+        } else {
+            element.setBackgroundColor(ContextCompat.getColor(this, R.color.delivery_input_not_valid))
+        }
     }
 
     private fun reCalculateNUpdateValues() {
@@ -154,6 +259,13 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
 
 
     fun onClickSubmitDeliveredRecord(view: View) {
+        val rate = UIUtils.getUIElementValue(DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::rate)!!)
+        val deliveredWeight = UIUtils.getUIElementValue(DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredKg)!!)
+        if(NumberUtils.getDoubleOrZero(rate) == 0.0 && NumberUtils.getDoubleOrZero(deliveredWeight) != 0.0) {
+            Toast.makeText(this, "সব গুলো লেখা হয়নি", Toast.LENGTH_LONG).show()
+            return
+        }
+
         getAllAttributesOfClass<DeliverCustomerOrders>().forEach { kMutableProperty ->
             val uiElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, kMutableProperty)
             if(uiElement != null) {

@@ -20,5 +20,7 @@
     <!--    CUSTOM COLORS -->
     <color name="delivery_completed">#C3CAC4</color>
     <color name="delivery_pending">#EDF3AC45</color>
+    <color name="delivery_input_not_valid">#FBDEDE</color>
+    <color name="delivery_input_valid">#A8F2FB</color>
 
 </resources>

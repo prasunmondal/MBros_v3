@@ -108,7 +108,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
         <LinearLayout
-            android:id="@+id/linearLayout6"
+            android:id="@+id/activity_delivering_deliver_delivering_rate_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -136,6 +136,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/activity_delivering_deliver_delivering_pc_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -163,6 +164,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/activity_delivering_deliver_delivering_kg_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -282,6 +284,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/activity_delivering_deliver_delivering_paid_container"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="#FBDEDE"

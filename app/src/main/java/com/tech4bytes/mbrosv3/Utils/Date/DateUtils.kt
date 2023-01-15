@@ -1,8 +1,10 @@
 package com.tech4bytes.mbrosv3.Utils.Date
 
+import java.sql.Timestamp
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -89,6 +91,17 @@ class DateUtils {
 
         fun timeZoneConversionRequired(datetime: String): Boolean {
             return datetime.endsWith("Z")
+        }
+
+        fun getNextTimeOccurrenceTimestamp(hourIn24Hour: Int): LocalDateTime {
+            val currentDateTime: LocalDateTime? = LocalDateTime.now()
+            val todayAt4Pm: LocalDateTime? = currentDateTime!!.toLocalDate().atTime(hourIn24Hour, 0)
+            val tomorrowAt4Pm: LocalDateTime? = currentDateTime.toLocalDate().plusDays(1).atTime(hourIn24Hour,0)
+
+            if(todayAt4Pm!!.isAfter(currentDateTime)) {
+                return todayAt4Pm
+            }
+            return tomorrowAt4Pm!!
         }
     }
 }

@@ -3,13 +3,17 @@ package com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.ActivityDeliveringDeliver
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
+import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -68,34 +72,14 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
         startActivity(switchActivityIntent)
     }
 
-//    private fun createEstimatesView(order: GetCustomerOrders) {
-//
-//        val layoutInflater = LayoutInflater.from(AppContexts.get())
-//        val entry = layoutInflater.inflate(R.layout.activity_get_order_estimates_fragment_customer_order, null)
-//
-//        UIUtils.setUIElementValue(this, entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_sl_no), order.seqNo)
-//        UIUtils.setUIElementValue(this, entry.findViewById<AppCompatTextView>(R.id.fragment_customer_order_name), order.name)
-//        UIUtils.setUIElementValue(this, pcElement, order.estimatePc)
-//        UIUtils.setUIElementValue(this, kgElement, order.estimateKg)
-//        UIUtils.setUIElementValue(this, entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_rate), order.rate)
-//
-//        pcElement.doOnTextChanged { text, start, before, count ->
-//            updateTotalPc()
-//        }
-//
-//        kgElement.doOnTextChanged { text, start, before, count ->
-//            updateTotalKg()
-//        }
-//
-//        val deleteBtn = entry.findViewById<ImageButton>(R.id.fragment_customer_order_delete_record_button)
-//        deleteBtn.setOnClickListener {
-//            uiEntriesList.remove(entry)
-//            listContainer.removeView(entry)
-//            updateTotalPc()
-//            updateTotalKg()
-//        }
-//
-//        uiEntriesList.add(entry)
-//        listContainer.addView(entry)
-//    }
+    fun delivering_list_refresh_btn(view: View) {
+        Toast.makeText(this, "Refreshing data", Toast.LENGTH_SHORT).show()
+        CentralCache.invalidateFullCache()
+        goToLoginPage()
+    }
+
+    private fun goToLoginPage() {
+        val switchActivityIntent = Intent(this, ActivityLogin::class.java)
+        startActivity(switchActivityIntent)
+    }
 }

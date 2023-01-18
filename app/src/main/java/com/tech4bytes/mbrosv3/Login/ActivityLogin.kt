@@ -9,9 +9,12 @@ import com.google.gson.reflect.TypeToken
 import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
+import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard.ActivityAdminDeliveryDashboard
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
 import com.tech4bytes.mbrosv3.Loading.ActivityDeliveringLoad
+import com.tech4bytes.mbrosv3.Loading.LoadConfig
+import com.tech4bytes.mbrosv3.Loading.LoadModel
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
@@ -22,6 +25,9 @@ import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
  * status bar and navigation/system bar) with user interaction.
  */
 class ActivityLogin : AppCompatActivity() {
+
+    val loginRoleKey: String = "loginRoleKey"
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +76,19 @@ class ActivityLogin : AppCompatActivity() {
             Secure.ANDROID_ID);
     }
 
-    private fun getRole(): Roles? {
+    fun getRole(useCache: Boolean = true): Roles? {
+        val cacheResults = CentralCache.get<Roles>(AppContexts.get(), loginRoleKey, useCache)
+
+        return if (cacheResults != null) {
+            cacheResults
+        } else {
+            val resultFromServer = getRoleFromServer()
+            CentralCache.put(loginRoleKey, resultFromServer)
+            resultFromServer
+        }
+    }
+
+    private fun getRoleFromServer(): Roles? {
         val result: GetResponse = Get.builder()
             .scriptId(ProjectConfig.dBServerScriptURL)
             .sheetId(ProjectConfig.DB_SHEET_ID)
@@ -78,7 +96,6 @@ class ActivityLogin : AppCompatActivity() {
             .build().execute()
 
         val deviceList = result.parseToObject<RolesModel>(result.getRawResponse(), object: TypeToken<ArrayList<RolesModel>?>() {}.type)
-
         deviceList.sortBy { it.id }
         deviceList.reverse()
 

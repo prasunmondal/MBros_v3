@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
@@ -96,5 +97,9 @@ class ActivityDeliveringLoad : AppCompatActivity() {
             val switchActivityIntent = Intent(AppContexts.get(), ActivityDeliveringListOrders::class.java)
             AppContexts.get().startActivity(switchActivityIntent)
         }
+    }
+
+    fun activity_delivered_load_sync_data(view: View) {
+        AppUtils.invalidateAllDataAndRestartApp()
     }
 }

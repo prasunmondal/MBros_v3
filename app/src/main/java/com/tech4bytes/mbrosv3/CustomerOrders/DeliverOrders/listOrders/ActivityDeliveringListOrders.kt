@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import com.tech4bytes.extrack.centralCache.CentralCache
+import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.ActivityDeliveringDeliver
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
@@ -73,9 +74,7 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
     }
 
     fun delivering_list_refresh_btn(view: View) {
-        Toast.makeText(this, "Refreshing data", Toast.LENGTH_SHORT).show()
-        CentralCache.invalidateFullCache()
-        goToLoginPage()
+        AppUtils.invalidateAllDataAndRestartApp()
     }
 
     private fun goToLoginPage() {

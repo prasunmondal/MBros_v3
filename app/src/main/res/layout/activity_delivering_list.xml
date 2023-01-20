@@ -35,6 +35,7 @@
         android:clickable="true"
         android:onClick="delivering_list_refresh_btn"
         app:backgroundTint="#E6FA4848"
+        app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_popup_sync"

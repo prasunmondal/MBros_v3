@@ -64,9 +64,10 @@ class ActivityLogin : AppCompatActivity() {
         val loadObj = LoadModel.get()
         if(ActivityDeliveringLoad.isLoadingComplete(loadObj)) {
             ActivityDeliveringLoad.goToDeliveringDeliverPage()
+        } else {
+            val switchActivityIntent = Intent(this, ActivityDeliveringLoad::class.java)
+            startActivity(switchActivityIntent)
         }
-        val switchActivityIntent = Intent(this, ActivityDeliveringLoad::class.java)
-        startActivity(switchActivityIntent)
     }
 
     private fun goToAdminRole() {

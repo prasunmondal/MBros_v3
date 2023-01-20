@@ -26,7 +26,7 @@ class ActivityDeliveringLoad : AppCompatActivity() {
         AppContexts.set(this, this)
         addListeners()
 
-        val loadObj = LoadModel.get(true)
+        val loadObj = LoadModel.get()
         showLoadOrderData(loadObj)
         if(isLoadingComplete(loadObj)) {
             goToDeliveringDeliverPage()
@@ -66,10 +66,6 @@ class ActivityDeliveringLoad : AppCompatActivity() {
 
     }
 
-    private fun isLoadingComplete(loadObj: LoadModel): Boolean {
-        return (loadObj != null && loadObj.isDone())
-    }
-
     fun onClickDeliverButton(view: View) {
         saveLoadActuals()
         goToDeliveringDeliverPage()
@@ -91,8 +87,14 @@ class ActivityDeliveringLoad : AppCompatActivity() {
         )
     }
 
-    fun goToDeliveringDeliverPage() {
-        val switchActivityIntent = Intent(this, ActivityDeliveringListOrders::class.java)
-        startActivity(switchActivityIntent)
+    companion object {
+        fun isLoadingComplete(loadObj: LoadModel): Boolean {
+            return (loadObj != null && loadObj.isDone())
+        }
+
+        fun goToDeliveringDeliverPage() {
+            val switchActivityIntent = Intent(AppContexts.get(), ActivityDeliveringListOrders::class.java)
+            AppContexts.get().startActivity(switchActivityIntent)
+        }
     }
 }

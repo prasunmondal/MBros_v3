@@ -61,12 +61,15 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     private fun goToDeliveryRole() {
+        val loadObj = LoadModel.get()
+        if(ActivityDeliveringLoad.isLoadingComplete(loadObj)) {
+            ActivityDeliveringLoad.goToDeliveringDeliverPage()
+        }
         val switchActivityIntent = Intent(this, ActivityDeliveringLoad::class.java)
         startActivity(switchActivityIntent)
     }
 
     private fun goToAdminRole() {
-//        val switchActivityIntent = Intent(this, ActivityGetCustomerOrders::class.java)
         val switchActivityIntent = Intent(this, ActivityAdminDeliveryDashboard::class.java)
         startActivity(switchActivityIntent)
     }

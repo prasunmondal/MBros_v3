@@ -2,6 +2,8 @@ package com.tech4bytes.mbrosv3.Utils.Files;
 
 import android.content.Context;
 
+import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -38,6 +40,7 @@ public class IOObjectToFile {
     }
 
     public void WriteObjectToFile(Context context, String fileName, Object object) {
+        LogMe.log("Writing to file: " + fileName);
         try {
             FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             ObjectOutputStream os = new ObjectOutputStream(fos);
@@ -51,6 +54,7 @@ public class IOObjectToFile {
     }
 
     public Object ReadObjectFromFile(Context context, String fileName) {
+        LogMe.log("Reading from file: " + fileName);
         try {
             FileInputStream fis = context.openFileInput(fileName);
             ObjectInputStream is = new ObjectInputStream(fis);

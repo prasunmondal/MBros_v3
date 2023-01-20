@@ -7,7 +7,9 @@ import com.tech4bytes.extrack.centralCache.utils.ClassDetailsUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Files.IOObjectToFile
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
+import com.tech4bytes.mbrosv3.Utils.centralCache.CacheFilesList
 import com.tech4bytes.mbrosv3.Utils.centralCache.CacheModel
+import java.io.File
 import java.time.LocalDateTime
 import java.util.Date
 import kotlin.reflect.KClass
@@ -25,14 +27,16 @@ class CentralCache {
     }
 
     private fun getCacheDataFromFile(context: Context): MutableMap<String, MutableMap<String, CacheModel>> {
-        LogMe.log("Reading records from file: ${getFileName()}")
         return try {
             val readObj = IOObjectToFile()
-            readObj.ReadObjectFromFile(
+            val result = readObj.ReadObjectFromFile(
                 context,
                 getFileName()
             ) as MutableMap<String, MutableMap<String, CacheModel>>
+            LogMe.log("Reading records from file: ${getFileName()}: Successful")
+            result
         } catch (e: Exception) {
+            LogMe.log("Reading records from file: ${getFileName()}: Failed")
             mutableMapOf()
         }
     }
@@ -111,6 +115,7 @@ class CentralCache {
             }
             centralCache.cache[cacheClassKey]!![cacheKey] = CacheModel(data as Any)
             centralCache.saveCacheDataToFile()
+            CacheFilesList.addToCacheFilesList(cacheClassKey)
         }
 
         fun <T> putNGet(key: String, data: T): T {
@@ -119,8 +124,17 @@ class CentralCache {
         }
 
         fun invalidateFullCache() {
-            centralCache.cache = hashMapOf()
-            centralCache.saveCacheDataToFile()
+            centralCache.cache.clear()
+            val cacheFiles = CacheFilesList.getCacheFilesList()
+            val writeObj = IOObjectToFile()
+            cacheFiles.forEach {
+                LogMe.log("Clearing cache: deleting file - $it")
+                writeObj.WriteObjectToFile(AppContexts.get(), it, null)
+            }
+
+            cacheFiles.forEach {
+                CacheFilesList.removeFromCacheFilesList(it)
+            }
         }
 
         fun invalidateClassCache() {

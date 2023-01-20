@@ -21,6 +21,8 @@
     <color name="delivery_completed">#C3CAC4</color>
     <color name="delivery_pending">#EDF3AC45</color>
     <color name="delivery_input_not_valid">#FBDEDE</color>
-    <color name="delivery_input_valid">#A8F2FB</color>
+    <color name="delivery_input_valid">#9FE3A2</color>
 
+    <color name="verify_delivery_not_valid">#F8C52C</color>
+    <color name="verify_delivery_valid">#9FE3A2</color>
 </resources>

@@ -10,6 +10,7 @@ import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
+import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard.ActivityAdminDeliveryDashboard
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
 import com.tech4bytes.mbrosv3.Loading.ActivityDeliveringLoad
@@ -57,7 +58,8 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     private fun goToCollectorRole() {
-
+        val switchActivityIntent = Intent(this, CollectorVerifyMoneyCollectionActivity::class.java)
+        startActivity(switchActivityIntent)
     }
 
     private fun goToDeliveryRole() {

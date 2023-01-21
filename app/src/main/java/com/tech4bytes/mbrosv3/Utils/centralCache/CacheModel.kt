@@ -10,9 +10,9 @@ import java.time.LocalDateTime
 class CacheModel: java.io.Serializable {
     var entryTime: LocalDateTime
     var expiryTime: LocalDateTime
-    var content: Any
+    var content: Any?
 
-    constructor(content: Any) {
+    constructor(content: Any?) {
         entryTime = LocalDateTime.now()
         expiryTime = DateUtils.getNextTimeOccurrenceTimestamp(16)
 //        Toast.makeText(AppContexts.get(), "$entryTime - $expiryTime", Toast.LENGTH_SHORT).show()

@@ -25,6 +25,7 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_delivering_list)
         AppContexts.set(this, this)
+        AppUtils.logError()
 
         showOrders()
     }

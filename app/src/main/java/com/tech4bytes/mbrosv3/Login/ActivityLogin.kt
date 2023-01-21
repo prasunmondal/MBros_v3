@@ -10,6 +10,7 @@ import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
+import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard.ActivityAdminDeliveryDashboard
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
@@ -33,6 +34,7 @@ class ActivityLogin : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppContexts.set(this)
+        AppUtils.logError()
 
         val role = getRole()
         LogMe.log("Got Role: $role")
@@ -89,6 +91,7 @@ class ActivityLogin : AppCompatActivity() {
             cacheResults
         } else {
             val resultFromServer = getRoleFromServer()
+
             CentralCache.put(loginRoleKey, resultFromServer)
             resultFromServer
         }

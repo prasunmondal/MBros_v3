@@ -10,6 +10,7 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.ActivityDeliveringDeliveryComplete
+import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Login.RolesModel
@@ -32,6 +33,7 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_delivering_deliver)
         AppContexts.set(this, this)
+        AppUtils.logError()
         mainView = findViewById(R.id.activity_delivering_deliver_main)
 
         val inputName = intent.extras!!.get("name") as String

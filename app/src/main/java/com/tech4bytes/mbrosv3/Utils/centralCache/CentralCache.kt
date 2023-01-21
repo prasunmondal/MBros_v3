@@ -113,7 +113,7 @@ class CentralCache {
             if(presentData == null) {
                 centralCache.cache[cacheClassKey] = hashMapOf()
             }
-            centralCache.cache[cacheClassKey]!![cacheKey] = CacheModel(data as Any)
+            centralCache.cache[cacheClassKey]!![cacheKey] = CacheModel(data as Any?)
             centralCache.saveCacheDataToFile()
             CacheFilesList.addToCacheFilesList(cacheClassKey)
         }

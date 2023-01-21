@@ -13,6 +13,7 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.doOnTextChanged
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.Loading.LoadModel
 import com.tech4bytes.mbrosv3.R
@@ -30,6 +31,8 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_get_order_estimates)
         AppContexts.set(this, this)
+        AppUtils.logError()
+
         containerView = findViewById<LinearLayout>(R.id.activity_get_order_estimates__parent_view)
 
         populateCustomerList()

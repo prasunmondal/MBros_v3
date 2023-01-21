@@ -16,6 +16,7 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collector_verify_money_collection)
         AppContexts.set(this, this)
+        AppUtils.logError()
 
         showDeliveryData()
     }

@@ -2,12 +2,13 @@ package com.tech4bytes.mbrosv3.AppData
 
 import android.content.Intent
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import com.prasunmondal.postjsontosheets.clients.post.raw.PostSequence
 import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
-import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogUtils
+
 
 class AppUtils {
 
@@ -20,8 +21,8 @@ class AppUtils {
         }
 
         private fun goToLoginPage() {
-            val switchActivityIntent = Intent(AppContexts.get(), ActivityLogin::class.java)
-            AppContexts.get().startActivity(switchActivityIntent)
+            val myIntent = Intent(AppContexts.get(), ActivityLogin::class.java)
+            AppContexts.get().startActivity(myIntent)
         }
 
         private fun getStackTrace(ex: Exception): String? {

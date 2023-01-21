@@ -81,5 +81,6 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
     private fun goToLoginPage() {
         val switchActivityIntent = Intent(this, ActivityLogin::class.java)
         startActivity(switchActivityIntent)
+        finish()
     }
 }

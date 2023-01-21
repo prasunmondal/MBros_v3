@@ -90,14 +90,15 @@ class ActivityDeliveringLoad : AppCompatActivity() {
         )
     }
 
+    fun goToDeliveringDeliverPage() {
+        val switchActivityIntent = Intent(AppContexts.get(), ActivityDeliveringListOrders::class.java)
+        AppContexts.get().startActivity(switchActivityIntent)
+        finish()
+    }
+
     companion object {
         fun isLoadingComplete(loadObj: LoadModel): Boolean {
             return (loadObj != null && loadObj.isDone())
-        }
-
-        fun goToDeliveringDeliverPage() {
-            val switchActivityIntent = Intent(AppContexts.get(), ActivityDeliveringListOrders::class.java)
-            AppContexts.get().startActivity(switchActivityIntent)
         }
     }
 

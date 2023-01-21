@@ -67,5 +67,6 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
 
     fun activity_collector_verify_money_collection_sync_data_btn(view: View) {
         AppUtils.invalidateAllDataAndRestartApp()
+        finish()
     }
 }

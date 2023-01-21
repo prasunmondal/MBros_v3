@@ -13,6 +13,7 @@ import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard.ActivityAdminDeliveryDashboard
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
 import com.tech4bytes.mbrosv3.Loading.ActivityDeliveringLoad
 import com.tech4bytes.mbrosv3.Loading.LoadConfig
@@ -62,21 +63,30 @@ class ActivityLogin : AppCompatActivity() {
     private fun goToCollectorRole() {
         val switchActivityIntent = Intent(this, CollectorVerifyMoneyCollectionActivity::class.java)
         startActivity(switchActivityIntent)
+        finish()
     }
 
     private fun goToDeliveryRole() {
         val loadObj = LoadModel.get()
         if(ActivityDeliveringLoad.isLoadingComplete(loadObj)) {
-            ActivityDeliveringLoad.goToDeliveringDeliverPage()
+            goToDeliveringDeliverPage()
         } else {
             val switchActivityIntent = Intent(this, ActivityDeliveringLoad::class.java)
             startActivity(switchActivityIntent)
         }
+        finish()
+    }
+
+    fun goToDeliveringDeliverPage() {
+        val switchActivityIntent = Intent(this, ActivityDeliveringListOrders::class.java)
+        startActivity(switchActivityIntent)
+        finish()
     }
 
     private fun goToAdminRole() {
         val switchActivityIntent = Intent(this, ActivityAdminDeliveryDashboard::class.java)
         startActivity(switchActivityIntent)
+        finish()
     }
 
     private fun getPhoneId(): String {

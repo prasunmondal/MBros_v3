@@ -42,9 +42,9 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
             entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_order_pc).text = deliveryEntry.deliveredKg
             entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_order_kg).text = deliveryEntry.deliveredPc
             entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_paid_amount).text = deliveryEntry.paid
+            entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_total_due_amount).text = deliveryEntry.balanceDue
 
-
-            entry.setOnClickListener {
+            entry.findViewById<LinearLayout>(R.id.activity_collector_verify_money_collection_fragment_container).setOnClickListener {
                 map[deliveryEntry.name]!!.kgPc = !map[deliveryEntry.name]!!.kgPc
                 map[deliveryEntry.name]!!.paidAmount = !map[deliveryEntry.name]!!.paidAmount
                 updateColors(entry, map[deliveryEntry.name]!!.kgPc, map[deliveryEntry.name]!!.paidAmount)

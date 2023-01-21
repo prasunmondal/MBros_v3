@@ -305,6 +305,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:hint="Rs. 0"
+                android:inputType="number"
                 android:textSize="20sp" />
         </LinearLayout>
 

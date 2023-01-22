@@ -5,11 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
-import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.ActivityDeliveringDeliver
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
@@ -19,6 +17,7 @@ import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
+import com.tech4bytes.mbrosv3.VehicleManagement.ActivityGetFinalKm
 import com.tech4bytes.mbrosv3.VehicleManagement.ActivityRefueling
 
 class ActivityDeliveringListOrders : AppCompatActivity() {
@@ -91,7 +90,7 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
     }
 
     fun onClickDoneDeliveryButton(view: View) {
-        val switchActivityIntent = Intent(this, ActivityRefueling::class.java)
+        val switchActivityIntent = Intent(this, ActivityGetFinalKm::class.java)
         startActivity(switchActivityIntent)
     }
 }

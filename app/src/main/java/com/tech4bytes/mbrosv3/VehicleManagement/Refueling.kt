@@ -34,7 +34,7 @@ class Refueling: java.io.Serializable {
             PostObject.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
                 .sheetId(ProjectConfig.DB_SHEET_ID)
-                .tabName(RefuelingConfig.SHEET_REFUELING_TAB_NAME)
+                .tabName(VehicleManagementConfig.SHEET_REFUELING_TAB_NAME)
                 .dataObject(refuelDetailsObj as Any)
                 .build().execute()
         }

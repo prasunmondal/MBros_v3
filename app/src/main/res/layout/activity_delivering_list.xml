@@ -67,6 +67,7 @@
             android:layout_weight="1"
             android:backgroundTint="#B5E3F8"
             android:scaleType="fitCenter"
+            android:onClick="onClickDoneDeliveryButton"
             app:srcCompat="@drawable/done_icon" />
 
     </LinearLayout>

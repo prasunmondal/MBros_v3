@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -17,6 +18,7 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_collector_verify_money_collection)
         AppContexts.set(this, this)
         AppUtils.logError()
+        window.addFlags (WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         showDeliveryData()
     }

@@ -89,4 +89,9 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
         val switchActivityIntent = Intent(this, ActivityRefueling::class.java)
         startActivity(switchActivityIntent)
     }
+
+    fun onClickDoneDeliveryButton(view: View) {
+        val switchActivityIntent = Intent(this, ActivityRefueling::class.java)
+        startActivity(switchActivityIntent)
+    }
 }

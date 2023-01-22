@@ -19,6 +19,7 @@ import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
+import com.tech4bytes.mbrosv3.VehicleManagement.ActivityRefueling
 
 class ActivityDeliveringListOrders : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,5 +83,10 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
         val switchActivityIntent = Intent(this, ActivityLogin::class.java)
         startActivity(switchActivityIntent)
         finish()
+    }
+
+    fun onClickRefuelButton(view: View) {
+        val switchActivityIntent = Intent(this, ActivityRefueling::class.java)
+        startActivity(switchActivityIntent)
     }
 }

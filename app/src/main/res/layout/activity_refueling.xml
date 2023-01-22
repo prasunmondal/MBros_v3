@@ -7,6 +7,7 @@
     tools:context=".VehicleManagement.ActivityRefueling">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/activity_refueling_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="20dp"
@@ -22,7 +23,10 @@
             android:id="@+id/linearLayout9"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -54,7 +58,7 @@
                     android:textSize="24sp" />
 
                 <EditText
-                    android:id="@+id/editTextNumberDecimal"
+                    android:id="@+id/activity_refueling_oil_measure"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -78,7 +82,7 @@
                     android:textSize="24sp" />
 
                 <EditText
-                    android:id="@+id/editTextNumber"
+                    android:id="@+id/activity_refueling_total_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -101,24 +105,41 @@
                     android:textSize="24sp" />
 
                 <EditText
-                    android:id="@+id/editTextNumber2"
+                    android:id="@+id/activity_refueling_km"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:ems="10"
                     android:inputType="number" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <Switch
+                    android:id="@+id/activity_refueling_isTankFulled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="ট্যাঙ্ক ভর্তি?"
+                    android:textSize="24sp" />
             </LinearLayout>
 
         </LinearLayout>
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/activity_refueling_submit_data_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:text="হয়ে গেছে"
             android:textSize="24sp"
+            android:onClick="onClickRefuelingSubmitBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout9" />

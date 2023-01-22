@@ -1,11 +1,13 @@
 package com.tech4bytes.mbrosv3.CustomerOrders.GetOrders
 
+import android.app.ProgressDialog
 import com.google.gson.reflect.TypeToken
 import com.prasunmondal.postjsontosheets.clients.delete.Delete
 import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
+import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
@@ -80,12 +82,14 @@ data class GetCustomerOrders(var id: String = "",
         }
 
         private fun getFromServer(): List<GetCustomerOrders> {
+            // val waitDialog = ProgressDialog.show(AppContexts.get(), "Please Wait", "লোড হচ্ছে", true)
             val result: GetResponse = Get.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
                 .sheetId(ProjectConfig.DB_SHEET_ID)
                 .tabName(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
                 .build().execute()
 
+            // waitDialog!!.dismiss()
             return result.parseToObject(result.getRawResponse(),
                 object : TypeToken<ArrayList<GetCustomerOrders>?>() {}.type
             )

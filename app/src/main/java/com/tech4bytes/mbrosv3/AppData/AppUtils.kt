@@ -1,8 +1,9 @@
 package com.tech4bytes.mbrosv3.AppData
 
+import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import com.prasunmondal.postjsontosheets.clients.post.raw.PostSequence
 import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
@@ -55,6 +56,10 @@ class AppUtils {
                     .build().execute()
                 throw e
             }
+        }
+
+        fun showWaitDialog(title: String, message: String): ProgressDialog? {
+            return ProgressDialog.show(AppContexts.get(), title, message, true)
         }
     }
 }

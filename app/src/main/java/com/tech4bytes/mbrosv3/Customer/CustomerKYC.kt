@@ -1,9 +1,11 @@
 package com.tech4bytes.mbrosv3.Customer
 
+import android.app.ProgressDialog
 import com.google.gson.reflect.TypeToken
 import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.tech4bytes.extrack.centralCache.CentralCache
+import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 
@@ -53,12 +55,14 @@ class CustomerKYC {
         }
 
         private fun getCustomerListFromServer(): List<CustomerKYCModel> {
+            // val waitDialog = ProgressDialog.show(AppContexts.get(), "Please Wait", "লোড হচ্ছে", true)
             val result: GetResponse = Get.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
                 .sheetId(ProjectConfig.DB_SHEET_ID)
                 .tabName(Customer_Config.SHEET_TAB_NAME)
                 .build().execute()
 
+            // waitDialog!!.dismiss()
             return result.parseToObject(result.getRawResponse(),
                 object : TypeToken<ArrayList<CustomerKYCModel>?>() {}.type
             )

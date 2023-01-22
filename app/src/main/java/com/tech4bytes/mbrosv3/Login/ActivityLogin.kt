@@ -1,6 +1,7 @@
 package com.tech4bytes.mbrosv3.Login
 
 import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings.Secure
@@ -108,6 +109,7 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     private fun getRoleFromServer(): Roles? {
+        // val waitDialog = ProgressDialog.show(AppContexts.get(), "Please Wait", "লোড হচ্ছে", true)
         val result: GetResponse = Get.builder()
             .scriptId(ProjectConfig.dBServerScriptURL)
             .sheetId(ProjectConfig.DB_SHEET_ID)
@@ -126,6 +128,8 @@ class ActivityLogin : AppCompatActivity() {
                 return Roles.valueOf(it.role)
             }
         }
+
+        // waitDialog!!.dismiss()
         return null
     }
 }

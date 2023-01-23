@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 
 class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,8 +32,9 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
     var map: MutableMap<String, VerifyElements> = mutableMapOf()
 
     fun showDeliveryData() {
-        val deliveredData = DeliverCustomerOrders.get()
+        var deliveredData = DeliverCustomerOrders.get()
         var count = 0
+        deliveredData = ListUtils.sortListByAttribute(deliveredData, DeliverCustomerOrders::id)
         deliveredData.forEach { deliveryEntry ->
             map[deliveryEntry.name] = VerifyElements()
             count++

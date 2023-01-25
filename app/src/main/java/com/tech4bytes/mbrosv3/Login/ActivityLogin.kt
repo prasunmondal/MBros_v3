@@ -13,6 +13,7 @@ import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
+import com.tech4bytes.mbrosv3.Customer.DueShow
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard.ActivityAdminDeliveryDashboard
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
@@ -44,6 +45,7 @@ class ActivityLogin : AppCompatActivity() {
             Roles.ADMIN -> goToAdminRole()
             Roles.DELIVERY -> goToDeliveryRole()
             Roles.COLLECTOR -> goToCollectorRole()
+            Roles.ORDER_COLLECTOR -> goToShowDues()
             else -> logUnIdentifiedDevice()
         }
     }
@@ -86,6 +88,12 @@ class ActivityLogin : AppCompatActivity() {
 
     private fun goToAdminRole() {
         val switchActivityIntent = Intent(this, ActivityAdminDeliveryDashboard::class.java)
+        startActivity(switchActivityIntent)
+        finish()
+    }
+
+    private fun goToShowDues() {
+        val switchActivityIntent = Intent(this, DueShow::class.java)
         startActivity(switchActivityIntent)
         finish()
     }

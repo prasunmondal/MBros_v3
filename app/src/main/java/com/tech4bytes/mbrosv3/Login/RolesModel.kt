@@ -9,7 +9,7 @@ data class RolesModel(val id: String, val timestamp: String, val device_id: Stri
     companion object {
 
         fun isEligibleToViewHiddenDue(): Boolean {
-            return false
+            return true
         }
     }
 }

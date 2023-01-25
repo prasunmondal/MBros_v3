@@ -39,8 +39,8 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
             val layoutInflater = LayoutInflater.from(AppContexts.get())
             val entry = layoutInflater.inflate(R.layout.activity_delivering_list_fragment_order_details, null)
 
-            val seqNoElement = entry.findViewById<AppCompatTextView>(R.id.activity_delivering_deliver_fragment_customer_seq_no)
-            val nameElement = entry.findViewById<AppCompatTextView>(R.id.activity_delivering_deliver_fragment_customer_name)
+            val seqNoElement = entry.findViewById<AppCompatTextView>(R.id.activity_due_show_amount)
+            val nameElement = entry.findViewById<AppCompatTextView>(R.id.activity_due_show_name)
             val pcElement = entry.findViewById<AppCompatTextView>(R.id.activity_delivering_deliver_fragment_order_pc)
             val kgElement = entry.findViewById<AppCompatTextView>(R.id.activity_delivering_deliver_fragment_order_kg)
 
@@ -54,7 +54,7 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
             }
 
             if(isDelivered(order.name)) {
-                entry.findViewById<LinearLayout>(R.id.activity_delivering_deliver_fragment_container).setBackgroundColor(ContextCompat.getColor(this, R.color.delivery_completed))
+                entry.findViewById<LinearLayout>(R.id.activity_due_show_fragment_conntainer).setBackgroundColor(ContextCompat.getColor(this, R.color.delivery_completed))
             }
 
             listContainer.addView(entry)

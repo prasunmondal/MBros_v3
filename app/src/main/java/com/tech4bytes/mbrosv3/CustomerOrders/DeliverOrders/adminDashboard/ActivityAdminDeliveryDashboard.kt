@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
+import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Loading.LoadModel
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
@@ -90,5 +92,10 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         } catch (e: Exception) {
             UIUtils.setUIElementValue(this, projectedShortageElement, "N/A")
         }
+    }
+
+    fun onClickSpoolCustomerData(view: View) {
+        CentralCache.invalidateFullCache()
+        CustomerData.finalizeDelivers()
     }
 }

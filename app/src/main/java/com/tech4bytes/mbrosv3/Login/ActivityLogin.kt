@@ -1,7 +1,6 @@
 package com.tech4bytes.mbrosv3.Login
 
 import android.annotation.SuppressLint
-import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings.Secure
@@ -16,9 +15,7 @@ import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.DueShow
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard.ActivityAdminDeliveryDashboard
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
-import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
 import com.tech4bytes.mbrosv3.Loading.ActivityDeliveringLoad
-import com.tech4bytes.mbrosv3.Loading.LoadConfig
 import com.tech4bytes.mbrosv3.Loading.LoadModel
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -37,17 +34,18 @@ class ActivityLogin : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppContexts.set(this)
+        CentralCache.invalidateFullCache()
         AppUtils.logError()
 
-        val role = getRole()
+        val role = getRoles()
         LogMe.log("Got Role: $role")
-        when (role) {
-            Roles.ADMIN -> goToAdminRole()
-            Roles.DELIVERY -> goToDeliveryRole()
-            Roles.COLLECTOR -> goToCollectorRole()
-            Roles.ORDER_COLLECTOR -> goToShowDues()
-            else -> logUnIdentifiedDevice()
-        }
+//        when (role) {
+//            Roles.ADMIN -> goToAdminRole()
+//            Roles.DELIVERY -> goToDeliveryRole()
+//            Roles.COLLECTOR -> goToCollectorRole()
+//            Roles.ORDER_COLLECTOR -> goToShowDues()
+//            else -> logUnIdentifiedDevice()
+//        }
     }
 
     private fun logUnIdentifiedDevice() {
@@ -103,8 +101,8 @@ class ActivityLogin : AppCompatActivity() {
             Secure.ANDROID_ID);
     }
 
-    fun getRole(useCache: Boolean = true): Roles? {
-        val cacheResults = CentralCache.get<Roles>(AppContexts.get(), loginRoleKey, useCache)
+    fun getRoles(useCache: Boolean = true): MutableList<Roles> {
+        val cacheResults = CentralCache.get<MutableList<Roles>>(AppContexts.get(), loginRoleKey, useCache)
 
         return if (cacheResults != null) {
             cacheResults
@@ -116,7 +114,7 @@ class ActivityLogin : AppCompatActivity() {
         }
     }
 
-    private fun getRoleFromServer(): Roles? {
+    private fun getRoleFromServer(): MutableList<Roles> {
         // val waitDialog = ProgressDialog.show(AppContexts.get(), "Please Wait", "লোড হচ্ছে", true)
         val result: GetResponse = Get.builder()
             .scriptId(ProjectConfig.dBServerScriptURL)
@@ -131,13 +129,19 @@ class ActivityLogin : AppCompatActivity() {
         deviceList.forEach {
             LogMe.log(it.toString())
         }
+
+        val listOfRoles = mutableListOf<Roles>()
         deviceList.forEach {
             if(getPhoneId() == it.device_id) {
-                return Roles.valueOf(it.role)
+                LogMe.log(it.roles)
+                LogMe.log(it.roles.split(",").toString())
+                it.roles.split(",").forEach { role ->
+                    listOfRoles.add(Roles.valueOf(role.trim()))
+                }
             }
         }
 
         // waitDialog!!.dismiss()
-        return null
+        return listOfRoles
     }
 }

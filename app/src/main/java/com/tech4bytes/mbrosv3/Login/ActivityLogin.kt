@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.gson.reflect.TypeToken
 import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
@@ -40,31 +39,37 @@ class ActivityLogin : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fullscreen)
         AppContexts.set(this)
-        CentralCache.invalidateFullCache()
         AppUtils.logError()
 
-        val role = getRoles()
-        LogMe.log("Got Role: $role")
+        val roles = getRoles()
+        LogMe.log("Got Role: $roles")
 
         val container = findViewById<LinearLayout>(R.id.activity_login_roles_container)
-        getRoles().forEach { role ->
-            val layoutInflater = LayoutInflater.from(AppContexts.get())
-            val entry = layoutInflater.inflate(R.layout.fragment_activity_login_roles, null)
+        if(roles.size == 1) {
+            goToHomePageAsPerRole(roles[0])
+        } else {
+            roles.forEach { role ->
+                val layoutInflater = LayoutInflater.from(AppContexts.get())
+                val entry = layoutInflater.inflate(R.layout.fragment_activity_login_roles, null)
 
-            entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).text = role.name
+                entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).text = role.name
 
-            entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).setOnClickListener {
-                when (role) {
-                    Roles.ADMIN -> goToAdminRole()
-                    Roles.DELIVERY -> goToDeliveryRole()
-                    Roles.COLLECTOR -> goToCollectorRole()
-                    Roles.ORDER_COLLECTOR -> goToShowDues()
-                    else -> logUnIdentifiedDevice()
+                entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).setOnClickListener {
+                    goToHomePageAsPerRole(role)
                 }
+                container.addView(entry)
             }
-            container.addView(entry)
         }
+    }
 
+    private fun goToHomePageAsPerRole(role: Roles) {
+        when (role) {
+            Roles.ADMIN -> goToAdminRole()
+            Roles.DELIVERY -> goToDeliveryRole()
+            Roles.COLLECTOR -> goToCollectorRole()
+            Roles.ORDER_COLLECTOR -> goToShowDues()
+            else -> logUnIdentifiedDevice()
+        }
     }
 
     private fun logUnIdentifiedDevice() {

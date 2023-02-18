@@ -14,7 +14,9 @@ import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
+import com.tech4bytes.mbrosv3.Login.Roles
 import com.tech4bytes.mbrosv3.Login.RolesModel
+import com.tech4bytes.mbrosv3.Login.RolesUtils
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -68,6 +70,9 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         UIUtils.setUIElementValue(this, totalDueElement, record.totalDue)
         UIUtils.setUIElementValue(this, paidElement, record.paid)
         UIUtils.setUIElementValue(this, balanceDueElement, CustomerData.getLastDue(record.name))
+
+        if(RolesUtils.doesHaveRole(Roles.ADMIN))
+            UIUtils.setUIElementValue(this, rate, record.rate)
 
         if (RolesModel.isEligibleToViewHiddenDue() || CustomerKYC.showBalance(UIUtils.getUIElementValue(nameElement))) {
             UIUtils.setUIElementValue(this, prevDueElement, record.prevDue)

@@ -21,7 +21,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout5"
             android:layout_width="0dp"
-            android:layout_height="75dp"
+            android:layout_height="wrap_content"
             android:background="#0A72C5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -90,23 +90,14 @@
                             android:textColor="#D8EEF8"
                             android:textSize="20sp" />
 
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="end"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="10dp">
-
                         <TextView
                             android:id="@+id/activity_admin_delivery_dashboard_total_loaded_avg_wt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="30dp"
                             android:text="0.00"
-                            android:textColor="#D8EEF8"
-                            android:textSize="24sp" />
+                            android:textColor="#41B9EF"
+                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/textView20"
@@ -114,9 +105,44 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:text="kg/pc"
-                            android:textColor="#D8EEF8"
-                            android:textSize="20sp" />
+                            android:textColor="#41B9EF"
+                            android:textSize="14sp" />
 
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="40dp">
+
+                        <EditText
+                            android:id="@+id/activity_admin_delivery_dashboard_farmrate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".33"
+                            android:inputType="textPersonName"
+                            android:minHeight="48dp"
+                            android:text="FR"
+                            android:textColor="#B4DEF1" />
+
+                        <EditText
+                            android:id="@+id/activity_admin_delivery_dashboard_buffer_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".33"
+                            android:inputType="textPersonName"
+                            android:minHeight="48dp"
+                            android:text="Buffer"
+                            android:textColor="#B4DEF1" />
+
+                        <Button
+                            android:id="@+id/activity_admin_delivery_dashboard_save_prices"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".33"
+                            android:text="Save" />
                     </LinearLayout>
 
                 </LinearLayout>

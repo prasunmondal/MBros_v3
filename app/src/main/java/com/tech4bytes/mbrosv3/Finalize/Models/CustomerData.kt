@@ -6,11 +6,8 @@ import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
-import com.tech4bytes.mbrosv3.Login.Roles
-import com.tech4bytes.mbrosv3.Login.RolesModel
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
-import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 
 class CustomerData {
     var orderId = ""
@@ -45,10 +42,6 @@ class CustomerData {
         this.profitPercent = profitPercent
     }
 
-
-
-
-
     fun getCustomerNames(): HashSet<String> {
         val customerNames: HashSet<String> = hashSetOf()
         getRecords().forEach {
@@ -67,7 +60,7 @@ class CustomerData {
             }
         }
 
-        fun addToFinalizeSheet(record: CustomerData) {
+        private fun addToFinalizeSheet(record: CustomerData) {
             PostObject.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
                 .sheetId(ProjectConfig.DB_FINALIZE_SHEET_ID)
@@ -101,7 +94,7 @@ class CustomerData {
             return "0"
         }
 
-        var recordsKey = "customerRecords"
+        private var recordsKey = "customerRecords"
         fun getRecords(): ArrayList<CustomerData> {
             val cacheResults = CentralCache.get<ArrayList<CustomerData>>(AppContexts.get(), recordsKey, true)
 
@@ -115,7 +108,7 @@ class CustomerData {
             }
         }
 
-        fun getRecordsFromServer(): ArrayList<CustomerData> {
+        private fun getRecordsFromServer(): ArrayList<CustomerData> {
             val result: GetResponse = Get.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
                 .sheetId(ProjectConfig.DB_FINALIZE_SHEET_ID)

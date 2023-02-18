@@ -92,6 +92,15 @@ class CustomerData {
             return latestRecordsList
         }
 
+        fun getLastDue(name: String): String {
+            val customerRecords = getAllLatestRecords()
+            customerRecords.forEach {
+                if(it.name == name)
+                    return it.balanceDue
+            }
+            return "0"
+        }
+
         var recordsKey = "customerRecords"
         fun getRecords(): ArrayList<CustomerData> {
             val cacheResults = CentralCache.get<ArrayList<CustomerData>>(AppContexts.get(), recordsKey, true)

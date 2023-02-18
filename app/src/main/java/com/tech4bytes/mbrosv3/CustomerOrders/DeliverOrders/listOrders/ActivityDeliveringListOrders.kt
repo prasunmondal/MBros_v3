@@ -40,7 +40,7 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
             val entry = layoutInflater.inflate(R.layout.activity_delivering_list_fragment_order_details, null)
 
             val seqNoElement = entry.findViewById<AppCompatTextView>(R.id.activity_due_show_amount)
-            val nameElement = entry.findViewById<AppCompatTextView>(R.id.activity_due_show_name)
+            val nameElement = entry.findViewById<AppCompatTextView>(R.id.fragment_actibity_login_roles_role)
             val pcElement = entry.findViewById<AppCompatTextView>(R.id.activity_delivering_deliver_fragment_order_pc)
             val kgElement = entry.findViewById<AppCompatTextView>(R.id.activity_delivering_deliver_fragment_order_kg)
 

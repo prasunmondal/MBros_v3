@@ -3,7 +3,6 @@ package com.tech4bytes.mbrosv3.Customer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
@@ -26,7 +25,7 @@ class DueShow : AppCompatActivity() {
             val layoutInflater = LayoutInflater.from(AppContexts.get())
             val entry = layoutInflater.inflate(R.layout.activity_due_show_entry, null)
 
-            var nameElement = entry.findViewById<TextView>(R.id.activity_due_show_name)
+            var nameElement = entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role)
             var amountElement = entry.findViewById<TextView>(R.id.activity_due_show_amount)
 
             nameElement.text = it.name

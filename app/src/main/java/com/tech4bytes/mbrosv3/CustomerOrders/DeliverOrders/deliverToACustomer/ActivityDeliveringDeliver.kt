@@ -71,8 +71,10 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         UIUtils.setUIElementValue(this, paidElement, record.paid)
         UIUtils.setUIElementValue(this, balanceDueElement, CustomerData.getLastDue(record.name))
 
-        if(RolesUtils.doesHaveRole(Roles.ADMIN))
+        if(RolesUtils.doesHaveRole(Roles.ADMIN)) {
             UIUtils.setUIElementValue(this, rate, record.rate)
+            UIUtils.setUIElementValue(this, todaysAmountElement, record.todaysAmount)
+        }
 
         if (RolesModel.isEligibleToViewHiddenDue() || CustomerKYC.showBalance(UIUtils.getUIElementValue(nameElement))) {
             UIUtils.setUIElementValue(this, prevDueElement, record.prevDue)

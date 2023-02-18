@@ -46,6 +46,7 @@ class ActivityLogin : AppCompatActivity() {
 
         val container = findViewById<LinearLayout>(R.id.activity_login_roles_container)
         if(roles.size == 1) {
+            // if the user has only one role, directly go to the home page.
             goToHomePageAsPerRole(roles[0])
         } else {
             roles.forEach { role ->

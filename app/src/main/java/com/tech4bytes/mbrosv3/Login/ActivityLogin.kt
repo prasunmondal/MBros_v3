@@ -8,11 +8,7 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.reflect.TypeToken
-import com.prasunmondal.postjsontosheets.clients.get.Get
-import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
-import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.DueShow
@@ -32,8 +28,6 @@ import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
  */
 class ActivityLogin : AppCompatActivity() {
 
-    val loginRoleKey: String = "loginRoleKey"
-
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +35,7 @@ class ActivityLogin : AppCompatActivity() {
         AppContexts.set(this)
         AppUtils.logError()
 
-        val roles = getRoles()
+        val roles = RolesUtils.getRoles()
         LogMe.log("Got Role: $roles")
 
         val container = findViewById<LinearLayout>(R.id.activity_login_roles_container)
@@ -121,52 +115,9 @@ class ActivityLogin : AppCompatActivity() {
         finish()
     }
 
+
     private fun getPhoneId(): String {
         return Secure.getString(applicationContext.contentResolver,
             Secure.ANDROID_ID);
-    }
-
-    fun getRoles(useCache: Boolean = true): MutableList<Roles> {
-        val cacheResults = CentralCache.get<MutableList<Roles>>(AppContexts.get(), loginRoleKey, useCache)
-
-        return if (cacheResults != null) {
-            cacheResults
-        } else {
-            val resultFromServer = getRoleFromServer()
-
-            CentralCache.put(loginRoleKey, resultFromServer)
-            resultFromServer
-        }
-    }
-
-    private fun getRoleFromServer(): MutableList<Roles> {
-        // val waitDialog = ProgressDialog.show(AppContexts.get(), "Please Wait", "লোড হচ্ছে", true)
-        val result: GetResponse = Get.builder()
-            .scriptId(ProjectConfig.dBServerScriptURL)
-            .sheetId(ProjectConfig.DB_SHEET_ID)
-            .tabName(Config.SHEET_TAB_NAME)
-            .build().execute()
-
-        val deviceList = result.parseToObject<RolesModel>(result.getRawResponse(), object: TypeToken<ArrayList<RolesModel>?>() {}.type)
-        deviceList.sortBy { it.id }
-        deviceList.reverse()
-
-        deviceList.forEach {
-            LogMe.log(it.toString())
-        }
-
-        val listOfRoles = mutableListOf<Roles>()
-        deviceList.forEach {
-            if(getPhoneId() == it.device_id) {
-                LogMe.log(it.roles)
-                LogMe.log(it.roles.split(",").toString())
-                it.roles.split(",").forEach { role ->
-                    listOfRoles.add(Roles.valueOf(role.trim()))
-                }
-            }
-        }
-
-        // waitDialog!!.dismiss()
-        return listOfRoles
     }
 }

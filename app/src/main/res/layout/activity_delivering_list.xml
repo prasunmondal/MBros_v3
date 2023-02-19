@@ -42,6 +42,24 @@
         app:layout_constraintStart_toStartOf="@+id/scrollView2">
 
         <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="#0363F4"
+            android:onClick="delivering_list_refresh_btn"
+            app:srcCompat="@android:drawable/ic_popup_sync" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="#F15044"
+            android:onClick="onClickGoToLoadPageButton"
+            app:srcCompat="@android:drawable/stat_sys_download" />
+
+        <ImageButton
             android:id="@+id/imageButton3"
             android:layout_width="40dp"
             android:layout_height="match_parent"
@@ -50,15 +68,6 @@
             android:onClick="onClickRefuelButton"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/transparent_fuel_icon_gas_station_icon_reneweable_energy_icon_5f52f25bdf0141_4368181815992715159134" />
-
-        <ImageButton
-            android:id="@+id/imageButton2"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:backgroundTint="#0363F4"
-            android:onClick="delivering_list_refresh_btn"
-            app:srcCompat="@android:drawable/ic_popup_sync" />
 
         <ImageButton
             android:id="@+id/imageButton4"

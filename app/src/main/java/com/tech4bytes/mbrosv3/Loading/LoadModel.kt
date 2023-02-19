@@ -3,6 +3,7 @@ package com.tech4bytes.mbrosv3.Loading
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
+import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.reflect.TypeToken
 import com.prasunmondal.postjsontosheets.clients.delete.Delete
 import com.prasunmondal.postjsontosheets.clients.get.Get
@@ -74,8 +75,8 @@ data class LoadModel(var id: String,
             return when (attribute) {
                 LoadModel::requiredPc -> view.findViewById<TextView>(R.id.activity_delivering_load_requiredPc)
                 LoadModel::requiredKg -> view.findViewById<TextView>(R.id.activity_delivering_load_requiredKg)
-                LoadModel::actualPc -> view.findViewById<EditText>(R.id.activity_delivering_load_actualPc)
-                LoadModel::actualKg -> view.findViewById<EditText>(R.id.activity_delivering_load_actualKg)
+                LoadModel::actualPc -> view.findViewById<TextInputEditText>(R.id.activity_delivering_load_actualPc)
+                LoadModel::actualKg -> view.findViewById<TextInputEditText>(R.id.activity_delivering_load_actualKg)
                 else -> null!!
             }
         }

@@ -12,6 +12,7 @@ import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.ActivityDeliveringDeliver
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
+import com.tech4bytes.mbrosv3.Loading.ActivityDeliveringLoad
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
@@ -91,6 +92,11 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
 
     fun onClickDoneDeliveryButton(view: View) {
         val switchActivityIntent = Intent(this, ActivityGetFinalKm::class.java)
+        startActivity(switchActivityIntent)
+    }
+
+    fun onClickGoToLoadPageButton(view: View) {
+        val switchActivityIntent = Intent(this, ActivityDeliveringLoad::class.java)
         startActivity(switchActivityIntent)
     }
 }

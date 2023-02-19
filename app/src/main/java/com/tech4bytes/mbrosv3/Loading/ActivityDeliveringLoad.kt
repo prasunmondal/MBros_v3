@@ -31,16 +31,22 @@ class ActivityDeliveringLoad : AppCompatActivity() {
 
         val loadObj = LoadModel.get()
         showLoadOrderData(loadObj)
-        if(isLoadingComplete(loadObj)) {
-            goToDeliveringDeliverPage()
-        }
+//        if(isLoadingComplete(loadObj)) {
+//            goToDeliveringDeliverPage()
+//        }
     }
 
     private fun showLoadOrderData(loadObj: LoadModel) {
         val loadOrderKg = loadObj.requiredKg
         val loadOrderPc = loadObj.requiredPc
+        val loadActualPc = loadObj.actualPc
+        val loadActualKg = loadObj.actualKg
         UIUtils.setUIElementValue(this, LoadModel.getUiElementFromLoadingPage(view, LoadModel::requiredPc), loadOrderPc)
         UIUtils.setUIElementValue(this, LoadModel.getUiElementFromLoadingPage(view, LoadModel::requiredKg), loadOrderKg)
+        LogMe.log("Actual Pc: " + loadObj.actualPc)
+        LogMe.log("Actual Kg: " + loadObj.actualKg)
+        UIUtils.setUIElementValue(this, LoadModel.getUiElementFromLoadingPage(view, LoadModel::actualPc), loadActualPc)
+        UIUtils.setUIElementValue(this, LoadModel.getUiElementFromLoadingPage(view, LoadModel::actualKg), loadActualKg)
     }
 
     private fun addListeners() {

@@ -87,7 +87,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
 
             val loadData = LoadModel.get(useCache)
             val loadedAvgWt = NumberUtils.getDoubleOrZero(loadData.actualKg) / NumberUtils.getDoubleOrZero(loadData.actualPc)
-            val shortage = deliveredAvgWt / loadedAvgWt
+            val shortage = (loadedAvgWt - deliveredAvgWt) * 100 / loadedAvgWt
             UIUtils.setUIElementValue(this, projectedShortageElement, "${WeightUtils.roundOff3places(shortage)}")
         } catch (e: Exception) {
             UIUtils.setUIElementValue(this, projectedShortageElement, "N/A")

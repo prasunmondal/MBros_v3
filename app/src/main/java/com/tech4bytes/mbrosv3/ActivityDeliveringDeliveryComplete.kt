@@ -1,9 +1,13 @@
 package com.tech4bytes.mbrosv3
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.tech4bytes.mbrosv3.AppData.AppUtils
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
+import com.tech4bytes.mbrosv3.Login.Roles
+import com.tech4bytes.mbrosv3.Login.RolesUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 
 class ActivityDeliveringDeliveryComplete : AppCompatActivity() {
@@ -15,6 +19,15 @@ class ActivityDeliveringDeliveryComplete : AppCompatActivity() {
     }
 
     fun closeApp(view: View) {
-        this.finishAffinity()
+        if(RolesUtils.doesHaveRole(Roles.COLLECTOR) || RolesUtils.doesHaveRole(Roles.ADMIN))
+            goToDeliveringListPage()
+        else
+            this.finishAffinity()
+    }
+
+    fun goToDeliveringListPage() {
+        val switchActivityIntent = Intent(this, ActivityDeliveringListOrders::class.java)
+        startActivity(switchActivityIntent)
+        finish()
     }
 }

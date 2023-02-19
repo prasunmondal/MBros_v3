@@ -71,6 +71,8 @@ class CentralCache {
                 val cacheObj = classElements[cacheObjectKey]!!
                 if(cacheObj.expiryTime.isBefore(LocalDateTime.now())) {
                     LogMe.log("Data Expired (key:$cacheObjectKey)- Local Memory: ${cacheObj.toString()}")
+                    LogMe.log("Deleting cache data")
+                    classElements.remove(cacheObjectKey)
                     return null
                 }
                 return cacheObj.content as T
@@ -83,6 +85,8 @@ class CentralCache {
                 val cacheObj = classElements[cacheObjectKey]!!
                 if(cacheObj.expiryTime.isBefore(LocalDateTime.now())) {
                     LogMe.log("Data Expired (key:$cacheObjectKey)- Local Memory")
+                    LogMe.log("Deleting cache data")
+                    classElements.remove(cacheObjectKey)
                     return null
                 }
                 return cacheObj.content as T

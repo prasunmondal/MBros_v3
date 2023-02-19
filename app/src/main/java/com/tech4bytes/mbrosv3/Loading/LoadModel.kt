@@ -1,6 +1,5 @@
 package com.tech4bytes.mbrosv3.Loading
 
-import android.app.ProgressDialog
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
@@ -10,7 +9,6 @@ import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
-import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
@@ -22,7 +20,9 @@ data class LoadModel(var id: String,
                      var requiredPc: String,
                      var actualPc: String = "",
                      var actualKg: String = "",
-                     var loadingStatus: String = ""
+                     var loadingStatus: String = "",
+                     var farmRate: String = "",
+                     var bufferPrice: String = ""
 ): java.io.Serializable {
 
     fun isDone(): Boolean {

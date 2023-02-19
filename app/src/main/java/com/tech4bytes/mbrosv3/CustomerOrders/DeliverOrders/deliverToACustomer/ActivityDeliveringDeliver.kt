@@ -302,6 +302,7 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
     private fun goToActivityDeliveringDeliveryComplete() {
         val switchActivityIntent = Intent(this, ActivityDeliveringDeliveryComplete::class.java)
         startActivity(switchActivityIntent)
+        finishAffinity()
     }
 
     fun <T> getAllAttributesOfClass(): ArrayList<KMutableProperty1<T, String>> {

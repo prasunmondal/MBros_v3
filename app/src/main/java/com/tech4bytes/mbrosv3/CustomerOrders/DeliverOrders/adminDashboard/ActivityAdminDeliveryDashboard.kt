@@ -98,4 +98,17 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         CentralCache.invalidateFullCache()
         CustomerData.finalizeDelivers()
     }
+
+    fun onClickSaveRate(view: View) {
+        val loadData = LoadModel.get(true)
+        val loadDetails = LoadModel(loadData.id,
+            loadData.requiredKg,
+            loadData.requiredPc,
+            loadData.actualPc,
+            loadData.actualKg,
+            loadData.loadingStatus,
+            loadData.farmRate,
+            loadData.bufferPrice)
+        LoadModel.save(loadDetails)
+    }
 }

@@ -72,7 +72,8 @@ class CentralCache {
                 if(cacheObj.expiryTime.isBefore(LocalDateTime.now())) {
                     LogMe.log("Data Expired (key:$cacheObjectKey)- Local Memory: ${cacheObj.toString()}")
                     LogMe.log("Deleting cache data")
-                    classElements.remove(cacheObjectKey)
+                    centralCache.cache[cacheClassKey]!!.remove(cacheObjectKey)
+                    centralCache.saveCacheDataToFile()
                     return null
                 }
                 return cacheObj.content as T
@@ -86,7 +87,8 @@ class CentralCache {
                 if(cacheObj.expiryTime.isBefore(LocalDateTime.now())) {
                     LogMe.log("Data Expired (key:$cacheObjectKey)- Local Memory")
                     LogMe.log("Deleting cache data")
-                    classElements.remove(cacheObjectKey)
+                    centralCache.cache[cacheClassKey]!!.remove(cacheObjectKey)
+                    centralCache.saveCacheDataToFile()
                     return null
                 }
                 return cacheObj.content as T

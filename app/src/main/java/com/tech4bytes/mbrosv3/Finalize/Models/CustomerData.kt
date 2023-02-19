@@ -8,8 +8,9 @@ import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 
-class CustomerData {
+class CustomerData: java.io.Serializable {
     var orderId = ""
     var timestamp = ""
     var name = ""
@@ -96,8 +97,9 @@ class CustomerData {
 
         private var recordsKey = "customerRecords"
         fun getRecords(): ArrayList<CustomerData> {
+            LogMe.log("Getting delivery records")
             val cacheResults = CentralCache.get<ArrayList<CustomerData>>(AppContexts.get(), recordsKey, true)
-
+            LogMe.log("Getting delivery records: Cache Hit: " + (cacheResults!=null))
             return if (cacheResults != null) {
                 cacheResults
             } else {

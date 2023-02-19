@@ -44,6 +44,7 @@ class UIUtils: AppCompatActivity() {
                 MaterialTextView::class.simpleName -> (uIElement as TextView).text = value
 
                 AppCompatEditText::class.simpleName -> (uIElement as EditText).setText(value)
+                TextInputEditText::class.simpleName -> (uIElement as TextInputEditText).setText(value)
 
                 Switch::class.simpleName -> (uIElement as Switch).isChecked = value.toBoolean()
                 SwitchCompat::class.simpleName -> (uIElement as SwitchCompat).isChecked = value.toBoolean()

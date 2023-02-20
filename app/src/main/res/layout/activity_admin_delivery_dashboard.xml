@@ -62,7 +62,7 @@
                             android:layout_marginStart="30dp"
                             android:text="0"
                             android:textColor="#D8EEF8"
-                            android:textSize="20sp" />
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/textView16"
@@ -71,7 +71,7 @@
                             android:layout_marginStart="10dp"
                             android:text="pc"
                             android:textColor="#D8EEF8"
-                            android:textSize="20sp" />
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/activity_admin_delivery_dashboard_loaded_kg"
@@ -80,7 +80,7 @@
                             android:layout_marginStart="30dp"
                             android:text="0.00"
                             android:textColor="#D8EEF8"
-                            android:textSize="20sp" />
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/textView18"
@@ -89,7 +89,7 @@
                             android:layout_marginStart="10dp"
                             android:text="kg"
                             android:textColor="#D8EEF8"
-                            android:textSize="20sp" />
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/activity_admin_delivery_dashboard_total_loaded_avg_wt"

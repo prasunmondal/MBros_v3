@@ -51,6 +51,43 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/activity_admin_delivery_dashboard_load_account"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:inputType="textPersonName"
+                            android:text="Account"
+                            android:textColor="#FFFFFF" />
+
+                        <EditText
+                            android:id="@+id/activity_admin_delivery_dashboard_load_company"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:inputType="textPersonName"
+                            android:text="Company"
+                            android:textColor="#FFFFFF" />
+
+                        <EditText
+                            android:id="@+id/activity_admin_delivery_dashboard_load_company_branch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:inputType="textPersonName"
+                            android:text="Branch"
+                            android:textColor="#FFFFFF" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:orientation="horizontal"
                         android:paddingHorizontal="10dp"
                         android:paddingBottom="10dp">
@@ -125,8 +162,8 @@
                             android:layout_weight=".33"
                             android:inputType="textPersonName"
                             android:minHeight="48dp"
-                            android:text="FR"
-                            android:textColor="#B4DEF1" />
+                            android:textColor="#B4DEF1"
+                            android:tooltipText="FR" />
 
                         <EditText
                             android:id="@+id/activity_admin_delivery_dashboard_buffer_price"
@@ -135,8 +172,8 @@
                             android:layout_weight=".33"
                             android:inputType="textPersonName"
                             android:minHeight="48dp"
-                            android:text="Buffer"
-                            android:textColor="#B4DEF1" />
+                            android:textColor="#B4DEF1"
+                            android:tooltipText="Buffer" />
 
                         <Button
                             android:id="@+id/activity_admin_delivery_dashboard_save_prices"

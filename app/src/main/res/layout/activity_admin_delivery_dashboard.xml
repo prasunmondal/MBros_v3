@@ -96,7 +96,6 @@
                             android:id="@+id/activity_admin_delivery_dashboard_total_pc"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="30dp"
                             android:text="0"
                             android:textColor="#D8EEF8"
                             android:textSize="16sp" />
@@ -153,7 +152,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:orientation="horizontal"
-                        android:paddingHorizontal="40dp">
+                        android:paddingHorizontal="10dp">
 
                         <EditText
                             android:id="@+id/activity_admin_delivery_dashboard_farmrate"

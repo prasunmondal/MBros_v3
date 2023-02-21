@@ -9,19 +9,19 @@ import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 
-data class LoadingCompany(val timestamp: Long,
+data class LoadingCompany(val timestamp: String,
                           val date: String,
                           val companyName: String,
                           val branch: String,
                           val account: String,
-                          val openingRate: String,
-                          val closingRate: String) {
+                          val farmrate: String,
+                          val bufferprice: String) {
 
     companion object {
 
-        fun get(): LoadingCompany? {
+        fun get(useCase: Boolean = true): LoadingCompany? {
             LogMe.log("Getting delivery records")
-            val cacheResults = CentralCache.get<LoadingCompany>(AppContexts.get(), LoadingCompanyConfig.SHEET_LOADING_COMPANY_DATA, true)
+            val cacheResults = CentralCache.get<LoadingCompany>(AppContexts.get(), LoadingCompanyConfig.SHEET_LOADING_COMPANY_DATA, useCase)
             LogMe.log("Getting delivery records: Cache Hit: " + (cacheResults!=null))
             return if (cacheResults != null) {
                 cacheResults
@@ -67,5 +67,9 @@ data class LoadingCompany(val timestamp: Long,
             else
                 recordsList[0]
         }
+    }
+
+    override fun toString(): String {
+        return "LoadingCompany(timestamp='$timestamp', date='$date', companyName='$companyName', branch='$branch', account='$account', farmrate='$farmrate', bufferprice='$bufferprice')"
     }
 }

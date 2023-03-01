@@ -7,6 +7,7 @@ import android.provider.Settings.Secure
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.mbrosv3.AppData.AppUtils
@@ -39,20 +40,24 @@ class ActivityLogin : AppCompatActivity() {
         LogMe.log("Got Role: $roles")
 
         val container = findViewById<LinearLayout>(R.id.activity_login_roles_container)
-        if(roles.size == 1) {
-            // if the user has only one role, directly go to the home page.
-            goToHomePageAsPerRole(roles[0])
+        if(roles.size == 0) {
+            logUnIdentifiedDevice()
         } else {
-            roles.forEach { role ->
-                val layoutInflater = LayoutInflater.from(AppContexts.get())
-                val entry = layoutInflater.inflate(R.layout.fragment_activity_login_roles, null)
+            if (roles.size == 1 && roles[0] == Roles.DELIVERY) {
+                // if the user has only one role, directly go to the home page.
+                goToHomePageAsPerRole(roles[0])
+            } else {
+                roles.forEach { role ->
+                    val layoutInflater = LayoutInflater.from(AppContexts.get())
+                    val entry = layoutInflater.inflate(R.layout.fragment_activity_login_roles, null)
 
-                entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).text = role.name
+                    entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).text = role.name
 
-                entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).setOnClickListener {
-                    goToHomePageAsPerRole(role)
+                    entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).setOnClickListener {
+                        goToHomePageAsPerRole(role)
+                    }
+                    container.addView(entry)
                 }
-                container.addView(entry)
             }
         }
     }
@@ -71,6 +76,7 @@ class ActivityLogin : AppCompatActivity() {
         val time = DateUtils.getCurrentTimestamp()
         val id = System.currentTimeMillis().toString()
 
+        Toast.makeText(this, "Registering Device: ${getPhoneId()}", Toast.LENGTH_LONG).show()
         val obj = RolesModel(id, time, getPhoneId(), Roles.UNIDENTIFIED.toString())
         PostObject.builder()
             .scriptId(ProjectConfig.dBServerScriptURL)

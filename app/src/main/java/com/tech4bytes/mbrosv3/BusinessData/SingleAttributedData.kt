@@ -9,6 +9,8 @@ import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
+import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ReflectionUtils
+import kotlin.reflect.KMutableProperty1
 
 data class SingleAttributedData(var timestamp: String = "",
                                 var date: String = "",
@@ -54,6 +56,17 @@ data class SingleAttributedData(var timestamp: String = "",
         fun save(obj: SingleAttributedData) {
             addRecordsToServer(obj)
             addRecordsToLocal(obj)
+        }
+
+        fun saveAttribute(kMutableProperty: KMutableProperty1<SingleAttributedData, String>, value: String) {
+            val obj = getRecords()
+            ReflectionUtils.setAttribute(obj, kMutableProperty, value)
+            save(obj)
+        }
+
+        fun getAttribute(kMutableProperty: KMutableProperty1<SingleAttributedData, String>): String {
+            val obj = getRecords()
+            return ReflectionUtils.readInstanceProperty(obj, kMutableProperty.name)
         }
 
         private fun getCombinedResultsFromList(list: List<SingleAttributedData>): SingleAttributedData {

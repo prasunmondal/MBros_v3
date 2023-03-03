@@ -8,8 +8,8 @@
     <LinearLayout
         android:id="@+id/activity_due_show_fragment_conntainer"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginVertical="8dp"
+        android:layout_height="60dp"
+        android:layout_marginVertical="20dp"
         android:background="#FFC107"
         android:foregroundGravity="center_vertical"
         android:gravity="center_vertical"

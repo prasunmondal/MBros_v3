@@ -31,38 +31,6 @@ data class LoadModel(var id: String,
     }
 
     companion object {
-//        fun get(useCache: Boolean = true): LoadModel {
-//            val cacheResults = CentralCache.get<LoadModel>(AppContexts.get(), LoadConfig.SHEET_TO_LOAD_DATA, useCache)
-//
-//            // TODO: Get the latest record after sorting by IDs
-//            return if (cacheResults != null) {
-//                cacheResults
-//            } else {
-//                val resultFromServer = getFromServer()
-//                CentralCache.put(LoadConfig.SHEET_TO_LOAD_DATA, resultFromServer)
-//                resultFromServer
-//            }
-//        }
-
-//        fun save(obj: LoadModel) {
-//            saveObjectsToServer(obj)
-//            saveToLocal(obj)
-//        }
-
-//        fun save(view: View) {
-//            val obj = getObjectFromUI(view)
-//            save(obj)
-//        }
-
-//        fun deleteAll() {
-//            Delete.builder()
-//                .scriptId(ProjectConfig.dBServerScriptURL)
-//                .sheetId(ProjectConfig.DB_SHEET_ID)
-//                .tabName(LoadConfig.SHEET_TO_LOAD_DATA)
-//                .build().execute()
-//            saveToLocal(null)
-//        }
-
         fun getUiElementFromOrderingPage(view: View, attribute: KMutableProperty1<LoadModel, *>): View {
             return when (attribute) {
                 LoadModel::requiredKg -> view.findViewById<TextView>(R.id.activity_get_order_estimates__load_kg)
@@ -79,42 +47,6 @@ data class LoadModel(var id: String,
                 LoadModel::actualKg -> view.findViewById<TextInputEditText>(R.id.activity_delivering_load_actualKg)
                 else -> null!!
             }
-        }
-
-//        private fun saveObjectsToServer(objects: LoadModel) {
-//            PostObject.builder()
-//                .scriptId(ProjectConfig.dBServerScriptURL)
-//                .sheetId(ProjectConfig.DB_SHEET_ID)
-//                .tabName(LoadConfig.SHEET_TO_LOAD_DATA)
-//                .dataObject(objects as Any)
-//                .build().execute()
-//        }
-//
-        private fun getObjectFromUI(view: View): LoadModel {
-            val id = System.currentTimeMillis()
-            return LoadModel(id.toString(),
-                UIUtils.getUIElementValue(getUiElementFromOrderingPage(view, LoadModel::requiredKg)),
-                UIUtils.getUIElementValue(getUiElementFromOrderingPage(view, LoadModel::requiredPc)))
-        }
-//
-//        private fun saveToLocal(objects: LoadModel?) {
-//            CentralCache.put(LoadConfig.SHEET_TO_LOAD_DATA, objects)
-//        }
-//
-        private fun getFromServer(): LoadModel {
-            // val waitDialog = ProgressDialog.show(AppContexts.get(), "Please Wait", "লোড হচ্ছে", true)
-            val result: GetResponse = Get.builder()
-                .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.DB_SHEET_ID)
-                .tabName(LoadConfig.SHEET_TO_LOAD_DATA)
-                .build().execute()
-
-            // waitDialog!!.dismiss()
-            val list: ArrayList<LoadModel>? = result.parseToObject(result.getRawResponse(),
-                object : TypeToken<ArrayList<LoadModel>?>() {}.type
-            )
-
-            return if(list !=null && list.isNotEmpty()) list[list.size - 1] else LoadModel("","","")
         }
     }
 }

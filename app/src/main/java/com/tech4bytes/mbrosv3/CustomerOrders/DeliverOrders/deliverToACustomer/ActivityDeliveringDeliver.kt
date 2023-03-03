@@ -59,8 +59,6 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         val paidElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::paid)!!
         val balanceDueElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::balanceDue)!!
 
-        var orderedPcText =
-
         // Set UI Values
         UIUtils.setUIElementValue(this, nameElement, record.name)
         UIUtils.setUIElementValue(this, orderedPcElement, record.orderedPc.ifEmpty { "--" })
@@ -85,6 +83,7 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
 
         showSellingDataValidation()
         validatePaid()
+        reCalculateNUpdateValues()
 
         // Add Listeners
         (rate as AppCompatEditText).doOnTextChanged { text, start, before, count ->

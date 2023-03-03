@@ -1,5 +1,7 @@
 package com.tech4bytes.mbrosv3.BusinessData
 
+import android.annotation.SuppressLint
+import android.provider.Settings
 import com.google.gson.reflect.TypeToken
 import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
@@ -12,7 +14,8 @@ import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ReflectionUtils
 import kotlin.reflect.KMutableProperty1
 
-data class SingleAttributedData(var timestamp: String = "",
+data class SingleAttributedData(var recordGeneratorDevice: String = "",
+                                var timestamp: String = "",
                                 var date: String = "",
                                 var openingFarmRate: String = "",
                                 var finalFarmRate: String = "",
@@ -54,6 +57,7 @@ data class SingleAttributedData(var timestamp: String = "",
         }
 
         fun save(obj: SingleAttributedData) {
+            obj.recordGeneratorDevice = getPhoneId()
             addRecordsToServer(obj)
             addRecordsToLocal(obj)
         }
@@ -97,6 +101,12 @@ data class SingleAttributedData(var timestamp: String = "",
 
         private fun addRecordsToLocal(obj: SingleAttributedData) {
             CentralCache.put(recordsKey, obj)
+        }
+
+        @SuppressLint("HardwareIds")
+        private fun getPhoneId(): String {
+            return Settings.Secure.getString(AppContexts.get().contentResolver,
+                Settings.Secure.ANDROID_ID);
         }
     }
 

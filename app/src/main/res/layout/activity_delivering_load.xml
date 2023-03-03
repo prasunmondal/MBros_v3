@@ -182,6 +182,62 @@
             </LinearLayout>
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView29"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom"
+                    android:paddingVertical="10dp"
+                    android:text="Price"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/activity_delivering_load_finalFarmRate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".5"
+                    android:inputType="number"
+                    android:minHeight="48dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp">
+
+                <TextView
+                    android:id="@+id/textView28"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom"
+                    android:paddingVertical="10dp"
+                    android:text="Buffer"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/activity_delivering_load_bufferRate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:inputType="number" />
+            </LinearLayout>
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout

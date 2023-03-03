@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.tech4bytes.mbrosv3.AppData.AppUtils
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
@@ -81,19 +82,12 @@ class ActivityDeliveringLoad : AppCompatActivity() {
     }
 
     private fun saveLoadActuals() {
-        val obj = getObjectFromUI(view)
-        obj.loadingStatus = LoadConfig.string_tag__loadingStatus_completed
-        LoadModel.save(obj)
-    }
-
-    private fun getObjectFromUI(view: View): LoadModel {
-        val id = System.currentTimeMillis()
-        return LoadModel(id.toString(),
-            UIUtils.getUIElementValue(LoadModel.getUiElementFromLoadingPage(view, LoadModel::requiredKg)),
-            UIUtils.getUIElementValue(LoadModel.getUiElementFromLoadingPage(view, LoadModel::requiredPc)),
-            UIUtils.getUIElementValue(LoadModel.getUiElementFromLoadingPage(view, LoadModel::actualPc)),
-            UIUtils.getUIElementValue(LoadModel.getUiElementFromLoadingPage(view, LoadModel::actualKg)),
-        )
+        val record = SingleAttributedData.getRecords()
+        record.actualLoadPc = UIUtils.getUIElementValue(LoadModel.getUiElementFromLoadingPage(view, LoadModel::actualPc))
+        record.actualLoadKg = UIUtils.getUIElementValue(LoadModel.getUiElementFromLoadingPage(view, LoadModel::actualKg))
+        record.finalFarmRate = findViewById<EditText>(R.id.activity_delivering_load_finalFarmRate).text.toString()
+        record.bufferRate = findViewById<EditText>(R.id.activity_delivering_load_bufferRate).text.toString()
+        SingleAttributedData.save(record)
     }
 
     fun goToDeliveringDeliverPage() {

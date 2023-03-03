@@ -74,13 +74,14 @@ data class SingleAttributedData(var recordGeneratorDevice: String = "",
         }
 
         private fun getCombinedResultsFromList(list: List<SingleAttributedData>): SingleAttributedData {
+            if(list.isEmpty()) return SingleAttributedData()
             return list[0]
         }
 
         private fun getRecordsFromServer(): SingleAttributedData {
             val result: GetResponse = Get.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.DB_FINALIZE_SHEET_ID)
+                .sheetId(ProjectConfig.DB_SHEET_ID)
                 .tabName(SHEET_TABNAME)
                 .build().execute()
 
@@ -93,7 +94,7 @@ data class SingleAttributedData(var recordGeneratorDevice: String = "",
         private fun addRecordsToServer(record: SingleAttributedData) {
             PostObject.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.DB_FINALIZE_SHEET_ID)
+                .sheetId(ProjectConfig.DB_SHEET_ID)
                 .tabName(SHEET_TABNAME)
                 .dataObject(record as Any)
                 .build().execute()

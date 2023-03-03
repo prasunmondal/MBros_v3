@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.ActivityDeliveringDeliveryComplete
 import com.tech4bytes.mbrosv3.AppData.AppUtils
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
@@ -72,6 +73,10 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         if(RolesUtils.doesHaveRole(Roles.ADMIN)) {
             UIUtils.setUIElementValue(this, rate, record.rate)
             UIUtils.setUIElementValue(this, todaysAmountElement, record.todaysAmount)
+        }
+
+        if(record.rate.isEmpty() && (RolesUtils.doesHaveRole(Roles.ADMIN) || RolesUtils.doesHaveRole(Roles.SHOW_RATES_IN_DELIVERY_PAGE))) {
+            UIUtils.setUIElementValue(this, rate, (SingleAttributedData.getRecords().finalFarmRate.toInt() + CustomerKYC.get(record.name)!!.rateDifference.toInt()).toString())
         }
 
         if (RolesModel.isEligibleToViewHiddenDue() || CustomerKYC.showBalance(UIUtils.getUIElementValue(nameElement))) {

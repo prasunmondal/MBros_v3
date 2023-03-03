@@ -7,7 +7,6 @@ import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
-import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -85,7 +84,7 @@ data class SingleAttributedData(var recordGeneratorDevice: String = "",
                 .tabName(SHEET_TABNAME)
                 .build().execute()
 
-            val recordsList = result.parseToObject<SingleAttributedData>(result.getRawResponse(), object: TypeToken<ArrayList<CustomerData>?>() {}.type)
+            val recordsList = result.parseToObject<SingleAttributedData>(result.getRawResponse(), object: TypeToken<ArrayList<SingleAttributedData>?>() {}.type)
             recordsList.sortBy { it.timestamp }
             recordsList.reverse()
             return getCombinedResultsFromList(recordsList)

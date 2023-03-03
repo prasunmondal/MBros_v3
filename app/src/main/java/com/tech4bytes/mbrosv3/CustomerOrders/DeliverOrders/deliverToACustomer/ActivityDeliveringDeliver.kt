@@ -3,6 +3,7 @@ package com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -77,6 +78,7 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
 
         if(record.rate.isEmpty() && (RolesUtils.doesHaveRole(Roles.ADMIN) || RolesUtils.doesHaveRole(Roles.SHOW_RATES_IN_DELIVERY_PAGE))) {
             UIUtils.setUIElementValue(this, rate, (SingleAttributedData.getRecords().finalFarmRate.toInt() + CustomerKYC.get(record.name)!!.rateDifference.toInt()).toString())
+            (rate as EditText).setTextColor(ContextCompat.getColor(this, R.color.red))
         }
 
         if (RolesModel.isEligibleToViewHiddenDue() || CustomerKYC.showBalance(UIUtils.getUIElementValue(nameElement))) {
@@ -95,6 +97,7 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
             validateSellingData()
             showSellingDataValidation()
             reCalculateNUpdateValues()
+            (rate as EditText).setTextColor(ContextCompat.getColor(this, R.color.black))
         }
         (deliveredPcElement as AppCompatEditText).doOnTextChanged { text, start, before, count ->
             showSellingDataValidation()

@@ -25,4 +25,6 @@
 
     <color name="verify_delivery_not_valid">#F8C52C</color>
     <color name="verify_delivery_valid">#9FE3A2</color>
+
+    <color name="red">#FF4141</color>
 </resources>

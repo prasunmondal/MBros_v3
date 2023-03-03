@@ -9,12 +9,13 @@ import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ReflectionUtils
 import kotlin.reflect.KMutableProperty1
 
 data class SingleAttributedData(var recordGeneratorDevice: String = "",
-                                var timestamp: String = "",
+                                var id: String = "",
                                 var date: String = "",
                                 var openingFarmRate: String = "",
                                 var finalFarmRate: String = "",
@@ -57,6 +58,8 @@ data class SingleAttributedData(var recordGeneratorDevice: String = "",
 
         fun save(obj: SingleAttributedData) {
             obj.recordGeneratorDevice = getPhoneId()
+            obj.id = System.currentTimeMillis().toString()
+            obj.date = DateUtils.getCurrentTimestamp()
             addRecordsToServer(obj)
             addRecordsToLocal(obj)
         }
@@ -85,7 +88,7 @@ data class SingleAttributedData(var recordGeneratorDevice: String = "",
                 .build().execute()
 
             val recordsList = result.parseToObject<SingleAttributedData>(result.getRawResponse(), object: TypeToken<ArrayList<SingleAttributedData>?>() {}.type)
-            recordsList.sortBy { it.timestamp }
+            recordsList.sortBy { it.id }
             recordsList.reverse()
             return getCombinedResultsFromList(recordsList)
         }

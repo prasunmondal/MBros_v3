@@ -1,10 +1,9 @@
 package com.tech4bytes.mbrosv3.Utils.Date
 
-import java.sql.Timestamp
+import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
-import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -20,6 +19,10 @@ class DateUtils {
             } else {
                 datetime
             }
+        }
+
+        fun getCurrentDateInString(): String {
+            return DateFormat.getDateTimeInstance().format(Date())
         }
 
         fun getDateFormat(): SimpleDateFormat {

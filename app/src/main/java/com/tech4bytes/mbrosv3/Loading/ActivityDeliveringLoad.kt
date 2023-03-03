@@ -83,8 +83,14 @@ class ActivityDeliveringLoad : AppCompatActivity() {
         val record = SingleAttributedData.getRecords()
         record.actualLoadPc = UIUtils.getUIElementValue(LoadModel.getUiElementFromLoadingPage(view, LoadModel::actualPc))
         record.actualLoadKg = UIUtils.getUIElementValue(LoadModel.getUiElementFromLoadingPage(view, LoadModel::actualKg))
-        record.finalFarmRate = findViewById<EditText>(R.id.activity_delivering_load_finalFarmRate).text.toString()
-        record.bufferRate = findViewById<EditText>(R.id.activity_delivering_load_bufferRate).text.toString()
+
+        val finalFarmRateFromUI = findViewById<EditText>(R.id.activity_delivering_load_finalFarmRate).text.toString()
+        val bufferRateFromUI = findViewById<EditText>(R.id.activity_delivering_load_finalFarmRate).text.toString()
+        if(finalFarmRateFromUI.isNotEmpty())
+            record.finalFarmRate = finalFarmRateFromUI
+        if(bufferRateFromUI.isNotEmpty())
+            record.bufferRate = bufferRateFromUI
+
         SingleAttributedData.save(record)
     }
 

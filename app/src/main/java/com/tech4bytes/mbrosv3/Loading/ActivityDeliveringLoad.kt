@@ -29,23 +29,21 @@ class ActivityDeliveringLoad : AppCompatActivity() {
         AppUtils.logError()
 
         addListeners()
-
-        val loadObj = LoadModel.get()
-        showLoadOrderData(loadObj)
+        showLoadOrderData()
 //        if(isLoadingComplete(loadObj)) {
 //            goToDeliveringDeliverPage()
 //        }
     }
 
-    private fun showLoadOrderData(loadObj: LoadModel) {
-        val loadOrderKg = loadObj.requiredKg
-        val loadOrderPc = loadObj.requiredPc
-        val loadActualPc = loadObj.actualPc
-        val loadActualKg = loadObj.actualKg
+    private fun showLoadOrderData() {
+        val metadataObj = SingleAttributedData.getRecords()
+        val loadOrderPc = metadataObj.estimatedLoadPc
+        val loadOrderKg = metadataObj.estimatedLoadKg
+        val loadActualPc = metadataObj.actualLoadPc
+        val loadActualKg = metadataObj.actualLoadKg
+
         UIUtils.setUIElementValue(this, LoadModel.getUiElementFromLoadingPage(view, LoadModel::requiredPc), loadOrderPc)
         UIUtils.setUIElementValue(this, LoadModel.getUiElementFromLoadingPage(view, LoadModel::requiredKg), loadOrderKg)
-        LogMe.log("Actual Pc: " + loadObj.actualPc)
-        LogMe.log("Actual Kg: " + loadObj.actualKg)
         UIUtils.setUIElementValue(this, LoadModel.getUiElementFromLoadingPage(view, LoadModel::actualPc), loadActualPc)
         UIUtils.setUIElementValue(this, LoadModel.getUiElementFromLoadingPage(view, LoadModel::actualKg), loadActualKg)
     }

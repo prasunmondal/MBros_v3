@@ -93,7 +93,7 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     private fun goToDeliveryRole() {
-        val loadObj = LoadModel.get()
+//        val loadObj = LoadModel.get()
         goToDeliveringDeliverPage()
 //        if(ActivityDeliveringLoad.isLoadingComplete(loadObj)) {
 //            goToDeliveringDeliverPage()

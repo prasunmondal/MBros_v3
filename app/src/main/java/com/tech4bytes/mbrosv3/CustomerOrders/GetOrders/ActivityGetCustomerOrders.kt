@@ -14,6 +14,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.doOnTextChanged
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.tech4bytes.mbrosv3.AppData.AppUtils
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.Loading.LoadModel
 import com.tech4bytes.mbrosv3.R
@@ -45,9 +46,9 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
     }
 
     private fun setTotalLoadOrder() {
-        val loadOrderObj = LoadModel.get(true)
-        val kg = loadOrderObj.requiredKg + ""
-        val pc = loadOrderObj.requiredPc + ""
+        val metadataObj = SingleAttributedData.getRecords()
+        val kg = metadataObj.estimatedLoadKg + ""
+        val pc = metadataObj.estimatedLoadPc + ""
         UIUtils.setUIElementValue(this, LoadModel.getUiElementFromOrderingPage(containerView, LoadModel::requiredKg), kg)
         UIUtils.setUIElementValue(this, LoadModel.getUiElementFromOrderingPage(containerView, LoadModel::requiredPc), pc)
     }
@@ -180,7 +181,12 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         Toast.makeText(this, "Saving Data", Toast.LENGTH_SHORT).show()
         GetCustomerOrders.deleteAll()
         GetCustomerOrders.save(createNGetObjectsFromUI())
-        LoadModel.save(containerView)
+
+        val metadataObj = SingleAttributedData.getRecords()
+        metadataObj.estimatedLoadPc = UIUtils.getUIElementValue(LoadModel.getUiElementFromOrderingPage(view, LoadModel::requiredPc))
+        metadataObj.estimatedLoadKg = UIUtils.getUIElementValue(LoadModel.getUiElementFromOrderingPage(view, LoadModel::requiredKg))
+
+        SingleAttributedData.save(metadataObj)
         Toast.makeText(this, "Data save complete!", Toast.LENGTH_LONG).show()
     }
 }

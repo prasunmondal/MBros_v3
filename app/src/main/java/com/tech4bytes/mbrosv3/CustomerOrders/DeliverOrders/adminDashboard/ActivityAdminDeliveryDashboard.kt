@@ -11,7 +11,6 @@ import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
-import com.tech4bytes.mbrosv3.Loading.LoadModel
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -35,12 +34,12 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         val totalKgElement = findViewById<TextView>(R.id.activity_admin_delivery_dashboard_loaded_kg)
         val avgWtElement = findViewById<TextView>(R.id.activity_admin_delivery_dashboard_total_loaded_avg_wt)
 
-        val loadData = LoadModel.get(useCache)
-        UIUtils.setUIElementValue(this, totalPcElement, loadData.actualPc)
-        UIUtils.setUIElementValue(this, totalKgElement, loadData.actualKg)
+        val loadMetadata = SingleAttributedData.getRecords(useCache)
+        UIUtils.setUIElementValue(this, totalPcElement, loadMetadata.actualLoadPc)
+        UIUtils.setUIElementValue(this, totalKgElement, loadMetadata.actualLoadKg)
 
         try {
-            val avgWt = NumberUtils.getDoubleOrZero(loadData.actualKg) / NumberUtils.getDoubleOrZero(loadData.actualPc)
+            val avgWt = NumberUtils.getDoubleOrZero(loadMetadata.actualLoadKg) / NumberUtils.getDoubleOrZero(loadMetadata.actualLoadPc)
             UIUtils.setUIElementValue(this, avgWtElement, "${WeightUtils.roundOff3places(avgWt)}")
         } catch (e: Exception) {
             UIUtils.setUIElementValue(this, avgWtElement, "---")
@@ -72,7 +71,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     }
 
     fun updateDashboard(useCache: Boolean) {
-        LoadModel.get(useCache)
+        SingleAttributedData.getRecords(useCache)
         DeliverCustomerOrders.get(useCache)
         GetCustomerOrders.get(useCache)
 
@@ -88,8 +87,8 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
             val deliveredKg = DeliverCustomerOrders.getTotalKgDelivered()
             val deliveredAvgWt = deliveredKg / deliveredPc
 
-            val loadData = LoadModel.get(useCache)
-            val loadedAvgWt = NumberUtils.getDoubleOrZero(loadData.actualKg) / NumberUtils.getDoubleOrZero(loadData.actualPc)
+            val metadataObj = SingleAttributedData.getRecords()
+            val loadedAvgWt = NumberUtils.getDoubleOrZero(metadataObj.actualLoadKg) / NumberUtils.getDoubleOrZero(metadataObj.actualLoadPc)
             val shortage = (loadedAvgWt - deliveredAvgWt) * 100 / loadedAvgWt
             UIUtils.setUIElementValue(this, projectedShortageElement, "${WeightUtils.roundOff3places(shortage)}")
         } catch (e: Exception) {

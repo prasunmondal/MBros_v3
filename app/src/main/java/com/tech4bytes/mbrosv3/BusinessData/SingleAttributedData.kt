@@ -42,9 +42,9 @@ data class SingleAttributedData(var recordGeneratorDevice: String = "",
         private var recordsKey = "SingleAttributedMetadata"
         private var SHEET_TABNAME = "metadata"
 
-        fun getRecords(): SingleAttributedData {
+        fun getRecords(useCache: Boolean = true): SingleAttributedData {
             LogMe.log("Getting delivery records")
-            val cacheResults = CentralCache.get<SingleAttributedData>(AppContexts.get(), recordsKey, true)
+            val cacheResults = CentralCache.get<SingleAttributedData>(AppContexts.get(), recordsKey, useCache)
             LogMe.log("Getting delivery records: Cache Hit: " + (cacheResults!=null))
             return if (cacheResults != null) {
                 cacheResults

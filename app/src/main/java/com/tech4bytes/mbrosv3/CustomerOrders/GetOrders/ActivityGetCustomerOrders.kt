@@ -50,9 +50,6 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
                 createEstimatesView(masterList.nameEng)
             }
         }
-        GetCustomerOrders.get().forEach {
-            createEstimatesView(it)
-        }
         setTotalLoadOrder()
         updateTotalPc()
         updateTotalKg()

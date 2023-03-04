@@ -36,7 +36,20 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
 
         containerView = findViewById<LinearLayout>(R.id.activity_get_order_estimates__parent_view)
 
-        populateCustomerList()
+//        populateCustomerList()
+
+        CustomerKYC.getAllCustomers().forEach { masterList ->
+            var isInOrderList = false
+            GetCustomerOrders.get().forEach { orderList ->
+                if(masterList.nameEng == orderList.name) {
+                    createEstimatesView(orderList)
+                    isInOrderList = true
+                }
+            }
+            if(!isInOrderList && masterList.isActiveCustomer.toBoolean()) {
+                createEstimatesView(masterList.nameEng)
+            }
+        }
         GetCustomerOrders.get().forEach {
             createEstimatesView(it)
         }
@@ -123,30 +136,30 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         return namesList
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    fun populateCustomerList() {
-        val dropDown = findViewById<MaterialAutoCompleteTextView>(R.id.activity_get_order_estimates__customer_selection_dropdown)
-        val adapter: ArrayAdapter<String> =
-            ArrayAdapter<String>(AppContexts.get(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, getCustomerNamesAsStringList())
-        (dropDown as MaterialAutoCompleteTextView).setAdapter(adapter)
-
-        dropDown.setOnTouchListener { _, _ ->
-                dropDown.showDropDown()
-                dropDown.requestFocus()
-                false
-            }
-
-        dropDown.setOnItemClickListener { parent, arg1, position, arg3 ->
-            val item = parent.getItemAtPosition(position)
-            LogMe.log("Selected Customer: $item")
-            if(!isOnList(item.toString())) {
-                createEstimatesView(item.toString())
-            } else {
-                Toast.makeText(this, "Already on list", Toast.LENGTH_SHORT).show()
-            }
-            dropDown.text.clear()
-        }
-    }
+//    @SuppressLint("ClickableViewAccessibility")
+//    fun populateCustomerList() {
+//        val dropDown = findViewById<MaterialAutoCompleteTextView>(R.id.activity_get_order_estimates__customer_selection_dropdown)
+//        val adapter: ArrayAdapter<String> =
+//            ArrayAdapter<String>(AppContexts.get(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, getCustomerNamesAsStringList())
+//        (dropDown as MaterialAutoCompleteTextView).setAdapter(adapter)
+//
+//        dropDown.setOnTouchListener { _, _ ->
+//                dropDown.showDropDown()
+//                dropDown.requestFocus()
+//                false
+//            }
+//
+//        dropDown.setOnItemClickListener { parent, arg1, position, arg3 ->
+//            val item = parent.getItemAtPosition(position)
+//            LogMe.log("Selected Customer: $item")
+//            if(!isOnList(item.toString())) {
+//                createEstimatesView(item.toString())
+//            } else {
+//                Toast.makeText(this, "Already on list", Toast.LENGTH_SHORT).show()
+//            }
+//            dropDown.text.clear()
+//        }
+//    }
 
     fun createNGetObjectsFromUI(): List<GetCustomerOrders> {
         val list = mutableListOf<GetCustomerOrders>()

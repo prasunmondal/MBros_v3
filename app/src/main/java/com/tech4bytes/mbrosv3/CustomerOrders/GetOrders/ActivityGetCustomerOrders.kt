@@ -74,11 +74,11 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
 
         val pcElement = entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_pc)
         val kgElement = entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_kg)
-        UIUtils.setUIElementValue(this, entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_sl_no), order.seqNo)
+//        UIUtils.setUIElementValue(this, entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_sl_no), order.seqNo)
         UIUtils.setUIElementValue(this, entry.findViewById<AppCompatTextView>(R.id.fragment_customer_order_name), order.name)
         UIUtils.setUIElementValue(this, pcElement, order.estimatePc)
         UIUtils.setUIElementValue(this, kgElement, order.estimateKg)
-        UIUtils.setUIElementValue(this, entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_rate), order.rate)
+//        UIUtils.setUIElementValue(this, entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_rate), order.rate)
 
         pcElement.doOnTextChanged { text, start, before, count ->
             updateTotalPc()
@@ -88,13 +88,13 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
             updateTotalKg()
         }
 
-        val deleteBtn = entry.findViewById<ImageButton>(R.id.fragment_customer_order_delete_record_button)
-        deleteBtn.setOnClickListener {
-            uiEntriesList.remove(entry)
-            listContainer.removeView(entry)
-            updateTotalPc()
-            updateTotalKg()
-        }
+//        val deleteBtn = entry.findViewById<ImageButton>(R.id.fragment_customer_order_delete_record_button)
+//        deleteBtn.setOnClickListener {
+//            uiEntriesList.remove(entry)
+//            listContainer.removeView(entry)
+//            updateTotalPc()
+//            updateTotalKg()
+//        }
 
         uiEntriesList.add(entry)
         listContainer.addView(entry)
@@ -161,17 +161,17 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
     fun createNGetObjectsFromUI(): List<GetCustomerOrders> {
         val list = mutableListOf<GetCustomerOrders>()
         uiEntriesList.forEach {
-            val seqNo = UIUtils.getUIElementValue(it.findViewById<AppCompatEditText>(R.id.fragment_customer_order_sl_no))
+//            val seqNo = UIUtils.getUIElementValue(it.findViewById<AppCompatEditText>(R.id.fragment_customer_order_sl_no))
             val name = UIUtils.getUIElementValue(it.findViewById<AppCompatTextView>(R.id.fragment_customer_order_name))
             val pc = UIUtils.getUIElementValue(it.findViewById<AppCompatEditText>(R.id.fragment_customer_order_pc))
             val kg = UIUtils.getUIElementValue(it.findViewById<AppCompatEditText>(R.id.fragment_customer_order_kg))
-            val rate = UIUtils.getUIElementValue(it.findViewById<AppCompatEditText>(R.id.fragment_customer_order_rate))
+//            val rate = UIUtils.getUIElementValue(it.findViewById<AppCompatEditText>(R.id.fragment_customer_order_rate))
             val obj = GetCustomerOrders(id = System.currentTimeMillis().toString(),
                 name = name,
-                seqNo = seqNo,
+                seqNo = "",
                 estimatePc = pc,
                 estimateKg = kg,
-                rate = rate,
+                rate = "",
                 prevDue = "0")
             list.add(obj)
         }

@@ -1,73 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingHorizontal="10dp"
+        android:layout_height="50dp"
+        android:layout_marginVertical="7dp"
+        android:background="#FFCE3C"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/fragment_customer_order_sl_no"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:hint="Seq No."
-            android:inputType="textNoSuggestions|number"
-            android:textColor="#B6B6B6" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/fragment_customer_order_name"
+        <LinearLayout
+            android:id="@+id/linearLayout10"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
-            android:layout_weight=".5"
-            android:paddingLeft="5dp"
-            android:textColor="#231602"
-            android:textSize="20sp" />
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/fragment_customer_order_kg"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/fragment_customer_order_name"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:gravity="center_vertical"
+                android:textColor="#231602"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight=".2"
-            android:hint="kg"
-            android:inputType="textNoSuggestions|number"
-            android:textColor="#B6B6B6" />
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/fragment_customer_order_pc"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight=".1"
-            android:hint="pc"
-            android:inputType="textNoSuggestions|number"
-            android:textColor="#B6B6B6" />
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/fragment_customer_order_pc"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:hint="pc"
+                android:inputType="textNoSuggestions|number" />
 
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/fragment_customer_order_kg"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:hint="kg"
+                android:inputType="textNoSuggestions|number" />
+        </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/fragment_customer_order_rate"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight=".1"
-            android:hint="rate"
-            android:inputType="textNoSuggestions|number"
-            android:textColor="#B6B6B6" />
-
-        <ImageButton
-            android:id="@+id/fragment_customer_order_delete_record_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight=".01"
-            app:srcCompat="@android:drawable/ic_menu_delete" />
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

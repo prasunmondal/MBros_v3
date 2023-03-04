@@ -15,6 +15,7 @@ import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.DueShow
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard.ActivityAdminDeliveryDashboard
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
+import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
 import com.tech4bytes.mbrosv3.Loading.ActivityDeliveringLoad
 import com.tech4bytes.mbrosv3.Loading.LoadModel
 import com.tech4bytes.mbrosv3.ProjectConfig
@@ -67,7 +68,8 @@ class ActivityLogin : AppCompatActivity() {
             Roles.ADMIN -> goToAdminRole()
             Roles.DELIVERY -> goToDeliveryRole()
             Roles.COLLECTOR -> goToCollectorRole()
-            Roles.ORDER_COLLECTOR -> goToShowDues()
+            Roles.ORDER_COLLECTOR -> goToGetOrdersPage()
+            Roles.BALANCE_VIEW -> goToShowDues()
             else -> logUnIdentifiedDevice()
         }
     }
@@ -88,6 +90,12 @@ class ActivityLogin : AppCompatActivity() {
 
     private fun goToCollectorRole() {
         val switchActivityIntent = Intent(this, CollectorVerifyMoneyCollectionActivity::class.java)
+        startActivity(switchActivityIntent)
+        finish()
+    }
+
+    private fun goToGetOrdersPage() {
+        val switchActivityIntent = Intent(this, ActivityGetCustomerOrders::class.java)
         startActivity(switchActivityIntent)
         finish()
     }

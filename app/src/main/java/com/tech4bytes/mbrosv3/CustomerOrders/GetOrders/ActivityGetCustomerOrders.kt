@@ -1,18 +1,14 @@
 package com.tech4bytes.mbrosv3.CustomerOrders.GetOrders
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.doOnTextChanged
-import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
@@ -76,8 +72,8 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         val kgElement = entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_kg)
 //        UIUtils.setUIElementValue(this, entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_sl_no), order.seqNo)
         UIUtils.setUIElementValue(this, entry.findViewById<AppCompatTextView>(R.id.fragment_customer_order_name), order.name)
-        UIUtils.setUIElementValue(this, pcElement, order.estimatePc)
-        UIUtils.setUIElementValue(this, kgElement, order.estimateKg)
+        UIUtils.setUIElementValue(this, pcElement, order.orderedPc)
+        UIUtils.setUIElementValue(this, kgElement, order.orderedKg)
 //        UIUtils.setUIElementValue(this, entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_rate), order.rate)
 
         pcElement.doOnTextChanged { text, start, before, count ->
@@ -169,8 +165,8 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
             val obj = GetCustomerOrders(id = System.currentTimeMillis().toString(),
                 name = name,
                 seqNo = "",
-                estimatePc = pc,
-                estimateKg = kg,
+                orderedPc = pc,
+                orderedKg = kg,
                 rate = "",
                 prevDue = "0")
             list.add(obj)

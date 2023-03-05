@@ -47,8 +47,8 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
 
             UIUtils.setUIElementValue(this, seqNoElement, order.seqNo+".")
             UIUtils.setUIElementValue(this, nameElement, order.name)
-            UIUtils.setUIElementValue(this, pcElement, order.estimatePc)
-            UIUtils.setUIElementValue(this, kgElement, order.estimateKg)
+            UIUtils.setUIElementValue(this, pcElement, order.orderedPc)
+            UIUtils.setUIElementValue(this, kgElement, order.orderedKg)
 
             entry.setOnClickListener {
                 goTo_ActivityDeliveringDeliver(order.name)

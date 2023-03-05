@@ -268,8 +268,8 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
                 id = "${System.currentTimeMillis()}",
                 timestamp = DateUtils.getCurrentTimestamp(),
                 name = orderObj.name,
-                orderedPc = orderObj.estimatePc,
-                orderedKg = orderObj.estimateKg,
+                orderedPc = orderObj.orderedPc,
+                orderedKg = orderObj.orderedKg,
                 rate = orderObj.rate,
                 prevDue = orderObj.prevDue,
                 deliveryStatus = "DELIVERING")

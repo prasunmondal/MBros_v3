@@ -8,5 +8,4 @@ enum class Roles {
     ORDER_COLLECTOR,
     BALANCE_VIEW,
     SHOW_RATES_IN_DELIVERY_PAGE,
-    NEW
 }

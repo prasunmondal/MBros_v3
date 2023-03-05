@@ -16,7 +16,6 @@ import com.tech4bytes.mbrosv3.Customer.DueShow
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard.ActivityAdminDeliveryDashboard
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
-import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetOrders
 import com.tech4bytes.mbrosv3.Loading.ActivityDeliveringLoad
 import com.tech4bytes.mbrosv3.Loading.LoadModel
 import com.tech4bytes.mbrosv3.ProjectConfig
@@ -71,7 +70,6 @@ class ActivityLogin : AppCompatActivity() {
             Roles.COLLECTOR -> goToCollectorRole()
             Roles.ORDER_COLLECTOR -> goToGetOrdersPage()
             Roles.BALANCE_VIEW -> goToShowDues()
-            Roles.NEW -> goToGetOrders()
             else -> logUnIdentifiedDevice()
         }
     }
@@ -101,13 +99,6 @@ class ActivityLogin : AppCompatActivity() {
         startActivity(switchActivityIntent)
         finish()
     }
-
-    private fun goToGetOrders() {
-        val switchActivityIntent = Intent(this, GetOrders::class.java)
-        startActivity(switchActivityIntent)
-        finish()
-    }
-
 
     private fun goToDeliveryRole() {
 //        val loadObj = LoadModel.get()

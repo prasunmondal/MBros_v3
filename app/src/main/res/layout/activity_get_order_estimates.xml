@@ -179,6 +179,7 @@
                 android:layout_weight="1"
                 android:background="#FFEB3B"
                 android:gravity="center"
+                android:onClick="onClickGoToFinalizeOrdersPage"
                 android:paddingVertical="3dp"
                 android:text="2"
                 android:textSize="30sp"

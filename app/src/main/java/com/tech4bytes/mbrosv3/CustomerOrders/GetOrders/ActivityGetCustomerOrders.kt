@@ -1,5 +1,6 @@
 package com.tech4bytes.mbrosv3.CustomerOrders.GetOrders
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +12,9 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
+import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
+import com.tech4bytes.mbrosv3.GetOrdersFinalize
 import com.tech4bytes.mbrosv3.Loading.LoadModel
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
@@ -194,5 +197,10 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
 
         SingleAttributedData.save(metadataObj)
         Toast.makeText(this, "Data save complete!", Toast.LENGTH_LONG).show()
+    }
+
+    fun onClickGoToFinalizeOrdersPage(view: View) {
+        val switchActivityIntent = Intent(this, GetOrdersFinalize::class.java)
+        startActivity(switchActivityIntent)
     }
 }

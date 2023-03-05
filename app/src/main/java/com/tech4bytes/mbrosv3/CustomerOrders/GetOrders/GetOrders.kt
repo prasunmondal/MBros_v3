@@ -8,6 +8,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.tech4bytes.mbrosv3.R
+import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.databinding.ActivityGetOrdersBinding
 
 class GetOrders : AppCompatActivity() {
@@ -16,6 +17,8 @@ class GetOrders : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        AppContexts.set(this, this)
 
         binding = ActivityGetOrdersBinding.inflate(layoutInflater)
         setContentView(binding.root)

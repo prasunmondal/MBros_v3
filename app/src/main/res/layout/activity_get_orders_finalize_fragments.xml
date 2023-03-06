@@ -31,7 +31,7 @@
                 android:layout_marginLeft="5dp"
                 android:gravity="center_vertical"
                 android:textColor="#231602"
-                android:textSize="20sp" />
+                android:textSize="17sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -42,8 +42,37 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <TextView
                 android:id="@+id/fragment_customer_order_pc"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:paddingRight="5dp"
+                android:text="888"
+                android:textColor="#FA2020"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textView37"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="/"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/fragment_customer_order_kg"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="5dp"
+                android:shadowColor="#1E0000"
+                android:text="888"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatEditText
                 android:layout_width="70dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
@@ -51,7 +80,7 @@
                 android:inputType="textNoSuggestions|number" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/fragment_customer_order_kg"
+
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:hint="kg"

@@ -27,4 +27,6 @@
     <color name="verify_delivery_valid">#9FE3A2</color>
 
     <color name="red">#FF4141</color>
+    <color name="transparent_red">#81FF4141</color>
+    <color name="transparent_violet">#999A65F8</color>
 </resources>

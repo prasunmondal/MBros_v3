@@ -6,8 +6,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
-import androidx.appcompat.widget.AppCompatEditText
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
@@ -24,7 +25,6 @@ class GetOrdersFinalize : AppCompatActivity() {
     }
 
     private fun showList() {
-//        val listContainer = findViewById<LinearLayout>(R.id.activity_get_orders_finalize_list_container)
 
         GetCustomerOrders.get().forEach {
             if((it.orderedPc.isNotEmpty() && it.orderedPc.toInt() > 0) || (it.orderedKg.isNotEmpty() && it.orderedKg.toInt() > 0)) {
@@ -39,23 +39,27 @@ class GetOrdersFinalize : AppCompatActivity() {
         val layoutInflater = LayoutInflater.from(AppContexts.get())
         val entry = layoutInflater.inflate(R.layout.activity_get_orders_finalize_fragments, null)
 
-        val pcElement = entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_pc)
-        val kgElement = entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_kg)
-//        UIUtils.setUIElementValue(this, entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_sl_no), order.seqNo)
+        val orderedPcElement = entry.findViewById<TextView>(R.id.fragment_customer_order_pc)
+        val orderedKgElement = entry.findViewById<TextView>(R.id.fragment_customer_order_kg)
         UIUtils.setUIElementValue(this, entry.findViewById<AppCompatTextView>(R.id.fragment_customer_order_name), order.name)
-        UIUtils.setUIElementValue(this, pcElement, order.orderedPc)
-        UIUtils.setUIElementValue(this, kgElement, order.orderedKg)
-//        UIUtils.setUIElementValue(this, entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_rate), order.rate)
-
-        pcElement.doOnTextChanged { text, start, before, count ->
-//            updateTotalPc()
+        if(order.orderedPc.isNotEmpty()) {
+            UIUtils.setUIElementValue(this, orderedPcElement, order.orderedPc)
+        } else {
+            UIUtils.setUIElementValue(this, orderedPcElement, (order.orderedKg.toInt()/2).toString())
+            orderedPcElement.setBackgroundColor(ContextCompat.getColor(this, R.color.delivery_input_not_valid))
         }
 
-        kgElement.doOnTextChanged { text, start, before, count ->
-//            updateTotalKg()
+        if(order.orderedKg.isNotEmpty()) {
+            UIUtils.setUIElementValue(this, orderedKgElement, order.orderedKg)
+        } else {
+            UIUtils.setUIElementValue(this, orderedKgElement, (order.orderedPc.toInt()*2).toString())
+            orderedKgElement.setBackgroundColor(ContextCompat.getColor(this, R.color.delivery_input_not_valid))
         }
 
-//        uiEntriesList.add(entry)
+        orderedKgElement.doOnTextChanged { text, start, before, count ->
+            
+        }
+
         listContainer.addView(entry)
     }
 

@@ -35,7 +35,7 @@ data class SingleAttributedData(var recordGeneratorDevice: String = "",
                                 var refueling_amount: String = "",
                                 var refueling_isFullTank: String = "",
                                 var refueling_prevKm: String = "",
-                                var refueling_km: String = "") {
+                                var refueling_km: String = ""): java.io.Serializable {
 
     companion object {
 
@@ -60,8 +60,8 @@ data class SingleAttributedData(var recordGeneratorDevice: String = "",
             obj.recordGeneratorDevice = getPhoneId()
             obj.id = System.currentTimeMillis().toString()
             obj.date = DateUtils.getCurrentTimestamp()
-            addRecordsToServer(obj)
-            addRecordsToLocal(obj)
+            saveToServer(obj)
+            saveToLocal(obj)
         }
 
         fun saveAttribute(kMutableProperty: KMutableProperty1<SingleAttributedData, String>, value: String) {
@@ -93,7 +93,7 @@ data class SingleAttributedData(var recordGeneratorDevice: String = "",
             return getCombinedResultsFromList(recordsList)
         }
 
-        private fun addRecordsToServer(record: SingleAttributedData) {
+        private fun saveToServer(record: SingleAttributedData) {
             PostObject.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
                 .sheetId(ProjectConfig.DB_SHEET_ID)
@@ -102,7 +102,7 @@ data class SingleAttributedData(var recordGeneratorDevice: String = "",
                 .build().execute()
         }
 
-        private fun addRecordsToLocal(obj: SingleAttributedData) {
+        fun saveToLocal(obj: SingleAttributedData) {
             CentralCache.put(recordsKey, obj)
         }
 

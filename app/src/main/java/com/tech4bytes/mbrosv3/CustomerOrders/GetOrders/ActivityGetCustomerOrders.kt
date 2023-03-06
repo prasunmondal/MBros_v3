@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -48,9 +49,15 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
                 createEstimatesView(masterList.nameEng)
             }
         }
+        setSavedAvgWt()
         setTotalLoadOrder()
         updateTotalPc()
         updateTotalKg()
+    }
+
+    private fun setSavedAvgWt() {
+        val avg_wt = findViewById<EditText>(R.id.get_orders_avg_wt)
+        avg_wt.setText(SingleAttributedData.getRecords().estimatedLoadAvgWt)
     }
 
     private fun setTotalLoadOrder() {
@@ -86,13 +93,14 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
             updateTotalKg()
         }
 
-//        val deleteBtn = entry.findViewById<ImageButton>(R.id.fragment_customer_order_delete_record_button)
-//        deleteBtn.setOnClickListener {
-//            uiEntriesList.remove(entry)
-//            listContainer.removeView(entry)
-//            updateTotalPc()
-//            updateTotalKg()
-//        }
+        val avg_wt = findViewById<EditText>(R.id.get_orders_avg_wt)
+        avg_wt.doOnTextChanged { text, start, before, count ->
+            val metadata = SingleAttributedData.getRecords()
+            metadata.estimatedLoadAvgWt = if(avg_wt.text.toString().isEmpty()) {
+                ""
+            } else { "${avg_wt.text.toString().toInt()}" }
+            SingleAttributedData.saveToLocal(metadata)
+        }
 
         uiEntriesList.add(entry)
         listContainer.addView(entry)
@@ -199,6 +207,10 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
     }
 
     fun onClickGoToFinalizeOrdersPage(view: View) {
+        if(SingleAttributedData.getRecords().estimatedLoadAvgWt.isEmpty()) {
+            Toast.makeText(this, "Please enter avg wt.", Toast.LENGTH_LONG).show()
+            return
+        }
         val switchActivityIntent = Intent(this, GetOrdersFinalize::class.java)
         startActivity(switchActivityIntent)
     }

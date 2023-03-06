@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
@@ -52,7 +53,7 @@ class GetOrdersFinalize : AppCompatActivity() {
         if(order.orderedKg.isNotEmpty()) {
             UIUtils.setUIElementValue(this, orderedKgElement, order.orderedKg)
         } else {
-            UIUtils.setUIElementValue(this, orderedKgElement, (order.orderedPc.toInt()*2).toString())
+            UIUtils.setUIElementValue(this, orderedKgElement, (order.orderedPc.toInt() * SingleAttributedData.getRecords().estimatedLoadAvgWt.toInt()/1000).toString())
             orderedKgElement.setBackgroundColor(ContextCompat.getColor(this, R.color.delivery_input_not_valid))
         }
 
@@ -61,7 +62,7 @@ class GetOrdersFinalize : AppCompatActivity() {
 
         finalizePc.doOnTextChanged { text, start, before, count ->
             finalizeKg.text = try {
-                "${finalizePc.text.toString().toInt() * 2}"
+                "${finalizePc.text.toString().toInt() * SingleAttributedData.getRecords().estimatedLoadAvgWt.toInt() / 1000}"
             } catch (e: Exception) {
                 ""
             }

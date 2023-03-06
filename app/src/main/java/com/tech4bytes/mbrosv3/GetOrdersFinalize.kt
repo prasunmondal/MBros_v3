@@ -56,8 +56,15 @@ class GetOrdersFinalize : AppCompatActivity() {
             orderedKgElement.setBackgroundColor(ContextCompat.getColor(this, R.color.delivery_input_not_valid))
         }
 
-        orderedKgElement.doOnTextChanged { text, start, before, count ->
-            
+        val finalizePc = entry.findViewById<TextView>(R.id.finalize_order_fragment_finalizePc)
+        val finalizeKg = entry.findViewById<TextView>(R.id.finalize_order_fragment_finalizeKg)
+
+        finalizePc.doOnTextChanged { text, start, before, count ->
+            finalizeKg.text = try {
+                "${finalizePc.text.toString().toInt() * 2}"
+            } catch (e: Exception) {
+                ""
+            }
         }
 
         listContainer.addView(entry)

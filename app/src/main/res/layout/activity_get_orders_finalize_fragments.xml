@@ -73,6 +73,7 @@
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/finalize_order_fragment_finalizePc"
                 android:layout_width="70dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
@@ -81,6 +82,7 @@
 
             <androidx.appcompat.widget.AppCompatEditText
 
+                android:id="@+id/finalize_order_fragment_finalizeKg"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:hint="kg"

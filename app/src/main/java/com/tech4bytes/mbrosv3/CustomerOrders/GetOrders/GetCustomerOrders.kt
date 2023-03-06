@@ -53,7 +53,7 @@ data class GetCustomerOrders(var id: String = "",
             objects.forEach {
                 it.timestamp = DateUtils.getCurrentTimestamp()
             }
-            saveObjectsToServer(objects)
+            saveToServer(objects)
             saveToLocal(objects)
         }
 
@@ -66,7 +66,7 @@ data class GetCustomerOrders(var id: String = "",
             saveToLocal(listOf())
         }
 
-        private fun saveObjectsToServer(objects: List<GetCustomerOrders>) {
+        private fun saveToServer(objects: List<GetCustomerOrders>) {
             objects.forEach {
                 PostObject.builder()
                     .scriptId(ProjectConfig.dBServerScriptURL)
@@ -77,7 +77,7 @@ data class GetCustomerOrders(var id: String = "",
             }
         }
 
-        private fun saveToLocal(objects: List<GetCustomerOrders>) {
+        fun saveToLocal(objects: List<GetCustomerOrders>) {
             CentralCache.put(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, objects)
         }
 

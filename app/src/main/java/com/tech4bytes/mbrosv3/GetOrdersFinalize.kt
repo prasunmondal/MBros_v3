@@ -17,22 +17,27 @@ import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 
 class GetOrdersFinalize : AppCompatActivity() {
+
+    lateinit var listOrders: List<GetCustomerOrders>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_get_orders_finalize)
         AppContexts.set(this)
 
+        listOrders = GetCustomerOrders.get()
         showList()
+        updatePcs()
+        updateKgs()
     }
 
     private fun showList() {
 
-        GetCustomerOrders.get().forEach {
+        listOrders.forEach {
             if((it.orderedPc.isNotEmpty() && it.orderedPc.toInt() > 0) || (it.orderedKg.isNotEmpty() && it.orderedKg.toInt() > 0)) {
                 addEntry(it)
             }
         }
-
     }
 
     private fun addEntry(order: GetCustomerOrders) {
@@ -60,15 +65,48 @@ class GetOrdersFinalize : AppCompatActivity() {
         val finalizePc = entry.findViewById<TextView>(R.id.finalize_order_fragment_finalizePc)
         val finalizeKg = entry.findViewById<TextView>(R.id.finalize_order_fragment_finalizeKg)
 
+        if(order.calculatedKg.isNotEmpty())
+            finalizeKg.text = order.calculatedKg
+
+        if(order.calculatedPc.isNotEmpty())
+            finalizePc.text = order.calculatedPc
+
         finalizePc.doOnTextChanged { text, start, before, count ->
             finalizeKg.text = try {
                 "${finalizePc.text.toString().toInt() * SingleAttributedData.getRecords().estimatedLoadAvgWt.toInt() / 1000}"
             } catch (e: Exception) {
                 ""
             }
+            order.calculatedPc = finalizePc.text.toString()
+            updatePcs()
+        }
+
+        finalizeKg.doOnTextChanged { text, start, before, count ->
+            order.calculatedKg = finalizeKg.text.toString()
+            updateKgs()
         }
 
         listContainer.addView(entry)
+    }
+
+    private fun updateKgs() {
+        var sum = 0.0
+        listOrders.forEach { sum += try {it.calculatedKg.toDouble() } catch (e: NumberFormatException) {0.0} }
+        val finalizeKg = findViewById<TextView>(R.id.orders_finalize_kgs)
+        finalizeKg.text = sum.toString()
+        localSave()
+    }
+
+    private fun updatePcs() {
+        var sum = 0
+        listOrders.forEach { sum += try {it.calculatedPc.toInt() } catch (e: NumberFormatException) {0} }
+        val finalizePc = findViewById<TextView>(R.id.orders_finalize_pcs)
+        finalizePc.text = sum.toString()
+        localSave()
+    }
+
+    private fun localSave() {
+        GetCustomerOrders.saveToLocal(listOrders)
     }
 
     fun onClickGoToGetOrdersPage(view: View) {

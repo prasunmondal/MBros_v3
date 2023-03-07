@@ -1,4 +1,4 @@
-package com.tech4bytes.mbrosv3
+package com.tech4bytes.mbrosv3.CustomerOrders.GetOrders
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -11,10 +11,10 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
-import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
-import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
+import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 
 class GetOrdersFinalize : AppCompatActivity() {
 
@@ -26,6 +26,7 @@ class GetOrdersFinalize : AppCompatActivity() {
         AppContexts.set(this)
 
         listOrders = GetCustomerOrders.get()
+        LogMe.log(listOrders.toString())
         showList()
         updatePcs()
         updateKgs()
@@ -79,11 +80,13 @@ class GetOrdersFinalize : AppCompatActivity() {
             }
             order.calculatedPc = finalizePc.text.toString()
             updatePcs()
+            localSave()
         }
 
         finalizeKg.doOnTextChanged { text, start, before, count ->
             order.calculatedKg = finalizeKg.text.toString()
             updateKgs()
+            localSave()
         }
 
         listContainer.addView(entry)
@@ -94,7 +97,6 @@ class GetOrdersFinalize : AppCompatActivity() {
         listOrders.forEach { sum += try {it.calculatedKg.toDouble() } catch (e: NumberFormatException) {0.0} }
         val finalizeKg = findViewById<TextView>(R.id.orders_finalize_kgs)
         finalizeKg.text = sum.toString()
-        localSave()
     }
 
     private fun updatePcs() {
@@ -102,7 +104,6 @@ class GetOrdersFinalize : AppCompatActivity() {
         listOrders.forEach { sum += try {it.calculatedPc.toInt() } catch (e: NumberFormatException) {0} }
         val finalizePc = findViewById<TextView>(R.id.orders_finalize_pcs)
         finalizePc.text = sum.toString()
-        localSave()
     }
 
     private fun localSave() {

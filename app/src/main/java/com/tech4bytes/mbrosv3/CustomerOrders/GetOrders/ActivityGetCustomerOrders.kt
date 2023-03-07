@@ -14,7 +14,6 @@ import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
-import com.tech4bytes.mbrosv3.GetOrdersFinalize
 import com.tech4bytes.mbrosv3.Loading.LoadModel
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
@@ -26,6 +25,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
 
     lateinit var containerView: View
     var uiEntriesList = mutableListOf<View>()
+    lateinit var listOrders: List<GetCustomerOrders>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,11 +35,13 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
 
         containerView = findViewById<LinearLayout>(R.id.activity_get_order_estimates__parent_view)
 
+        listOrders = GetCustomerOrders.get()
+        LogMe.log(listOrders.toString())
 //        populateCustomerList()
 
         CustomerKYC.getAllCustomers().forEach { masterList ->
             var isInOrderList = false
-            GetCustomerOrders.get().forEach { orderList ->
+            listOrders.forEach { orderList ->
                 if(masterList.nameEng == orderList.name) {
                     createEstimatesView(orderList)
                     isInOrderList = true
@@ -86,11 +88,15 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
 //        UIUtils.setUIElementValue(this, entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_rate), order.rate)
 
         pcElement.doOnTextChanged { text, start, before, count ->
+            order.orderedPc = pcElement.text.toString()
             updateTotalPc()
+            localSave()
         }
 
         kgElement.doOnTextChanged { text, start, before, count ->
+            order.orderedKg = kgElement.text.toString()
             updateTotalKg()
+            localSave()
         }
 
         val avg_wt = findViewById<EditText>(R.id.get_orders_avg_wt)
@@ -106,6 +112,10 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         listContainer.addView(entry)
     }
 
+    private fun localSave() {
+        GetCustomerOrders.saveToLocal(listOrders)
+    }
+
     private fun updateTotalKg() {
         var sum = 0.0
         uiEntriesList.forEach {
@@ -117,16 +127,11 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
     }
 
     private fun updateTotalPc() {
-        LogMe.log("a")
         var sum = 0
         uiEntriesList.forEach {
-            LogMe.log("b")
             val pc = "0${UIUtils.getUIElementValue(it.findViewById<AppCompatEditText>(R.id.fragment_customer_order_pc))}"
-            LogMe.log("c: $pc")
             sum += pc.toInt()
-            LogMe.log("d: $sum")
         }
-        LogMe.log("e: $sum.toString()")
         UIUtils.setUIElementValue(this, containerView.findViewById(R.id.activity_get_order_estimates__total_pc), "$sum pc")
     }
 

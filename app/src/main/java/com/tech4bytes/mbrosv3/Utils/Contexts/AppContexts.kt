@@ -23,7 +23,6 @@ class AppContexts {
         @JvmStatic
         fun get(): Context {
             val getCallerClassname = getCaller()
-            LogMe.log("Asking context: $getCallerClassname")
             var contextResult: Context? = null
             contexts.forEach { classname, context ->
                 if (getCallerClassname.startsWith(classname))

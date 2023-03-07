@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GetOrdersFinalize">
+    tools:context=".CustomerOrders.GetOrders.GetOrdersFinalize">
 
     <LinearLayout
         android:id="@+id/activity_get_orders_finalize_list_container"

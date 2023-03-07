@@ -97,6 +97,8 @@ data class GetCustomerOrders(var id: String = "",
     }
 
     override fun toString(): String {
-        return "GetOrdersModel(id='$id', name='$name', seqNo='$seqNo', estimatePc='$orderedPc', estimateKg='$orderedKg', rate='$rate', due='$prevDue')"
+        return "\nGetCustomerOrders(id='$id', timestamp='$timestamp', name='$name', seqNo='$seqNo', orderedPc='$orderedPc', orderedKg='$orderedKg', calculatedPc='$calculatedPc', calculatedKg='$calculatedKg', rate='$rate', prevDue='$prevDue')"
     }
+
+
 }

@@ -75,11 +75,13 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         pcElement.doOnTextChanged { text, start, before, count ->
             order.orderedPc = pcElement.text.toString()
             GetCustomerOrders.updateObj(order)
+            updateTotalPc()
         }
 
         kgElement.doOnTextChanged { text, start, before, count ->
             order.orderedKg = kgElement.text.toString()
             GetCustomerOrders.updateObj(order)
+            updateTotalKg()
         }
 
         val avg_wt = findViewById<EditText>(R.id.get_orders_avg_wt)
@@ -102,7 +104,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
     private fun updateTotalKg() {
         var sum = 0
         GetCustomerOrders.get().forEach {
-            sum = "0${it.orderedKg}".toInt()
+            sum += "0${it.orderedKg}".toInt()
             LogMe.log("Updated kg: ${"0${it.orderedKg}".toInt()} - $sum")
         }
         UIUtils.setUIElementValue(this, containerView.findViewById(R.id.activity_get_order_estimates__total_kg), "$sum kg")
@@ -111,7 +113,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
     private fun updateTotalPc() {
         var sum = 0
         GetCustomerOrders.get().forEach {
-            sum = "0${it.orderedPc}".toInt()
+            sum += "0${it.orderedPc}".toInt()
             LogMe.log("Updated pc: ${"0${it.orderedPc}".toInt()} - $sum")
         }
         UIUtils.setUIElementValue(containerView.findViewById(R.id.activity_get_order_estimates__total_pc), "$sum pc")

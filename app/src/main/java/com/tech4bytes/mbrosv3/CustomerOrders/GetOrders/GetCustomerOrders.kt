@@ -6,9 +6,12 @@ import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
+import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
+import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
+import java.util.logging.LogManager
 
 data class GetCustomerOrders(var id: String = "",
                              var timestamp: String = "",
@@ -21,19 +24,54 @@ data class GetCustomerOrders(var id: String = "",
                              var rate: String = "",
                              var prevDue: String = ""): java.io.Serializable {
 
-
     companion object {
+
+        private var obj: MutableList<GetCustomerOrders> = mutableListOf()
 
         fun get(useCache: Boolean = true): List<GetCustomerOrders> {
             val cacheResults = CentralCache.get<ArrayList<GetCustomerOrders>>(AppContexts.get(), CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, useCache)
 
-            return if (cacheResults != null) {
+            obj = if (cacheResults != null) {
                 cacheResults
             } else {
-                val resultFromServer = getFromServer()
+                val resultFromServer = getCompleteList()
                 CentralCache.put(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, resultFromServer)
-                resultFromServer
+                resultFromServer as MutableList<GetCustomerOrders>
             }
+            return obj
+        }
+
+        fun updateObj(passedObj: GetCustomerOrders) {
+            var toBeRemoved: GetCustomerOrders? = null
+            obj.forEach {
+                if(it.name == passedObj.name) {
+                    toBeRemoved = it
+                }
+            }
+            if(toBeRemoved != null) {
+                obj.remove(toBeRemoved)
+                obj.add(passedObj)
+                LogMe.log("Updated: $passedObj")
+            }
+            saveToLocal()
+        }
+
+        private fun getCompleteList(): List<GetCustomerOrders> {
+            val list: MutableList<GetCustomerOrders> = mutableListOf()
+            val actualOrders = getFromServer()
+            CustomerKYC.getAllCustomers().forEach { masterList ->
+                var isInOrderList = false
+                actualOrders.forEach { orderList ->
+                    if(masterList.nameEng == orderList.name) {
+                        list.add(orderList)
+                        isInOrderList = true
+                    }
+                }
+                if(!isInOrderList && masterList.isActiveCustomer.toBoolean()) {
+                    list.add(GetCustomerOrders(name = masterList.nameEng))
+                }
+            }
+            return list
         }
 
         fun getNumberOfCustomersOrdered(useCache: Boolean): Int {
@@ -49,12 +87,12 @@ data class GetCustomerOrders(var id: String = "",
             return null
         }
 
-        fun save(objects: List<GetCustomerOrders>) {
-            objects.forEach {
+        fun save() {
+            obj.forEach {
                 it.timestamp = DateUtils.getCurrentTimestamp()
             }
-            saveToServer(objects)
-            saveToLocal(objects)
+            saveToServer()
+            saveToLocal()
         }
 
         fun deleteAll() {
@@ -63,11 +101,11 @@ data class GetCustomerOrders(var id: String = "",
                 .sheetId(ProjectConfig.DB_SHEET_ID)
                 .tabName(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
                 .build().execute()
-            saveToLocal(listOf())
+            deleteFromLocal()
         }
 
-        private fun saveToServer(objects: List<GetCustomerOrders>) {
-            objects.forEach {
+        private fun saveToServer() {
+            getRecordsForOnlyOrderedCustomers().forEach {
                 PostObject.builder()
                     .scriptId(ProjectConfig.dBServerScriptURL)
                     .sheetId(ProjectConfig.DB_SHEET_ID)
@@ -77,8 +115,17 @@ data class GetCustomerOrders(var id: String = "",
             }
         }
 
-        fun saveToLocal(objects: List<GetCustomerOrders>) {
-            CentralCache.put(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, objects)
+        private fun getRecordsForOnlyOrderedCustomers(): MutableList<GetCustomerOrders> {
+            return obj
+        }
+
+        fun saveToLocal() {
+            LogMe.log(obj.toString())
+            CentralCache.put(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, obj)
+        }
+
+        fun deleteFromLocal() {
+            CentralCache.put(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, listOf<GetCustomerOrders>())
         }
 
         private fun getFromServer(): List<GetCustomerOrders> {
@@ -96,9 +143,9 @@ data class GetCustomerOrders(var id: String = "",
         }
     }
 
-    override fun toString(): String {
-        return "\nGetCustomerOrders(id='$id', timestamp='$timestamp', name='$name', seqNo='$seqNo', orderedPc='$orderedPc', orderedKg='$orderedKg', calculatedPc='$calculatedPc', calculatedKg='$calculatedKg', rate='$rate', prevDue='$prevDue')"
-    }
+//    override fun toString(): String {
+//        return "\nGetCustomerOrders(id='$id', timestamp='$timestamp', name='$name', seqNo='$seqNo', orderedPc='$orderedPc', orderedKg='$orderedKg', calculatedPc='$calculatedPc', calculatedKg='$calculatedKg', rate='$rate', prevDue='$prevDue')"
+//    }
 
 
 }

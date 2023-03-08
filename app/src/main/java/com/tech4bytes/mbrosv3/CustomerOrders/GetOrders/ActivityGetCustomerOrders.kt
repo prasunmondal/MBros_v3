@@ -37,20 +37,11 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
 
         listOrders = GetCustomerOrders.get()
         LogMe.log(listOrders.toString())
-//        populateCustomerList()
 
-        CustomerKYC.getAllCustomers().forEach { masterList ->
-            var isInOrderList = false
-            listOrders.forEach { orderList ->
-                if(masterList.nameEng == orderList.name) {
-                    createEstimatesView(orderList)
-                    isInOrderList = true
-                }
-            }
-            if(!isInOrderList && masterList.isActiveCustomer.toBoolean()) {
-                createEstimatesView(masterList.nameEng)
-            }
+        listOrders.forEach {
+            createEstimatesView(it)
         }
+
         setSavedAvgWt()
         setTotalLoadOrder()
         updateTotalPc()
@@ -70,10 +61,6 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         UIUtils.setUIElementValue(this, LoadModel.getUiElementFromOrderingPage(containerView, LoadModel::requiredPc), pc)
     }
 
-    private fun createEstimatesView(customerName: String) {
-        createEstimatesView(GetCustomerOrders(name = customerName))
-    }
-
     private fun createEstimatesView(order: GetCustomerOrders) {
         val listContainer = findViewById<LinearLayout>(R.id.activity_get_order_estimates__order_list_container)
         val layoutInflater = LayoutInflater.from(AppContexts.get())
@@ -81,22 +68,18 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
 
         val pcElement = entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_pc)
         val kgElement = entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_kg)
-//        UIUtils.setUIElementValue(this, entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_sl_no), order.seqNo)
-        UIUtils.setUIElementValue(this, entry.findViewById<AppCompatTextView>(R.id.fragment_customer_order_name), order.name)
-        UIUtils.setUIElementValue(this, pcElement, order.orderedPc)
-        UIUtils.setUIElementValue(this, kgElement, order.orderedKg)
-//        UIUtils.setUIElementValue(this, entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_rate), order.rate)
+        UIUtils.setUIElementValue(entry.findViewById<AppCompatTextView>(R.id.fragment_customer_order_name), order.name)
+        UIUtils.setUIElementValue(pcElement, order.orderedPc)
+        UIUtils.setUIElementValue(kgElement, order.orderedKg)
 
         pcElement.doOnTextChanged { text, start, before, count ->
             order.orderedPc = pcElement.text.toString()
-            updateTotalPc()
-            localSave()
+            GetCustomerOrders.updateObj(order)
         }
 
         kgElement.doOnTextChanged { text, start, before, count ->
             order.orderedKg = kgElement.text.toString()
-            updateTotalKg()
-            localSave()
+            GetCustomerOrders.updateObj(order)
         }
 
         val avg_wt = findViewById<EditText>(R.id.get_orders_avg_wt)
@@ -113,26 +96,25 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
     }
 
     private fun localSave() {
-        GetCustomerOrders.saveToLocal(listOrders)
+        GetCustomerOrders.saveToLocal()
     }
 
     private fun updateTotalKg() {
-        var sum = 0.0
-        uiEntriesList.forEach {
-            val kg = "0${UIUtils.getUIElementValue(it.findViewById<AppCompatEditText>(R.id.fragment_customer_order_kg))}"
-            sum += kg.toDouble()
+        var sum = 0
+        GetCustomerOrders.get().forEach {
+            sum = "0${it.orderedKg}".toInt()
+            LogMe.log("Updated kg: ${"0${it.orderedKg}".toInt()} - $sum")
         }
-        LogMe.log(sum.toString())
         UIUtils.setUIElementValue(this, containerView.findViewById(R.id.activity_get_order_estimates__total_kg), "$sum kg")
     }
 
     private fun updateTotalPc() {
         var sum = 0
-        uiEntriesList.forEach {
-            val pc = "0${UIUtils.getUIElementValue(it.findViewById<AppCompatEditText>(R.id.fragment_customer_order_pc))}"
-            sum += pc.toInt()
+        GetCustomerOrders.get().forEach {
+            sum = "0${it.orderedPc}".toInt()
+            LogMe.log("Updated pc: ${"0${it.orderedPc}".toInt()} - $sum")
         }
-        UIUtils.setUIElementValue(this, containerView.findViewById(R.id.activity_get_order_estimates__total_pc), "$sum pc")
+        UIUtils.setUIElementValue(containerView.findViewById(R.id.activity_get_order_estimates__total_pc), "$sum pc")
     }
 
     private fun getCustomerNamesAsStringList(): List<String> {
@@ -144,39 +126,12 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         return namesList
     }
 
-//    @SuppressLint("ClickableViewAccessibility")
-//    fun populateCustomerList() {
-//        val dropDown = findViewById<MaterialAutoCompleteTextView>(R.id.activity_get_order_estimates__customer_selection_dropdown)
-//        val adapter: ArrayAdapter<String> =
-//            ArrayAdapter<String>(AppContexts.get(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, getCustomerNamesAsStringList())
-//        (dropDown as MaterialAutoCompleteTextView).setAdapter(adapter)
-//
-//        dropDown.setOnTouchListener { _, _ ->
-//                dropDown.showDropDown()
-//                dropDown.requestFocus()
-//                false
-//            }
-//
-//        dropDown.setOnItemClickListener { parent, arg1, position, arg3 ->
-//            val item = parent.getItemAtPosition(position)
-//            LogMe.log("Selected Customer: $item")
-//            if(!isOnList(item.toString())) {
-//                createEstimatesView(item.toString())
-//            } else {
-//                Toast.makeText(this, "Already on list", Toast.LENGTH_SHORT).show()
-//            }
-//            dropDown.text.clear()
-//        }
-//    }
-
     fun createNGetObjectsFromUI(): List<GetCustomerOrders> {
         val list = mutableListOf<GetCustomerOrders>()
         uiEntriesList.forEach {
-//            val seqNo = UIUtils.getUIElementValue(it.findViewById<AppCompatEditText>(R.id.fragment_customer_order_sl_no))
             val name = UIUtils.getUIElementValue(it.findViewById<AppCompatTextView>(R.id.fragment_customer_order_name))
             val pc = UIUtils.getUIElementValue(it.findViewById<AppCompatEditText>(R.id.fragment_customer_order_pc))
             val kg = UIUtils.getUIElementValue(it.findViewById<AppCompatEditText>(R.id.fragment_customer_order_kg))
-//            val rate = UIUtils.getUIElementValue(it.findViewById<AppCompatEditText>(R.id.fragment_customer_order_rate))
             val obj = GetCustomerOrders(id = System.currentTimeMillis().toString(),
                 name = name,
                 seqNo = "",
@@ -201,7 +156,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
     fun onClickSaveBtn(view: View) {
         Toast.makeText(this, "Saving Data", Toast.LENGTH_SHORT).show()
         GetCustomerOrders.deleteAll()
-        GetCustomerOrders.save(createNGetObjectsFromUI())
+        GetCustomerOrders.save()
 
         val metadataObj = SingleAttributedData.getRecords()
         metadataObj.estimatedLoadPc = UIUtils.getUIElementValue(LoadModel.getUiElementFromOrderingPage(view, LoadModel::requiredPc))

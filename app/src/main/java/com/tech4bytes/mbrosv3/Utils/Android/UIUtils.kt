@@ -15,6 +15,7 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textview.MaterialTextView
 import com.tech4bytes.mbrosv3.R
+import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 
 
@@ -36,7 +37,11 @@ class UIUtils: AppCompatActivity() {
             return ""
         }
 
-        fun setUIElementValue(context: Context, view: View, value: String) {
+        fun setUIElementValue(view: View, value: String) {
+            setUIElementValue(AppContexts.get(), view, value)
+        }
+
+        fun setUIElementValue(context: Context = AppContexts.get(), view: View, value: String) {
             val uIElement = view
             when (uIElement.javaClass.simpleName) {
                 MaterialAutoCompleteTextView::class.simpleName,

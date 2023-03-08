@@ -33,7 +33,6 @@ class GetOrdersFinalize : AppCompatActivity() {
     }
 
     private fun showList() {
-
         listOrders.forEach {
             if((it.orderedPc.isNotEmpty() && it.orderedPc.toInt() > 0) || (it.orderedKg.isNotEmpty() && it.orderedKg.toInt() > 0)) {
                 addEntry(it)

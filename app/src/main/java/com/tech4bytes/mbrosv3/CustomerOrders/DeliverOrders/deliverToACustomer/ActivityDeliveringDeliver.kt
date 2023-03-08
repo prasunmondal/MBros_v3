@@ -77,7 +77,7 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         }
 
         if(record.rate.isEmpty() && (RolesUtils.doesHaveRole(Roles.ADMIN) || RolesUtils.doesHaveRole(Roles.SHOW_RATES_IN_DELIVERY_PAGE))) {
-            UIUtils.setUIElementValue(this, rate, (SingleAttributedData.getRecords().finalFarmRate.toInt() + CustomerKYC.get(record.name)!!.rateDifference.toInt()).toString())
+            UIUtils.setUIElementValue(this, rate, ("0${SingleAttributedData.getRecords().finalFarmRate}".toInt() + "0${SingleAttributedData.getRecords().bufferRate}".toInt() + CustomerKYC.get(record.name)!!.rateDifference.toInt()).toString())
             (rate as EditText).setTextColor(ContextCompat.getColor(this, R.color.red))
         }
 

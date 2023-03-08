@@ -1,5 +1,6 @@
 package com.tech4bytes.mbrosv3.CustomerOrders.GetOrders
 
+import android.provider.MediaStore.Video
 import com.google.gson.reflect.TypeToken
 import com.prasunmondal.postjsontosheets.clients.delete.Delete
 import com.prasunmondal.postjsontosheets.clients.get.Get
@@ -11,7 +12,8 @@ import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
-import java.util.logging.LogManager
+import java.util.stream.Collectors
+
 
 data class GetCustomerOrders(var id: String = "",
                              var timestamp: String = "",
@@ -52,6 +54,19 @@ data class GetCustomerOrders(var id: String = "",
                 obj.remove(toBeRemoved)
                 obj.add(passedObj)
                 LogMe.log("Updated: $passedObj")
+            }
+
+            val nameMappedOrders: MutableMap<String, GetCustomerOrders> = obj.stream()
+                .collect(Collectors.toMap(GetCustomerOrders::name) { v -> v })
+            LogMe.log(nameMappedOrders.toString())
+
+            obj = mutableListOf()
+
+            LogMe.log(CustomerKYC.getAllCustomers().toString())
+            CustomerKYC.getAllCustomers().forEach {
+                if(it.isActiveCustomer.toBoolean()) {
+                    obj.add(nameMappedOrders[it.nameEng]!!)
+                }
             }
             saveToLocal()
         }

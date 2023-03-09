@@ -72,18 +72,13 @@ class GetOrdersFinalize : AppCompatActivity() {
             finalizePc.text = order.calculatedPc
 
         finalizePc.doOnTextChanged { text, start, before, count ->
-            finalizeKg.text = try {
-                "${finalizePc.text.toString().toInt() * SingleAttributedData.getRecords().estimatedLoadAvgWt.toInt() / 1000}"
-            } catch (e: Exception) {
-                ""
-            }
-            order.calculatedPc = finalizePc.text.toString()
+            order.calculatedPc = finalizePc.text.toString().replace(" ","")
             updatePcs()
             localSave()
         }
 
         finalizeKg.doOnTextChanged { text, start, before, count ->
-            order.calculatedKg = finalizeKg.text.toString()
+            order.calculatedKg = finalizeKg.text.toString().replace(" ","")
             updateKgs()
             localSave()
         }
@@ -106,7 +101,7 @@ class GetOrdersFinalize : AppCompatActivity() {
     }
 
     private fun localSave() {
-        GetCustomerOrders.saveToLocal(listOrders)
+        GetCustomerOrders.saveToLocal()
     }
 
     fun onClickGoToGetOrdersPage(view: View) {

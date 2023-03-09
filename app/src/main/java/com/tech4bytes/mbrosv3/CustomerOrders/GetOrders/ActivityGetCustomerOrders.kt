@@ -73,13 +73,13 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         UIUtils.setUIElementValue(kgElement, order.orderedKg)
 
         pcElement.doOnTextChanged { text, start, before, count ->
-            order.orderedPc = pcElement.text.toString()
+            order.orderedPc = getJustTheNumber(pcElement.text.toString()).toString()
             GetCustomerOrders.updateObj(order)
             updateTotalPc()
         }
 
         kgElement.doOnTextChanged { text, start, before, count ->
-            order.orderedKg = kgElement.text.toString()
+            order.orderedKg = getJustTheNumber(kgElement.text.toString()).toString()
             GetCustomerOrders.updateObj(order)
             updateTotalKg()
         }
@@ -101,11 +101,15 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         GetCustomerOrders.saveToLocal()
     }
 
+    private fun getJustTheNumber(str: String): Int {
+        return ("0" + str.replace(" ","").replace("-","")).toInt()
+    }
+
     private fun updateTotalKg() {
         var sum = 0
         GetCustomerOrders.get().forEach {
-            sum += "0${it.orderedKg}".toInt()
-            LogMe.log("Updated kg: ${"0${it.orderedKg}".toInt()} - $sum")
+            sum += getJustTheNumber(it.orderedKg)
+            LogMe.log("Updated kg: ${it.orderedKg} - $sum")
         }
         UIUtils.setUIElementValue(this, containerView.findViewById(R.id.activity_get_order_estimates__total_kg), "$sum kg")
     }
@@ -113,8 +117,8 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
     private fun updateTotalPc() {
         var sum = 0
         GetCustomerOrders.get().forEach {
-            sum += "0${it.orderedPc}".toInt()
-            LogMe.log("Updated pc: ${"0${it.orderedPc}".toInt()} - $sum")
+            sum += getJustTheNumber(it.orderedPc)
+            LogMe.log("Updated pc: ${it.orderedPc} - $sum")
         }
         UIUtils.setUIElementValue(containerView.findViewById(R.id.activity_get_order_estimates__total_pc), "$sum pc")
     }

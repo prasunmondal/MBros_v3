@@ -48,14 +48,14 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:hint="pc"
-                android:inputType="textNoSuggestions|number" />
+                android:inputType="number" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/fragment_customer_order_kg"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:hint="kg"
-                android:inputType="textNoSuggestions|number" />
+                android:inputType="number" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

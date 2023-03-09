@@ -73,13 +73,13 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         UIUtils.setUIElementValue(kgElement, order.orderedKg)
 
         pcElement.doOnTextChanged { text, start, before, count ->
-            order.orderedPc = getJustTheNumber(pcElement.text.toString()).toString()
+            order.orderedPc = pcElement.text.toString()
             GetCustomerOrders.updateObj(order)
             updateTotalPc()
         }
 
         kgElement.doOnTextChanged { text, start, before, count ->
-            order.orderedKg = getJustTheNumber(kgElement.text.toString()).toString()
+            order.orderedKg = kgElement.text.toString()
             GetCustomerOrders.updateObj(order)
             updateTotalKg()
         }
@@ -98,7 +98,10 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
     }
 
     private fun getJustTheNumber(str: String): Int {
-        return ("0" + str.replace(" ","").replace("-","")).toInt()
+        val trimmedStr = str.replace(" ","").replace("-","")
+        if(trimmedStr.isEmpty())
+            return 0
+        return trimmedStr.toInt()
     }
 
     private fun updateTotalKg() {
@@ -124,33 +127,6 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
             namesList.add(it.getDisplayName())
         }
         return namesList
-    }
-
-    fun createNGetObjectsFromUI(): List<GetCustomerOrders> {
-        val list = mutableListOf<GetCustomerOrders>()
-        uiEntriesList.forEach {
-            val name = UIUtils.getUIElementValue(it.findViewById<AppCompatTextView>(R.id.fragment_customer_order_name))
-            val pc = UIUtils.getUIElementValue(it.findViewById<AppCompatEditText>(R.id.fragment_customer_order_pc))
-            val kg = UIUtils.getUIElementValue(it.findViewById<AppCompatEditText>(R.id.fragment_customer_order_kg))
-            val obj = GetCustomerOrders(id = System.currentTimeMillis().toString(),
-                name = name,
-                seqNo = "",
-                orderedPc = pc,
-                orderedKg = kg,
-                rate = "",
-                prevDue = "0")
-            list.add(obj)
-        }
-        return list
-    }
-
-    private fun isOnList(name: String): Boolean {
-        uiEntriesList.forEach {
-            val nameFromList = UIUtils.getUIElementValue(it.findViewById<AppCompatTextView>(R.id.fragment_customer_order_name))
-            if(nameFromList == name)
-                return true
-        }
-        return false
     }
 
     fun onClickSaveBtn(view: View) {

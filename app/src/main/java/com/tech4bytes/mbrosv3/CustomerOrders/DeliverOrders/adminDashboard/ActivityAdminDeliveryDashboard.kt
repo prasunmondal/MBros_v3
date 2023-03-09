@@ -113,10 +113,10 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
 
     fun setCompanyAndRateValuesInUI() {
         val obj = SingleAttributedData.getRecords()
-        UIUtils.setUIElementValue(AppContexts.get(), findViewById<EditText>(R.id.activity_admin_delivery_dashboard_load_company), obj.load_companyName)
-        UIUtils.setUIElementValue(AppContexts.get(), findViewById<EditText>(R.id.activity_admin_delivery_dashboard_load_company_branch), obj.load_branch)
-        UIUtils.setUIElementValue(AppContexts.get(), findViewById<EditText>(R.id.activity_admin_delivery_dashboard_load_account), obj.load_account)
-        UIUtils.setUIElementValue(AppContexts.get(), findViewById<EditText>(R.id.activity_admin_delivery_dashboard_farmrate), obj.finalFarmRate)
-        UIUtils.setUIElementValue(AppContexts.get(), findViewById<EditText>(R.id.activity_admin_delivery_dashboard_buffer_price), obj.bufferRate)
+        UIUtils.setUIElementValue(findViewById<EditText>(R.id.activity_admin_delivery_dashboard_load_company), obj.load_companyName)
+        UIUtils.setUIElementValue(findViewById<EditText>(R.id.activity_admin_delivery_dashboard_load_company_branch), obj.load_branch)
+        UIUtils.setUIElementValue(findViewById<EditText>(R.id.activity_admin_delivery_dashboard_load_account), obj.load_account)
+        UIUtils.setUIElementValue(findViewById<EditText>(R.id.activity_admin_delivery_dashboard_farmrate), obj.finalFarmRate)
+        UIUtils.setUIElementValue(findViewById<EditText>(R.id.activity_admin_delivery_dashboard_buffer_price), obj.bufferRate)
     }
 }

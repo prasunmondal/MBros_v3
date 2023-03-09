@@ -149,5 +149,16 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         }
         val switchActivityIntent = Intent(this, GetOrdersFinalize::class.java)
         startActivity(switchActivityIntent)
+        finish()
+    }
+
+    fun onClickGoToMakeListPage(view: View) {
+        if(SingleAttributedData.getRecords().estimatedLoadAvgWt.isEmpty()) {
+            Toast.makeText(this, "Please enter avg wt.", Toast.LENGTH_LONG).show()
+            return
+        }
+        val switchActivityIntent = Intent(this, OrdersMakeList::class.java)
+        startActivity(switchActivityIntent)
+        finish()
     }
 }

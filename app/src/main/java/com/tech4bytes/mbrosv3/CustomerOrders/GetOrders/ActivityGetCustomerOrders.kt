@@ -97,10 +97,6 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         listContainer.addView(entry)
     }
 
-    private fun localSave() {
-        GetCustomerOrders.saveToLocal()
-    }
-
     private fun getJustTheNumber(str: String): Int {
         return ("0" + str.replace(" ","").replace("-","")).toInt()
     }
@@ -109,7 +105,6 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         var sum = 0
         GetCustomerOrders.get().forEach {
             sum += getJustTheNumber(it.orderedKg)
-            LogMe.log("Updated kg: ${it.orderedKg} - $sum")
         }
         UIUtils.setUIElementValue(this, containerView.findViewById(R.id.activity_get_order_estimates__total_kg), "$sum kg")
     }
@@ -118,7 +113,6 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         var sum = 0
         GetCustomerOrders.get().forEach {
             sum += getJustTheNumber(it.orderedPc)
-            LogMe.log("Updated pc: ${it.orderedPc} - $sum")
         }
         UIUtils.setUIElementValue(containerView.findViewById(R.id.activity_get_order_estimates__total_pc), "$sum pc")
     }

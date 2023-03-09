@@ -1,6 +1,5 @@
 package com.tech4bytes.mbrosv3.Utils.Android
 
-import android.content.Context
 import android.view.View
 import android.widget.EditText
 import android.widget.Switch
@@ -16,7 +15,6 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textview.MaterialTextView
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
-import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 
 
 class UIUtils: AppCompatActivity() {
@@ -66,7 +64,7 @@ class UIUtils: AppCompatActivity() {
                             var tag = false.toString()
                         }
                     }
-                    (uIElement as AppCompatImageView).setColorFilter(ContextCompat.getColor(context, colorToSet))
+                    (uIElement as AppCompatImageView).setColorFilter(ContextCompat.getColor(AppContexts.get(), colorToSet))
                     uIElement.tag = tag
                 }
             }

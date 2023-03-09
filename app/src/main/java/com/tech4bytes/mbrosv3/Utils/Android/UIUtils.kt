@@ -24,7 +24,6 @@ class UIUtils: AppCompatActivity() {
     companion object {
 
         fun getUIElementValue(view: View): String {
-            LogMe.log("Getting value from: " + view.javaClass.simpleName)
             when (view.javaClass.simpleName) {
                 MaterialAutoCompleteTextView::class.simpleName -> return "" + (view as EditText).text
                 MaterialTextView::class.simpleName,
@@ -36,12 +35,12 @@ class UIUtils: AppCompatActivity() {
             }
             return ""
         }
+//
+//        fun setUIElementValue(view: View, value: String) {
+//            setUIElementValue(AppContexts.get(), view, value)
+//        }
 
         fun setUIElementValue(view: View, value: String) {
-            setUIElementValue(AppContexts.get(), view, value)
-        }
-
-        fun setUIElementValue(context: Context = AppContexts.get(), view: View, value: String) {
             val uIElement = view
             when (uIElement.javaClass.simpleName) {
                 MaterialAutoCompleteTextView::class.simpleName,

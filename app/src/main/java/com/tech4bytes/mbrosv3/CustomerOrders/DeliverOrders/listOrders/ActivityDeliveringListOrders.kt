@@ -45,10 +45,10 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
             val pcElement = entry.findViewById<AppCompatTextView>(R.id.activity_delivering_deliver_fragment_order_pc)
             val kgElement = entry.findViewById<AppCompatTextView>(R.id.activity_delivering_deliver_fragment_order_kg)
 
-            UIUtils.setUIElementValue(this, seqNoElement, order.seqNo+".")
-            UIUtils.setUIElementValue(this, nameElement, order.name)
-            UIUtils.setUIElementValue(this, pcElement, order.orderedPc)
-            UIUtils.setUIElementValue(this, kgElement, order.orderedKg)
+            UIUtils.setUIElementValue(seqNoElement, order.seqNo+".")
+            UIUtils.setUIElementValue(nameElement, order.name)
+            UIUtils.setUIElementValue(pcElement, order.orderedPc)
+            UIUtils.setUIElementValue(kgElement, order.orderedKg)
 
             entry.setOnClickListener {
                 goTo_ActivityDeliveringDeliver(order.name)

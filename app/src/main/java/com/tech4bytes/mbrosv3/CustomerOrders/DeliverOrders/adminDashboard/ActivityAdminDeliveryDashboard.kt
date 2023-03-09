@@ -35,14 +35,14 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         val avgWtElement = findViewById<TextView>(R.id.activity_admin_delivery_dashboard_total_loaded_avg_wt)
 
         val loadMetadata = SingleAttributedData.getRecords(useCache)
-        UIUtils.setUIElementValue(this, totalPcElement, loadMetadata.actualLoadPc)
-        UIUtils.setUIElementValue(this, totalKgElement, loadMetadata.actualLoadKg)
+        UIUtils.setUIElementValue(totalPcElement, loadMetadata.actualLoadPc)
+        UIUtils.setUIElementValue(totalKgElement, loadMetadata.actualLoadKg)
 
         try {
             val avgWt = NumberUtils.getDoubleOrZero(loadMetadata.actualLoadKg) / NumberUtils.getDoubleOrZero(loadMetadata.actualLoadPc)
-            UIUtils.setUIElementValue(this, avgWtElement, "${WeightUtils.roundOff3places(avgWt)}")
+            UIUtils.setUIElementValue(avgWtElement, "${WeightUtils.roundOff3places(avgWt)}")
         } catch (e: Exception) {
-            UIUtils.setUIElementValue(this, avgWtElement, "---")
+            UIUtils.setUIElementValue(avgWtElement, "---")
         }
     }
 
@@ -58,11 +58,11 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         val deliveredPcKgElement = findViewById<TextView>(R.id.activity_admin_delivery_dashboard_delivered_pc_kg)
         val deliveredAvgWtElement = findViewById<TextView>(R.id.activity_admin_delivery_dashboard_delivered_avg_wt)
 
-        UIUtils.setUIElementValue(this, deliveredNumberElement,
+        UIUtils.setUIElementValue(deliveredNumberElement,
             "$numberOfCustomersDelivered / $totalNumberOfCustomers Counters")
-        UIUtils.setUIElementValue(this, deliveredPcKgElement,
+        UIUtils.setUIElementValue(deliveredPcKgElement,
             "$deliveredPc pc - $deliveredKg kg")
-        UIUtils.setUIElementValue(this, deliveredAvgWtElement,
+        UIUtils.setUIElementValue(deliveredAvgWtElement,
             "${WeightUtils.roundOff3places(avgWt)} kg/pc")
     }
 
@@ -90,9 +90,9 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
             val metadataObj = SingleAttributedData.getRecords()
             val loadedAvgWt = NumberUtils.getDoubleOrZero(metadataObj.actualLoadKg) / NumberUtils.getDoubleOrZero(metadataObj.actualLoadPc)
             val shortage = (loadedAvgWt - deliveredAvgWt) * 100 / loadedAvgWt
-            UIUtils.setUIElementValue(this, projectedShortageElement, "${WeightUtils.roundOff3places(shortage)}")
+            UIUtils.setUIElementValue(projectedShortageElement, "${WeightUtils.roundOff3places(shortage)}")
         } catch (e: Exception) {
-            UIUtils.setUIElementValue(this, projectedShortageElement, "N/A")
+            UIUtils.setUIElementValue(projectedShortageElement, "N/A")
         }
     }
 

@@ -47,18 +47,18 @@ class GetOrdersFinalize : AppCompatActivity() {
 
         val orderedPcElement = entry.findViewById<TextView>(R.id.fragment_customer_order_pc)
         val orderedKgElement = entry.findViewById<TextView>(R.id.fragment_customer_order_kg)
-        UIUtils.setUIElementValue(this, entry.findViewById<AppCompatTextView>(R.id.fragment_customer_order_name), order.name)
+        UIUtils.setUIElementValue(entry.findViewById<AppCompatTextView>(R.id.fragment_customer_order_name), order.name)
         if(order.orderedPc.isNotEmpty()) {
-            UIUtils.setUIElementValue(this, orderedPcElement, order.orderedPc)
+            UIUtils.setUIElementValue(orderedPcElement, order.orderedPc)
         } else {
-            UIUtils.setUIElementValue(this, orderedPcElement, (order.orderedKg.toInt()/2).toString())
+            UIUtils.setUIElementValue(orderedPcElement, (order.orderedKg.toInt()/2).toString())
             orderedPcElement.setBackgroundColor(ContextCompat.getColor(this, R.color.delivery_input_not_valid))
         }
 
         if(order.orderedKg.isNotEmpty()) {
-            UIUtils.setUIElementValue(this, orderedKgElement, order.orderedKg)
+            UIUtils.setUIElementValue(orderedKgElement, order.orderedKg)
         } else {
-            UIUtils.setUIElementValue(this, orderedKgElement, (order.orderedPc.toInt() * SingleAttributedData.getRecords().estimatedLoadAvgWt.toInt()/1000).toString())
+            UIUtils.setUIElementValue(orderedKgElement, (order.orderedPc.toInt() * SingleAttributedData.getRecords().estimatedLoadAvgWt.toInt()/1000).toString())
             orderedKgElement.setBackgroundColor(ContextCompat.getColor(this, R.color.delivery_input_not_valid))
         }
 

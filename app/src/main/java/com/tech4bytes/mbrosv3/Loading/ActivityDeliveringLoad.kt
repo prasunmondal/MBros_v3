@@ -42,10 +42,10 @@ class ActivityDeliveringLoad : AppCompatActivity() {
         val loadActualPc = metadataObj.actualLoadPc
         val loadActualKg = metadataObj.actualLoadKg
 
-        UIUtils.setUIElementValue(this, LoadModel.getUiElementFromLoadingPage(view, LoadModel::requiredPc), loadOrderPc)
-        UIUtils.setUIElementValue(this, LoadModel.getUiElementFromLoadingPage(view, LoadModel::requiredKg), loadOrderKg)
-        UIUtils.setUIElementValue(this, LoadModel.getUiElementFromLoadingPage(view, LoadModel::actualPc), loadActualPc)
-        UIUtils.setUIElementValue(this, LoadModel.getUiElementFromLoadingPage(view, LoadModel::actualKg), loadActualKg)
+        UIUtils.setUIElementValue(LoadModel.getUiElementFromLoadingPage(view, LoadModel::requiredPc), loadOrderPc)
+        UIUtils.setUIElementValue(LoadModel.getUiElementFromLoadingPage(view, LoadModel::requiredKg), loadOrderKg)
+        UIUtils.setUIElementValue(LoadModel.getUiElementFromLoadingPage(view, LoadModel::actualPc), loadActualPc)
+        UIUtils.setUIElementValue(LoadModel.getUiElementFromLoadingPage(view, LoadModel::actualKg), loadActualKg)
     }
 
     private fun addListeners() {
@@ -66,10 +66,10 @@ class ActivityDeliveringLoad : AppCompatActivity() {
             val actualKg = UIUtils.getUIElementValue(LoadModel.getUiElementFromLoadingPage(view, LoadModel::actualKg)).toDouble()
             val actualPc = UIUtils.getUIElementValue(LoadModel.getUiElementFromLoadingPage(view, LoadModel::actualPc)).toInt()
             val avgWt = actualKg/actualPc
-            UIUtils.setUIElementValue(this, view.findViewById<TextView>(R.id.activity_delivering_load_actualAvgWt), format("%.3f", avgWt))
+            UIUtils.setUIElementValue(view.findViewById<TextView>(R.id.activity_delivering_load_actualAvgWt), format("%.3f", avgWt))
         } catch (e: NumberFormatException) {
             LogMe.log(e)
-            UIUtils.setUIElementValue(this, view.findViewById<TextView>(R.id.activity_delivering_load_actualAvgWt), "--.---")
+            UIUtils.setUIElementValue(view.findViewById<TextView>(R.id.activity_delivering_load_actualAvgWt), "--.---")
         }
 
     }

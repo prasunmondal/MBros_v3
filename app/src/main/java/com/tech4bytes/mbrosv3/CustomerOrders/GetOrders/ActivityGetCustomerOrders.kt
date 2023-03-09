@@ -57,8 +57,8 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         val metadataObj = SingleAttributedData.getRecords()
         val kg = metadataObj.estimatedLoadKg + ""
         val pc = metadataObj.estimatedLoadPc + ""
-        UIUtils.setUIElementValue(this, LoadModel.getUiElementFromOrderingPage(containerView, LoadModel::requiredKg), kg)
-        UIUtils.setUIElementValue(this, LoadModel.getUiElementFromOrderingPage(containerView, LoadModel::requiredPc), pc)
+        UIUtils.setUIElementValue(LoadModel.getUiElementFromOrderingPage(containerView, LoadModel::requiredKg), kg)
+        UIUtils.setUIElementValue(LoadModel.getUiElementFromOrderingPage(containerView, LoadModel::requiredPc), pc)
     }
 
     private fun createEstimatesView(order: GetCustomerOrders) {
@@ -106,7 +106,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         GetCustomerOrders.get().forEach {
             sum += getJustTheNumber(it.orderedKg)
         }
-        UIUtils.setUIElementValue(this, containerView.findViewById(R.id.activity_get_order_estimates__total_kg), "$sum kg")
+        UIUtils.setUIElementValue(containerView.findViewById(R.id.activity_get_order_estimates__total_kg), "$sum kg")
     }
 
     private fun updateTotalPc() {

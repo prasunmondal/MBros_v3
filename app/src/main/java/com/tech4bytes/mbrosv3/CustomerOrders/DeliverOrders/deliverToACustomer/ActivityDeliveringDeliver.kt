@@ -62,31 +62,31 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         val balanceDueElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::balanceDue)!!
 
         // Set UI Values
-        UIUtils.setUIElementValue(this, nameElement, record.name)
-        UIUtils.setUIElementValue(this, orderedPcElement, record.orderedPc.ifEmpty { "--" })
-        UIUtils.setUIElementValue(this, orderedKgElement, record.orderedKg.ifEmpty { "--" })
-        UIUtils.setUIElementValue(this, deliveredPcElement, record.deliveredPc)
-        UIUtils.setUIElementValue(this, deliveredKgElement, record.deliveredKg)
-        UIUtils.setUIElementValue(this, totalDueElement, record.totalDue)
-        UIUtils.setUIElementValue(this, paidElement, record.paid)
-        UIUtils.setUIElementValue(this, balanceDueElement, CustomerData.getLastDue(record.name))
+        UIUtils.setUIElementValue(nameElement, record.name)
+        UIUtils.setUIElementValue(orderedPcElement, record.orderedPc.ifEmpty { "--" })
+        UIUtils.setUIElementValue(orderedKgElement, record.orderedKg.ifEmpty { "--" })
+        UIUtils.setUIElementValue(deliveredPcElement, record.deliveredPc)
+        UIUtils.setUIElementValue(deliveredKgElement, record.deliveredKg)
+        UIUtils.setUIElementValue(totalDueElement, record.totalDue)
+        UIUtils.setUIElementValue(paidElement, record.paid)
+        UIUtils.setUIElementValue(balanceDueElement, CustomerData.getLastDue(record.name))
 
         if(RolesUtils.doesHaveRole(Roles.ADMIN)) {
-            UIUtils.setUIElementValue(this, rate, record.rate)
-            UIUtils.setUIElementValue(this, todaysAmountElement, record.todaysAmount)
+            UIUtils.setUIElementValue(rate, record.rate)
+            UIUtils.setUIElementValue(todaysAmountElement, record.todaysAmount)
         }
 
         if(record.rate.isEmpty() && (RolesUtils.doesHaveRole(Roles.ADMIN) || RolesUtils.doesHaveRole(Roles.SHOW_RATES_IN_DELIVERY_PAGE))) {
-            UIUtils.setUIElementValue(this, rate, ("0${SingleAttributedData.getRecords().finalFarmRate}".toInt() + "0${SingleAttributedData.getRecords().bufferRate}".toInt() + CustomerKYC.get(record.name)!!.rateDifference.toInt()).toString())
+            UIUtils.setUIElementValue(rate, ("0${SingleAttributedData.getRecords().finalFarmRate}".toInt() + "0${SingleAttributedData.getRecords().bufferRate}".toInt() + CustomerKYC.get(record.name)!!.rateDifference.toInt()).toString())
             (rate as EditText).setTextColor(ContextCompat.getColor(this, R.color.red))
         }
 
         if (RolesModel.isEligibleToViewHiddenDue() || CustomerKYC.showBalance(UIUtils.getUIElementValue(nameElement))) {
-            UIUtils.setUIElementValue(this, prevDueElement, record.prevDue)
+            UIUtils.setUIElementValue(prevDueElement, record.prevDue)
         }
 
         // Don't show Today's Amount for privacy reasons
-        // UIUtils.setUIElementValue(this, todaysAmountElement, record.todaysAmount)
+        // UIUtils.setUIElementValue(todaysAmountElement, record.todaysAmount)
 
         showSellingDataValidation()
         validatePaid()
@@ -208,7 +208,6 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
     }
 
     private fun reCalculateNUpdateValues() {
-        LogMe.log("Re-calculating...")
         val name = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::name)!!
 
         val todaysAmountElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::todaysAmount)!!
@@ -217,15 +216,15 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
 
         // do not update UI if show balances is false
         if(!RolesModel.isEligibleToViewHiddenDue() && !CustomerKYC.showBalance(UIUtils.getUIElementValue(name))) {
-            UIUtils.setUIElementValue(this, todaysAmountElement, "0.00")
-            UIUtils.setUIElementValue(this, totalDueElement, "0.00")
-            UIUtils.setUIElementValue(this, balanceDueElement, "0.00")
+            UIUtils.setUIElementValue(todaysAmountElement, "0.00")
+            UIUtils.setUIElementValue(totalDueElement, "0.00")
+            UIUtils.setUIElementValue(balanceDueElement, "0.00")
             return
         }
 
-        UIUtils.setUIElementValue(this, todaysAmountElement, "${calculateTodaysAmount()}")
-        UIUtils.setUIElementValue(this, totalDueElement, "${calculateTotalAmount()}")
-        UIUtils.setUIElementValue(this, balanceDueElement, "${calculateBalanceDue()}")
+        UIUtils.setUIElementValue(todaysAmountElement, "${calculateTodaysAmount()}")
+        UIUtils.setUIElementValue(totalDueElement, "${calculateTotalAmount()}")
+        UIUtils.setUIElementValue(balanceDueElement, "${calculateBalanceDue()}")
     }
 
     private fun calculateBalanceDue(): Double {

@@ -107,5 +107,12 @@ class GetOrdersFinalize : AppCompatActivity() {
     fun onClickGoToGetOrdersPage(view: View) {
         val switchActivityIntent = Intent(this, ActivityGetCustomerOrders::class.java)
         startActivity(switchActivityIntent)
+        finish()
+    }
+
+    fun goToOrdersMakeList(view: View) {
+        val switchActivityIntent = Intent(this, OrdersMakeList::class.java)
+        startActivity(switchActivityIntent)
+        finish()
     }
 }

@@ -93,6 +93,7 @@
             android:layout_weight="1"
             android:background="#8BC34A"
             android:gravity="center"
+            android:onClick="goToOrdersMakeList"
             android:paddingVertical="3dp"
             android:text="3"
             android:textSize="30sp"

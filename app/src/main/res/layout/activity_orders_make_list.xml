@@ -6,4 +6,58 @@
     android:layout_height="match_parent"
     tools:context=".CustomerOrders.GetOrders.OrdersMakeList">
 
+    <LinearLayout
+        android:id="@+id/linearLayout8"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/textView30"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#E8A18A"
+            android:gravity="center"
+            android:onClick="onClickGoToOrdersGetPage"
+            android:paddingVertical="3dp"
+            android:text="1"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView31"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#FFEB3B"
+            android:gravity="center"
+            android:onClick="onClickGoToOrdersFinalizePage"
+            android:paddingVertical="3dp"
+            android:text="2"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView32"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#8BC34A"
+            android:gravity="center"
+            android:paddingVertical="3dp"
+            android:text="3"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/activity_get_order_estimates__save_date_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:onClick="onClickSaveBtn"
+            android:text="Save" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

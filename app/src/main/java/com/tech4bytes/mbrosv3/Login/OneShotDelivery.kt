@@ -7,16 +7,13 @@ import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
-import com.tech4bytes.mbrosv3.Loading.LoadModel
+import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.R
-import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 
@@ -61,7 +58,17 @@ class OneShotDelivery : AppCompatActivity() {
             LogMe.log("${SingleAttributedData.getFinalRateInt() + SingleAttributedData.getBufferRateInt() + CustomerKYC.get(order.name)!!.rateDifference.toInt()}")
             rateElement.text = "${SingleAttributedData.getFinalRateInt() + SingleAttributedData.getBufferRateInt() + CustomerKYC.get(order.name)!!.rateDifference.toInt()}"
 
+            rateElement.doOnTextChanged { text, start, before, count ->
+                updateEntry(order, entry)
+            }
 
+            kgElement.doOnTextChanged { text, start, before, count ->
+                updateEntry(order, entry)
+            }
+
+            paidElement.doOnTextChanged { text, start, before, count ->
+                updateEntry(order, entry)
+            }
 //            entry.setOnClickListener {
 //                goTo_ActivityDeliveringDeliver(order.name)
 //            }
@@ -72,6 +79,65 @@ class OneShotDelivery : AppCompatActivity() {
 
             listContainer.addView(entry)
         }
+    }
+
+    private fun updateEntry(order: GetCustomerOrders,entry: View) {
+        val kg = getKgForEntry(entry)
+        val pc = getPcForEntry(entry)
+        val paid = getPaidAmountForEntry(entry)
+        val rate = getRateForEntry(entry)
+        val balanceElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
+
+        balanceElement.text = getDueBalance(order, entry).toString()
+    }
+
+    private fun getRateForEntry(entry: View): Int {
+        val rate = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_rate).text.toString()
+        if(rate.isEmpty())
+            return 0
+        return rate.toInt()
+    }
+
+    private fun getPcForEntry(entry: View): Int {
+        val pc = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc).text.toString()
+        if(pc.isEmpty())
+            return 0
+        return pc.toInt()
+
+    }
+
+    private fun getKgForEntry(entry: View): Double {
+        val kg = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_kg).text.toString()
+        if(kg.isEmpty())
+            return 0.0
+        return kg.toDouble()
+
+    }
+
+    private fun getPaidAmountForEntry(entry: View): Int {
+        val paid = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid).text.toString()
+        if(paid.isEmpty())
+            return 0
+        return paid.toInt()
+    }
+
+    private fun getTodaysSaleAmountForEntry(entry: View): Int {
+        val kg = getKgForEntry(entry)
+        val rate= getRateForEntry(entry)
+        return (kg*rate).toInt()
+    }
+
+    private fun getDueBalance(order: GetCustomerOrders, entry: View): Int {
+        val prevBal = getPrevDueBalance(order)
+        val bal = prevBal + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(entry)
+        return bal
+    }
+
+    private fun getPrevDueBalance(order: GetCustomerOrders): Int {
+        if(order.prevDue.isEmpty()) {
+            return CustomerData.getLastDue(order.name).toInt()
+        }
+        return order.prevDue.toInt()
     }
 
     fun onClickSyncInputsOffline(view: View) {

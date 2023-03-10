@@ -55,19 +55,23 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/make_list_fragment_name"
-                android:layout_width="wrap_content"
+                android:layout_width="180dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
                 android:gravity="center_vertical"
-                android:textColor="#231602"
-                android:textSize="17sp" />
+                android:text="Name"
+                android:textColor="#0521BA"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/make_list_fragment_due"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:text="Balance"
+                android:textColor="#550000"
+                android:textSize="20sp" />
 
         </LinearLayout>
 

@@ -31,11 +31,14 @@ data class GetCustomerOrders(var id: String = "",
         private var obj: MutableList<GetCustomerOrders> = mutableListOf()
 
         fun get(useCache: Boolean = true): List<GetCustomerOrders> {
+            LogMe.log("GetCustomerOrders.get()")
             val cacheResults = CentralCache.get<ArrayList<GetCustomerOrders>>(AppContexts.get(), CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, useCache)
 
             obj = if (cacheResults != null) {
+                LogMe.log("GetCustomerOrders.get: Cache Hit")
                 cacheResults
             } else {
+                LogMe.log("GetCustomerOrders.get: Cache Miss")
                 val resultFromServer = getCompleteList()
                 CentralCache.put(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, resultFromServer)
                 resultFromServer as MutableList<GetCustomerOrders>
@@ -91,7 +94,7 @@ data class GetCustomerOrders(var id: String = "",
 
         fun getListOfOrderedCustomers(): List<GetCustomerOrders> {
             val list: MutableList<GetCustomerOrders> = mutableListOf()
-            val actualOrders = getFromServer()
+            val actualOrders = get()
             CustomerKYC.getAllCustomers().forEach { masterList ->
                 actualOrders.forEach { orderList ->
                     if(masterList.nameEng == orderList.name) {
@@ -104,7 +107,7 @@ data class GetCustomerOrders(var id: String = "",
 
         fun getListOfUnOrderedCustomers(): List<GetCustomerOrders> {
             val list: MutableList<GetCustomerOrders> = mutableListOf()
-            val actualOrders = getFromServer()
+            val actualOrders = get()
             CustomerKYC.getAllCustomers().forEach { masterList ->
                 var isInOrderList = false
                 actualOrders.forEach { orderList ->

@@ -56,6 +56,18 @@ data class SingleAttributedData(var recordGeneratorDevice: String = "",
             }
         }
 
+        fun getBufferRateInt(): Int {
+            if(getRecords().bufferRate.isEmpty())
+                return 0
+            return getRecords().bufferRate.toInt()
+        }
+
+        fun getFinalRateInt(): Int {
+            if(getRecords().finalFarmRate.isEmpty())
+                return 0
+            return getRecords().finalFarmRate.toInt()
+        }
+
         fun save(obj: SingleAttributedData) {
             obj.recordGeneratorDevice = getPhoneId()
             obj.id = System.currentTimeMillis().toString()

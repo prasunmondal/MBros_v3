@@ -31,8 +31,8 @@
                     android:layout_width="70dp"
                     android:layout_height="50dp"
                     android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="Rate" />
+                    android:hint="Rate"
+                    android:inputType="textPersonName" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/one_shot_delivery_fragment_name"
@@ -40,6 +40,7 @@
                     android:layout_height="50dp"
                     android:layout_marginLeft="5dp"
                     android:gravity="center_vertical"
+                    android:hint="Name"
                     android:text="Name"
                     android:textColor="#0521BA"
                     android:textSize="20sp"
@@ -57,16 +58,16 @@
                     android:layout_width="70dp"
                     android:layout_height="50dp"
                     android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="pc" />
+                    android:hint="pc"
+                    android:inputType="textPersonName" />
 
                 <EditText
                     android:id="@+id/one_shot_delivery_fragment_kg"
                     android:layout_width="90dp"
                     android:layout_height="50dp"
                     android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="kg" />
+                    android:hint="kg"
+                    android:inputType="textPersonName" />
 
                 <EditText
                     android:id="@+id/one_shot_delivery_fragment_paid"
@@ -74,14 +75,15 @@
                     android:layout_height="50dp"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="Paid" />
+                    android:hint="Paid"
+                    android:inputType="textPersonName" />
 
                 <TextView
                     android:id="@+id/one_shot_delivery_fragment_balance_due"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_weight="1"
+                    android:hint="Balance"
                     android:text="Balance"
                     android:textColor="#550000"
                     android:textSize="20sp" />

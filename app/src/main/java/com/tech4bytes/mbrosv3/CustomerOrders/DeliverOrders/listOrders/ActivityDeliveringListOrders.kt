@@ -28,15 +28,15 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
         AppContexts.set(this, this)
         AppUtils.logError()
 
-        showOrders()
+        showOrders(GetCustomerOrders.getListOfOrderedCustomers(), R.id.activity_delivering_deliver_order_list)
+        showOrders(GetCustomerOrders.getListOfUnOrderedCustomers(), R.id.activity_delivering_deliver_unorder_list)
     }
 
-    fun showOrders() {
-        val orders = GetCustomerOrders.get()
-        orders.forEach { order ->
+    fun showOrders(listOfCustomers: List<GetCustomerOrders>, container: Int) {
+        listOfCustomers.forEach { order ->
             LogMe.log(order.toString())
 
-            val listContainer = findViewById<LinearLayout>(R.id.activity_delivering_deliver_order_list)
+            val listContainer = findViewById<LinearLayout>(container)
             val layoutInflater = LayoutInflater.from(AppContexts.get())
             val entry = layoutInflater.inflate(R.layout.activity_delivering_list_fragment_order_details, null)
 
@@ -45,7 +45,7 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
             val pcElement = entry.findViewById<AppCompatTextView>(R.id.activity_delivering_deliver_fragment_order_pc)
             val kgElement = entry.findViewById<AppCompatTextView>(R.id.activity_delivering_deliver_fragment_order_kg)
 
-            UIUtils.setUIElementValue(seqNoElement, order.seqNo+".")
+            UIUtils.setUIElementValue(seqNoElement, order.seqNo + ".")
             UIUtils.setUIElementValue(nameElement, order.name)
             UIUtils.setUIElementValue(pcElement, order.orderedPc)
             UIUtils.setUIElementValue(kgElement, order.orderedKg)
@@ -54,7 +54,7 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
                 goTo_ActivityDeliveringDeliver(order.name)
             }
 
-            if(isDelivered(order.name)) {
+            if (isDelivered(order.name)) {
                 entry.findViewById<LinearLayout>(R.id.activity_due_show_fragment_conntainer).setBackgroundColor(ContextCompat.getColor(this, R.color.delivery_completed))
             }
 

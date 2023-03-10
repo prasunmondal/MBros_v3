@@ -89,6 +89,36 @@ data class GetCustomerOrders(var id: String = "",
             return list
         }
 
+        fun getListOfOrderedCustomers(): List<GetCustomerOrders> {
+            val list: MutableList<GetCustomerOrders> = mutableListOf()
+            val actualOrders = getFromServer()
+            CustomerKYC.getAllCustomers().forEach { masterList ->
+                actualOrders.forEach { orderList ->
+                    if(masterList.nameEng == orderList.name) {
+                        list.add(orderList)
+                    }
+                }
+            }
+            return list
+        }
+
+        fun getListOfUnOrderedCustomers(): List<GetCustomerOrders> {
+            val list: MutableList<GetCustomerOrders> = mutableListOf()
+            val actualOrders = getFromServer()
+            CustomerKYC.getAllCustomers().forEach { masterList ->
+                var isInOrderList = false
+                actualOrders.forEach { orderList ->
+                    if(masterList.nameEng == orderList.name) {
+                        isInOrderList = true
+                    }
+                }
+                if(!isInOrderList && masterList.isActiveCustomer.toBoolean()) {
+                    list.add(GetCustomerOrders(name = masterList.nameEng))
+                }
+            }
+            return list
+        }
+
         fun getNumberOfCustomersOrdered(useCache: Boolean): Int {
             return get(useCache).size
         }

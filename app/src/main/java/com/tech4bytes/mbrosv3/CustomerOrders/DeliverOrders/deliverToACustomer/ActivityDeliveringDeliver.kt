@@ -44,6 +44,9 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         val inputName = intent.extras!!.get("name") as String
         LogMe.log("Delivering to: $inputName")
         record = getRecord(inputName)
+        if(record.prevDue.isEmpty()) {
+            record.prevDue = CustomerData.getLastDue(record.name)
+        }
         initiallizeUI()
     }
 

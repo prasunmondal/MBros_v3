@@ -3,11 +3,13 @@ package com.tech4bytes.mbrosv3.Login
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
@@ -23,50 +25,25 @@ class OneShotDelivery : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_one_shot_delivery)
 
-        AppContexts.set(this, this)
+        AppContexts.set(this)
         AppUtils.logError()
 
-        setGlobalListeners()
+        showOrders()
+    }
+
+    fun showOrders() {
         showOrders(GetCustomerOrders.getListOfOrderedCustomers(), R.id.one_shot_delivery_entry_container)
 //        showOrders(GetCustomerOrders.getListOfUnOrderedCustomers(), R.id.activity_delivering_deliver_unorder_list)
     }
 
-    private fun setGlobalListeners() {
-        val loadPcElement = findViewById<EditText>(R.id.one_shot_delivery_pc)
-        val loadKgElement = findViewById<EditText>(R.id.one_shot_delivery_kg)
-        val loadPriceElement = findViewById<EditText>(R.id.one_shot_delivery_price)
-        val loadBufferElement = findViewById<EditText>(R.id.one_shot_delivery_buffer)
-
-        loadPcElement.setOnClickListener {
-            val record = SingleAttributedData.getRecords()
-            record.actualLoadPc = loadPcElement.text.toString()
-            SingleAttributedData.save(record)
-        }
-
-        loadKgElement.setOnClickListener {
-            val record = SingleAttributedData.getRecords()
-            record.actualLoadKg = loadKgElement.text.toString()
-            SingleAttributedData.save(record)
-        }
-
-        loadPriceElement.setOnClickListener {
-            val record = SingleAttributedData.getRecords()
-            record.finalFarmRate = loadPriceElement.text.toString()
-            SingleAttributedData.save(record)
-        }
-
-        loadBufferElement.setOnClickListener {
-            val record = SingleAttributedData.getRecords()
-            record.bufferRate = loadBufferElement.text.toString()
-            SingleAttributedData.save(record)
-        }
-    }
-
     fun showOrders(listOfCustomers: List<GetCustomerOrders>, container: Int) {
+
+        val listContainer = findViewById<LinearLayout>(container)
+        listContainer.removeAllViews()
+
         listOfCustomers.forEach { order ->
             LogMe.log(order.toString())
 
-            val listContainer = findViewById<LinearLayout>(container)
             val layoutInflater = LayoutInflater.from(AppContexts.get())
             val entry = layoutInflater.inflate(R.layout.activity_one_shot_delivery_fragment, null)
 
@@ -95,6 +72,21 @@ class OneShotDelivery : AppCompatActivity() {
 
             listContainer.addView(entry)
         }
+    }
+
+    fun onClickSyncInputsOffline(view: View) {
+        val record = SingleAttributedData.getRecords()
+        val loadPcElement = findViewById<EditText>(R.id.one_shot_delivery_pc)
+        val loadKgElement = findViewById<EditText>(R.id.one_shot_delivery_kg)
+        val loadPriceElement = findViewById<EditText>(R.id.one_shot_delivery_price)
+        val loadBufferElement = findViewById<EditText>(R.id.one_shot_delivery_buffer)
+
+        record.actualLoadPc = loadPcElement.text.toString()
+        record.actualLoadKg = loadKgElement.text.toString()
+        record.finalFarmRate = loadPriceElement.text.toString()
+        record.bufferRate = loadBufferElement.text.toString()
+        SingleAttributedData.saveToLocal(record)
+        showOrders()
     }
 
 }

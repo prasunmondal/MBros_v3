@@ -73,7 +73,7 @@ data class GetCustomerOrders(var id: String = "",
 
         private fun getCompleteList(): List<GetCustomerOrders> {
             val list: MutableList<GetCustomerOrders> = mutableListOf()
-            val actualOrders = getFromServer()
+            val actualOrders = getServerList()
             CustomerKYC.getAllCustomers().forEach { masterList ->
                 var isInOrderList = false
                 actualOrders.forEach { orderList ->
@@ -91,7 +91,7 @@ data class GetCustomerOrders(var id: String = "",
 
         fun getListOfOrderedCustomers(): List<GetCustomerOrders> {
             val list: MutableList<GetCustomerOrders> = mutableListOf()
-            val actualOrders = getFromServer()
+            val actualOrders = getServerList()
             CustomerKYC.getAllCustomers().forEach { masterList ->
                 actualOrders.forEach { orderList ->
                     if(masterList.nameEng == orderList.name) {
@@ -104,7 +104,7 @@ data class GetCustomerOrders(var id: String = "",
 
         fun getListOfUnOrderedCustomers(): List<GetCustomerOrders> {
             val list: MutableList<GetCustomerOrders> = mutableListOf()
-            val actualOrders = getFromServer()
+            val actualOrders = getServerList()
             CustomerKYC.getAllCustomers().forEach { masterList ->
                 var isInOrderList = false
                 actualOrders.forEach { orderList ->
@@ -185,6 +185,20 @@ data class GetCustomerOrders(var id: String = "",
             return result.parseToObject(result.getRawResponse(),
                 object : TypeToken<ArrayList<GetCustomerOrders>?>() {}.type
             )
+        }
+
+        private fun getServerList(useCache: Boolean = true): List<GetCustomerOrders> {
+            val getOrdersServerListKey = "getOrdersServerList"
+            val cacheResults = CentralCache.get<ArrayList<GetCustomerOrders>>(AppContexts.get(), getOrdersServerListKey, useCache)
+
+            obj = if (cacheResults != null) {
+                cacheResults
+            } else {
+                val resultFromServer = getFromServer()
+                CentralCache.put(getOrdersServerListKey, resultFromServer)
+                resultFromServer as MutableList<GetCustomerOrders>
+            }
+            return obj
         }
     }
 

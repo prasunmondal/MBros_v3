@@ -70,8 +70,15 @@ class ActivityLogin : AppCompatActivity() {
             Roles.COLLECTOR -> goToCollectorRole()
             Roles.ORDER_COLLECTOR -> goToGetOrdersPage()
             Roles.BALANCE_VIEW -> goToShowDues()
+            Roles.ONE_SHOT_DELIVERY -> goToOneShotDelivery()
             else -> logUnIdentifiedDevice()
         }
+    }
+
+    private fun goToOneShotDelivery() {
+        val switchActivityIntent = Intent(this, OneShotDelivery::class.java)
+        startActivity(switchActivityIntent)
+        finish()
     }
 
     private fun logUnIdentifiedDevice() {

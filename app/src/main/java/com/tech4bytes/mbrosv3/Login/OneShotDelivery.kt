@@ -68,8 +68,8 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     fun showOrders() {
-        showOrders(deliveryMapOrderedCustomers, R.id.one_shot_delivery_entry_container)
-//        showOrders(GetCustomerOrders.getListOfUnOrderedCustomers(), R.id.activity_delivering_deliver_unorder_list)
+        showOrders(deliveryMapOrderedCustomers, R.id.one_shot_delivery_ordered_customers_entry_container)
+        showOrders(deliveryMapUnOrderedCustomers, R.id.one_shot_delivery_unordered_customers_entry_container)
     }
 
     fun showOrders(listOfCustomers: MutableMap<String, DeliverCustomerOrders>, container: Int) {
@@ -114,13 +114,14 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun updateEntry(order: Map.Entry<String, DeliverCustomerOrders>, entry: View) {
-        val kg = getKgForEntry(entry)
-        val pc = getPcForEntry(entry)
-        val paid = getPaidAmountForEntry(entry)
-        val rate = getRateForEntry(entry)
+        order.value.deliveredKg = getKgForEntry(entry).toString()
+        order.value.deliveredPc = getPcForEntry(entry).toString()
+        order.value.paid = getPaidAmountForEntry(entry).toString()
+        order.value.rate = getRateForEntry(entry).toString()
+
         val balanceElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
 
-        balanceElement.text = getDueBalance(order, entry).toString()
+        balanceElement.text = getDueBalance(order.value, entry).toString()
     }
 
     private fun getRateForEntry(entry: View): Int {
@@ -159,13 +160,13 @@ class OneShotDelivery : AppCompatActivity() {
         return (kg*rate).toInt()
     }
 
-    private fun getDueBalance(order: GetCustomerOrders, entry: View): Int {
+    private fun getDueBalance(order: DeliverCustomerOrders, entry: View): Int {
         val prevBal = getPrevDueBalance(order)
         val bal = prevBal + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(entry)
         return bal
     }
 
-    private fun getPrevDueBalance(order: GetCustomerOrders): Int {
+    private fun getPrevDueBalance(order: DeliverCustomerOrders): Int {
         if(order.prevDue.isEmpty()) {
             return CustomerData.getLastDue(order.name).toInt()
         }

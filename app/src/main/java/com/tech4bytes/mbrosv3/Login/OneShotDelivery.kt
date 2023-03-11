@@ -203,28 +203,32 @@ class OneShotDelivery : AppCompatActivity() {
         val totalSaleElement = findViewById<TextView>(R.id.one_shot_delivery_total_sale)
         val totalShortageElement = findViewById<TextView>(R.id.one_shot_delivery_total_shortage)
         val totalCollectedElement = findViewById<TextView>(R.id.one_shot_delivery_total_collected_amount)
+        val totalBalanceDueElement = findViewById<TextView>(R.id.one_shot_delivery_total_balance_due)
 
         var sumPc = 0
         var sumKg = 0.0
         var sumSale = 0
         var sumAmountCollected = 0
+        var sumBalanceDue = 0
 
         deliveryMapOrderedCustomers.forEach {
             sumPc += NumberUtils.getIntOrZero(it.value.deliveredPc)
             sumKg += NumberUtils.getDoubleOrZero(it.value.deliveredKg)
             sumSale += NumberUtils.getIntOrZero(it.value.todaysAmount)
             sumAmountCollected += NumberUtils.getIntOrZero(it.value.paid)
+            sumBalanceDue += NumberUtils.getIntOrZero(it.value.balanceDue)
         }
 
         val loadedKg = NumberUtils.getDoubleOrZero(SingleAttributedData.getRecords().actualLoadKg)
         val shortage = (loadedKg - sumKg) * 100 / loadedKg
 
-        totalPcElement.text = "pc: $sumPc"
-        totalKgElement.text = "${"%.3f".format(sumKg)} kg"
-        totalSaleElement.text = "Sale: Rs $sumSale"
+        totalPcElement.text = "$sumPc"
+        totalKgElement.text = "${"%.3f".format(sumKg)}"
+        totalSaleElement.text = "＄ ₹ $sumSale"
 
-        totalShortageElement.text = "Shortage: ${"%.3f".format(shortage)} kg"
-        totalCollectedElement.text = "Collection: Rs: $sumAmountCollected"
+        totalShortageElement.text = "▼ ${"%.3f".format(shortage)} kg"
+        totalCollectedElement.text = "\uD83D\uDCB0 ₹ $sumAmountCollected"
+        totalBalanceDueElement.text = "\uD83D\uDCB8 $sumBalanceDue"
     }
 
     fun onClickSaveOneShotDeliveryDataBtn(view: View) {

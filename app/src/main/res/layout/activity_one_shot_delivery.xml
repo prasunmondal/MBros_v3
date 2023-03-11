@@ -127,38 +127,51 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/one_shot_delivery_total_pc"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_weight="1"
+                    android:layout_marginLeft="10dp"
                     android:hint="pc"
+                    android:textColor="#F30E0E"
                     android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/textView41"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" / " />
 
                 <TextView
                     android:id="@+id/one_shot_delivery_total_kg"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_weight="1"
                     android:hint="kg"
+                    android:textColor="#0825C1"
                     android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/one_shot_delivery_total_shortage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_marginLeft="50dp"
                     android:hint="shortage"
                     android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/one_shot_delivery_total_sale"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_weight="1"
+                    android:layout_marginLeft="10dp"
                     android:hint="sale"
                     android:textSize="18sp" />
 
@@ -166,8 +179,17 @@
                     android:id="@+id/one_shot_delivery_total_collected_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_marginLeft="20dp"
                     android:hint="amount_collected"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/one_shot_delivery_total_balance_due"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="1"
+                    android:text="TextView"
                     android:textSize="18sp" />
             </LinearLayout>
         </LinearLayout>

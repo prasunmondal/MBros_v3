@@ -18,6 +18,7 @@ import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
+import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 
 class OneShotDelivery : AppCompatActivity() {
 
@@ -101,6 +102,10 @@ class OneShotDelivery : AppCompatActivity() {
                 updateEntry(order, entry)
             }
 
+            pcElement.doOnTextChanged { text, start, before, count ->
+                updateEntry(order, entry)
+            }
+
             kgElement.doOnTextChanged { text, start, before, count ->
                 updateEntry(order, entry)
             }
@@ -116,12 +121,14 @@ class OneShotDelivery : AppCompatActivity() {
     private fun updateEntry(order: Map.Entry<String, DeliverCustomerOrders>, entry: View) {
         order.value.deliveredKg = getKgForEntry(entry).toString()
         order.value.deliveredPc = getPcForEntry(entry).toString()
+        order.value.todaysAmount = getTodaysSaleAmountForEntry(entry).toString()
         order.value.paid = getPaidAmountForEntry(entry).toString()
         order.value.rate = getRateForEntry(entry).toString()
 
         val balanceElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
 
         balanceElement.text = getDueBalance(order.value, entry).toString()
+        updateTotals()
     }
 
     private fun getRateForEntry(entry: View): Int {
@@ -186,6 +193,32 @@ class OneShotDelivery : AppCompatActivity() {
         record.bufferRate = loadBufferElement.text.toString()
         SingleAttributedData.saveToLocal(record)
         showOrders()
+    }
+
+    fun updateTotals() {
+        val totalPcElement = findViewById<TextView>(R.id.one_shot_delivery_total_pc)
+        val totalKgElement = findViewById<TextView>(R.id.one_shot_delivery_total_kg)
+        val totalSaleElement = findViewById<TextView>(R.id.one_shot_delivery_total_sale)
+        val totalShortageElement = findViewById<TextView>(R.id.one_shot_delivery_total_shortage)
+        val totalCollectedElement = findViewById<TextView>(R.id.one_shot_delivery_total_collected_amount)
+
+        var sumPc = 0
+        var sumKg = 0.0
+        var sumSale = 0
+        var sumAmountCollected = 0
+
+        deliveryMapOrderedCustomers.forEach {
+            sumPc += NumberUtils.getIntOrZero(it.value.deliveredPc)
+            sumKg += NumberUtils.getDoubleOrZero(it.value.deliveredKg)
+            sumSale += NumberUtils.getIntOrZero(it.value.todaysAmount)
+            sumAmountCollected += NumberUtils.getIntOrZero(it.value.paid)
+        }
+
+        totalPcElement.text = "pc: $sumPc"
+        totalKgElement.text = "$sumKg kg"
+        totalSaleElement.text = "Sale: Rs $sumSale"
+        totalShortageElement.text = "0"
+        totalCollectedElement.text = "Collection: Rs: $sumAmountCollected"
     }
 
 }

@@ -124,6 +124,8 @@ class OneShotDelivery : AppCompatActivity() {
         order.value.todaysAmount = getTodaysSaleAmountForEntry(entry).toString()
         order.value.paid = getPaidAmountForEntry(entry).toString()
         order.value.rate = getRateForEntry(entry).toString()
+        order.value.totalDue = "${NumberUtils.getIntOrZero(order.value.prevDue) + getTodaysSaleAmountForEntry(entry)}"
+        order.value.balanceDue = "${NumberUtils.getIntOrZero(order.value.prevDue) + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(entry)}"
 
         val balanceElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
 
@@ -168,8 +170,8 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun getDueBalance(order: DeliverCustomerOrders, entry: View): Int {
-        val prevBal = getPrevDueBalance(order)
-        val bal = prevBal + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(entry)
+        val prevBal = order.prevDue
+        val bal = NumberUtils.getIntOrZero(prevBal) + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(entry)
         return bal
     }
 
@@ -219,6 +221,28 @@ class OneShotDelivery : AppCompatActivity() {
         totalSaleElement.text = "Sale: Rs $sumSale"
         totalShortageElement.text = "0"
         totalCollectedElement.text = "Collection: Rs: $sumAmountCollected"
+    }
+
+    fun onClickSaveOneShotDeliveryDataBtn(view: View) {
+        saveSingleAttributeData()
+        saveDeliveryData()
+    }
+
+    private fun saveSingleAttributeData() {
+        SingleAttributedData.save(SingleAttributedData.getRecords())
+    }
+
+    private fun saveDeliveryData() {
+        deliveryMapOrderedCustomers.forEach {
+            if(NumberUtils.getIntOrZero(it.value.deliveredKg) > 0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
+                DeliverCustomerOrders.save(it.value)
+            }
+        }
+        deliveryMapUnOrderedCustomers.forEach {
+            if(NumberUtils.getIntOrZero(it.value.deliveredKg) > 0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
+                DeliverCustomerOrders.save(it.value)
+            }
+        }
     }
 
 }

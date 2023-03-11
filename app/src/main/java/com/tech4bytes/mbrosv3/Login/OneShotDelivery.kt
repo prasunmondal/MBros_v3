@@ -216,10 +216,14 @@ class OneShotDelivery : AppCompatActivity() {
             sumAmountCollected += NumberUtils.getIntOrZero(it.value.paid)
         }
 
+        val loadedKg = NumberUtils.getDoubleOrZero(SingleAttributedData.getRecords().actualLoadKg)
+        val shortage = (loadedKg - sumKg) * 100 / loadedKg
+
         totalPcElement.text = "pc: $sumPc"
-        totalKgElement.text = "$sumKg kg"
+        totalKgElement.text = "${"%.3f".format(sumKg)} kg"
         totalSaleElement.text = "Sale: Rs $sumSale"
-        totalShortageElement.text = "0"
+
+        totalShortageElement.text = "Shortage: ${"%.3f".format(shortage)} kg"
         totalCollectedElement.text = "Collection: Rs: $sumAmountCollected"
     }
 

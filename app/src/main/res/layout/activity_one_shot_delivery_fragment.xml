@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="7dp"
         android:background="#FFCE3C"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -18,7 +19,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:id="@+id/linearLayout13"
@@ -32,7 +37,8 @@
                     android:layout_height="50dp"
                     android:ems="10"
                     android:hint="Rate"
-                    android:inputType="textPersonName" />
+                    android:inputType="number"
+                    android:nextFocusDown="@+id/one_shot_delivery_fragment_pc" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/one_shot_delivery_fragment_name"
@@ -59,7 +65,8 @@
                     android:layout_height="50dp"
                     android:ems="10"
                     android:hint="pc"
-                    android:inputType="textPersonName" />
+                    android:inputType="number"
+                    android:nextFocusDown="@+id/one_shot_delivery_fragment_kg" />
 
                 <EditText
                     android:id="@+id/one_shot_delivery_fragment_kg"
@@ -67,7 +74,8 @@
                     android:layout_height="50dp"
                     android:ems="10"
                     android:hint="kg"
-                    android:inputType="textPersonName" />
+                    android:inputType="numberDecimal"
+                    android:nextFocusDown="@+id/one_shot_delivery_fragment_paid" />
 
                 <EditText
                     android:id="@+id/one_shot_delivery_fragment_paid"
@@ -76,7 +84,8 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="Paid"
-                    android:inputType="textPersonName" />
+                    android:inputType="number"
+                    android:nextFocusDown="@+id/one_shot_delivery_fragment_balance_due" />
 
                 <TextView
                     android:id="@+id/one_shot_delivery_fragment_balance_due"

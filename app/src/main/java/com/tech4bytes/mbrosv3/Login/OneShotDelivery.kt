@@ -11,13 +11,19 @@ import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 
 class OneShotDelivery : AppCompatActivity() {
+
+    var deliveryMapOrderedCustomers: MutableMap<String, DeliverCustomerOrders> = mutableMapOf()
+    var deliveryMapUnOrderedCustomers: MutableMap<String, DeliverCustomerOrders> = mutableMapOf()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_one_shot_delivery)
@@ -25,15 +31,48 @@ class OneShotDelivery : AppCompatActivity() {
         AppContexts.set(this)
         AppUtils.logError()
 
+        populateDeliveryMap()
         showOrders()
     }
 
+    private fun populateDeliveryMap() {
+        deliveryMapOrderedCustomers = mutableMapOf()
+        GetCustomerOrders.getListOfOrderedCustomers().forEach {
+            val deliverCustomersOrders = DeliverCustomerOrders(
+                id = "${System.currentTimeMillis()}",
+                timestamp = DateUtils.getCurrentTimestamp(),
+                name = it.name,
+                orderedPc = it.orderedPc,
+                orderedKg = it.orderedKg,
+                rate = it.rate,
+                prevDue = it.prevDue,
+                deliveryStatus = "DELIVERING")
+
+            deliveryMapOrderedCustomers[it.name] = deliverCustomersOrders
+        }
+
+        deliveryMapUnOrderedCustomers = mutableMapOf()
+        GetCustomerOrders.getListOfUnOrderedCustomers().forEach {
+            val deliverCustomersOrders = DeliverCustomerOrders(
+                id = "${System.currentTimeMillis()}",
+                timestamp = DateUtils.getCurrentTimestamp(),
+                name = it.name,
+                orderedPc = "0",
+                orderedKg = "0",
+                rate = it.rate,
+                prevDue = CustomerData.getLastDue(it.name),
+                deliveryStatus = "DELIVERING")
+
+            deliveryMapUnOrderedCustomers[it.name] = deliverCustomersOrders
+        }
+    }
+
     fun showOrders() {
-        showOrders(GetCustomerOrders.getListOfOrderedCustomers(), R.id.one_shot_delivery_entry_container)
+        showOrders(deliveryMapOrderedCustomers, R.id.one_shot_delivery_entry_container)
 //        showOrders(GetCustomerOrders.getListOfUnOrderedCustomers(), R.id.activity_delivering_deliver_unorder_list)
     }
 
-    fun showOrders(listOfCustomers: List<GetCustomerOrders>, container: Int) {
+    fun showOrders(listOfCustomers: MutableMap<String, DeliverCustomerOrders>, container: Int) {
 
         val listContainer = findViewById<LinearLayout>(container)
         listContainer.removeAllViews()
@@ -51,12 +90,12 @@ class OneShotDelivery : AppCompatActivity() {
             val paidElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid)
             val balanceElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
 
-            nameElement.text = order.name
+            nameElement.text = order.value.name
             LogMe.log(SingleAttributedData.getFinalRateInt().toString())
             LogMe.log(SingleAttributedData.getBufferRateInt().toString())
-            LogMe.log(CustomerKYC.get(order.name)!!.rateDifference)
-            LogMe.log("${SingleAttributedData.getFinalRateInt() + SingleAttributedData.getBufferRateInt() + CustomerKYC.get(order.name)!!.rateDifference.toInt()}")
-            rateElement.text = "${SingleAttributedData.getFinalRateInt() + SingleAttributedData.getBufferRateInt() + CustomerKYC.get(order.name)!!.rateDifference.toInt()}"
+            LogMe.log(CustomerKYC.get(order.value.name)!!.rateDifference)
+            LogMe.log("${SingleAttributedData.getFinalRateInt() + SingleAttributedData.getBufferRateInt() + CustomerKYC.get(order.value.name)!!.rateDifference.toInt()}")
+            rateElement.text = "${SingleAttributedData.getFinalRateInt() + SingleAttributedData.getBufferRateInt() + CustomerKYC.get(order.value.name)!!.rateDifference.toInt()}"
 
             rateElement.doOnTextChanged { text, start, before, count ->
                 updateEntry(order, entry)
@@ -69,19 +108,12 @@ class OneShotDelivery : AppCompatActivity() {
             paidElement.doOnTextChanged { text, start, before, count ->
                 updateEntry(order, entry)
             }
-//            entry.setOnClickListener {
-//                goTo_ActivityDeliveringDeliver(order.name)
-//            }
-//
-//            if (isDelivered(order.name)) {
-//                entry.findViewById<LinearLayout>(R.id.activity_due_show_fragment_conntainer).setBackgroundColor(ContextCompat.getColor(this, R.color.delivery_completed))
-//            }
 
             listContainer.addView(entry)
         }
     }
 
-    private fun updateEntry(order: GetCustomerOrders,entry: View) {
+    private fun updateEntry(order: Map.Entry<String, DeliverCustomerOrders>, entry: View) {
         val kg = getKgForEntry(entry)
         val pc = getPcForEntry(entry)
         val paid = getPaidAmountForEntry(entry)

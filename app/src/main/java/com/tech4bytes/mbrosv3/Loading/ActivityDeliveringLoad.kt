@@ -85,7 +85,7 @@ class ActivityDeliveringLoad : AppCompatActivity() {
         record.actualLoadKg = UIUtils.getUIElementValue(LoadModel.getUiElementFromLoadingPage(view, LoadModel::actualKg))
 
         val finalFarmRateFromUI = findViewById<EditText>(R.id.activity_delivering_load_finalFarmRate).text.toString()
-        val bufferRateFromUI = findViewById<EditText>(R.id.activity_delivering_load_finalFarmRate).text.toString()
+        val bufferRateFromUI = findViewById<EditText>(R.id.activity_delivering_load_bufferRate).text.toString()
         if(finalFarmRateFromUI.isNotEmpty())
             record.finalFarmRate = finalFarmRateFromUI
         if(bufferRateFromUI.isNotEmpty())

@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Load pc"
-                android:inputType="textPersonName" />
+                android:inputType="number" />
 
             <EditText
                 android:id="@+id/one_shot_delivery_kg"
@@ -38,7 +38,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="Load Kg"
-                android:inputType="textPersonName" />
+                android:inputType="numberDecimal" />
 
             <EditText
                 android:id="@+id/one_shot_delivery_price"
@@ -47,7 +47,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="FarmRate"
-                android:inputType="textPersonName" />
+                android:inputType="number" />
 
             <EditText
                 android:id="@+id/one_shot_delivery_buffer"
@@ -56,7 +56,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="Buffer"
-                android:inputType="textPersonName" />
+                android:inputType="number" />
 
             <Button
                 android:id="@+id/button3"

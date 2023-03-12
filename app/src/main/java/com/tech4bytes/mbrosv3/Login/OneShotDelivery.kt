@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -33,6 +34,7 @@ class OneShotDelivery : AppCompatActivity() {
 
         AppContexts.set(this)
         AppUtils.logError()
+        window.addFlags (WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         populateDeliveryMap()
         showOrders()

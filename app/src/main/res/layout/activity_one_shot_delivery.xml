@@ -180,27 +180,30 @@
                     android:id="@+id/one_shot_delivery_total_sale"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginHorizontal="5dp"
                     android:layout_weight="1"
                     android:hint="sale"
+                    android:textColor="#189C1D"
                     android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/one_shot_delivery_total_collected_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginHorizontal="5dp"
                     android:layout_weight="1"
                     android:hint="amount_collected"
+                    android:textColor="#085E0C"
                     android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/one_shot_delivery_total_balance_due"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginHorizontal="5dp"
                     android:layout_weight="1"
-                    android:text="TextView"
+                    android:hint="due_balance"
+                    android:textColor="#E81414"
                     android:textSize="18sp" />
             </LinearLayout>
         </LinearLayout>

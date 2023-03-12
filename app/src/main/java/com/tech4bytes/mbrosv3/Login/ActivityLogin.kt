@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
@@ -36,6 +37,7 @@ class ActivityLogin : AppCompatActivity() {
         setContentView(R.layout.activity_fullscreen)
         AppContexts.set(this)
         AppUtils.logError()
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         val roles = RolesUtils.getRoles()
         LogMe.log("Got Role: $roles")

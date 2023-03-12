@@ -97,6 +97,7 @@ class OneShotDelivery : AppCompatActivity() {
             val balanceElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
 
             nameElement.text = order.value.name
+            balanceElement.text = order.value.prevDue
             LogMe.log(SingleAttributedData.getFinalRateInt().toString())
             LogMe.log(SingleAttributedData.getBufferRateInt().toString())
             LogMe.log(CustomerKYC.get(order.value.name)!!.rateDifference)

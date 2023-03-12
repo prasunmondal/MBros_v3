@@ -7,6 +7,8 @@ import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
@@ -73,8 +75,9 @@ class OneShotDelivery : AppCompatActivity() {
         showOrders(deliveryMapUnOrderedCustomers, R.id.one_shot_delivery_unordered_customers_entry_container)
     }
 
+    var entrynumber = 1
     fun showOrders(listOfCustomers: MutableMap<String, DeliverCustomerOrders>, container: Int) {
-
+        entrynumber = 1
         val listContainer = findViewById<LinearLayout>(container)
         listContainer.removeAllViews()
 
@@ -113,6 +116,15 @@ class OneShotDelivery : AppCompatActivity() {
             paidElement.doOnTextChanged { text, start, before, count ->
                 updateEntry(order, entry)
             }
+
+            val recordContainer = entry.findViewById<ConstraintLayout>(R.id.one_shot_delivery_fragment_record_container)
+            var cardColor = ContextCompat.getColor(this, R.color.one_shot_delivery_odd_card_color)
+            if(entrynumber % 2 == 0)
+            {
+                cardColor = ContextCompat.getColor(this, R.color.one_shot_delivery_even_card_color)
+            }
+            entrynumber++
+            recordContainer.setBackgroundColor(cardColor)
 
             listContainer.addView(entry)
         }

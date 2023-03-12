@@ -212,11 +212,23 @@ class OneShotDelivery : AppCompatActivity() {
         var sumBalanceDue = 0
 
         deliveryMapOrderedCustomers.forEach {
-            sumPc += NumberUtils.getIntOrZero(it.value.deliveredPc)
-            sumKg += NumberUtils.getDoubleOrZero(it.value.deliveredKg)
-            sumSale += NumberUtils.getIntOrZero(it.value.todaysAmount)
-            sumAmountCollected += NumberUtils.getIntOrZero(it.value.paid)
-            sumBalanceDue += NumberUtils.getIntOrZero(it.value.balanceDue)
+                sumPc += NumberUtils.getIntOrZero(it.value.deliveredPc)
+                sumKg += NumberUtils.getDoubleOrZero(it.value.deliveredKg)
+                sumSale += NumberUtils.getIntOrZero(it.value.todaysAmount)
+                sumAmountCollected += NumberUtils.getIntOrZero(it.value.paid)
+            if(NumberUtils.getIntOrZero(it.value.deliveredKg) > 0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
+                sumBalanceDue += NumberUtils.getIntOrZero(it.value.balanceDue)
+            }
+        }
+
+        deliveryMapUnOrderedCustomers.forEach {
+                sumPc += NumberUtils.getIntOrZero(it.value.deliveredPc)
+                sumKg += NumberUtils.getDoubleOrZero(it.value.deliveredKg)
+                sumSale += NumberUtils.getIntOrZero(it.value.todaysAmount)
+                sumAmountCollected += NumberUtils.getIntOrZero(it.value.paid)
+            if(NumberUtils.getIntOrZero(it.value.deliveredKg) > 0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
+                sumBalanceDue += NumberUtils.getIntOrZero(it.value.balanceDue)
+            }
         }
 
         val loadedKg = NumberUtils.getDoubleOrZero(SingleAttributedData.getRecords().actualLoadKg)
@@ -242,12 +254,16 @@ class OneShotDelivery : AppCompatActivity() {
 
     private fun saveDeliveryData() {
         deliveryMapOrderedCustomers.forEach {
-            if(NumberUtils.getIntOrZero(it.value.deliveredKg) > 0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
+            LogMe.log(it.value.name + ":: deliveredKg:" + it.value.deliveredKg)
+            LogMe.log(it.value.name + ":: paid:" + it.value.paid)
+            if(NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0.0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
+                it.value.deliveryStatus = "DELIVERED"
                 DeliverCustomerOrders.save(it.value)
             }
         }
         deliveryMapUnOrderedCustomers.forEach {
-            if(NumberUtils.getIntOrZero(it.value.deliveredKg) > 0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
+            if(NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0.0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
+                it.value.deliveryStatus = "DELIVERED"
                 DeliverCustomerOrders.save(it.value)
             }
         }

@@ -13,6 +13,7 @@ import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 import kotlin.reflect.KMutableProperty1
@@ -91,6 +92,7 @@ data class DeliverCustomerOrders(
         }
 
         fun save(obj: DeliverCustomerOrders) {
+            obj.id = DateUtils.getCurrentTimestamp()
             val tempList = get() + obj
             saveToLocal(tempList)
             saveObjectsToServer(obj)

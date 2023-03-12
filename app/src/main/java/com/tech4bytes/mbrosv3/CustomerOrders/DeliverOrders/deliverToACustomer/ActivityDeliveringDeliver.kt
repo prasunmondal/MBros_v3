@@ -43,7 +43,7 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
 
         val inputName = intent.extras!!.get("name") as String
         LogMe.log("Delivering to: $inputName")
-        record = getRecord(inputName)
+        record = getDeliveryRecord(inputName)!!
         if(record.prevDue.isEmpty()) {
             record.prevDue = CustomerData.getLastDue(record.name)
         }
@@ -258,31 +258,6 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         return calcTodaysAmount.toInt()
     }
 
-    private fun getRecord(inputName: String): DeliverCustomerOrders {
-        var deliveryObj: DeliverCustomerOrders? = DeliverCustomerOrders.getByName(inputName)
-        if(deliveryObj != null) {
-            return deliveryObj
-        }
-
-        val orderObj: GetCustomerOrders? = GetCustomerOrders.getByName(inputName)
-        if(orderObj != null) {
-            deliveryObj = DeliverCustomerOrders(
-                id = "${System.currentTimeMillis()}",
-                timestamp = DateUtils.getCurrentTimestamp(),
-                name = orderObj.name,
-                orderedPc = orderObj.orderedPc,
-                orderedKg = orderObj.orderedKg,
-                rate = orderObj.rate,
-                prevDue = orderObj.prevDue,
-                deliveryStatus = "DELIVERING")
-
-            return deliveryObj
-        }
-        LogMe.log("We didn't find the record in delivering cache or orders placed")
-        return null!!
-    }
-
-
     fun onClickSubmitDeliveredRecord(view: View) {
         val rate = UIUtils.getUIElementValue(DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::rate)!!)
         val deliveredWeight = UIUtils.getUIElementValue(DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredKg)!!)
@@ -320,5 +295,31 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
             list.add(it as KMutableProperty1<T, String>)
         }
         return list
+    }
+
+    companion object {
+        fun getDeliveryRecord(inputName: String): DeliverCustomerOrders? {
+            var deliveryObj: DeliverCustomerOrders? = DeliverCustomerOrders.getByName(inputName)
+            if(deliveryObj != null) {
+                return deliveryObj
+            }
+
+            val orderObj: GetCustomerOrders? = GetCustomerOrders.getByName(inputName)
+            if(orderObj != null) {
+                deliveryObj = DeliverCustomerOrders(
+                    id = "${System.currentTimeMillis()}",
+                    timestamp = DateUtils.getCurrentTimestamp(),
+                    name = orderObj.name,
+                    orderedPc = orderObj.orderedPc,
+                    orderedKg = orderObj.orderedKg,
+                    rate = orderObj.rate,
+                    prevDue = orderObj.prevDue,
+                    deliveryStatus = "DELIVERING")
+
+                return deliveryObj
+            }
+            LogMe.log("We didn't find the record in delivering cache or orders placed")
+            return null
+        }
     }
 }

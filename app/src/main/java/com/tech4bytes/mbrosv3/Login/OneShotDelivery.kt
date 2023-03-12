@@ -14,6 +14,7 @@ import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.ActivityDeliveringDeliver
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
@@ -22,6 +23,7 @@ import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
+import java.sql.Timestamp
 
 class OneShotDelivery : AppCompatActivity() {
 
@@ -98,6 +100,13 @@ class OneShotDelivery : AppCompatActivity() {
 
             nameElement.text = order.value.name
             balanceElement.text = order.value.prevDue
+            val deliveryRecord = ActivityDeliveringDeliver.getDeliveryRecord(order.value.name)
+            if(deliveryRecord != null) {
+                pcElement.text = deliveryRecord.deliveredPc
+                kgElement.text = deliveryRecord.deliveredKg
+                paidElement.text = deliveryRecord.paid
+            }
+
             LogMe.log(SingleAttributedData.getFinalRateInt().toString())
             LogMe.log(SingleAttributedData.getBufferRateInt().toString())
             LogMe.log(CustomerKYC.get(order.value.name)!!.rateDifference)
@@ -130,6 +139,7 @@ class OneShotDelivery : AppCompatActivity() {
             recordContainer.setBackgroundColor(cardColor)
 
             listContainer.addView(entry)
+            updateEntry(order, entry)
         }
     }
 

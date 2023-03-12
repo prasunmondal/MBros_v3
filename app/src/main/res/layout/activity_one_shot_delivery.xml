@@ -123,6 +123,7 @@
             android:id="@+id/linearLayout16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#F9FBE5"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -139,14 +140,16 @@
                     android:layout_height="40dp"
                     android:layout_marginLeft="10dp"
                     android:hint="pc"
-                    android:textColor="#F30E0E"
-                    android:textSize="18sp" />
+                    android:textColor="#605E5E"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/textView41"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" / " />
+                    android:text=" / "
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/one_shot_delivery_total_kg"
@@ -154,7 +157,8 @@
                     android:layout_height="40dp"
                     android:hint="kg"
                     android:textColor="#0825C1"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/one_shot_delivery_total_shortage"
@@ -162,7 +166,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="50dp"
                     android:hint="shortage"
-                    android:textSize="18sp" />
+                    android:textColor="#C60404"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
@@ -175,21 +181,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
                     android:hint="sale"
                     android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/one_shot_delivery_total_collected_amount"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_marginLeft="20dp"
+                    android:layout_weight="1"
                     android:hint="amount_collected"
                     android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/one_shot_delivery_total_balance_due"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_marginLeft="20dp"
                     android:layout_weight="1"
                     android:text="TextView"

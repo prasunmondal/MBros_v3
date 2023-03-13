@@ -92,7 +92,8 @@ data class DeliverCustomerOrders(
         }
 
         fun save(obj: DeliverCustomerOrders) {
-            obj.id = DateUtils.getCurrentTimestamp()
+            obj.id = System.currentTimeMillis().toString()
+            obj.date = DateUtils.getCurrentTimestamp()
             val tempList = get() + obj
             saveToLocal(tempList)
             saveObjectsToServer(obj)

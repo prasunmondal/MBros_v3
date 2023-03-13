@@ -52,30 +52,43 @@ class ActivityLogin : AppCompatActivity() {
                 goToHomePageAsPerRole(roles[0])
             } else {
                 roles.forEach { role ->
-                    val layoutInflater = LayoutInflater.from(AppContexts.get())
-                    val entry = layoutInflater.inflate(R.layout.fragment_activity_login_roles, null)
+                    if(goToHomePageAsPerRole(role, true)) {
+                        val layoutInflater = LayoutInflater.from(AppContexts.get())
+                        val entry = layoutInflater.inflate(R.layout.fragment_activity_login_roles, null)
 
-                    entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).text = role.name
+                        entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).text = role.name
 
-                    entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).setOnClickListener {
-                        goToHomePageAsPerRole(role)
+                        entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).setOnClickListener {
+                            goToHomePageAsPerRole(role)
+                        }
+                        container.addView(entry)
                     }
-                    container.addView(entry)
                 }
             }
         }
     }
 
-    private fun goToHomePageAsPerRole(role: Roles) {
+    private fun goToHomePageAsPerRole(role: Roles, justGetResultOfNavigation: Boolean = false): Boolean {
+        var isValidNavigation = true
         when (role) {
-            Roles.ADMIN -> goToAdminRole()
-            Roles.DELIVERY -> goToDeliveryRole()
-            Roles.COLLECTOR -> goToCollectorRole()
-            Roles.ORDER_COLLECTOR -> goToGetOrdersPage()
-            Roles.BALANCE_VIEW -> goToShowDues()
-            Roles.ONE_SHOT_DELIVERY -> goToOneShotDelivery()
-            else -> logUnIdentifiedDevice()
+            Roles.ADMIN -> if(!justGetResultOfNavigation)
+                goToAdminRole()
+            Roles.DELIVERY -> if(!justGetResultOfNavigation)
+                goToDeliveryRole()
+            Roles.COLLECTOR -> if(!justGetResultOfNavigation)
+                goToCollectorRole()
+            Roles.ORDER_COLLECTOR -> if(!justGetResultOfNavigation)
+                goToGetOrdersPage()
+            Roles.BALANCE_VIEW -> if(!justGetResultOfNavigation)
+                goToShowDues()
+            Roles.ONE_SHOT_DELIVERY -> if(!justGetResultOfNavigation)
+                goToOneShotDelivery()
+            else -> {
+                isValidNavigation = false
+                logUnIdentifiedDevice()
+            }
         }
+        return isValidNavigation
     }
 
     private fun goToOneShotDelivery() {

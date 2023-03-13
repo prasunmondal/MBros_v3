@@ -107,6 +107,42 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#5CE3F4"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="20dp">
+
+                    <EditText
+                        android:id="@+id/one_shot_delivery_trip_end_km"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="KM"
+                        android:inputType="number" />
+
+                    <EditText
+                        android:id="@+id/one_shot_delivery_labour_expenses"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="Lab"
+                        android:inputType="number" />
+
+                    <EditText
+                        android:id="@+id/one_shot_delivery_extra_expenses"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="Extra"
+                        android:inputType="number" />
+
+                </LinearLayout>
+
                 <Button
                     android:id="@+id/one_shot_delivery_save_data_btn"
                     android:layout_width="match_parent"

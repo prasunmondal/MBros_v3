@@ -23,7 +23,6 @@ import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
-import java.sql.Timestamp
 
 class OneShotDelivery : AppCompatActivity() {
 
@@ -287,8 +286,22 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     fun onClickSaveOneShotDeliveryDataBtn(view: View) {
+        gatherSingleAttributedData()
         saveSingleAttributeData()
         saveDeliveryData()
+    }
+
+    fun gatherSingleAttributedData() {
+        val finalKmElement = findViewById<EditText>(R.id.one_shot_delivery_trip_end_km)
+        val labourExpensesElement = findViewById<EditText>(R.id.one_shot_delivery_labour_expenses)
+        val extraExpensesElement = findViewById<EditText>(R.id.one_shot_delivery_extra_expenses)
+
+        val obj = SingleAttributedData.getRecords()
+        obj.vehicle_finalKm = NumberUtils.getIntOrZero(finalKmElement.text.toString()).toString()
+        obj.labour_expenses = NumberUtils.getIntOrZero(labourExpensesElement.text.toString()).toString()
+        obj.extra_expenses = NumberUtils.getIntOrZero(extraExpensesElement.text.toString()).toString()
+
+        SingleAttributedData.saveToLocal(obj)
     }
 
     private fun saveSingleAttributeData() {

@@ -39,6 +39,7 @@ class OneShotDelivery : AppCompatActivity() {
         window.addFlags (WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         populateDeliveryMap()
+        updateSingleAttributedDataOnUI()
         showOrders()
     }
 
@@ -219,7 +220,24 @@ class OneShotDelivery : AppCompatActivity() {
         record.finalFarmRate = loadPriceElement.text.toString()
         record.bufferRate = loadBufferElement.text.toString()
         SingleAttributedData.saveToLocal(record)
+        updateSingleAttributedDataOnUI()
         showOrders()
+    }
+
+    fun updateSingleAttributedDataOnUI() {
+        LogMe.log("Updating single attributed data")
+        val loadedPc = findViewById<TextView>(R.id.one_shot_delivery_pc)
+        val loadedKg = findViewById<TextView>(R.id.one_shot_delivery_kg)
+        loadedPc.setText(SingleAttributedData.getRecords().actualLoadPc)
+        loadedKg.setText(SingleAttributedData.getRecords().actualLoadKg)
+
+        if(RolesUtils.doesHaveRole(Roles.SHOW_RATES_IN_DELIVERY_PAGE)) {
+            val loadPriceElement = findViewById<EditText>(R.id.one_shot_delivery_price)
+            val loadBufferElement = findViewById<EditText>(R.id.one_shot_delivery_buffer)
+
+            loadPriceElement.setText(SingleAttributedData.getRecords().finalFarmRate)
+            loadBufferElement.setText(SingleAttributedData.getRecords().bufferRate)
+        }
     }
 
     fun updateTotals() {

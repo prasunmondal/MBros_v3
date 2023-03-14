@@ -110,11 +110,12 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginHorizontal="10dp"
                     android:background="@drawable/rounded"
                     android:backgroundTint="#5CE3F4"
-                    android:layout_marginHorizontal="10dp"
+                    android:orientation="vertical"
                     android:paddingHorizontal="20dp"
-                    android:orientation="vertical">
+                    android:paddingVertical="10dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -135,7 +136,8 @@
                                 android:id="@+id/one_shot_delivery_trip_end_km"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="#5CE3F4" />
+                                android:background="#5CE3F4"
+                                android:inputType="number" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -152,7 +154,8 @@
                                 android:id="@+id/one_shot_delivery_labour_expenses"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="#5CE3F4" />
+                                android:background="#5CE3F4"
+                                android:inputType="number" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -169,7 +172,8 @@
                                 android:id="@+id/one_shot_delivery_extra_expenses"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="#5CE3F4" />
+                                android:background="#5CE3F4"
+                                android:inputType="number" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -187,13 +191,14 @@
                             android:maxEms="10"
                             android:minEms="10">
 
-                        <!--this is the actual edit text which takes the input-->
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/one_shot_delivery_refueling_km"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Fuel KM"
-                            android:background="#5CE3F4" />
+                            <!--this is the actual edit text which takes the input-->
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/one_shot_delivery_refueling_km"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#5CE3F4"
+                                android:hint="Fuel KM"
+                                android:inputType="number" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -203,13 +208,14 @@
                             android:maxEms="10"
                             android:minEms="10">
 
-                        <!--this is the actual edit text which takes the input-->
+                            <!--this is the actual edit text which takes the input-->
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/one_shot_delivery_fuel_quantity"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="#5CE3F4"
-                                android:hint="Qty (litres)" />
+                                android:hint="Qty (litres)"
+                                android:inputType="numberDecimal" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -225,7 +231,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="#5CE3F4"
-                                android:hint="Rs" />
+                                android:hint="Rs"
+                                android:inputType="number" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 

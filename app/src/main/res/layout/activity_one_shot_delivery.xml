@@ -116,32 +116,54 @@
                     android:orientation="horizontal"
                     android:paddingHorizontal="20dp">
 
-                    <EditText
-                        android:id="@+id/one_shot_delivery_trip_end_km"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/filledTextField"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:ems="10"
                         android:hint="KM"
-                        android:inputType="number" />
+                        android:maxEms="10"
+                        android:minEms="10">
 
-                    <EditText
-                        android:id="@+id/one_shot_delivery_labour_expenses"
+                        <!--this is the actual edit text which takes the input-->
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/one_shot_delivery_trip_end_km"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:ems="10"
                         android:hint="Lab"
-                        android:inputType="number" />
+                        android:maxEms="10"
+                        android:minEms="10">
 
-                    <EditText
-                        android:id="@+id/one_shot_delivery_extra_expenses"
+                        <!--this is the actual edit text which takes the input-->
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/one_shot_delivery_labour_expenses"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:ems="10"
                         android:hint="Extra"
-                        android:inputType="number" />
+                        android:maxEms="10"
+                        android:minEms="10">
+
+                        <!--this is the actual edit text which takes the input-->
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/one_shot_delivery_extra_expenses"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
 

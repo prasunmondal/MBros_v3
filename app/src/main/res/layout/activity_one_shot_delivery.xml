@@ -110,60 +110,124 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginHorizontal="10dp"
                     android:background="@drawable/rounded"
                     android:backgroundTint="#5CE3F4"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="20dp">
+                    android:layout_marginHorizontal="10dp"
+                    android:paddingHorizontal="20dp"
+                    android:orientation="vertical">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/filledTextField"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:hint="KM"
-                        android:maxEms="10"
-                        android:minEms="10">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/filledTextField"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="KM"
+                            android:maxEms="10"
+                            android:minEms="10">
+
+                            <!--this is the actual edit text which takes the input-->
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/one_shot_delivery_trip_end_km"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#5CE3F4" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="Lab"
+                            android:maxEms="10"
+                            android:minEms="10">
+
+                            <!--this is the actual edit text which takes the input-->
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/one_shot_delivery_labour_expenses"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#5CE3F4" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:hint="Extra"
+                            android:maxEms="10"
+                            android:minEms="10">
+
+                            <!--this is the actual edit text which takes the input-->
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/one_shot_delivery_extra_expenses"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#5CE3F4" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:maxEms="10"
+                            android:minEms="10">
 
                         <!--this is the actual edit text which takes the input-->
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/one_shot_delivery_trip_end_km"
+                            android:id="@+id/one_shot_delivery_refueling_km"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:hint="Fuel KM"
+                            android:background="#5CE3F4" />
+                        </com.google.android.material.textfield.TextInputLayout>
 
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:hint="Lab"
-                        android:maxEms="10"
-                        android:minEms="10">
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:maxEms="10"
+                            android:minEms="10">
 
                         <!--this is the actual edit text which takes the input-->
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/one_shot_delivery_labour_expenses"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/one_shot_delivery_fuel_quantity"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#5CE3F4"
+                                android:hint="Qty (litres)" />
+                        </com.google.android.material.textfield.TextInputLayout>
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:maxEms="10"
+                            android:minEms="10">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:hint="Extra"
-                        android:maxEms="10"
-                        android:minEms="10">
-
-                        <!--this is the actual edit text which takes the input-->
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/one_shot_delivery_extra_expenses"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
+                            <!--this is the actual edit text which takes the input-->
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/one_shot_delivery_fuel_amount"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#5CE3F4"
+                                android:hint="Rs" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
 
                 </LinearLayout>
 

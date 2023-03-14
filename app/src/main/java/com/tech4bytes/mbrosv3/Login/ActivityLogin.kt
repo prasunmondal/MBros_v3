@@ -93,7 +93,6 @@ class ActivityLogin : AppCompatActivity() {
     private fun goToOneShotDelivery() {
         val switchActivityIntent = Intent(this, OneShotDelivery::class.java)
         startActivity(switchActivityIntent)
-        finish()
     }
 
     private fun logUnIdentifiedDevice() {
@@ -115,13 +114,11 @@ class ActivityLogin : AppCompatActivity() {
     private fun goToCollectorRole() {
         val switchActivityIntent = Intent(this, CollectorVerifyMoneyCollectionActivity::class.java)
         startActivity(switchActivityIntent)
-        finish()
     }
 
     private fun goToGetOrdersPage() {
         val switchActivityIntent = Intent(this, ActivityGetCustomerOrders::class.java)
         startActivity(switchActivityIntent)
-        finish()
     }
 
     private fun goToDeliveryRole() {
@@ -133,7 +130,6 @@ class ActivityLogin : AppCompatActivity() {
 //            val switchActivityIntent = Intent(this, ActivityDeliveringLoad::class.java)
 //            startActivity(switchActivityIntent)
 //        }
-        finish()
     }
 
     fun goToDeliveringDeliverPage() {
@@ -145,13 +141,11 @@ class ActivityLogin : AppCompatActivity() {
     private fun goToAdminRole() {
         val switchActivityIntent = Intent(this, ActivityAdminDeliveryDashboard::class.java)
         startActivity(switchActivityIntent)
-        finish()
     }
 
     private fun goToShowDues() {
         val switchActivityIntent = Intent(this, DueShow::class.java)
         startActivity(switchActivityIntent)
-        finish()
     }
 
     fun showToastConnectToAdmin() {

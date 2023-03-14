@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
+import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.DueShow
@@ -52,7 +53,7 @@ class ActivityLogin : AppCompatActivity() {
                 goToHomePageAsPerRole(roles[0])
             } else {
                 roles.forEach { role ->
-                    if(goToHomePageAsPerRole(role, true)) {
+                    if(getRoleAndActivityMapping(role)!=null) {
                         val layoutInflater = LayoutInflater.from(AppContexts.get())
                         val entry = layoutInflater.inflate(R.layout.fragment_activity_login_roles, null)
 
@@ -68,27 +69,25 @@ class ActivityLogin : AppCompatActivity() {
         }
     }
 
-    private fun goToHomePageAsPerRole(role: Roles, justGetResultOfNavigation: Boolean = false): Boolean {
-        var isValidNavigation = true
-        when (role) {
-            Roles.ADMIN -> if(!justGetResultOfNavigation)
-                goToAdminRole()
-            Roles.DELIVERY -> if(!justGetResultOfNavigation)
-                goToDeliveryRole()
-            Roles.COLLECTOR -> if(!justGetResultOfNavigation)
-                goToCollectorRole()
-            Roles.ORDER_COLLECTOR -> if(!justGetResultOfNavigation)
-                goToGetOrdersPage()
-            Roles.BALANCE_VIEW -> if(!justGetResultOfNavigation)
-                goToShowDues()
-            Roles.ONE_SHOT_DELIVERY -> if(!justGetResultOfNavigation)
-                goToOneShotDelivery()
-            else -> {
-                isValidNavigation = false
-                logUnIdentifiedDevice()
-            }
+    private fun getRoleAndActivityMapping(role: Roles): (() -> Unit)? {
+        if(role == Roles.UNIDENTIFIED) {
+            showToastConnectToAdmin()
+            return null
         }
-        return isValidNavigation
+        return when (role) {
+            Roles.ADMIN -> ::goToAdminRole
+            Roles.DELIVERY -> ::goToDeliveryRole
+            Roles.COLLECTOR -> ::goToCollectorRole
+            Roles.ORDER_COLLECTOR -> ::goToGetOrdersPage
+            Roles.BALANCE_VIEW -> ::goToShowDues
+            Roles.ONE_SHOT_DELIVERY -> ::goToOneShotDelivery
+            Roles.SHOW_RATES_IN_DELIVERY_PAGE -> null
+            else -> null
+        }
+    }
+
+    private fun goToHomePageAsPerRole(role: Roles) {
+        getRoleAndActivityMapping(role)?.invoke()
     }
 
     private fun goToOneShotDelivery() {
@@ -109,6 +108,8 @@ class ActivityLogin : AppCompatActivity() {
             .tabName(Config.SHEET_TAB_NAME)
             .dataObject(obj as Any)
             .build().execute()
+
+        CentralCache.invalidateFullCache()
     }
 
     private fun goToCollectorRole() {
@@ -153,6 +154,10 @@ class ActivityLogin : AppCompatActivity() {
         finish()
     }
 
+    fun showToastConnectToAdmin() {
+        Toast.makeText(this, "Device Registration Pending. Connect Admin", Toast.LENGTH_LONG).show()
+        CentralCache.invalidateFullCache()
+    }
 
     private fun getPhoneId(): String {
         return Secure.getString(applicationContext.contentResolver,

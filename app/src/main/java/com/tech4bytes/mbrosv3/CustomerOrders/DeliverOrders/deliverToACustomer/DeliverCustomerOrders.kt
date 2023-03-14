@@ -88,11 +88,6 @@ data class DeliverCustomerOrders(
             return map.values.toList()
         }
 
-        fun save(objects: List<DeliverCustomerOrders>) {
-            saveObjectsToServer(objects)
-            saveToLocal(objects)
-        }
-
         fun save(obj: DeliverCustomerOrders) {
             obj.id = System.currentTimeMillis().toString()
             obj.date = DateUtils.getCurrentTimestamp()

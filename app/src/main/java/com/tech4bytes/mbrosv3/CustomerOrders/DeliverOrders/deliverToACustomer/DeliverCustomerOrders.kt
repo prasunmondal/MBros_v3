@@ -47,15 +47,17 @@ data class DeliverCustomerOrders(
         }
 
         fun get(useCache: Boolean = true): List<DeliverCustomerOrders> {
-            val cacheResults = CentralCache.get<List<DeliverCustomerOrders>>(AppContexts.get(), DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, useCache)
+            var cacheResults = CentralCache.get<List<DeliverCustomerOrders>>(AppContexts.get(), DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, useCache)
 
-            return if (cacheResults != null && cacheResults.isNotEmpty()) {
-                filterToOnlyLatest(cacheResults)
-            } else {
-                val resultFromServer = getFromServer()
-                CentralCache.put(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, resultFromServer)
-                filterToOnlyLatest(resultFromServer)
+            if(cacheResults == null) {
+                cacheResults = getFromServer()
+                CentralCache.put(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, cacheResults)
             }
+
+            return if(cacheResults != null)
+                filterToOnlyLatest(cacheResults)
+            else
+                listOf()
         }
 
         fun getTotalPcDelivered(): Int {

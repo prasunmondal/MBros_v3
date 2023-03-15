@@ -13,291 +13,281 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/constraintLayout5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:background="@drawable/rounded"
+                android:backgroundTint="#F63D7E"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/rounded"
-                    android:backgroundTint="#F63D7E"
-                    android:orientation="vertical"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="15dp"
-                    android:paddingBottom="15dp">
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                    <TextView
+                        android:id="@+id/textView9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:padding="10dp"
+                        android:text="Load"
+                        android:textColor="#FFFFFF"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/textView9"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:padding="10dp"
-                            android:text="Load"
-                            android:textColor="#FFFFFF"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#FDABC7"
+                    android:orientation="vertical"
+                    android:padding="5dp"></LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="#FDABC7"
-                        android:orientation="vertical"
-                        android:padding="5dp"></LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/linearLayout14"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
 
                             <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="horizontal">
+                                android:layout_width="150dp"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
 
-                                <LinearLayout
-                                    android:layout_width="150dp"
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:orientation="vertical">
+                                    android:layout_weight="1"
+                                    android:maxEms="10"
+                                    android:minEms="10"
+                                    android:textColorHint="#F6CBD9">
 
-                                    <com.google.android.material.textfield.TextInputLayout
+                                    <!--this is the actual edit text which takes the input-->
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/activity_admin_delivery_dashboard_load_company"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:maxEms="10"
-                                        android:minEms="10"
-                                        android:textColorHint="#F6CBD9">
+                                        android:background="#00000000"
+                                        android:hint="Company"
+                                        android:inputType="textPersonName"
+                                        android:textColor="#D8EEF8"
+                                        android:textColorHint="#A9E2FB" />
 
-                                        <!--this is the actual edit text which takes the input-->
-                                        <com.google.android.material.textfield.TextInputEditText
-                                            android:id="@+id/activity_admin_delivery_dashboard_load_company"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:background="#00000000"
-                                            android:hint="Company"
-                                            android:inputType="textPersonName"
-                                            android:textColor="#D8EEF8"
-                                            android:textColorHint="#A9E2FB" />
+                                </com.google.android.material.textfield.TextInputLayout>
 
-                                    </com.google.android.material.textfield.TextInputLayout>
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:maxEms="10"
+                                    android:minEms="10"
+                                    android:textColorHint="#F6CBD9">
 
-                                    <com.google.android.material.textfield.TextInputLayout
+                                    <!--this is the actual edit text which takes the input-->
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/activity_admin_delivery_dashboard_load_company_branch"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:maxEms="10"
-                                        android:minEms="10"
-                                        android:textColorHint="#F6CBD9">
+                                        android:background="#00000000"
+                                        android:hint="Branch"
+                                        android:inputType="textPersonName"
+                                        android:textColor="#D8EEF8"
+                                        android:textColorHint="#A9E2FB" />
 
-                                        <!--this is the actual edit text which takes the input-->
-                                        <com.google.android.material.textfield.TextInputEditText
-                                            android:id="@+id/activity_admin_delivery_dashboard_load_company_branch"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:background="#00000000"
-                                            android:hint="Branch"
-                                            android:inputType="textPersonName"
-                                            android:textColor="#D8EEF8"
-                                            android:textColorHint="#A9E2FB" />
+                                </com.google.android.material.textfield.TextInputLayout>
 
-                                    </com.google.android.material.textfield.TextInputLayout>
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:maxEms="10"
+                                    android:minEms="10"
+                                    android:textColorHint="#F6CBD9">
 
-                                    <com.google.android.material.textfield.TextInputLayout
+                                    <!--this is the actual edit text which takes the input-->
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/activity_admin_delivery_dashboard_load_account"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:maxEms="10"
-                                        android:minEms="10"
-                                        android:textColorHint="#F6CBD9">
+                                        android:background="#00000000"
+                                        android:hint="Account"
+                                        android:inputType="textPersonName"
+                                        android:textColor="#D8EEF8"
+                                        android:textColorHint="#A9E2FB" />
 
-                                        <!--this is the actual edit text which takes the input-->
-                                        <com.google.android.material.textfield.TextInputEditText
-                                            android:id="@+id/activity_admin_delivery_dashboard_load_account"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:background="#00000000"
-                                            android:hint="Account"
-                                            android:inputType="textPersonName"
-                                            android:textColor="#D8EEF8"
-                                            android:textColorHint="#A9E2FB" />
+                                </com.google.android.material.textfield.TextInputLayout>
 
-                                    </com.google.android.material.textfield.TextInputLayout>
+                            </LinearLayout>
 
-                                </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:paddingLeft="10dp">
 
                                 <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical"
-                                    android:paddingLeft="10dp">
+                                    android:layout_marginRight="20dp"
+                                    android:orientation="horizontal"
+                                    android:paddingBottom="5dp">
 
-                                    <LinearLayout
+                                    <TextView
+                                        android:id="@+id/activity_admin_delivery_dashboard_total_pc"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginRight="20dp"
-                                        android:orientation="horizontal"
-                                        android:paddingBottom="5dp">
+                                        android:text="0"
+                                        android:textColor="#D8EEF8"
+                                        android:textSize="20sp" />
 
-                                        <TextView
-                                            android:id="@+id/activity_admin_delivery_dashboard_total_pc"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="0"
-                                            android:textColor="#D8EEF8"
-                                            android:textSize="20sp" />
+                                    <TextView
+                                        android:id="@+id/textView16"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="5dp"
+                                        android:text="pc"
+                                        android:textColor="#D8EEF8"
+                                        android:textSize="20sp" />
 
-                                        <TextView
-                                            android:id="@+id/textView16"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginStart="5dp"
-                                            android:text="pc"
-                                            android:textColor="#D8EEF8"
-                                            android:textSize="20sp" />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginHorizontal="5dp"
+                                        android:layout_weight="1"
+                                        android:text="-"
+                                        android:textColor="#D8EEF8"
+                                        android:textSize="20sp" />
 
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginHorizontal="5dp"
-                                            android:layout_weight="1"
-                                            android:text="-"
-                                            android:textColor="#D8EEF8"
-                                            android:textSize="20sp" />
+                                    <TextView
+                                        android:id="@+id/activity_admin_delivery_dashboard_loaded_kg"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="0.00"
+                                        android:textColor="#D8EEF8"
+                                        android:textSize="20sp" />
 
-                                        <TextView
-                                            android:id="@+id/activity_admin_delivery_dashboard_loaded_kg"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="0.00"
-                                            android:textColor="#D8EEF8"
-                                            android:textSize="20sp" />
+                                    <TextView
+                                        android:id="@+id/textView18"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="5dp"
+                                        android:text="kg"
+                                        android:textColor="#D8EEF8"
+                                        android:textSize="20sp" />
 
-                                        <TextView
-                                            android:id="@+id/textView18"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginStart="5dp"
-                                            android:text="kg"
-                                            android:textColor="#D8EEF8"
-                                            android:textSize="20sp" />
+                                </LinearLayout>
 
-                                    </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="right"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/activity_admin_delivery_dashboard_total_loaded_avg_wt"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="30dp"
+                                        android:text="0.00"
+                                        android:textColor="#FDABC7"
+                                        android:textSize="24sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:id="@+id/textView20"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="10dp"
+                                        android:text="kg/pc"
+                                        android:textColor="#FDABC7"
+                                        android:textSize="24sp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:gravity="right"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="15dp"
+                                        android:gravity="end"
                                         android:orientation="horizontal">
 
-                                        <TextView
-                                            android:id="@+id/activity_admin_delivery_dashboard_total_loaded_avg_wt"
+                                        <com.google.android.material.textfield.TextInputLayout
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:layout_marginStart="30dp"
-                                            android:text="0.00"
-                                            android:textColor="#FDABC7"
-                                            android:textSize="24sp"
-                                            android:textStyle="bold" />
+                                            android:layout_weight="1"
+                                            android:maxEms="10"
+                                            android:minEms="10"
+                                            android:textColorHint="#F6CBD9">
 
-                                        <TextView
-                                            android:id="@+id/textView20"
+                                            <!--this is the actual edit text which takes the input-->
+                                            <com.google.android.material.textfield.TextInputEditText
+                                                android:id="@+id/activity_admin_delivery_dashboard_farmrate"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:background="#00000000"
+                                                android:hint="Farm Rate"
+                                                android:inputType="number"
+                                                android:textColor="#D8EEF8"
+                                                android:textColorHint="#A9E2FB" />
+
+                                        </com.google.android.material.textfield.TextInputLayout>
+
+                                        <com.google.android.material.textfield.TextInputLayout
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            android:layout_marginStart="10dp"
-                                            android:text="kg/pc"
-                                            android:textColor="#FDABC7"
-                                            android:textSize="24sp"
-                                            android:textStyle="bold" />
+                                            android:layout_weight="1"
+                                            android:maxEms="10"
+                                            android:minEms="10"
+                                            android:textColorHint="#F6CBD9">
+
+                                            <!--this is the actual edit text which takes the input-->
+                                            <com.google.android.material.textfield.TextInputEditText
+                                                android:id="@+id/activity_admin_delivery_dashboard_buffer_price"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:background="#00000000"
+                                                android:hint="Buffer"
+                                                android:inputType="number"
+                                                android:textColor="#D8EEF8"
+                                                android:textColorHint="#A9E2FB" />
+
+                                        </com.google.android.material.textfield.TextInputLayout>
+
                                     </LinearLayout>
 
-                                    <LinearLayout
+                                    <Button
+                                        android:id="@+id/activity_admin_delivery_dashboard_save_prices"
                                         android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:orientation="vertical">
-
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="15dp"
-                                            android:gravity="end"
-                                            android:orientation="horizontal">
-
-                                            <com.google.android.material.textfield.TextInputLayout
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_weight="1"
-                                                android:maxEms="10"
-                                                android:minEms="10"
-                                                android:textColorHint="#F6CBD9">
-
-                                                <!--this is the actual edit text which takes the input-->
-                                                <com.google.android.material.textfield.TextInputEditText
-                                                    android:id="@+id/activity_admin_delivery_dashboard_farmrate"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:background="#00000000"
-                                                    android:hint="Farm Rate"
-                                                    android:inputType="number"
-                                                    android:textColor="#D8EEF8"
-                                                    android:textColorHint="#A9E2FB" />
-
-                                            </com.google.android.material.textfield.TextInputLayout>
-
-                                            <com.google.android.material.textfield.TextInputLayout
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_weight="1"
-                                                android:maxEms="10"
-                                                android:minEms="10"
-                                                android:textColorHint="#F6CBD9">
-
-                                                <!--this is the actual edit text which takes the input-->
-                                                <com.google.android.material.textfield.TextInputEditText
-                                                    android:id="@+id/activity_admin_delivery_dashboard_buffer_price"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:background="#00000000"
-                                                    android:hint="Buffer"
-                                                    android:inputType="number"
-                                                    android:textColor="#D8EEF8"
-                                                    android:textColorHint="#A9E2FB" />
-
-                                            </com.google.android.material.textfield.TextInputLayout>
-
-                                        </LinearLayout>
-
-                                        <Button
-                                            android:id="@+id/activity_admin_delivery_dashboard_save_prices"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:layout_weight=".33"
-                                            android:backgroundTint="#EF749E"
-                                            android:onClick="onClickSaveRate"
-                                            android:text="Save"
-                                            app:rippleColor="#130505" />
-
-                                    </LinearLayout>
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight=".33"
+                                        android:backgroundTint="#EF749E"
+                                        android:onClick="onClickSaveRate"
+                                        android:text="Save"
+                                        app:rippleColor="#130505" />
 
                                 </LinearLayout>
 
@@ -312,102 +302,96 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/constraintLayout7"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="10dp">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:layout_weight=".5"
+                    android:background="#FFC107"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight=".5"
-                        android:background="#FFC107"
-                        android:orientation="vertical"
-                        android:padding="10dp">
+                    <TextView
+                        android:id="@+id/textView21"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Delivered"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/textView21"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Delivered"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/activity_admin_delivery_dashboard_delivered_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="2/10 Counters"
+                        android:textColor="#2E1C02"
+                        android:textSize="16sp" />
 
-                        <TextView
-                            android:id="@+id/activity_admin_delivery_dashboard_delivered_number"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="2/10 Counters"
-                            android:textColor="#2E1C02"
-                            android:textSize="16sp" />
+                    <TextView
+                        android:id="@+id/activity_admin_delivery_dashboard_delivered_pc_kg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="1 pc - 10 kg"
+                        android:textColor="#2E1C02"
+                        android:textSize="16sp" />
 
-                        <TextView
-                            android:id="@+id/activity_admin_delivery_dashboard_delivered_pc_kg"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="1 pc - 10 kg"
-                            android:textColor="#2E1C02"
-                            android:textSize="16sp" />
+                    <TextView
+                        android:id="@+id/activity_admin_delivery_dashboard_delivered_avg_wt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Avg Wt. 1.123 kg/pc"
+                        android:textColor="#2E1C02"
+                        android:textSize="20sp" />
+                </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/activity_admin_delivery_dashboard_delivered_avg_wt"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Avg Wt. 1.123 kg/pc"
-                            android:textColor="#2E1C02"
-                            android:textSize="20sp" />
-                    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight=".5"
+                    android:background="#673AB7"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
-                        android:layout_weight=".5"
-                        android:background="#673AB7"
-                        android:orientation="vertical"
-                        android:padding="10dp">
+                    <TextView
+                        android:id="@+id/textView26"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Projections"
+                        android:textColor="#D9C7F4"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/textView26"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Projections"
-                            android:textColor="#D9C7F4"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Shortage"
+                        android:textColor="#D9C9F1" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="Shortage"
-                            android:textColor="#D9C9F1" />
-
-                        <TextView
-                            android:id="@+id/activity_admin_delivery_dashboard_projected_shortage"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="N/A"
-                            android:textColor="#D6CBE8"
-                            android:textSize="34sp"
-                            android:textStyle="bold" />
-
-                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/activity_admin_delivery_dashboard_projected_shortage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="N/A"
+                        android:textColor="#D6CBE8"
+                        android:textSize="34sp"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="10dp">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="wrap_content"

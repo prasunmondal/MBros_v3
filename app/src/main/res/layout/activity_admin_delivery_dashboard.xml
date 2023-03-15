@@ -437,7 +437,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteX="10dp">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="wrap_content"
@@ -456,7 +459,8 @@
                         android:hint="Car"
                         android:inputType="number"
                         android:textColor="#ECF5FA"
-                        android:textColorHint="#A9E2FB" />
+                        android:textColorHint="#A9E2FB"
+                        android:textStyle="bold" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -477,7 +481,8 @@
                         android:hint="Lab"
                         android:inputType="number"
                         android:textColor="#ECF5FA"
-                        android:textColorHint="#A9E2FB" />
+                        android:textColorHint="#A9E2FB"
+                        android:textStyle="bold" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -498,7 +503,8 @@
                         android:hint="Extra"
                         android:inputType="number"
                         android:textColor="#ECF5FA"
-                        android:textColorHint="#A9E2FB" />
+                        android:textColorHint="#A9E2FB"
+                        android:textStyle="bold" />
 
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>

@@ -422,15 +422,88 @@
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout6"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="spool customer data"
-            android:onClick="onClickSpoolCustomerData"
-            app:layout_constraintEnd_toEndOf="@+id/constraintLayout7"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded"
+            android:backgroundTint="#2196F3"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout7" />
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout7">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxEms="10"
+                    android:minEms="10"
+                    android:textColorHint="#0F4067">
+
+                    <!--this is the actual edit text which takes the input-->
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/activity_admin_delivery_dashboard_car_expense"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#00000000"
+                        android:hint="Car"
+                        android:inputType="number"
+                        android:textColor="#ECF5FA"
+                        android:textColorHint="#A9E2FB" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxEms="10"
+                    android:minEms="10"
+                    android:textColorHint="#0F4067">
+
+                    <!--this is the actual edit text which takes the input-->
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/activity_admin_delivery_dashboard_labour_expense"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#00000000"
+                        android:hint="Lab"
+                        android:inputType="number"
+                        android:textColor="#ECF5FA"
+                        android:textColorHint="#A9E2FB" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxEms="10"
+                    android:minEms="10"
+                    android:textColorHint="#0F4067">
+
+                    <!--this is the actual edit text which takes the input-->
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/activity_admin_delivery_dashboard_extra_expense"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#00000000"
+                        android:hint="Extra"
+                        android:inputType="number"
+                        android:textColor="#ECF5FA"
+                        android:textColorHint="#A9E2FB" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ScrollView
             android:id="@+id/scrollView3"
@@ -446,6 +519,16 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
         </ScrollView>
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickSpoolCustomerData"
+            android:text="spool customer data"
+            app:layout_constraintEnd_toEndOf="@+id/constraintLayout7"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floatingActionButton"

@@ -25,7 +25,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         AppUtils.logError()
 
 //        updateDashboard(true)
-        updateDashboard(false)
+        updateDashboard(true)
         setCompanyAndRateValuesInUI()
     }
 

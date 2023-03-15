@@ -109,7 +109,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
                     android:background="@drawable/rounded"
                     android:backgroundTint="#5CE3F4"
@@ -119,7 +119,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -181,31 +181,32 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:paddingVertical="10dp">
 
                         <Switch
-                            android:id="@+id/switch1"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/one_shot_delivery_did_refuel"
+                            android:layout_width="170dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:paddingRight="20dp"
                             android:text="Refuel?" />
 
                         <Switch
-                            android:id="@+id/switch2"
+                            android:id="@+id/one_shot_delivery_did_fuel_upto_tank_full"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:checked="true"
                             android:paddingLeft="20dp"
                             android:text="Full Tank?" />
 
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/one_shot_delivery_refueling_details_container"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
                         <com.google.android.material.textfield.TextInputLayout

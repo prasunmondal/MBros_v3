@@ -7,6 +7,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.Switch
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -40,6 +41,20 @@ class OneShotDelivery : AppCompatActivity() {
         populateDeliveryMap()
         updateSingleAttributedDataOnUI()
         showOrders()
+        initiallizeUI()
+    }
+
+    private fun initiallizeUI() {
+        val didRefuelElement = findViewById<Switch>(R.id.one_shot_delivery_did_refuel)
+        val didTankFullElement = findViewById<Switch>(R.id.one_shot_delivery_did_fuel_upto_tank_full)
+        val refuelingDetailsContainer = findViewById<LinearLayout>(R.id.one_shot_delivery_refueling_details_container)
+
+        refuelingDetailsContainer.visibility = if(didRefuelElement.isChecked) View.VISIBLE else View.GONE
+        didTankFullElement.visibility = if(didRefuelElement.isChecked) View.VISIBLE else View.GONE
+
+        didRefuelElement.setOnCheckedChangeListener { _, isChecked ->
+            initiallizeUI()
+        }
     }
 
     private fun populateDeliveryMap() {

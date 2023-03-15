@@ -445,7 +445,7 @@
                     android:layout_weight="1"
                     android:maxEms="10"
                     android:minEms="10"
-                    android:textColorHint="#0F4067">
+                    android:textColorHint="#01172C">
 
                     <!--this is the actual edit text which takes the input-->
                     <com.google.android.material.textfield.TextInputEditText
@@ -466,7 +466,7 @@
                     android:layout_weight="1"
                     android:maxEms="10"
                     android:minEms="10"
-                    android:textColorHint="#0F4067">
+                    android:textColorHint="#01172C">
 
                     <!--this is the actual edit text which takes the input-->
                     <com.google.android.material.textfield.TextInputEditText
@@ -487,7 +487,7 @@
                     android:layout_weight="1"
                     android:maxEms="10"
                     android:minEms="10"
-                    android:textColorHint="#0F4067">
+                    android:textColorHint="#01172C">
 
                     <!--this is the actual edit text which takes the input-->
                     <com.google.android.material.textfield.TextInputEditText

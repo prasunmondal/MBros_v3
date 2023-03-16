@@ -53,7 +53,7 @@ class CustomerData: java.io.Serializable {
 
     companion object {
 
-        fun finalizeDelivers() {
+        fun spoolDeliveringData() {
             val deliveredData = DeliverCustomerOrders.get()
             deliveredData.forEach {
                 val record = CustomerData(it.id, it.timestamp, it.name, it.deliveredPc, it.deliveredKg, it.rate, it.prevDue, it.todaysAmount, it.totalDue, it.paid, it.balanceDue, "0", "0")

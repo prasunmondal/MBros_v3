@@ -1,6 +1,7 @@
 package com.tech4bytes.mbrosv3.VehicleManagement
 
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 
@@ -42,6 +43,16 @@ class Refueling: java.io.Serializable {
         fun getPreviousRefuelingKM(): String {
             // TODO: obj.refueling_km = <existing refueling km>
             return "0"
+        }
+
+        fun spoolRefuelingData() {
+            val singleAttributedObj = SingleAttributedData.getRecords()
+            val refuelingObj = Refueling("", "", "", false)
+            refuelingObj.measure = singleAttributedObj.refueling_qty
+            refuelingObj.amount = singleAttributedObj.refueling_amount
+            refuelingObj.refueling_km = singleAttributedObj.refueling_km
+            refuelingObj.is_full_tank = singleAttributedObj.refueling_isFullTank.toBoolean()
+            addToServer(refuelingObj)
         }
     }
 }

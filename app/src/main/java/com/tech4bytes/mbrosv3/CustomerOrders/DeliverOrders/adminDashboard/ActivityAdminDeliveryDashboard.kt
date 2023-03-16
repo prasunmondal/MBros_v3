@@ -16,6 +16,7 @@ import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.WeightUtils.WeightUtils
+import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
 
 class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,7 +98,8 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
 
     fun onClickSpoolCustomerData(view: View) {
         CentralCache.invalidateFullCache()
-        CustomerData.finalizeDelivers()
+        CustomerData.spoolDeliveringData()
+        Refueling.spoolRefuelingData()
     }
 
     fun onClickSaveRate(view: View) {

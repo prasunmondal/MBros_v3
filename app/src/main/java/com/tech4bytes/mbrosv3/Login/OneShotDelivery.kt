@@ -12,6 +12,8 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
@@ -24,6 +26,7 @@ import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
+import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
 
 class OneShotDelivery : AppCompatActivity() {
 
@@ -48,11 +51,17 @@ class OneShotDelivery : AppCompatActivity() {
         val didRefuelElement = findViewById<Switch>(R.id.one_shot_delivery_did_refuel)
         val didTankFullElement = findViewById<Switch>(R.id.one_shot_delivery_did_fuel_upto_tank_full)
         val refuelingDetailsContainer = findViewById<LinearLayout>(R.id.one_shot_delivery_refueling_details_container)
+        val refuelingKmContainer = findViewById<TextInputLayout>(R.id.one_shot_delivery_refueling_km_container)
 
         refuelingDetailsContainer.visibility = if(didRefuelElement.isChecked) View.VISIBLE else View.GONE
         didTankFullElement.visibility = if(didRefuelElement.isChecked) View.VISIBLE else View.GONE
+        refuelingKmContainer.visibility = if(didTankFullElement.isChecked) View.VISIBLE else View.GONE
 
         didRefuelElement.setOnCheckedChangeListener { _, isChecked ->
+            initiallizeUI()
+        }
+
+        didTankFullElement.setOnCheckedChangeListener { _, isChecked ->
             initiallizeUI()
         }
     }
@@ -302,8 +311,9 @@ class OneShotDelivery : AppCompatActivity() {
 
     fun onClickSaveOneShotDeliveryDataBtn(view: View) {
         gatherSingleAttributedData()
+        gatherFuelData()
         saveSingleAttributeData()
-        saveDeliveryData()
+//        saveDeliveryData()
     }
 
     fun gatherSingleAttributedData() {
@@ -321,6 +331,29 @@ class OneShotDelivery : AppCompatActivity() {
 
     private fun saveSingleAttributeData() {
         SingleAttributedData.save(SingleAttributedData.getRecords())
+    }
+
+    private fun gatherFuelData() {
+        var obj = SingleAttributedData.getRecords()
+
+        val isRefueledElement = findViewById<Switch>(R.id.one_shot_delivery_did_refuel)
+        if(isRefueledElement.isChecked) {
+            val isRefueledToFullTank = findViewById<Switch>(R.id.one_shot_delivery_did_fuel_upto_tank_full)
+            val refuelQtyElement = findViewById<EditText>(R.id.one_shot_delivery_fuel_quantity)
+            val refuelAmountElement = findViewById<EditText>(R.id.one_shot_delivery_fuel_amount)
+
+            obj.refueling_qty = refuelQtyElement.text.toString()
+            obj.refueling_amount = refuelAmountElement.text.toString()
+
+            if(isRefueledToFullTank.isChecked) {
+                val refuelingKmElement = findViewById<EditText>(R.id.one_shot_delivery_refueling_km)
+                obj.refueling_km = refuelingKmElement.text.toString()
+            } else {
+                obj.refueling_km = ""
+            }
+        }
+
+        SingleAttributedData.saveToLocal(obj)
     }
 
     private fun saveDeliveryData() {

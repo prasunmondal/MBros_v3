@@ -38,5 +38,10 @@ class Refueling: java.io.Serializable {
                 .dataObject(refuelDetailsObj as Any)
                 .build().execute()
         }
+
+        fun getPreviousRefuelingKM(): String {
+            // TODO: obj.refueling_km = <existing refueling km>
+            return "0"
+        }
     }
 }

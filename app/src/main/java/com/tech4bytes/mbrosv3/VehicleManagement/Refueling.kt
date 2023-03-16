@@ -4,13 +4,16 @@ import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
+import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 
 class Refueling: java.io.Serializable {
 
+    var id: String = ""
     var timestamp: String = ""
     var measure: String = ""
-    var rate = 0.0
+    var rate = ""
     var amount = ""
+    var prev_refuel_km = ""
     var refueling_km = ""
     var is_full_tank = true
     var mileage = ""
@@ -21,11 +24,6 @@ class Refueling: java.io.Serializable {
         this.amount = amount
         this.refueling_km = refueling_km
         this.is_full_tank = is_full_tank
-        this.rate = try {
-            amount.toDouble() / measure.toDouble()
-        } catch (e: Exception) {
-            0.0
-        }
         this.mileage = ""
     }
 
@@ -48,10 +46,18 @@ class Refueling: java.io.Serializable {
         fun spoolRefuelingData() {
             val singleAttributedObj = SingleAttributedData.getRecords()
             val refuelingObj = Refueling("", "", "", false)
+            refuelingObj.id = singleAttributedObj.id
+            refuelingObj.timestamp = singleAttributedObj.date
             refuelingObj.measure = singleAttributedObj.refueling_qty
             refuelingObj.amount = singleAttributedObj.refueling_amount
             refuelingObj.refueling_km = singleAttributedObj.refueling_km
             refuelingObj.is_full_tank = singleAttributedObj.refueling_isFullTank.toBoolean()
+            refuelingObj.prev_refuel_km = getPreviousRefuelingKM()
+            val calculatedCate = NumberUtils.getDoubleOrZero(singleAttributedObj.refueling_amount) / NumberUtils.getDoubleOrZero(singleAttributedObj.refueling_qty)
+            refuelingObj.rate = "%.2f".format(calculatedCate)
+
+            val calculatedMileage = (NumberUtils.getIntOrZero(refuelingObj.refueling_km) - NumberUtils.getIntOrZero(refuelingObj.prev_refuel_km)) / NumberUtils.getDoubleOrZero(refuelingObj.measure)
+            refuelingObj.mileage = "%.3f".format(calculatedMileage)
             addToServer(refuelingObj)
         }
     }

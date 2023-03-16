@@ -71,11 +71,8 @@ data class SingleAttributedData(var recordGeneratorDevice: String = "",
         }
 
         fun save(obj: SingleAttributedData) {
-            obj.recordGeneratorDevice = getPhoneId()
-            obj.id = System.currentTimeMillis().toString()
-            obj.date = DateUtils.getCurrentTimestamp()
-            saveToServer(obj)
             saveToLocal(obj)
+            saveToServer(obj)
         }
 
         fun saveAttribute(kMutableProperty: KMutableProperty1<SingleAttributedData, String>, value: String) {
@@ -117,6 +114,9 @@ data class SingleAttributedData(var recordGeneratorDevice: String = "",
         }
 
         fun saveToLocal(obj: SingleAttributedData) {
+            obj.id = System.currentTimeMillis().toString()
+            obj.recordGeneratorDevice = getPhoneId()
+            obj.date = DateUtils.getCurrentTimestamp()
             CentralCache.put(recordsKey, obj)
         }
 

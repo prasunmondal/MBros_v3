@@ -390,6 +390,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:background="@drawable/rounded"
+                android:backgroundTint="#2196F3"
                 android:orientation="horizontal"
                 android:padding="10dp">
 
@@ -475,17 +478,6 @@
                 android:clickable="true"
                 android:onClick="onClickUpdateDashboard"
                 app:srcCompat="@android:drawable/ic_popup_sync" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/rounded"
-                android:backgroundTint="#2196F3"
-                android:padding="10dp">
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
     </ScrollView>

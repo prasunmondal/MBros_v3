@@ -313,7 +313,7 @@ class OneShotDelivery : AppCompatActivity() {
         gatherSingleAttributedData()
         gatherFuelData()
         saveSingleAttributeData()
-//        saveDeliveryData()
+        saveDeliveryData()
     }
 
     fun gatherSingleAttributedData() {

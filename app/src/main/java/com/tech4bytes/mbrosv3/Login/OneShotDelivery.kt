@@ -282,7 +282,7 @@ class OneShotDelivery : AppCompatActivity() {
                 sumKg += NumberUtils.getDoubleOrZero(it.value.deliveredKg)
                 sumSale += NumberUtils.getIntOrZero(it.value.todaysAmount)
                 sumAmountCollected += NumberUtils.getIntOrZero(it.value.paid)
-            if(NumberUtils.getIntOrZero(it.value.deliveredKg) > 0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
+            if(NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
                 sumBalanceDue += NumberUtils.getIntOrZero(it.value.balanceDue)
             }
         }

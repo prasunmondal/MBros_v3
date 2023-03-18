@@ -253,7 +253,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="right"
-                        android:text="Balance Due: " />
+                        android:text="Balance Due:" />
 
                     <TextView
                         android:id="@+id/one_shot_delivery_fragment_more_details_container_balance_due"

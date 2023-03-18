@@ -119,6 +119,7 @@ class OneShotDelivery : AppCompatActivity() {
             val kgElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_kg)
             val paidElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid)
             val balanceElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
+            val moreDetailsContainer = entry.findViewById<LinearLayout>(R.id.one_shot_delivery_fragment_more_details_container)
 
             nameElement.text = order.value.name
             balanceElement.text = order.value.prevDue
@@ -151,6 +152,15 @@ class OneShotDelivery : AppCompatActivity() {
                 updateEntry(order, entry)
             }
 
+            balanceElement.setOnClickListener {
+                if(moreDetailsContainer.visibility == View.VISIBLE) {
+                    moreDetailsContainer.visibility = View.GONE
+                } else {
+                    moreDetailsContainer.visibility = View.VISIBLE
+                }
+                updateDetailedInfo(order, entry)
+            }
+
             val recordContainer = entry.findViewById<ConstraintLayout>(R.id.one_shot_delivery_fragment_record_container)
             var cardColor = ContextCompat.getColor(this, R.color.one_shot_delivery_odd_card_color)
             if(entrynumber % 2 == 0)
@@ -162,7 +172,6 @@ class OneShotDelivery : AppCompatActivity() {
 
             listContainer.addView(entry)
             updateEntry(order, entry)
-            updateDetailedInfo(order, entry)
         }
     }
 
@@ -179,10 +188,11 @@ class OneShotDelivery : AppCompatActivity() {
 
         balanceElement.text = getDueBalance(order.value, entry).toString()
         updateTotals()
+        updateDetailedInfo(order, entry)
     }
 
     private fun updateDetailedInfo(order: Map.Entry<String, DeliverCustomerOrders>, entry: View) {
-        val container = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container)
+        val container = entry.findViewById<LinearLayout>(R.id.one_shot_delivery_fragment_more_details_container)
 
         if(container.visibility == View.VISIBLE) {
             val prevDue = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_prev_due)
@@ -193,13 +203,13 @@ class OneShotDelivery : AppCompatActivity() {
             val paid = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_paid_amount)
             val balanceDue = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_balance_due)
 
-            prevDue.text = order.value.deliveredKg
-            kg.text = order.value.deliveredKg
-            rate.text = order.value.rate
-            todaysSale.text = order.value.todaysAmount
-            total.text = order.value.totalDue
-            paid.text = order.value.paid
-            balanceDue.text = order.value.balanceDue
+            prevDue.text = "₹ ${order.value.prevDue}"
+            kg.text = "${order.value.deliveredKg} kg"
+            rate.text = "₹ ${order.value.rate}"
+            todaysSale.text = "₹ ${order.value.todaysAmount}"
+            total.text = "₹ ${order.value.totalDue}"
+            paid.text = "₹ ${order.value.paid}"
+            balanceDue.text = "₹ ${order.value.balanceDue}"
         }
     }
 

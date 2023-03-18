@@ -1,8 +1,15 @@
 package com.tech4bytes.mbrosv3.VehicleManagement
 
+import com.google.gson.reflect.TypeToken
+import com.prasunmondal.postjsontosheets.clients.get.Get
+import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
+import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
+import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.CustomerOrdersConfig
+import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.ProjectConfig
+import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 
@@ -38,9 +45,41 @@ class Refueling: java.io.Serializable {
                 .build().execute()
         }
 
+        private fun getLatestRecord(useCache: Boolean = true): Refueling {
+            val list = getServerList(useCache)
+            return list[list.size-1]
+        }
+
+        private fun getServerList(useCache: Boolean = true): List<Refueling> {
+            val getOrdersServerListKey = "getOrdersServerList"
+            val cacheResults = CentralCache.get<ArrayList<Refueling>>(AppContexts.get(), getOrdersServerListKey, useCache)
+
+            return if (cacheResults != null) {
+                cacheResults
+            } else {
+                val resultFromServer = getFromServer()
+                CentralCache.put(getOrdersServerListKey, resultFromServer)
+                resultFromServer as MutableList<Refueling>
+            }
+        }
+
+        private fun getFromServer(): List<GetCustomerOrders> {
+            // val waitDialog = ProgressDialog.show(AppContexts.get(), "Please Wait", "লোড হচ্ছে", true)
+            val result: GetResponse = Get.builder()
+                .scriptId(ProjectConfig.dBServerScriptURL)
+                .sheetId(ProjectConfig.DB_SHEET_ID)
+                .tabName(VehicleManagementConfig.SHEET_REFUELING_TAB_NAME)
+                .build().execute()
+
+            // waitDialog!!.dismiss()
+            return result.parseToObject(result.getRawResponse(),
+                object : TypeToken<ArrayList<Refueling>?>() {}.type
+            )
+        }
+
         fun getPreviousRefuelingKM(): String {
-            // TODO: obj.refueling_km = <existing refueling km>
-            return "0"
+            return getLatestRecord().refueling_km
+//            return "0"
         }
 
         fun spoolRefuelingData() {
@@ -52,7 +91,7 @@ class Refueling: java.io.Serializable {
             refuelingObj.amount = singleAttributedObj.refueling_amount
             refuelingObj.refueling_km = singleAttributedObj.refueling_km
             refuelingObj.is_full_tank = singleAttributedObj.refueling_isFullTank.toBoolean()
-            refuelingObj.prev_refuel_km = getPreviousRefuelingKM()
+            refuelingObj.prev_refuel_km = singleAttributedObj.refueling_prevKm
             val calculatedCate = NumberUtils.getDoubleOrZero(singleAttributedObj.refueling_amount) / NumberUtils.getDoubleOrZero(singleAttributedObj.refueling_qty)
             refuelingObj.rate = "%.2f".format(calculatedCate)
 

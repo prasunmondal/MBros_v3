@@ -135,8 +135,9 @@
 
                     <TextView
                         android:id="@+id/one_shot_delivery_fragment_more_details_container_prev_due"
-                        android:layout_width="150dp"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
+                        android:gravity="right"
                         android:paddingLeft="5dp"
                         android:text="prev_due_amount" />
                 </LinearLayout>
@@ -178,8 +179,9 @@
 
                     <TextView
                         android:id="@+id/one_shot_delivery_fragment_more_details_container_sale_total"
-                        android:layout_width="150dp"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
+                        android:gravity="right"
                         android:paddingLeft="5dp"
                         android:text="sale_total" />
                 </LinearLayout>
@@ -208,8 +210,9 @@
 
                     <TextView
                         android:id="@+id/one_shot_delivery_fragment_more_details_container_total_due"
-                        android:layout_width="150dp"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
+                        android:gravity="right"
                         android:paddingLeft="5dp"
                         android:text="total_due" />
 
@@ -230,8 +233,9 @@
 
                     <TextView
                         android:id="@+id/one_shot_delivery_fragment_more_details_container_paid_amount"
-                        android:layout_width="150dp"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
+                        android:gravity="right"
                         android:paddingLeft="5dp"
                         android:text="paid_amount" />
                 </LinearLayout>
@@ -258,8 +262,9 @@
 
                     <TextView
                         android:id="@+id/one_shot_delivery_fragment_more_details_container_balance_due"
-                        android:layout_width="150dp"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
+                        android:gravity="right"
                         android:paddingLeft="5dp"
                         android:text="balance_due"
                         android:textSize="16sp" />

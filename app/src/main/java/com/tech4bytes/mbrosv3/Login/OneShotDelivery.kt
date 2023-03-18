@@ -12,7 +12,6 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
@@ -26,7 +25,6 @@ import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
-import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
 
 class OneShotDelivery : AppCompatActivity() {
 
@@ -164,6 +162,7 @@ class OneShotDelivery : AppCompatActivity() {
 
             listContainer.addView(entry)
             updateEntry(order, entry)
+            updateDetailedInfo(order, entry)
         }
     }
 
@@ -180,6 +179,28 @@ class OneShotDelivery : AppCompatActivity() {
 
         balanceElement.text = getDueBalance(order.value, entry).toString()
         updateTotals()
+    }
+
+    private fun updateDetailedInfo(order: Map.Entry<String, DeliverCustomerOrders>, entry: View) {
+        val container = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container)
+
+        if(container.visibility == View.VISIBLE) {
+            val prevDue = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_prev_due)
+            val kg = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_kg)
+            val rate = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_rate)
+            val todaysSale = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_sale_total)
+            val total = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_total_due)
+            val paid = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_paid_amount)
+            val balanceDue = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_balance_due)
+
+            prevDue.text = order.value.deliveredKg
+            kg.text = order.value.deliveredKg
+            rate.text = order.value.rate
+            todaysSale.text = order.value.todaysAmount
+            total.text = order.value.totalDue
+            paid.text = order.value.paid
+            balanceDue.text = order.value.balanceDue
+        }
     }
 
     private fun getRateForEntry(entry: View): Int {

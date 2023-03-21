@@ -14,62 +14,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:id="@+id/linearLayout15"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <EditText
-                android:id="@+id/one_shot_delivery_pc"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Load pc"
-                android:nextFocusDown="@+id/one_shot_delivery_kg"
-                android:inputType="number" />
-
-            <EditText
-                android:id="@+id/one_shot_delivery_kg"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="Load Kg"
-                android:nextFocusDown="@+id/one_shot_delivery_price"
-                android:inputType="numberDecimal" />
-
-            <EditText
-                android:id="@+id/one_shot_delivery_price"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="FarmRate"
-                android:nextFocusDown="@+id/one_shot_delivery_buffer"
-                android:inputType="number" />
-
-            <EditText
-                android:id="@+id/one_shot_delivery_buffer"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="Buffer"
-                android:inputType="number" />
-
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="onClickSyncInputsOffline"
-                android:text="---" />
-        </LinearLayout>
-
         <ScrollView
             android:id="@+id/scrollView4"
             android:layout_width="match_parent"
@@ -77,12 +21,65 @@
             app:layout_constraintBottom_toTopOf="@+id/linearLayout16"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout15">
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/linearLayout15"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/one_shot_delivery_pc"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Load pc"
+                        android:inputType="number"
+                        android:nextFocusDown="@+id/one_shot_delivery_kg" />
+
+                    <EditText
+                        android:id="@+id/one_shot_delivery_kg"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="Load Kg"
+                        android:inputType="numberDecimal"
+                        android:nextFocusDown="@+id/one_shot_delivery_price" />
+
+                    <EditText
+                        android:id="@+id/one_shot_delivery_price"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="FarmRate"
+                        android:inputType="number"
+                        android:nextFocusDown="@+id/one_shot_delivery_buffer" />
+
+                    <EditText
+                        android:id="@+id/one_shot_delivery_buffer"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="Buffer"
+                        android:inputType="number" />
+
+                    <Button
+                        android:id="@+id/button3"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="onClickSyncInputsOffline"
+                        android:text="---" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/one_shot_delivery_ordered_customers_entry_container"

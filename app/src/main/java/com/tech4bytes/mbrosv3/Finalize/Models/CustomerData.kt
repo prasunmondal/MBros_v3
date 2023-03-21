@@ -5,6 +5,8 @@ import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
+import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -121,6 +123,10 @@ class CustomerData: java.io.Serializable {
             recordsList.sortBy { it.orderId }
             recordsList.reverse()
             return recordsList
+        }
+
+        fun getCustomerDefaultRate(name: String): Int {
+            return SingleAttributedData.getFinalRateInt() + SingleAttributedData.getBufferRateInt() + CustomerKYC.get(name)!!.rateDifference.toInt()
         }
     }
 }

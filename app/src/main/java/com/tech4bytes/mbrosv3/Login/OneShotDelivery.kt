@@ -30,6 +30,7 @@ class OneShotDelivery : AppCompatActivity() {
 
     var deliveryMapOrderedCustomers: MutableMap<String, DeliverCustomerOrders> = mutableMapOf()
     var deliveryMapUnOrderedCustomers: MutableMap<String, DeliverCustomerOrders> = mutableMapOf()
+    var uiMaps: MutableMap<String, View> = mutableMapOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +62,37 @@ class OneShotDelivery : AppCompatActivity() {
 
         didTankFullElement.setOnCheckedChangeListener { _, isChecked ->
             initiallizeUI()
+        }
+
+
+        val record = SingleAttributedData.getRecords()
+        val loadPcElement = findViewById<EditText>(R.id.one_shot_delivery_pc)
+        val loadKgElement = findViewById<EditText>(R.id.one_shot_delivery_kg)
+        val loadPriceElement = findViewById<EditText>(R.id.one_shot_delivery_price)
+        val loadBufferElement = findViewById<EditText>(R.id.one_shot_delivery_buffer)
+
+        loadPcElement.doOnTextChanged { text, start, before, count ->
+            record.actualLoadPc = loadPcElement.text.toString()
+            SingleAttributedData.saveToLocal(record)
+            updateTotals()
+        }
+
+        loadKgElement.doOnTextChanged { text, start, before, count ->
+            record.actualLoadKg = loadKgElement.text.toString()
+            SingleAttributedData.saveToLocal(record)
+            updateTotals()
+        }
+
+        loadPriceElement.doOnTextChanged { text, start, before, count ->
+            record.finalFarmRate = loadPriceElement.text.toString()
+            SingleAttributedData.saveToLocal(record)
+            updateRates()
+        }
+
+        loadBufferElement.doOnTextChanged { text, start, before, count ->
+            record.bufferRate = loadBufferElement.text.toString()
+            SingleAttributedData.saveToLocal(record)
+            updateRates()
         }
     }
 
@@ -134,7 +166,7 @@ class OneShotDelivery : AppCompatActivity() {
             LogMe.log(SingleAttributedData.getBufferRateInt().toString())
             LogMe.log(CustomerKYC.get(order.value.name)!!.rateDifference)
             LogMe.log("${SingleAttributedData.getFinalRateInt() + SingleAttributedData.getBufferRateInt() + CustomerKYC.get(order.value.name)!!.rateDifference.toInt()}")
-            rateElement.text = "${SingleAttributedData.getFinalRateInt() + SingleAttributedData.getBufferRateInt() + CustomerKYC.get(order.value.name)!!.rateDifference.toInt()}"
+            rateElement.text = "${CustomerData.getCustomerDefaultRate(order.value.name)}"
 
             rateElement.doOnTextChanged { text, start, before, count ->
                 updateEntry(order, entry)
@@ -172,6 +204,15 @@ class OneShotDelivery : AppCompatActivity() {
 
             listContainer.addView(entry)
             updateEntry(order, entry)
+            uiMaps[order.value.name] = entry
+        }
+    }
+
+    private fun updateRates() {
+        uiMaps.forEach {
+            val rate = CustomerData.getCustomerDefaultRate(it.key)
+            val rateElement = it.value.findViewById<TextView>(R.id.one_shot_delivery_fragment_rate)
+            rateElement.text = rate.toString()
         }
     }
 

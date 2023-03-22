@@ -1,15 +1,16 @@
 package com.tech4bytes.mbrosv3.OneShot.Delivery
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.R
-import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+
 
 class OneShotLoad : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,7 +19,15 @@ class OneShotLoad : AppCompatActivity() {
         AppContexts.set(this)
 
         AppUtils.logError()
+        populateOptionsCompanyName()
         updateUIFromObj(true)
+    }
+
+    private fun populateOptionsCompanyName() {
+        val autoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name)
+        val arrayList: ArrayList<String> = arrayListOf("Sur", "Shalimar")
+        val arrayAdapter: ArrayAdapter<*> = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, arrayList)
+        autoCompleteTextView.setAdapter(arrayAdapter)
     }
 
     private fun updateUIFromObj(useCache: Boolean) {

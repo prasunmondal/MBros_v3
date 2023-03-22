@@ -12,6 +12,7 @@ import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ReflectionUtils
+import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
 import kotlin.reflect.KMutableProperty1
 
 data class SingleAttributedData(var recordGeneratorDevice: String = "",
@@ -117,6 +118,7 @@ data class SingleAttributedData(var recordGeneratorDevice: String = "",
             obj.id = System.currentTimeMillis().toString()
             obj.recordGeneratorDevice = getPhoneId()
             obj.date = DateUtils.getCurrentTimestamp()
+            obj.refueling_km = Refueling.getPreviousRefuelingKM()
             CentralCache.put(recordsKey, obj)
         }
 

@@ -79,7 +79,6 @@ class Refueling: java.io.Serializable {
 
         fun getPreviousRefuelingKM(): String {
             return getLatestRecord().refueling_km
-//            return "0"
         }
 
         fun spoolRefuelingData() {

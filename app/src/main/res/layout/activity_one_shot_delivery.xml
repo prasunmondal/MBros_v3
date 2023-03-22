@@ -239,13 +239,13 @@
                         android:id="@+id/one_shot_delivery_refueling_details_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:orientation="vertical">
+                            android:orientation="horizontal">
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:id="@+id/one_shot_delivery_refueling_km_container"
@@ -265,48 +265,90 @@
                                     android:inputType="number" />
                             </com.google.android.material.textfield.TextInputLayout>
 
-                            <TextView
-                                android:id="@+id/one_shot_delivery_refueling_km_diff"
-                                android:layout_width="match_parent"
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="TextView" />
+                                android:maxEms="10"
+                                android:minEms="10">
+
+                                <!--this is the actual edit text which takes the input-->
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/one_shot_delivery_fuel_amount"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="#5CE3F4"
+                                    android:hint="Rs"
+                                    android:inputType="number" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:maxEms="10"
+                                android:minEms="10">
+
+                                <!--this is the actual edit text which takes the input-->
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/one_shot_delivery_fuel_quantity"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="#5CE3F4"
+                                    android:hint="Qty (litres)"
+                                    android:inputType="numberDecimal" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView38"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Refueling KM: " />
+
+                                <TextView
+                                    android:id="@+id/one_shot_delivery_refueling_km_diff"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="TextView" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="right"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/textView40"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingLeft="20dp"
+                                    android:text="Mileage: " />
+
+                                <TextView
+                                    android:id="@+id/one_shot_delivery_refueling_mileage"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="90" />
+                            </LinearLayout>
 
                         </LinearLayout>
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:maxEms="10"
-                            android:minEms="10">
-
-                            <!--this is the actual edit text which takes the input-->
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/one_shot_delivery_fuel_quantity"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="#5CE3F4"
-                                android:hint="Qty (litres)"
-                                android:inputType="numberDecimal" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:maxEms="10"
-                            android:minEms="10">
-
-                            <!--this is the actual edit text which takes the input-->
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/one_shot_delivery_fuel_amount"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="#5CE3F4"
-                                android:hint="Rs"
-                                android:inputType="number" />
-                        </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
                 </LinearLayout>

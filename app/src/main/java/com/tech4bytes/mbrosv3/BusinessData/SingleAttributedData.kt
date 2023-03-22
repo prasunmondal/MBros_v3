@@ -32,12 +32,14 @@ data class SingleAttributedData(var recordGeneratorDevice: String = "",
                                 var load_companyName: String = "",
                                 var load_branch: String = "",
                                 var load_account: String = "",
+                                var did_refueled: String = "",
                                 var refueling_qty: String = "",
                                 var refueling_amount: String = "",
                                 var refueling_isFullTank: String = "",
                                 var refueling_prevKm: String = "",
                                 var refueling_km: String = "",
                                 var labour_expenses: String = "",
+                                var refuel_mileage: String = "",
                                 var extra_expenses: String = ""): java.io.Serializable {
 
     companion object {
@@ -118,7 +120,6 @@ data class SingleAttributedData(var recordGeneratorDevice: String = "",
             obj.id = System.currentTimeMillis().toString()
             obj.recordGeneratorDevice = getPhoneId()
             obj.date = DateUtils.getCurrentTimestamp()
-            obj.refueling_km = Refueling.getPreviousRefuelingKM()
             CentralCache.put(recordsKey, obj)
         }
 

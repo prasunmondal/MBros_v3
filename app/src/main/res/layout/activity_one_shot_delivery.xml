@@ -34,43 +34,78 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/one_shot_delivery_pc"
-                        android:layout_width="70dp"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="Load pc"
-                        android:inputType="number"
-                        android:nextFocusDown="@+id/one_shot_delivery_kg" />
-
-                    <EditText
-                        android:id="@+id/one_shot_delivery_kg"
-                        android:layout_width="70dp"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:ems="10"
-                        android:hint="Load Kg"
-                        android:inputType="numberDecimal"
-                        android:nextFocusDown="@+id/one_shot_delivery_price" />
+                        android:hint="Load PC"
+                        android:maxEms="10"
+                        android:minEms="10">
 
-                    <EditText
-                        android:id="@+id/one_shot_delivery_price"
-                        android:layout_width="70dp"
+                        <!--this is the actual edit text which takes the input-->
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/one_shot_delivery_pc"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#F89879"
+                            android:inputType="number" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:ems="10"
-                        android:hint="FarmRate"
-                        android:inputType="number"
-                        android:nextFocusDown="@+id/one_shot_delivery_buffer" />
+                        android:hint="Load KG"
+                        android:maxEms="10"
+                        android:minEms="10">
 
-                    <EditText
-                        android:id="@+id/one_shot_delivery_buffer"
-                        android:layout_width="70dp"
+                        <!--this is the actual edit text which takes the input-->
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/one_shot_delivery_kg"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#F89879"
+                            android:inputType="number" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:ems="10"
+                        android:hint="FR"
+                        android:maxEms="10"
+                        android:minEms="10">
+
+                        <!--this is the actual edit text which takes the input-->
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/one_shot_delivery_price"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#F89879"
+                            android:inputType="number" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:hint="Buffer"
-                        android:inputType="number" />
+                        android:maxEms="10"
+                        android:minEms="10">
+
+                        <!--this is the actual edit text which takes the input-->
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/one_shot_delivery_buffer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#F89879"
+                            android:inputType="number" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <Button
                         android:id="@+id/button3"

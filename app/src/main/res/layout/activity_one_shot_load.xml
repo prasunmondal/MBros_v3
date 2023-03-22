@@ -29,10 +29,10 @@
             android:paddingVertical="20dp">
 
             <AutoCompleteTextView
-                android:id="@+id/one_shot_load_company_branch"
+                android:id="@+id/one_shot_load_company_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Branch"
+                android:hint="Company Name"
                 android:imeOptions="actionNext"
                 android:inputType="textNoSuggestions"
                 android:minHeight="35dp"
@@ -41,10 +41,10 @@
                 tools:ignore="TouchTargetSizeCheck" />
 
             <AutoCompleteTextView
-                android:id="@+id/one_shot_load_company_name"
+                android:id="@+id/one_shot_load_company_branch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Company Name"
+                android:hint="Branch"
                 android:imeOptions="actionNext"
                 android:inputType="textNoSuggestions"
                 android:minHeight="35dp"

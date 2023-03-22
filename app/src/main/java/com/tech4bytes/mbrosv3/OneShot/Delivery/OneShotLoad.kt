@@ -2,7 +2,6 @@ package com.tech4bytes.mbrosv3.OneShot.Delivery
 
 import android.os.Bundle
 import android.view.View
-import android.view.View.OnFocusChangeListener
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +10,6 @@ import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
-import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import java.util.stream.Collectors
 
 
@@ -125,13 +123,13 @@ class OneShotLoad : AppCompatActivity() {
         val extraCashProvider = findViewById<TextInputEditText>(R.id.one_shot_load_extra_expense_provided).text.toString()
         val farmRate = findViewById<TextInputEditText>(R.id.one_shot_load_farm_rate).text.toString()
 
-        if(companyName.isNotEmpty()) obj.load_companyName = companyName
-        if(branch.isNotEmpty()) obj.load_branch = branch
-        if(account.isNotEmpty()) obj.load_account = account
-        if(loadingArea.isNotEmpty()) obj.load_area = loadingArea
+        obj.load_companyName = companyName
+        obj.load_branch = branch
+        obj.load_account = account
+        obj.load_area = loadingArea
 
-        if(extraCashProvider.isNotEmpty()) obj.extra_cash_given = extraCashProvider
-        if(farmRate.isNotEmpty()) obj.finalFarmRate = farmRate
+        obj.extra_cash_given = extraCashProvider
+        obj.finalFarmRate = farmRate
 
         SingleAttributedData.saveToLocal(obj)
     }
@@ -143,5 +141,25 @@ class OneShotLoad : AppCompatActivity() {
 
     fun onClickOneShotLoadRefreshBtn(view: View) {
         AppUtils.invalidateAllDataAndRestartApp()
+    }
+
+    fun onClickClearCompanyLoadingDetails(view: View) {
+        val companyName = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name)
+        val branch = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_branch)
+        val account = findViewById<AutoCompleteTextView>(R.id.one_shot_load_money_account)
+        val loadingArea = findViewById<AutoCompleteTextView>(R.id.one_shot_load_loading_area)
+
+        companyName.text!!.clear()
+        branch.text!!.clear()
+        account.text!!.clear()
+        loadingArea.text!!.clear()
+    }
+
+    fun onClickClearAmountsDetails(view: View) {
+        val extraCashProvided = findViewById<TextInputEditText>(R.id.one_shot_load_extra_expense_provided)
+        val farmRate = findViewById<TextInputEditText>(R.id.one_shot_load_farm_rate)
+
+        extraCashProvided.text!!.clear()
+        farmRate.text!!.clear()
     }
 }

@@ -64,6 +64,18 @@
                 android:textStyle="bold"
                 tools:ignore="TouchTargetSizeCheck" />
 
+            <AutoCompleteTextView
+                android:id="@+id/one_shot_load_money_account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Area"
+                android:imeOptions="actionNext"
+                android:inputType="textNoSuggestions"
+                android:minHeight="35dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:ignore="TouchTargetSizeCheck" />
+
         </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout

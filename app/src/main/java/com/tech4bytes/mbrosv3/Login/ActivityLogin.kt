@@ -19,8 +19,7 @@ import com.tech4bytes.mbrosv3.Customer.DueShow
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard.ActivityAdminDeliveryDashboard
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
-import com.tech4bytes.mbrosv3.Loading.ActivityDeliveringLoad
-import com.tech4bytes.mbrosv3.Loading.LoadModel
+import com.tech4bytes.mbrosv3.OneShotDelivery.OneShotDelivery
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts

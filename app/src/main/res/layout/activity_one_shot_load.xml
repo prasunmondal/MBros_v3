@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="#F43131"
     android:padding="20dp"
     tools:context=".OneShot.Delivery.OneShotLoad">
 
@@ -114,6 +115,21 @@
                 android:inputType="number" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/button7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClickOneShotLoadSaveBtn"
+            android:text="Save" />
+
+        <Button
+            android:id="@+id/button8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#BF0D0D"
+            android:onClick="onClickOneShotLoadRefreshBtn"
+            android:text="Refresh" />
 
     </LinearLayout>
 

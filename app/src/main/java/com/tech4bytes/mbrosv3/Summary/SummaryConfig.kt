@@ -4,6 +4,6 @@ class SummaryConfig {
 
     companion object {
         val DB_FINALIZE_SHEET_ID = "11TA2pPlxqajVwkPEigNMPNfsV-12CExxmySk1OMw_v8"
-        val TAB_DAY_SUMMARY = "cumilative-calculations"
+        val TAB_DAY_SUMMARY = "cumilativeCalculations"
     }
 }

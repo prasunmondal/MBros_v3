@@ -21,6 +21,7 @@ data class DaySummary(var timestamp: String = "",
                       var new_due_balance: String = "",
                       var loadingCompany: String = "",
                       var loadingBranch: String = "",
+                      var loadingArea: String = "",
                       var loadingComapnyAccount: String = "",
                       var loadingCompanyAccountBalance: String = "",
                       var car_expense: String = "",
@@ -35,27 +36,30 @@ data class DaySummary(var timestamp: String = "",
                       var profit: String = "",
                       var trip_end_km: String = ""): java.io.Serializable {
 
-    fun get(useCache: Boolean = true): List<DaySummary> {
-        var cacheResults = CentralCache.get<List<DaySummary>>(AppContexts.get(), DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, useCache)
+    companion object {
+        fun get(useCache: Boolean = true): List<DaySummary> {
+            var cacheResults = CentralCache.get<List<DaySummary>>(AppContexts.get(), SummaryConfig.TAB_DAY_SUMMARY, useCache)
 
-        if(cacheResults == null) {
-            cacheResults = getFromServer()
-            CentralCache.put(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, cacheResults)
+            if (cacheResults == null) {
+                cacheResults = getFromServer()
+                CentralCache.put(SummaryConfig.TAB_DAY_SUMMARY, cacheResults)
+            }
+            return cacheResults
         }
-        return cacheResults
-    }
 
-    private fun getFromServer(): List<DaySummary> {
-        // val waitDialog = ProgressDialog.show(AppContexts.get(), "Please Wait", "লোড হচ্ছে", true)
-        val result: GetResponse = Get.builder()
-            .scriptId(ProjectConfig.dBServerScriptURL)
-            .sheetId(SummaryConfig.DB_FINALIZE_SHEET_ID)
-            .tabName(SummaryConfig.TAB_DAY_SUMMARY)
-            .build().execute()
+        private fun getFromServer(): List<DaySummary> {
+            // val waitDialog = ProgressDialog.show(AppContexts.get(), "Please Wait", "লোড হচ্ছে", true)
+            val result: GetResponse = Get.builder()
+                .scriptId(ProjectConfig.dBServerScriptURL)
+                .sheetId(SummaryConfig.DB_FINALIZE_SHEET_ID)
+                .tabName(SummaryConfig.TAB_DAY_SUMMARY)
+                .build().execute()
 
-        // waitDialog!!.dismiss()
-        return result.parseToObject(result.getRawResponse(),
-            object : TypeToken<ArrayList<DaySummary>?>() {}.type
-        )
+            // waitDialog!!.dismiss()
+            return result.parseToObject(
+                result.getRawResponse(),
+                object : TypeToken<ArrayList<DaySummary>?>() {}.type
+            )
+        }
     }
 }

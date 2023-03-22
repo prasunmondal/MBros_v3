@@ -23,14 +23,15 @@ class OneShotLoad : AppCompatActivity() {
 
         AppUtils.logError()
         populateOptionsCompanyName()
-//        populateOptionsCompanyBranch()
-//        populateOptionsArea()
+        populateOptionsCompanyBranch()
+        populateOptionsArea()
         updateUIFromObj(false)
     }
 
     private fun populateOptionsCompanyName() {
         val autoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name)
         val arrayList: List<String> = CompanyLoadMap.get().stream()
+            .filter {d -> d.companyName.isNotEmpty()}
             .map(CompanyLoadMap::companyName)
             .collect(Collectors.toSet()).toList()
         val arrayAdapter: ArrayAdapter<*> = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, arrayList)
@@ -39,49 +40,64 @@ class OneShotLoad : AppCompatActivity() {
             autoCompleteTextView.requestFocus()
             false
         }
-//        autoCompleteTextView.setOnItemClickListener { parent, view, position, id ->
-//            populateOptionsCompanyBranch()
-//            LogMe.log("Here")
-//        }
+        autoCompleteTextView.setOnItemClickListener { parent, view, position, id ->
+            populateOptionsCompanyBranch()
+            populateOptionsMoneyAccount()
+        }
         autoCompleteTextView.setAdapter(arrayAdapter)
     }
 
-//    private fun populateOptionsCompanyBranch() {
-//        val autoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name)
-//        val arrayList: List<String> = CompanyLoadMap.get().stream()
-//            .filter {c -> findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name).text.toString() > c.companyName}
-//            .map(CompanyLoadMap::branch)
-//            .collect(Collectors.toSet()).toList()
-//        val arrayAdapter: ArrayAdapter<*> = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, arrayList)
-//        autoCompleteTextView.setOnTouchListener { _, _ ->
-//            autoCompleteTextView.showDropDown()
-//            autoCompleteTextView.requestFocus()
-//            false
-//        }
-//        autoCompleteTextView.setOnItemClickListener { parent, view, position, id ->
-//            populateOptionsArea()
-//        }
-//        autoCompleteTextView.setAdapter(arrayAdapter)
-//    }
+    private fun populateOptionsCompanyBranch() {
+        val autoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_branch)
+        val arrayList: List<String> = CompanyLoadMap.get().stream()
+            .filter {c -> findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name).text.toString() == c.companyName}
+            .filter {d -> d.branch.isNotEmpty()}
+            .map(CompanyLoadMap::branch)
+            .collect(Collectors.toSet()).toList()
+        val arrayAdapter: ArrayAdapter<*> = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, arrayList)
+        autoCompleteTextView.setOnTouchListener { _, _ ->
+            autoCompleteTextView.showDropDown()
+            autoCompleteTextView.requestFocus()
+            false
+        }
+        autoCompleteTextView.setOnItemClickListener { parent, view, position, id ->
+            populateOptionsArea()
+        }
+        autoCompleteTextView.setAdapter(arrayAdapter)
+    }
 //
-//    private fun populateOptionsArea() {
-//        val autoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name)
-//        val arrayList: List<String> = CompanyLoadMap.get().stream()
-//            .filter {c -> findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name).text.toString() > c.companyName}
-//            .filter {d -> findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_branch).text.toString() > d.branch}
-//            .map(CompanyLoadMap::branch)
-//            .collect(Collectors.toSet()).toList()
-//        val arrayAdapter: ArrayAdapter<*> = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, arrayList)
-//        autoCompleteTextView.setOnTouchListener { _, _ ->
-//            autoCompleteTextView.showDropDown()
-//            autoCompleteTextView.requestFocus()
-//            false
-//        }
-//        autoCompleteTextView.setOnItemClickListener { parent, view, position, id ->
-//            populateOptionsArea()
-//        }
-//        autoCompleteTextView.setAdapter(arrayAdapter)
-//    }
+    private fun populateOptionsArea() {
+        val autoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.one_shot_load_loading_area)
+        val arrayList: List<String> = CompanyLoadMap.get().stream()
+            .filter {c -> findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name).text.toString() == c.companyName}
+            .filter {d -> findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_branch).text.toString() == d.branch}
+            .filter {d -> d.area.isNotEmpty()}
+            .map(CompanyLoadMap::area)
+            .collect(Collectors.toSet()).toList()
+        val arrayAdapter: ArrayAdapter<*> = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, arrayList)
+        autoCompleteTextView.setOnTouchListener { _, _ ->
+            autoCompleteTextView.showDropDown()
+            autoCompleteTextView.requestFocus()
+            false
+        }
+        autoCompleteTextView.setAdapter(arrayAdapter)
+    }
+
+    private fun populateOptionsMoneyAccount() {
+        val autoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.one_shot_load_money_account)
+        val arrayList: List<String> = CompanyLoadMap.get().stream()
+            .filter {c -> findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name).text.toString() == c.companyName}
+            .filter {d -> d.moneyAccount.isNotEmpty()}
+            .map(CompanyLoadMap::moneyAccount)
+            .collect(Collectors.toSet()).toList()
+        val arrayAdapter: ArrayAdapter<*> = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, arrayList)
+        autoCompleteTextView.setOnTouchListener { _, _ ->
+            autoCompleteTextView.showDropDown()
+            autoCompleteTextView.requestFocus()
+            false
+        }
+        autoCompleteTextView.setAdapter(arrayAdapter)
+    }
 
     private fun updateUIFromObj(useCache: Boolean) {
         val obj = SingleAttributedData.getRecords(useCache)

@@ -120,7 +120,18 @@ class OneShotDelivery : AppCompatActivity() {
             updateRates()
         }
 
+        initiallizeOtherExpensesUI()
         initiallizeRefuelUI()
+    }
+
+    private fun initiallizeOtherExpensesUI() {
+        val tripEndKmElement = findViewById<EditText>(R.id.one_shot_delivery_trip_end_km)
+        val labourExpenseElement = findViewById<EditText>(R.id.one_shot_delivery_labour_expenses)
+        val extraExpensesElement = findViewById<EditText>(R.id.one_shot_delivery_extra_expenses)
+
+        UIUtils.setUIElementValue(tripEndKmElement, SingleAttributedData.getRecords().vehicle_finalKm)
+        UIUtils.setUIElementValue(labourExpenseElement, SingleAttributedData.getRecords().labour_expenses)
+        UIUtils.setUIElementValue(extraExpensesElement, SingleAttributedData.getRecords().extra_expenses)
     }
 
     private fun initiallizeRefuelUI() {
@@ -514,9 +525,6 @@ class OneShotDelivery : AppCompatActivity() {
                 obj.refueling_prevKm = ""
                 obj.refuel_mileage = ""
             }
-        } else {
-
-
         }
 
         SingleAttributedData.saveToLocal(obj)

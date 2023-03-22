@@ -455,8 +455,8 @@ class OneShotDelivery : AppCompatActivity() {
         didTankFullElement.visibility = if(didRefuelElement.isChecked) View.VISIBLE else View.GONE
         refuelingKmContainer.visibility = if(didTankFullElement.isChecked) View.VISIBLE else View.GONE
 
-        refuelingKmDiffLabel.text = Refueling.getKmDifferenceForRefueling(refuelingKmElement.text.toString()).toString()
-        mileageLabel.text = getMileage() + " km/L"
+        refuelingKmDiffLabel.text = if(didTankFullElement.isChecked) Refueling.getKmDifferenceForRefueling(refuelingKmElement.text.toString()).toString() else "N/A"
+        mileageLabel.text = if(didTankFullElement.isChecked) getMileage() + " km/L" else "N/A"
 
         LogMe.log("KM: " + refuelingKmElement.text.toString())
         LogMe.log("Mileage: " + getMileage())

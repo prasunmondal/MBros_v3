@@ -11,6 +11,7 @@ import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
+import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 
 class Refueling: java.io.Serializable {
@@ -82,14 +83,21 @@ class Refueling: java.io.Serializable {
         }
 
         fun getKmDifferenceForRefueling(currentKM: String): Int {
+            LogMe.log("Getting km difference: ")
+            LogMe.log("CurrentKM: " + currentKM + " : " + NumberUtils.getIntOrZero(currentKM))
+            LogMe.log("PrevKM: " + getPreviousRefuelingKM() + " : " + NumberUtils.getIntOrZero(getPreviousRefuelingKM()))
+            LogMe.log("Result: " + (NumberUtils.getIntOrZero(currentKM) - NumberUtils.getIntOrZero(getPreviousRefuelingKM())))
+
             return (NumberUtils.getIntOrZero(currentKM) - NumberUtils.getIntOrZero(getPreviousRefuelingKM()))
         }
 
         fun getMileage(currentKm: String, oilQuantity: String): String {
             val kmDiff = getKmDifferenceForRefueling(currentKm)
             val oilQty = NumberUtils.getDoubleOrZero(oilQuantity)
+            val mileage: Double = kmDiff / oilQty
+            val rounded = NumberUtils.roundDownDecimal3Places(mileage)
 
-            return "${kmDiff / oilQty}"
+            return "$rounded"
         }
 
         fun spoolRefuelingData() {

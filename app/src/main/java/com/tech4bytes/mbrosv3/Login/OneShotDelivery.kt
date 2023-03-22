@@ -21,6 +21,7 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.De
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.R
+import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -32,20 +33,6 @@ class OneShotDelivery : AppCompatActivity() {
     var deliveryMapOrderedCustomers: MutableMap<String, DeliverCustomerOrders> = mutableMapOf()
     var deliveryMapUnOrderedCustomers: MutableMap<String, DeliverCustomerOrders> = mutableMapOf()
     var uiMaps: MutableMap<String, View> = mutableMapOf()
-
-    val loadPcElement = findViewById<EditText>(R.id.one_shot_delivery_pc)
-    val loadKgElement = findViewById<EditText>(R.id.one_shot_delivery_kg)
-    val loadPriceElement = findViewById<EditText>(R.id.one_shot_delivery_price)
-    val loadBufferElement = findViewById<EditText>(R.id.one_shot_delivery_buffer)
-
-    val didRefuelElement = findViewById<Switch>(R.id.one_shot_delivery_did_refuel)
-    val didTankFullElement = findViewById<Switch>(R.id.one_shot_delivery_did_fuel_upto_tank_full)
-    val refuelingKmDiffLabel = findViewById<TextView>(R.id.one_shot_delivery_refueling_km_diff)
-    val refuelingKmElement = findViewById<EditText>(R.id.one_shot_delivery_refueling_km)
-    val refuelingQtyElement = findViewById<EditText>(R.id.one_shot_delivery_fuel_quantity)
-    val refuelingDetailsContainer = findViewById<LinearLayout>(R.id.one_shot_delivery_refueling_details_container)
-    val refuelingKmContainer = findViewById<TextInputLayout>(R.id.one_shot_delivery_refueling_km_container)
-    val mileageLabel = findViewById<TextView>(R.id.one_shot_delivery_refueling_mileage)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,17 +54,30 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun initiallizeUI() {
-        refuelingDetailsContainer.visibility = if(this.didRefuelElement.isChecked) View.VISIBLE else View.GONE
-        didTankFullElement.visibility = if(this.didRefuelElement.isChecked) View.VISIBLE else View.GONE
-        refuelingKmContainer.visibility = if(didTankFullElement.isChecked) View.VISIBLE else View.GONE
+        val didRefuelElement = findViewById<Switch>(R.id.one_shot_delivery_did_refuel)
+        val didTankFullElement = findViewById<Switch>(R.id.one_shot_delivery_did_fuel_upto_tank_full)
+        val refuelingQtyElement = findViewById<EditText>(R.id.one_shot_delivery_fuel_quantity)
+        val refuelingKmElement = findViewById<EditText>(R.id.one_shot_delivery_refueling_km)
+        val refuelingDetailsContainer = findViewById<LinearLayout>(R.id.one_shot_delivery_refueling_details_container)
+        val refuelingKmContainer = findViewById<TextInputLayout>(R.id.one_shot_delivery_refueling_km_container)
+        val loadPcElement = findViewById<EditText>(R.id.one_shot_delivery_pc)
+        val loadKgElement = findViewById<EditText>(R.id.one_shot_delivery_kg)
+        val loadPriceElement = findViewById<EditText>(R.id.one_shot_delivery_price)
+        val loadBufferElement = findViewById<EditText>(R.id.one_shot_delivery_buffer)
 
-        this.didRefuelElement.setOnCheckedChangeListener { _, isChecked ->
-            initiallizeUI()
+
+        didRefuelElement.setOnCheckedChangeListener { _, isChecked ->
+            val obj = SingleAttributedData.getRecords()
+            obj.did_refueled = isChecked.toString()
+            SingleAttributedData.saveToLocal(obj)
+//            initiallizeUI()
             updateRefuelingUIDetails()
         }
 
         didTankFullElement.setOnCheckedChangeListener { _, isChecked ->
-            initiallizeUI()
+            SingleAttributedData.saveAttributeToLocal(SingleAttributedData::refueling_isFullTank, isChecked.toString())
+//            initiallizeUI()
+            updateRefuelingUIDetails()
         }
 
 
@@ -114,6 +114,23 @@ class OneShotDelivery : AppCompatActivity() {
             SingleAttributedData.saveToLocal(record)
             updateRates()
         }
+
+        initiallizeRefuelUI()
+    }
+
+    private fun initiallizeRefuelUI() {
+        val didRefuelElement = findViewById<Switch>(R.id.one_shot_delivery_did_refuel)
+        val didTankFullElement = findViewById<Switch>(R.id.one_shot_delivery_did_fuel_upto_tank_full)
+        val refuelingQtyElement = findViewById<EditText>(R.id.one_shot_delivery_fuel_quantity)
+        val refuelingKmElement = findViewById<EditText>(R.id.one_shot_delivery_refueling_km)
+        val refuelingAmountElement = findViewById<EditText>(R.id.one_shot_delivery_fuel_amount)
+
+        UIUtils.setUIElementValue(didRefuelElement, SingleAttributedData.getRecords().did_refueled)
+        UIUtils.setUIElementValue(didTankFullElement, SingleAttributedData.getRecords().did_refueled)
+        UIUtils.setUIElementValue(refuelingQtyElement, SingleAttributedData.getRecords().refueling_qty)
+        UIUtils.setUIElementValue(refuelingKmElement, SingleAttributedData.getRecords().refueling_km)
+        UIUtils.setUIElementValue(refuelingAmountElement, SingleAttributedData.getRecords().refueling_amount)
+        updateRefuelingUIDetails()
     }
 
     private fun populateDeliveryMap() {
@@ -426,24 +443,58 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun updateRefuelingUIDetails() {
+        val mileageLabel = findViewById<TextView>(R.id.one_shot_delivery_refueling_mileage)
+        val refuelingKmDiffLabel = findViewById<TextView>(R.id.one_shot_delivery_refueling_km_diff)
+        val refuelingKmElement = findViewById<EditText>(R.id.one_shot_delivery_refueling_km)
+        val refuelingDetailsContainer = findViewById<LinearLayout>(R.id.one_shot_delivery_refueling_details_container)
+        val refuelingKmContainer = findViewById<TextInputLayout>(R.id.one_shot_delivery_refueling_km_container)
+        val didTankFullElement = findViewById<Switch>(R.id.one_shot_delivery_did_fuel_upto_tank_full)
+        val didRefuelElement = findViewById<Switch>(R.id.one_shot_delivery_did_refuel)
+
+        refuelingDetailsContainer.visibility = if(didRefuelElement.isChecked) View.VISIBLE else View.GONE
+        didTankFullElement.visibility = if(didRefuelElement.isChecked) View.VISIBLE else View.GONE
+        refuelingKmContainer.visibility = if(didTankFullElement.isChecked) View.VISIBLE else View.GONE
+
         refuelingKmDiffLabel.text = Refueling.getKmDifferenceForRefueling(refuelingKmElement.text.toString()).toString()
         mileageLabel.text = getMileage() + " km/L"
+
+        LogMe.log("KM: " + refuelingKmElement.text.toString())
+        LogMe.log("Mileage: " + getMileage())
     }
 
     private fun getMileage(): String {
+        val refuelingQtyElement = findViewById<EditText>(R.id.one_shot_delivery_fuel_quantity)
+        val refuelingKmElement = findViewById<EditText>(R.id.one_shot_delivery_refueling_km)
+
         val refuelingKM = refuelingKmElement.text.toString()
         val refuelingQty = refuelingQtyElement.text.toString()
-        return "%.3f".format(Refueling.getMileage(refuelingKM, refuelingQty))
+        LogMe.log("Converting String: " + Refueling.getMileage(refuelingKM, refuelingQty))
+        return if(NumberUtils.getDoubleOrZero(refuelingQty) > 0.0)
+            Refueling.getMileage(refuelingKM, refuelingQty)
+//            "%.3f".format(Refueling.getMileage(refuelingKM, refuelingQty))
+        else
+            "N/A"
     }
 
     private fun gatherFuelData() {
         val obj = SingleAttributedData.getRecords()
+        val didRefuelElement = findViewById<Switch>(R.id.one_shot_delivery_did_refuel)
+        obj.refueling_km = ""
+        obj.refueling_prevKm = ""
+        obj.refuel_mileage = ""
+        obj.refueling_isFullTank = ""
+        obj.refueling_amount = ""
+        obj.refueling_qty = ""
+        obj.refueling_amount = ""
+        obj.did_refueled = didRefuelElement.isChecked.toString()
 
-        if(this.didRefuelElement.isChecked) {
+        if(didRefuelElement.isChecked) {
             val refuelQtyElement = findViewById<EditText>(R.id.one_shot_delivery_fuel_quantity)
             val refuelAmountElement = findViewById<EditText>(R.id.one_shot_delivery_fuel_amount)
+            val didTankFullElement = findViewById<Switch>(R.id.one_shot_delivery_did_fuel_upto_tank_full)
+            val refuelingKmElement = findViewById<EditText>(R.id.one_shot_delivery_refueling_km)
 
-            obj.did_refueled = this.didRefuelElement.isChecked.toString()
+            obj.did_refueled = didRefuelElement.isChecked.toString()
             obj.refueling_isFullTank = didTankFullElement.isChecked.toString()
             obj.refueling_qty = refuelQtyElement.text.toString()
             obj.refueling_amount = refuelAmountElement.text.toString()
@@ -457,6 +508,9 @@ class OneShotDelivery : AppCompatActivity() {
                 obj.refueling_prevKm = ""
                 obj.refuel_mileage = ""
             }
+        } else {
+
+
         }
 
         SingleAttributedData.saveToLocal(obj)

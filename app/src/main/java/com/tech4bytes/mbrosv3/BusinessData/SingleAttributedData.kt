@@ -84,6 +84,12 @@ data class SingleAttributedData(var recordGeneratorDevice: String = "",
             save(obj)
         }
 
+        fun saveAttributeToLocal(kMutableProperty: KMutableProperty1<SingleAttributedData, String>, value: String) {
+            val obj = getRecords()
+            ReflectionUtils.setAttribute(obj, kMutableProperty, value)
+            saveToLocal(obj)
+        }
+
         fun getAttribute(kMutableProperty: KMutableProperty1<SingleAttributedData, String>): String {
             val obj = getRecords()
             return ReflectionUtils.readInstanceProperty(obj, kMutableProperty.name)

@@ -25,6 +25,7 @@ import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
+import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
 
 class OneShotDelivery : AppCompatActivity() {
 
@@ -68,6 +69,10 @@ class OneShotDelivery : AppCompatActivity() {
             initiallizeUI()
         }
 
+        val refuelingKmElement = findViewById<EditText>(R.id.one_shot_delivery_refueling_km)
+        refuelingKmElement.doOnTextChanged { text, start, before, count ->
+            updateRefuelingUIDetails()
+        }
 
         val record = SingleAttributedData.getRecords()
         val loadPcElement = findViewById<EditText>(R.id.one_shot_delivery_pc)
@@ -407,6 +412,12 @@ class OneShotDelivery : AppCompatActivity() {
 
     private fun saveSingleAttributeData() {
         SingleAttributedData.save(SingleAttributedData.getRecords())
+    }
+
+    private fun updateRefuelingUIDetails() {
+        val refuelingDiffLabel = findViewById<TextView>(R.id.one_shot_delivery_refueling_km_diff)
+        val refuelingKmElement = findViewById<EditText>(R.id.one_shot_delivery_refueling_km)
+        refuelingDiffLabel.text = Refueling.getKmDifferenceForRefueling(refuelingKmElement.text.toString()).toString()
     }
 
     private fun gatherFuelData() {

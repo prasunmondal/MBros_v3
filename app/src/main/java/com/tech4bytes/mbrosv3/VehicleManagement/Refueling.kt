@@ -81,6 +81,10 @@ class Refueling: java.io.Serializable {
             return getLatestRecord().refueling_km
         }
 
+        fun getKmDifferenceForRefueling(currentKM: String): Int {
+            return (NumberUtils.getIntOrZero(currentKM) - NumberUtils.getIntOrZero(getPreviousRefuelingKM()))
+        }
+
         fun spoolRefuelingData() {
             val singleAttributedObj = SingleAttributedData.getRecords()
             val refuelingObj = Refueling("", "", "", false)

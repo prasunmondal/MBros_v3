@@ -13,15 +13,18 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.google.android.material.textfield.TextInputLayout
+import com.prasunmondal.postjsontosheets.clients.delete.Delete
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.ActivityDeliveringDeliver
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverOrdersConfig
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Login.Roles
 import com.tech4bytes.mbrosv3.Login.RolesUtils
+import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -424,6 +427,7 @@ class OneShotDelivery : AppCompatActivity() {
         gatherSingleAttributedData()
         gatherFuelData()
         saveSingleAttributeData()
+        deleteDeliveryDataOnServer()
         saveDeliveryData()
     }
 
@@ -516,6 +520,14 @@ class OneShotDelivery : AppCompatActivity() {
         }
 
         SingleAttributedData.saveToLocal(obj)
+    }
+
+    fun deleteDeliveryDataOnServer() {
+        Delete.builder()
+            .scriptId(ProjectConfig.dBServerScriptURL)
+            .sheetId(ProjectConfig.DB_SHEET_ID)
+            .tabName(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
+            .build().execute()
     }
 
     private fun saveDeliveryData() {

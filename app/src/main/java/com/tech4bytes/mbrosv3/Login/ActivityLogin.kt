@@ -20,6 +20,7 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard.Activi
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
+import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotLoad
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -47,7 +48,7 @@ class ActivityLogin : AppCompatActivity() {
         if(roles.size == 0) {
             logUnIdentifiedDevice()
         } else {
-            if (roles.size == 1 && roles[0] == Roles.DELIVERY) {
+            if (roles.size == 1) {
                 // if the user has only one role, directly go to the home page.
                 goToHomePageAsPerRole(roles[0])
             } else {
@@ -80,9 +81,15 @@ class ActivityLogin : AppCompatActivity() {
             Roles.ORDER_COLLECTOR -> ::goToGetOrdersPage
             Roles.BALANCE_VIEW -> ::goToShowDues
             Roles.ONE_SHOT_DELIVERY -> ::goToOneShotDelivery
+            Roles.ONE_SHOT_LOAD_DETAILS -> ::goToOneShotLoadDetailsPage
             Roles.SHOW_RATES_IN_DELIVERY_PAGE -> null
             else -> null
         }
+    }
+
+    private fun goToOneShotLoadDetailsPage() {
+        val switchActivityIntent = Intent(this, OneShotLoad::class.java)
+        startActivity(switchActivityIntent)
     }
 
     private fun goToHomePageAsPerRole(role: Roles) {

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context=".OneShot.Delivery.OneShotLoad">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView50"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pre Load Details"
+            android:textSize="24sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingVertical="20dp">
+
+            <AutoCompleteTextView
+                android:id="@+id/one_shot_load_company_branch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Branch"
+                android:imeOptions="actionNext"
+                android:inputType="textNoSuggestions"
+                android:minHeight="35dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <AutoCompleteTextView
+                android:id="@+id/one_shot_load_company_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Company Name"
+                android:imeOptions="actionNext"
+                android:inputType="textNoSuggestions"
+                android:minHeight="35dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <AutoCompleteTextView
+                android:id="@+id/one_shot_load_loading_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Area"
+                android:imeOptions="actionNext"
+                android:inputType="textNoSuggestions"
+                android:minHeight="35dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:ignore="TouchTargetSizeCheck" />
+
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Extra Cash Given"
+            android:maxEms="10"
+            android:minEms="10"
+            android:paddingTop="20dp">
+
+            <!--this is the actual edit text which takes the input-->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/one_shot_load_extra_expense_provided"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#5CE3F4"
+                android:inputType="number" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Farm Rate"
+            android:maxEms="10"
+            android:minEms="10">
+
+            <!--this is the actual edit text which takes the input-->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/one_shot_load_farm_rate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#5CE3F4"
+                android:inputType="number" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

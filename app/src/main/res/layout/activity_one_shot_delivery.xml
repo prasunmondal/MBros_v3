@@ -502,6 +502,13 @@
                     android:textColor="#189C1D"
                     android:textSize="18sp" />
 
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/money_deposit_icon" />
+
                 <TextView
                     android:id="@+id/one_shot_delivery_total_collected_amount"
                     android:layout_width="wrap_content"

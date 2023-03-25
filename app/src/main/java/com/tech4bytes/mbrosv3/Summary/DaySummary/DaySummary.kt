@@ -4,10 +4,11 @@ import com.google.gson.reflect.TypeToken
 import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.tech4bytes.extrack.centralCache.CentralCache
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverOrdersConfig
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Summary.SummaryConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
+import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 
 data class DaySummary(var timestamp: String = "",
                       var date: String = "",
@@ -30,7 +31,6 @@ data class DaySummary(var timestamp: String = "",
                       var total_expenses: String = "",
                       var farm_rate: String = "",
                       var buffer: String = "",
-                      var final_km_reading: String = "",
                       var transport_income: String = "",
                       var transport_expenses: String = "",
                       var profit: String = "",
@@ -55,11 +55,19 @@ data class DaySummary(var timestamp: String = "",
                 .tabName(SummaryConfig.TAB_DAY_SUMMARY)
                 .build().execute()
 
+
             // waitDialog!!.dismiss()
-            return result.parseToObject(
+            val parsedResult = result.parseToObject<DaySummary>(
                 result.getRawResponse(),
                 object : TypeToken<ArrayList<DaySummary>?>() {}.type
             )
+
+            return ListUtils.sortListByAttribute(parsedResult, DaySummary::timestamp)
+        }
+
+        fun getPrevTripEndKm(): Int {
+            val list = get()
+            return NumberUtils.getIntOrZero(list[list.size - 1].trip_end_km)
         }
     }
 }

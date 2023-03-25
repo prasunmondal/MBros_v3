@@ -220,29 +220,25 @@
                             android:id="@+id/textView36"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:text="Prev KM: " />
 
                         <TextView
-                            android:id="@+id/textView35"
+                            android:id="@+id/osd_prev_km"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:text="TextView" />
 
                         <TextView
                             android:id="@+id/textView43"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:paddingLeft="20dp"
                             android:text="Diff: " />
 
                         <TextView
-                            android:id="@+id/textView45"
+                            android:id="@+id/osd_km_diff"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:paddingRight="20dp"
                             android:text="TextView" />
 
@@ -250,14 +246,12 @@
                             android:id="@+id/textView48"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:text="Cost: " />
 
                         <TextView
-                            android:id="@+id/textView49"
+                            android:id="@+id/osd_km_cost"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:text="TextView" />
                     </LinearLayout>
 

@@ -26,6 +26,7 @@ import com.tech4bytes.mbrosv3.Login.Roles
 import com.tech4bytes.mbrosv3.Login.RolesUtils
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
+import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
@@ -122,6 +123,7 @@ class OneShotDelivery : AppCompatActivity() {
 
         initiallizeOtherExpensesUI()
         initiallizeRefuelUI()
+        updateKmRelatedCosts()
     }
 
     private fun initiallizeOtherExpensesUI() {
@@ -132,6 +134,47 @@ class OneShotDelivery : AppCompatActivity() {
         UIUtils.setUIElementValue(tripEndKmElement, SingleAttributedData.getRecords().vehicle_finalKm)
         UIUtils.setUIElementValue(labourExpenseElement, SingleAttributedData.getRecords().labour_expenses)
         UIUtils.setUIElementValue(extraExpensesElement, SingleAttributedData.getRecords().extra_expenses)
+
+        tripEndKmElement.doOnTextChanged { text, start, before, count ->
+            updateKmRelatedCosts()
+        }
+    }
+
+    private fun updateKmRelatedCosts() {
+        val tripEndKmElement = findViewById<EditText>(R.id.one_shot_delivery_trip_end_km)
+        val currentKmOnUI = tripEndKmElement.text.toString()
+        val prevKmElement = findViewById<TextView>(R.id.osd_prev_km)
+        val kmDiffElement = findViewById<TextView>(R.id.osd_km_diff)
+        val kmCostElement = findViewById<TextView>(R.id.osd_km_cost)
+
+        val currentKm = NumberUtils.getIntOrZero(currentKmOnUI)
+        val prevKm = DaySummary.getPrevTripEndKm()
+        prevKmElement.text = prevKm.toString()
+
+        if(currentKm < prevKm) {
+            kmDiffElement.text = "N/A"
+            kmCostElement.text = "N/A"
+            return
+        }
+
+        val kmDiff = getKmDiff(currentKmOnUI)
+        val kmCost = getKmCost(currentKmOnUI)
+
+        val singleDataObj = SingleAttributedData.getRecords()
+        singleDataObj.vehicle_finalKm = currentKm.toString()
+
+        kmDiffElement.text = kmDiff.toString()
+        kmCostElement.text = kmCost.toString()
+    }
+
+    private fun getKmDiff(currentKm: String): Int {
+        val currentKm = NumberUtils.getIntOrZero(currentKm)
+        val prevKm = DaySummary.getPrevTripEndKm()
+        return currentKm - prevKm
+    }
+
+    private fun getKmCost(currentKm: String): Int {
+        return 12 * getKmDiff(currentKm)
     }
 
     private fun initiallizeRefuelUI() {

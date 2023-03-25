@@ -519,6 +519,13 @@
                     android:textColor="#085E0C"
                     android:textSize="18sp" />
 
+                <ImageView
+                    android:id="@+id/imageView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/today_due_sum_icon" />
+
                 <TextView
                     android:id="@+id/one_shot_delivery_total_balance_due"
                     android:layout_width="wrap_content"

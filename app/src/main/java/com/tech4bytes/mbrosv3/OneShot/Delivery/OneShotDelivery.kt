@@ -495,12 +495,12 @@ class OneShotDelivery : AppCompatActivity() {
 
         totalPcElement.text = "$sumPc"
         totalKgElement.text = "${"%.3f".format(sumKg)}"
-        totalSaleElement.text = "＄ ₹ $sumSale"
+        totalSaleElement.text = "$sumSale"
         metadataObj.daySale = sumSale.toString()
 
         totalShortageElement.text = "▼ ${"%.3f".format(shortage)} kg"
-        totalCollectedElement.text = "\uD83D\uDCB0 ₹ $sumAmountCollected"
-        totalBalanceDueElement.text = "\uD83D\uDCB8 $sumBalanceDue"
+        totalCollectedElement.text = "$sumAmountCollected"
+        totalBalanceDueElement.text = "$sumBalanceDue"
         SingleAttributedData.saveToLocal(metadataObj)
 
         updateHiddenData()

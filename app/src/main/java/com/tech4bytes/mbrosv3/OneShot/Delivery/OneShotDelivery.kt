@@ -163,6 +163,7 @@ class OneShotDelivery : AppCompatActivity() {
 
         val singleDataObj = SingleAttributedData.getRecords()
         singleDataObj.vehicle_finalKm = currentKm.toString()
+        SingleAttributedData.saveToLocal(singleDataObj)
 
         kmDiffElement.text = kmDiff.toString()
         kmCostElement.text = kmCost.toString()
@@ -329,6 +330,18 @@ class OneShotDelivery : AppCompatActivity() {
         updateDetailedInfo(order, entry)
     }
 
+    fun updateHiddenData() {
+        val profitViewContainer = findViewById<LinearLayout>(R.id.osd_profit_details_container)
+        if(profitViewContainer.visibility == View.VISIBLE) {
+            val profitElement = findViewById<TextView>(R.id.osd_profit)
+            val totalDueElement = findViewById<TextView>(R.id.osd_total_due)
+
+            val p = DaySummary.getDayProfit()
+            profitElement.text = p.toString()
+            totalDueElement.text = "Something"
+        }
+    }
+
     private fun updateDetailedInfo(order: Map.Entry<String, DeliverCustomerOrders>, entry: View) {
         val container = entry.findViewById<LinearLayout>(R.id.one_shot_delivery_fragment_more_details_container)
 
@@ -433,6 +446,7 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     fun updateTotals() {
+        val metadataObj = SingleAttributedData.getRecords()
         val totalPcElement = findViewById<TextView>(R.id.one_shot_delivery_total_pc)
         val totalKgElement = findViewById<TextView>(R.id.one_shot_delivery_total_kg)
         val totalSaleElement = findViewById<TextView>(R.id.one_shot_delivery_total_sale)
@@ -472,10 +486,14 @@ class OneShotDelivery : AppCompatActivity() {
         totalPcElement.text = "$sumPc"
         totalKgElement.text = "${"%.3f".format(sumKg)}"
         totalSaleElement.text = "＄ ₹ $sumSale"
+        metadataObj.daySale = sumSale.toString()
 
         totalShortageElement.text = "▼ ${"%.3f".format(shortage)} kg"
         totalCollectedElement.text = "\uD83D\uDCB0 ₹ $sumAmountCollected"
         totalBalanceDueElement.text = "\uD83D\uDCB8 $sumBalanceDue"
+        SingleAttributedData.saveToLocal(metadataObj)
+
+        updateHiddenData()
     }
 
     fun onClickSaveOneShotDeliveryDataBtn(view: View) {
@@ -602,7 +620,6 @@ class OneShotDelivery : AppCompatActivity() {
     fun onClickToggleProfitViewUI(view: View) {
         val profitViewContainer = findViewById<LinearLayout>(R.id.osd_profit_details_container)
         profitViewContainer.visibility = if(profitViewContainer.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        updateHiddenData()
     }
-
-
 }

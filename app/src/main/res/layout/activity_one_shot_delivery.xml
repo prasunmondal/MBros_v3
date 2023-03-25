@@ -522,8 +522,7 @@
                 android:id="@+id/osd_profit_details_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:visibility="gone">
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/osd_profit"

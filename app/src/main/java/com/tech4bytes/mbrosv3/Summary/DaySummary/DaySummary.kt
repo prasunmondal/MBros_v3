@@ -4,6 +4,7 @@ import com.google.gson.reflect.TypeToken
 import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.tech4bytes.extrack.centralCache.CentralCache
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Summary.SummaryConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -68,6 +69,37 @@ data class DaySummary(var timestamp: String = "",
         fun getPrevTripEndKm(): Int {
             val list = get()
             return NumberUtils.getIntOrZero(list[list.size - 1].trip_end_km)
+        }
+
+        fun taxRate(): Double {
+            return .001
+        }
+
+        fun getBirdCost(): Int {
+            return (NumberUtils.getDoubleOrZero(SingleAttributedData.getRecords().actualLoadKg)
+                    * NumberUtils.getIntOrZero(SingleAttributedData.getRecords().actualLoadKg)
+                    * (1 + taxRate())).toInt()
+        }
+
+        fun kmCost(): Int {
+            return NumberUtils.getIntOrZero(SingleAttributedData.getRecords().vehicle_finalKm) * 12
+        }
+
+        fun getLabourCost(): Int {
+            return NumberUtils.getIntOrZero(SingleAttributedData.getRecords().labour_expenses)
+        }
+
+        fun getExtraCost(): Int {
+            return NumberUtils.getIntOrZero(SingleAttributedData.getRecords().extra_expenses)
+        }
+
+        fun getDaySale(): Int {
+            return NumberUtils.getIntOrZero(SingleAttributedData.getRecords().daySale)
+        }
+
+        fun getDayProfit(): Int {
+            // Sale - birdCost - kmCost - labCost - extraCost
+            return getDaySale() - getBirdCost() - kmCost() - getLabourCost() - getExtraCost()
         }
     }
 }

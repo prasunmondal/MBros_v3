@@ -42,7 +42,8 @@ data class SingleAttributedData(var recordGeneratorDevice: String = "",
                                 var refueling_km: String = "",
                                 var labour_expenses: String = "",
                                 var refuel_mileage: String = "",
-                                var extra_expenses: String = ""): java.io.Serializable {
+                                var extra_expenses: String = "",
+                                var daySale: String = ""): java.io.Serializable {
 
     companion object {
 

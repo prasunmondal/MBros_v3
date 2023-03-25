@@ -9,6 +9,10 @@ public class LogMe extends LogExceptions {
         obj = new LogMe();
     }
 
+    public static void log(int msg) {
+        log("" + msg);
+    }
+
     public static void log(String msg) {
         if(msg == null) {
             msg = "<null string detected in log>";

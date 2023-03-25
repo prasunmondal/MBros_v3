@@ -8,6 +8,7 @@ import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Summary.SummaryConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 
@@ -77,12 +78,12 @@ data class DaySummary(var timestamp: String = "",
 
         fun getBirdCost(): Int {
             return (NumberUtils.getDoubleOrZero(SingleAttributedData.getRecords().actualLoadKg)
-                    * NumberUtils.getIntOrZero(SingleAttributedData.getRecords().actualLoadKg)
-                    * (1 + taxRate())).toInt()
+                    * NumberUtils.getIntOrZero(SingleAttributedData.getRecords().finalFarmRate))
+                .toInt()
         }
 
         fun kmCost(): Int {
-            return NumberUtils.getIntOrZero(SingleAttributedData.getRecords().vehicle_finalKm) * 12
+            return (NumberUtils.getIntOrZero(SingleAttributedData.getRecords().vehicle_finalKm) - getPrevTripEndKm()) * 12
         }
 
         fun getLabourCost(): Int {
@@ -99,6 +100,11 @@ data class DaySummary(var timestamp: String = "",
 
         fun getDayProfit(): Int {
             // Sale - birdCost - kmCost - labCost - extraCost
+            LogMe.log(getDaySale())
+            LogMe.log(getBirdCost())
+            LogMe.log(kmCost())
+            LogMe.log(getLabourCost())
+            LogMe.log(getExtraCost())
             return getDaySale() - getBirdCost() - kmCost() - getLabourCost() - getExtraCost()
         }
     }

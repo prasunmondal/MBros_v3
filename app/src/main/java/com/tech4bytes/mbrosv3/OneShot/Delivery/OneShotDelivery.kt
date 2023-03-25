@@ -340,6 +340,16 @@ class OneShotDelivery : AppCompatActivity() {
             profitElement.text = p.toString()
             totalDueElement.text = "Something"
         }
+        updateTotalDueBalance()
+    }
+
+    fun updateTotalDueBalance() {
+        var sum = 0
+        CustomerData.getAllLatestRecords().forEach {
+            sum += NumberUtils.getIntOrZero(it.balanceDue)
+        }
+        val totalDueElement = findViewById<TextView>(R.id.osd_total_due)
+        totalDueElement.text = sum.toString()
     }
 
     private fun updateDetailedInfo(order: Map.Entry<String, DeliverCustomerOrders>, entry: View) {

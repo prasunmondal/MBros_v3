@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Switch
 import android.widget.TextView
@@ -597,5 +598,11 @@ class OneShotDelivery : AppCompatActivity() {
             }
         }
     }
+
+    fun onClickToggleProfitViewUI(view: View) {
+        val profitViewContainer = findViewById<LinearLayout>(R.id.osd_profit_details_container)
+        profitViewContainer.visibility = if(profitViewContainer.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+    }
+
 
 }

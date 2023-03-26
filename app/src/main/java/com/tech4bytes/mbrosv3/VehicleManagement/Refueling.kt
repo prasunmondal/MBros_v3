@@ -102,20 +102,22 @@ class Refueling: java.io.Serializable {
 
         fun spoolRefuelingData() {
             val singleAttributedObj = SingleAttributedData.getRecords()
-            val refuelingObj = Refueling("", "", "", false)
-            refuelingObj.id = singleAttributedObj.id
-            refuelingObj.timestamp = singleAttributedObj.date
-            refuelingObj.measure = singleAttributedObj.refueling_qty
-            refuelingObj.amount = singleAttributedObj.refueling_amount
-            refuelingObj.refueling_km = singleAttributedObj.refueling_km
-            refuelingObj.is_full_tank = singleAttributedObj.refueling_isFullTank.toBoolean()
-            refuelingObj.prev_refuel_km = singleAttributedObj.refueling_prevKm
-            val calculatedCate = NumberUtils.getDoubleOrZero(singleAttributedObj.refueling_amount) / NumberUtils.getDoubleOrZero(singleAttributedObj.refueling_qty)
-            refuelingObj.rate = "%.2f".format(calculatedCate)
+            if(singleAttributedObj.did_refueled.toBoolean()) {
+                val refuelingObj = Refueling("", "", "", false)
+                refuelingObj.id = singleAttributedObj.id
+                refuelingObj.timestamp = singleAttributedObj.date
+                refuelingObj.measure = singleAttributedObj.refueling_qty
+                refuelingObj.amount = singleAttributedObj.refueling_amount
+                refuelingObj.refueling_km = singleAttributedObj.refueling_km
+                refuelingObj.is_full_tank = singleAttributedObj.refueling_isFullTank.toBoolean()
+                refuelingObj.prev_refuel_km = singleAttributedObj.refueling_prevKm
+                val calculatedCate = NumberUtils.getDoubleOrZero(singleAttributedObj.refueling_amount) / NumberUtils.getDoubleOrZero(singleAttributedObj.refueling_qty)
+                refuelingObj.rate = "%.2f".format(calculatedCate)
 
-            val calculatedMileage = (NumberUtils.getIntOrZero(refuelingObj.refueling_km) - NumberUtils.getIntOrZero(refuelingObj.prev_refuel_km)) / NumberUtils.getDoubleOrZero(refuelingObj.measure)
-            refuelingObj.mileage = "%.3f".format(calculatedMileage)
-            addToServer(refuelingObj)
+                val calculatedMileage = (NumberUtils.getIntOrZero(refuelingObj.refueling_km) - NumberUtils.getIntOrZero(refuelingObj.prev_refuel_km)) / NumberUtils.getDoubleOrZero(refuelingObj.measure)
+                refuelingObj.mileage = "%.3f".format(calculatedMileage)
+                addToServer(refuelingObj)
+            }
         }
     }
 }

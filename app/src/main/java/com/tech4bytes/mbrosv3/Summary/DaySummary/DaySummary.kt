@@ -5,6 +5,9 @@ import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
+import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
+import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
+import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotLoad
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Summary.SummaryConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -106,6 +109,25 @@ data class DaySummary(var timestamp: String = "",
             LogMe.log(getLabourCost())
             LogMe.log(getExtraCost())
             return getDaySale() - getBirdCost() - kmCost() - getLabourCost() - getExtraCost()
+        }
+
+        fun getTotalDueBalance(obj: OneShotDelivery): Int {
+            var currentDueMapAfterDelivery: MutableMap<String, Int> = mutableMapOf()
+            CustomerData.getAllLatestRecords().forEach {
+                currentDueMapAfterDelivery[it.name] = NumberUtils.getIntOrZero(it.balanceDue)
+            }
+
+            var todaysUpdatedBalances = obj.getTodaysUpdatedDueMap()
+            todaysUpdatedBalances.forEach {
+                currentDueMapAfterDelivery[it.key] = NumberUtils.getIntOrZero(it.value.toString())
+            }
+
+            var sum = 0
+            currentDueMapAfterDelivery.forEach {
+                sum += it.value
+            }
+
+            return sum
         }
     }
 }

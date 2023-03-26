@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Switch
 import android.widget.TextView
@@ -349,7 +348,7 @@ class OneShotDelivery : AppCompatActivity() {
             sum += NumberUtils.getIntOrZero(it.balanceDue)
         }
         val totalDueElement = findViewById<TextView>(R.id.osd_total_due)
-        totalDueElement.text = sum.toString()
+        totalDueElement.text = DaySummary.getTotalDueBalance(this).toString()
     }
 
     private fun updateDetailedInfo(order: Map.Entry<String, DeliverCustomerOrders>, entry: View) {
@@ -453,6 +452,19 @@ class OneShotDelivery : AppCompatActivity() {
             loadPriceElement.setText(SingleAttributedData.getRecords().finalFarmRate)
             loadBufferElement.setText(SingleAttributedData.getRecords().bufferRate)
         }
+    }
+
+    fun getTodaysUpdatedDueMap(): MutableMap<String, Int> {
+        var currentDueMapAfterDelivery: MutableMap<String, Int> = mutableMapOf()
+
+        deliveryMapOrderedCustomers.forEach {
+            currentDueMapAfterDelivery[it.key] = NumberUtils.getIntOrZero(it.value.balanceDue)
+        }
+
+        deliveryMapUnOrderedCustomers.forEach {
+            currentDueMapAfterDelivery[it.key] = NumberUtils.getIntOrZero(it.value.balanceDue)
+        }
+        return currentDueMapAfterDelivery
     }
 
     fun updateTotals() {

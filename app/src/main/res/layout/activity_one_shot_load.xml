@@ -9,6 +9,7 @@
     tools:context=".OneShot.Delivery.OneShotLoad">
 
     <LinearLayout
+        android:id="@+id/linearLayout18"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -183,39 +184,71 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Farm Rate"
-                android:maxEms="10"
-                android:minEms="10">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-                <!--this is the actual edit text which takes the input-->
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/one_shot_load_farm_rate"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#5CE3F4"
-                    android:inputType="number" />
+                    android:layout_weight="1"
+                    android:hint="Farm Rate"
+                    android:maxEms="10"
+                    android:minEms="10">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <!--this is the actual edit text which takes the input-->
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/one_shot_load_farm_rate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#5CE3F4"
+                        android:inputType="number" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Buffer"
+                    android:maxEms="10"
+                    android:minEms="10">
+
+                    <!--this is the actual edit text which takes the input-->
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/one_shot_load_buffer_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#5CE3F4"
+                        android:inputType="number" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
 
-        <Button
-            android:id="@+id/button7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onClickOneShotLoadSaveBtn"
-            android:text="Save" />
+    </LinearLayout>
 
-        <Button
-            android:id="@+id/button8"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#BF0D0D"
-            android:onClick="onClickOneShotLoadRefreshBtn"
-            android:text="Refresh" />
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClickOneShotLoadSaveBtn"
+        android:text="Save"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout18"
+        tools:layout_editor_absoluteX="20dp" />
+
+    <Button
+        android:id="@+id/button8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#BF0D0D"
+        android:onClick="onClickOneShotLoadRefreshBtn"
+        android:text="Refresh"
+        app:layout_constraintTop_toBottomOf="@+id/button7"
+        tools:layout_editor_absoluteX="20dp" />
 
     </LinearLayout>
 

@@ -105,6 +105,7 @@ class OneShotLoad : AppCompatActivity() {
         val loadingArea = findViewById<AutoCompleteTextView>(R.id.one_shot_load_loading_area)
         val extraCashProvider = findViewById<TextInputEditText>(R.id.one_shot_load_extra_expense_provided)
         val farmRate = findViewById<TextInputEditText>(R.id.one_shot_load_farm_rate)
+        val bufferPrice = findViewById<TextInputEditText>(R.id.one_shot_load_buffer_price)
 
         companyName.setText(obj.load_companyName)
         branch.setText(obj.load_branch)
@@ -112,6 +113,7 @@ class OneShotLoad : AppCompatActivity() {
         loadingArea.setText(obj.load_area)
         extraCashProvider.setText(obj.extra_cash_given)
         farmRate.setText(obj.finalFarmRate)
+        bufferPrice.setText(obj.bufferRate)
     }
 
     private fun updateObjFromUI() {

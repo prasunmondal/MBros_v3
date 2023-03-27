@@ -122,11 +122,13 @@ class OneShotLoad : AppCompatActivity() {
         val loadingArea = findViewById<AutoCompleteTextView>(R.id.one_shot_load_loading_area).text.toString()
         val extraCashProvider = findViewById<TextInputEditText>(R.id.one_shot_load_extra_expense_provided).text.toString()
         val farmRate = findViewById<TextInputEditText>(R.id.one_shot_load_farm_rate).text.toString()
+        val bufferPrice = findViewById<TextInputEditText>(R.id.one_shot_load_buffer_price).text.toString()
 
         obj.load_companyName = companyName
         obj.load_branch = branch
         obj.load_account = account
         obj.load_area = loadingArea
+        obj.bufferRate = bufferPrice
 
         obj.extra_cash_given = extraCashProvider
         obj.finalFarmRate = farmRate
@@ -148,11 +150,13 @@ class OneShotLoad : AppCompatActivity() {
         val branch = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_branch)
         val account = findViewById<AutoCompleteTextView>(R.id.one_shot_load_money_account)
         val loadingArea = findViewById<AutoCompleteTextView>(R.id.one_shot_load_loading_area)
+        val bufferPrice = findViewById<AutoCompleteTextView>(R.id.one_shot_load_buffer_price)
 
         companyName.text!!.clear()
         branch.text!!.clear()
         account.text!!.clear()
         loadingArea.text!!.clear()
+        bufferPrice.text!!.clear()
     }
 
     fun onClickClearAmountsDetails(view: View) {

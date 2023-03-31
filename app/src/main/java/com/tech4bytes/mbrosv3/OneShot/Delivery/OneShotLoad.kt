@@ -162,7 +162,7 @@ class OneShotLoad : AppCompatActivity() {
     fun onClickClearAmountsDetails(view: View) {
         val extraCashProvided = findViewById<TextInputEditText>(R.id.one_shot_load_extra_expense_provided)
         val farmRate = findViewById<TextInputEditText>(R.id.one_shot_load_farm_rate)
-        val bufferPrice = findViewById<AutoCompleteTextView>(R.id.one_shot_load_buffer_price)
+        val bufferPrice = findViewById<TextInputEditText>(R.id.one_shot_load_buffer_price)
 
         extraCashProvided.text!!.clear()
         farmRate.text!!.clear()

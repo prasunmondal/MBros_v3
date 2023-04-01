@@ -422,22 +422,6 @@ class OneShotDelivery : AppCompatActivity() {
         return order.prevDue.toInt()
     }
 
-    fun onClickSyncInputsOffline(view: View) {
-        val record = SingleAttributedData.getRecords()
-        val loadPcElement = findViewById<EditText>(R.id.one_shot_delivery_pc)
-        val loadKgElement = findViewById<EditText>(R.id.one_shot_delivery_kg)
-        val loadPriceElement = findViewById<EditText>(R.id.one_shot_delivery_price)
-        val loadBufferElement = findViewById<EditText>(R.id.one_shot_delivery_buffer)
-
-        record.actualLoadPc = loadPcElement.text.toString()
-        record.actualLoadKg = loadKgElement.text.toString()
-        record.finalFarmRate = loadPriceElement.text.toString()
-        record.bufferRate = loadBufferElement.text.toString()
-        SingleAttributedData.saveToLocal(record)
-        updateSingleAttributedDataOnUI()
-        showOrders()
-    }
-
     fun updateSingleAttributedDataOnUI() {
         LogMe.log("Updating single attributed data")
         val loadedPc = findViewById<TextView>(R.id.one_shot_delivery_pc)
@@ -451,6 +435,9 @@ class OneShotDelivery : AppCompatActivity() {
 
             loadPriceElement.setText(SingleAttributedData.getRecords().finalFarmRate)
             loadBufferElement.setText(SingleAttributedData.getRecords().bufferRate)
+        } else {
+            findViewById<TextInputLayout>(R.id.osd_farm_rate_container).visibility = View.GONE
+            findViewById<TextInputLayout>(R.id.osd_buffer_price_container).visibility = View.GONE
         }
     }
 

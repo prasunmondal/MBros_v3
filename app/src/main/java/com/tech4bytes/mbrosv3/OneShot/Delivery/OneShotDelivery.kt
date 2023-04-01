@@ -22,8 +22,8 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.De
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverOrdersConfig
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
-import com.tech4bytes.mbrosv3.Login.Roles
-import com.tech4bytes.mbrosv3.Login.RolesUtils
+import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
+import com.tech4bytes.mbrosv3.AppUsers.RolesUtils
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
@@ -429,7 +429,7 @@ class OneShotDelivery : AppCompatActivity() {
         loadedPc.setText(SingleAttributedData.getRecords().actualLoadPc)
         loadedKg.setText(SingleAttributedData.getRecords().actualLoadKg)
 
-        if(RolesUtils.doesHaveRole(Roles.SHOW_RATES_IN_DELIVERY_PAGE)) {
+        if(RolesUtils.doesHaveRole(ActivityAuthEnums.SHOW_RATES_IN_DELIVERY_PAGE)) {
             val loadPriceElement = findViewById<EditText>(R.id.one_shot_delivery_price)
             val loadBufferElement = findViewById<EditText>(R.id.one_shot_delivery_buffer)
 

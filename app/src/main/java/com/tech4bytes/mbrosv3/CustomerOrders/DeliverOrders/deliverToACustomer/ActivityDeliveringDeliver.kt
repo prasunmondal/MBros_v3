@@ -16,9 +16,9 @@ import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
-import com.tech4bytes.mbrosv3.Login.Roles
+import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
 import com.tech4bytes.mbrosv3.Login.RolesModel
-import com.tech4bytes.mbrosv3.Login.RolesUtils
+import com.tech4bytes.mbrosv3.AppUsers.RolesUtils
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -74,12 +74,12 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         UIUtils.setUIElementValue(paidElement, record.paid)
         UIUtils.setUIElementValue(balanceDueElement, CustomerData.getLastDue(record.name))
 
-        if(RolesUtils.doesHaveRole(Roles.ADMIN)) {
+        if(RolesUtils.doesHaveRole(ActivityAuthEnums.ADMIN)) {
             UIUtils.setUIElementValue(rate, record.rate)
             UIUtils.setUIElementValue(todaysAmountElement, record.todaysAmount)
         }
 
-        if(record.rate.isEmpty() && (RolesUtils.doesHaveRole(Roles.ADMIN) || RolesUtils.doesHaveRole(Roles.SHOW_RATES_IN_DELIVERY_PAGE))) {
+        if(record.rate.isEmpty() && (RolesUtils.doesHaveRole(ActivityAuthEnums.ADMIN) || RolesUtils.doesHaveRole(ActivityAuthEnums.SHOW_RATES_IN_DELIVERY_PAGE))) {
             UIUtils.setUIElementValue(rate, ("0${SingleAttributedData.getRecords().finalFarmRate}".toInt() + "0${SingleAttributedData.getRecords().bufferRate}".toInt() + CustomerKYC.get(record.name)!!.rateDifference.toInt()).toString())
             (rate as EditText).setTextColor(ContextCompat.getColor(this, R.color.red))
         }

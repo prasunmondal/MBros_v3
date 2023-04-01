@@ -1,6 +1,6 @@
-package com.tech4bytes.mbrosv3.Login
+package com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth
 
-enum class Roles {
+enum class ActivityAuthEnums {
     ADMIN,
     DELIVERY,
     COLLECTOR,

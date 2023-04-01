@@ -1,10 +1,12 @@
-package com.tech4bytes.mbrosv3.Login
+package com.tech4bytes.mbrosv3.AppUsers
 
 import android.provider.Settings
 import com.google.gson.reflect.TypeToken
 import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.tech4bytes.extrack.centralCache.CentralCache
+import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
+import com.tech4bytes.mbrosv3.Login.RolesModel
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -14,8 +16,8 @@ class RolesUtils {
     companion object {
 
         val loginRoleKey: String = "loginRoleKey"
-        fun getRoles(useCache: Boolean = true): MutableList<Roles> {
-            val cacheResults = CentralCache.get<MutableList<Roles>>(AppContexts.get(), loginRoleKey, useCache)
+        fun getRoles(useCache: Boolean = true): MutableList<ActivityAuthEnums> {
+            val cacheResults = CentralCache.get<MutableList<ActivityAuthEnums>>(AppContexts.get(), loginRoleKey, useCache)
 
             return if (cacheResults != null) {
                 cacheResults
@@ -27,11 +29,11 @@ class RolesUtils {
             }
         }
 
-        fun doesHaveRole(role: Roles): Boolean {
+        fun doesHaveRole(role: ActivityAuthEnums): Boolean {
             return getRoles().contains(role)
         }
 
-        private fun getRoleFromServer(): MutableList<Roles> {
+        private fun getRoleFromServer(): MutableList<ActivityAuthEnums> {
             // val waitDialog = ProgressDialog.show(AppContexts.get(), "Please Wait", "লোড হচ্ছে", true)
             val result: GetResponse = Get.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
@@ -47,13 +49,13 @@ class RolesUtils {
                 LogMe.log(it.toString())
             }
 
-            val listOfRoles = mutableListOf<Roles>()
+            val listOfRoles = mutableListOf<ActivityAuthEnums>()
             deviceList.forEach {
                 if(getPhoneId() == it.device_id) {
                     LogMe.log(it.roles)
                     LogMe.log(it.roles.split(",").toString())
                     it.roles.split(",").forEach { role ->
-                        listOfRoles.add(Roles.valueOf(role.trim()))
+                        listOfRoles.add(ActivityAuthEnums.valueOf(role.trim()))
                     }
                 }
             }

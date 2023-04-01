@@ -14,6 +14,9 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.AppData.AppUtils
+import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
+import com.tech4bytes.mbrosv3.AppUsers.RolesUtils
+import com.tech4bytes.mbrosv3.AppUsers.Config
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.DueShow
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard.ActivityAdminDeliveryDashboard
@@ -69,20 +72,20 @@ class ActivityLogin : AppCompatActivity() {
         }
     }
 
-    private fun getRoleAndActivityMapping(role: Roles): (() -> Unit)? {
-        if(role == Roles.UNIDENTIFIED) {
+    private fun getRoleAndActivityMapping(role: ActivityAuthEnums): (() -> Unit)? {
+        if(role == ActivityAuthEnums.UNIDENTIFIED) {
             showToastConnectToAdmin()
             return null
         }
         return when (role) {
-            Roles.ADMIN -> ::goToAdminRole
-            Roles.DELIVERY -> ::goToDeliveryRole
-            Roles.COLLECTOR -> ::goToCollectorRole
-            Roles.ORDER_COLLECTOR -> ::goToGetOrdersPage
-            Roles.BALANCE_VIEW -> ::goToShowDues
-            Roles.ONE_SHOT_DELIVERY -> ::goToOneShotDelivery
-            Roles.ONE_SHOT_LOAD_DETAILS -> ::goToOneShotLoadDetailsPage
-            Roles.SHOW_RATES_IN_DELIVERY_PAGE -> null
+            ActivityAuthEnums.ADMIN -> ::goToAdminRole
+            ActivityAuthEnums.DELIVERY -> ::goToDeliveryRole
+            ActivityAuthEnums.COLLECTOR -> ::goToCollectorRole
+            ActivityAuthEnums.ORDER_COLLECTOR -> ::goToGetOrdersPage
+            ActivityAuthEnums.BALANCE_VIEW -> ::goToShowDues
+            ActivityAuthEnums.ONE_SHOT_DELIVERY -> ::goToOneShotDelivery
+            ActivityAuthEnums.ONE_SHOT_LOAD_DETAILS -> ::goToOneShotLoadDetailsPage
+            ActivityAuthEnums.SHOW_RATES_IN_DELIVERY_PAGE -> null
             else -> null
         }
     }
@@ -92,7 +95,7 @@ class ActivityLogin : AppCompatActivity() {
         startActivity(switchActivityIntent)
     }
 
-    private fun goToHomePageAsPerRole(role: Roles) {
+    private fun goToHomePageAsPerRole(role: ActivityAuthEnums) {
         getRoleAndActivityMapping(role)?.invoke()
     }
 
@@ -106,7 +109,7 @@ class ActivityLogin : AppCompatActivity() {
         val id = System.currentTimeMillis().toString()
 
         Toast.makeText(this, "Registering Device: ${getPhoneId()}", Toast.LENGTH_LONG).show()
-        val obj = RolesModel(id, time, getPhoneId(), Roles.UNIDENTIFIED.toString())
+        val obj = RolesModel(id, time, getPhoneId(), ActivityAuthEnums.UNIDENTIFIED.toString())
         PostObject.builder()
             .scriptId(ProjectConfig.dBServerScriptURL)
             .sheetId(ProjectConfig.DB_SHEET_ID)

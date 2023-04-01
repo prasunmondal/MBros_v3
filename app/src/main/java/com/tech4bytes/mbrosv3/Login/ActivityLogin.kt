@@ -17,6 +17,7 @@ import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
 import com.tech4bytes.mbrosv3.AppUsers.RolesUtils
 import com.tech4bytes.mbrosv3.AppUsers.Config
+import com.tech4bytes.mbrosv3.AppUsers.AppUsersModel
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.DueShow
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard.ActivityAdminDeliveryDashboard
@@ -109,7 +110,7 @@ class ActivityLogin : AppCompatActivity() {
         val id = System.currentTimeMillis().toString()
 
         Toast.makeText(this, "Registering Device: ${getPhoneId()}", Toast.LENGTH_LONG).show()
-        val obj = RolesModel(id, time, getPhoneId(), ActivityAuthEnums.UNIDENTIFIED.toString())
+        val obj = AppUsersModel(id, time, getPhoneId(), ActivityAuthEnums.UNIDENTIFIED.toString())
         PostObject.builder()
             .scriptId(ProjectConfig.dBServerScriptURL)
             .sheetId(ProjectConfig.DB_SHEET_ID)

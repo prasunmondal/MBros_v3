@@ -17,7 +17,7 @@ import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
-import com.tech4bytes.mbrosv3.Login.RolesModel
+import com.tech4bytes.mbrosv3.AppUsers.AppUsersModel
 import com.tech4bytes.mbrosv3.AppUsers.RolesUtils
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
@@ -84,7 +84,7 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
             (rate as EditText).setTextColor(ContextCompat.getColor(this, R.color.red))
         }
 
-        if (RolesModel.isEligibleToViewHiddenDue() || CustomerKYC.showBalance(UIUtils.getUIElementValue(nameElement))) {
+        if (AppUsersModel.isEligibleToViewHiddenDue() || CustomerKYC.showBalance(UIUtils.getUIElementValue(nameElement))) {
             UIUtils.setUIElementValue(prevDueElement, record.prevDue)
         }
 
@@ -134,7 +134,7 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         setValidityColors(deliveredKgContainer, isValid)
 
         val nameElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::name)!!
-        if (!RolesModel.isEligibleToViewHiddenDue() && !CustomerKYC.showBalance(UIUtils.getUIElementValue(nameElement))) {
+        if (!AppUsersModel.isEligibleToViewHiddenDue() && !CustomerKYC.showBalance(UIUtils.getUIElementValue(nameElement))) {
             setValidityColors(deliveredRateContainer, true)
         }
     }
@@ -218,7 +218,7 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         val balanceDueElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::balanceDue)!!
 
         // do not update UI if show balances is false
-        if(!RolesModel.isEligibleToViewHiddenDue() && !CustomerKYC.showBalance(UIUtils.getUIElementValue(name))) {
+        if(!AppUsersModel.isEligibleToViewHiddenDue() && !CustomerKYC.showBalance(UIUtils.getUIElementValue(name))) {
             UIUtils.setUIElementValue(todaysAmountElement, "0.00")
             UIUtils.setUIElementValue(totalDueElement, "0.00")
             UIUtils.setUIElementValue(balanceDueElement, "0.00")

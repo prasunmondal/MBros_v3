@@ -34,5 +34,15 @@ class NumberUtils {
                 number
             }
         }
+
+        fun roundOff2places(number: Double): Double {
+            val df = DecimalFormat("#.##")
+            return df.format(number).toDouble()
+        }
+
+        fun roundOff3places(number: Double): Double {
+            val df = DecimalFormat("#.###")
+            return df.format(number).toDouble()
+        }
     }
 }

@@ -9,8 +9,10 @@ import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
 import com.tech4bytes.mbrosv3.ProjectConfig
+import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
+import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 
 class CustomerData: java.io.Serializable {
     var orderId = ""
@@ -40,7 +42,7 @@ class CustomerData: java.io.Serializable {
         this.totalAmount = totalAmount
         this.paid = paid
         this.balanceDue = balanceDue
-        this.avgWt = (deliveredKg.toDouble() / deliveredPc.toInt()).toString()
+        this.avgWt = NumberUtils.roundOff3places(deliveredKg.toDouble() / deliveredPc.toInt()).toString()
         this.profit = profit
         this.profitPercent = profitPercent
     }
@@ -57,8 +59,13 @@ class CustomerData: java.io.Serializable {
 
         fun spoolDeliveringData() {
             val deliveredData = DeliverCustomerOrders.get()
+            val totalProfit = DaySummary.getDayProfit()
+            LogMe.log("Total Profit: $totalProfit")
             deliveredData.forEach {
-                val record = CustomerData(it.id, it.timestamp, it.name, it.deliveredPc, it.deliveredKg, it.rate, it.prevDue, it.todaysAmount, it.totalDue, it.paid, it.balanceDue, "0", "0")
+                val profitByCustomer = totalProfit * NumberUtils.getDoubleOrZero(it.deliveredKg) / NumberUtils.getDoubleOrZero(SingleAttributedData.getRecords().actualLoadKg)
+                LogMe.log("ProfitPerCustomer: Name: ${it.name}: $totalProfit * ${NumberUtils.getDoubleOrZero(it.deliveredKg)} / ${NumberUtils.getDoubleOrZero(SingleAttributedData.getRecords().actualLoadKg)} = $profitByCustomer")
+                val profitPercentByCustomer = profitByCustomer / totalProfit * 100
+                val record = CustomerData(it.id, , it.name, it.deliveredPc, it.deliveredKg, it.rate, it.prevDue, it.todaysAmount, it.totalDue, it.paid, it.balanceDue, NumberUtils.roundOff2places(profitByCustomer).toString(), NumberUtils.roundOff2places(profitPercentByCustomer).toString())
                 addToFinalizeSheet(record)
             }
         }

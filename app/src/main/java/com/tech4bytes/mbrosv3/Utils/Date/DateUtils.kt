@@ -1,5 +1,6 @@
 package com.tech4bytes.mbrosv3.Utils.Date
 
+import java.sql.Timestamp
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -32,6 +33,12 @@ class DateUtils {
         fun getCurrentTimestamp(): String {
             val current = LocalDateTime.now()
             val formatter = DateTimeFormatter.ofPattern(datePattern)
+            return current.format(formatter)
+        }
+
+        fun getCurrentDate(pattern: String): String {
+            val current = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ofPattern(pattern)
             return current.format(formatter)
         }
 

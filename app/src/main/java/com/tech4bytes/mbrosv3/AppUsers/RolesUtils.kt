@@ -15,24 +15,20 @@ class RolesUtils {
     companion object {
 
         val loginRoleKey: String = "loginRoleKey"
-        fun getRoles(useCache: Boolean = true): MutableList<ActivityAuthEnums> {
-            val cacheResults = CentralCache.get<MutableList<ActivityAuthEnums>>(AppContexts.get(), loginRoleKey, useCache)
+        fun getAppUser(useCache: Boolean = true): AppUsersModel? {
+            val cacheResults = CentralCache.get<AppUsersModel>(AppContexts.get(), loginRoleKey, useCache)
 
             return if (cacheResults != null) {
                 cacheResults
             } else {
-                val resultFromServer = getRoleFromServer()
+                val resultFromServer = getAppUsersDataFromServer()
 
                 CentralCache.put(loginRoleKey, resultFromServer)
                 resultFromServer
             }
         }
 
-        fun doesHaveRole(role: ActivityAuthEnums): Boolean {
-            return getRoles().contains(role)
-        }
-
-        private fun getRoleFromServer(): MutableList<ActivityAuthEnums> {
+        private fun getAppUsersDataFromServer(): AppUsersModel? {
             // val waitDialog = ProgressDialog.show(AppContexts.get(), "Please Wait", "লোড হচ্ছে", true)
             val result: GetResponse = Get.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
@@ -48,19 +44,13 @@ class RolesUtils {
                 LogMe.log(it.toString())
             }
 
-            val listOfRoles = mutableListOf<ActivityAuthEnums>()
+
             deviceList.forEach {
                 if(getPhoneId() == it.device_id) {
-                    LogMe.log(it.roles)
-                    LogMe.log(it.roles.split(",").toString())
-                    it.roles.split(",").forEach { role ->
-                        listOfRoles.add(ActivityAuthEnums.valueOf(role.trim()))
-                    }
+                    return it
                 }
             }
-
-            // waitDialog!!.dismiss()
-            return listOfRoles
+            return null
         }
 
         private fun getPhoneId(): String {

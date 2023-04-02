@@ -23,8 +23,8 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.De
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
-import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.UserRoleUtils
-import com.tech4bytes.mbrosv3.AppUsers.RolesUtils
+import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
+import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
@@ -430,14 +430,17 @@ class OneShotDelivery : AppCompatActivity() {
         loadedPc.setText(SingleAttributedData.getRecords().actualLoadPc)
         loadedKg.setText(SingleAttributedData.getRecords().actualLoadKg)
 
-        if(UserRoleUtils.doesHaveRole(ActivityAuthEnums.SHOW_RATES_IN_DELIVERY_PAGE)) {
+        if(AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_FARM_RATE)) {
             val loadPriceElement = findViewById<EditText>(R.id.one_shot_delivery_price)
-            val loadBufferElement = findViewById<EditText>(R.id.one_shot_delivery_buffer)
-
             loadPriceElement.setText(SingleAttributedData.getRecords().finalFarmRate)
-            loadBufferElement.setText(SingleAttributedData.getRecords().bufferRate)
         } else {
             findViewById<TextInputLayout>(R.id.osd_farm_rate_container).visibility = View.GONE
+        }
+
+        if(AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_BUFFER_RATE)) {
+            val loadBufferElement = findViewById<EditText>(R.id.one_shot_delivery_buffer)
+            loadBufferElement.setText(SingleAttributedData.getRecords().bufferRate)
+        } else {
             findViewById<TextInputLayout>(R.id.osd_buffer_price_container).visibility = View.GONE
         }
     }

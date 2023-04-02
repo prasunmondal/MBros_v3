@@ -18,7 +18,7 @@ class AuthorizationUtils {
             return listOfRoles
         }
 
-        fun doesHaveAuthorization(auth: AuthorizationEnums): Boolean {
+        fun isAuthorized(auth: AuthorizationEnums): Boolean {
             getAllUserAuthorizations().forEach {
                 if (it.name == auth.toString()) {
                     return true

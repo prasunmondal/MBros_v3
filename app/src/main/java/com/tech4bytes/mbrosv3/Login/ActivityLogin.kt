@@ -20,6 +20,7 @@ import com.tech4bytes.mbrosv3.AppUsers.Config
 import com.tech4bytes.mbrosv3.AppUsers.AppUsersModel
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.UserRoleUtils
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
+import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.DueShow
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard.ActivityAdminDeliveryDashboard
@@ -49,6 +50,8 @@ class ActivityLogin : AppCompatActivity() {
 
         val roles = RolesUtils.getAppUser()
         LogMe.log("Got Role: $roles")
+
+        AuthorizationUtils.getAllUserAuthorizations()
 
         val container = findViewById<LinearLayout>(R.id.activity_login_roles_container)
         if(UserRoleUtils.getUserRoles().isEmpty()) {

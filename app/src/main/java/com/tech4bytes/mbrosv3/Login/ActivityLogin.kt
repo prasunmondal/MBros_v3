@@ -18,6 +18,8 @@ import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEn
 import com.tech4bytes.mbrosv3.AppUsers.RolesUtils
 import com.tech4bytes.mbrosv3.AppUsers.Config
 import com.tech4bytes.mbrosv3.AppUsers.AppUsersModel
+import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.UserRoleUtils
+import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.DueShow
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard.ActivityAdminDeliveryDashboard
@@ -45,18 +47,18 @@ class ActivityLogin : AppCompatActivity() {
         AppUtils.logError()
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
-        val roles = RolesUtils.getRoles()
+        val roles = RolesUtils.getAppUser()
         LogMe.log("Got Role: $roles")
 
         val container = findViewById<LinearLayout>(R.id.activity_login_roles_container)
-        if(roles.size == 0) {
+        if(UserRoleUtils.getUserRoles().isEmpty()) {
             logUnIdentifiedDevice()
         } else {
-            if (roles.size == 1) {
+            if (UserRoleUtils.getUserRoles().size == 1) {
                 // if the user has only one role, directly go to the home page.
-                goToHomePageAsPerRole(roles[0])
+                goToHomePageAsPerRole(UserRoleUtils.getUserRoles()[0])
             } else {
-                roles.forEach { role ->
+                UserRoleUtils.getUserRoles().forEach { role ->
                     if(getRoleAndActivityMapping(role)!=null) {
                         val layoutInflater = LayoutInflater.from(AppContexts.get())
                         val entry = layoutInflater.inflate(R.layout.fragment_activity_login_roles, null)
@@ -110,7 +112,7 @@ class ActivityLogin : AppCompatActivity() {
         val id = System.currentTimeMillis().toString()
 
         Toast.makeText(this, "Registering Device: ${getPhoneId()}", Toast.LENGTH_LONG).show()
-        val obj = AppUsersModel(id, time, getPhoneId(), ActivityAuthEnums.UNIDENTIFIED.toString())
+        val obj = AppUsersModel(id, time, getPhoneId(), ActivityAuthEnums.UNIDENTIFIED.toString(), AuthorizationEnums.NONE.toString())
         PostObject.builder()
             .scriptId(ProjectConfig.dBServerScriptURL)
             .sheetId(ProjectConfig.DB_SHEET_ID)

@@ -4,7 +4,7 @@ import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 
-class CompanyLoadMap {
+class CompanyLoadMap: java.io.Serializable {
     var companyName = ""
     var branch = ""
     var area = ""

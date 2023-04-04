@@ -1,11 +1,11 @@
 package com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
@@ -17,6 +17,9 @@ import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 import kotlin.reflect.KFunction
 
 class DataFetch : AppCompatActivity() {
@@ -49,13 +52,15 @@ class DataFetch : AppCompatActivity() {
             container.addView(uiEntry)
             map[it] = uiEntry
         }
-
+        
+        val es: ExecutorService = Executors.newCachedThreadPool()
         map.forEach {
-            Thread {
-                @Suppress("UNCHECKED_CAST")
-                run(it.value, it.key as ((Boolean) -> Unit))
-            }.start()
+            @Suppress("UNCHECKED_CAST")
+            run(it.value, it.key as ((Boolean) -> Unit))
         }
+        es.shutdown()
+        val finished: Boolean = es.awaitTermination(5, TimeUnit.MINUTES)
+//        super.onBackPressed()
     }
 
     private fun run(uiEntry: View, function: (Boolean) -> (Unit)) {

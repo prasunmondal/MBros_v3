@@ -7,6 +7,7 @@ import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
@@ -39,7 +40,7 @@ public class IOObjectToFile {
         }
     }
 
-    public void WriteObjectToFile(Context context, String fileName, Object object) {
+    public void WriteObjectToFile(Context context, String fileName, Object object) throws IOException {
         LogMe.log("Writing to file: " + fileName);
         try {
             FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
@@ -48,8 +49,9 @@ public class IOObjectToFile {
             os.close();
             fos.close();
         } catch (Exception e) {
-            System.out.println("Error while writing object to file");
+            System.out.println("Error while writing object to file: " + fileName);
             System.out.println(e);
+            throw e;
         }
     }
 

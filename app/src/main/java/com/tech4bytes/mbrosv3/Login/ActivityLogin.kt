@@ -29,7 +29,7 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard.Activi
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
-import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetch
+import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetchActivity
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotLoad
@@ -227,7 +227,7 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     fun goToDataFetch(view: View) {
-        val switchActivityIntent = Intent(this, DataFetch::class.java)
+        val switchActivityIntent = Intent(this, DataFetchActivity::class.java)
         startActivity(switchActivityIntent)
     }
 }

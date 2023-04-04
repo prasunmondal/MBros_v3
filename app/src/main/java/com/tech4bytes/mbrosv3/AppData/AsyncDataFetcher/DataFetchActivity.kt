@@ -22,7 +22,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import kotlin.reflect.KFunction
 
-class DataFetch : AppCompatActivity() {
+class DataFetchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_data_fetch)
@@ -52,7 +52,7 @@ class DataFetch : AppCompatActivity() {
             container.addView(uiEntry)
             map[it] = uiEntry
         }
-        
+
         val es: ExecutorService = Executors.newCachedThreadPool()
         map.forEach {
             @Suppress("UNCHECKED_CAST")

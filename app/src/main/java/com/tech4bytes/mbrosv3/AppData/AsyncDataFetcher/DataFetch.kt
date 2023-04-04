@@ -17,6 +17,7 @@ import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
+import kotlin.reflect.KFunction
 
 class DataFetch : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,137 +29,40 @@ class DataFetch : AppCompatActivity() {
     }
 
     private fun fetchData(container: LinearLayout) {
-        var list = listOf(
+        val list = listOf(
             GetCustomerOrders::get,
             CustomerKYC::getAllCustomers,
             CustomerData::getRecords,
             SingleAttributedData::getRecords,
+            DeliverCustomerOrders::get,
+            DaySummary::get,
             Refueling::get
         )
 
-        Thread {
-            var uiEntry: View? = null
-            runOnUiThread {
-                val layoutInflater = LayoutInflater.from(AppContexts.get())
-                uiEntry = layoutInflater.inflate(R.layout.activity_data_fetch_fragments, null)
-                uiEntry?.findViewById<TextView>(R.id.fragment_data_fetch_task_name)?.text = "Fetching Orders"
-                container.addView(uiEntry)
-            }
-            run(GetCustomerOrders::get)
-            runOnUiThread {
-                uiEntry?.findViewById<ConstraintLayout>(R.id.fragment_data_fetch_container)?.
-                setBackgroundColor(ContextCompat.getColor(this, R.color.verify_delivery_valid))
-            }
-        }.start()
+        val map: MutableMap<KFunction<Any>, View> = mutableMapOf()
 
-        Thread {
-            var uiEntry: View? = null
-            runOnUiThread {
-                val layoutInflater = LayoutInflater.from(AppContexts.get())
-                uiEntry = layoutInflater.inflate(R.layout.activity_data_fetch_fragments, null)
-                uiEntry?.findViewById<TextView>(R.id.fragment_data_fetch_task_name)?.text = "Get Customer Profiles"
-                container.addView(uiEntry)
-            }
-            run(CustomerKYC::getAllCustomers)
-            runOnUiThread {
-                uiEntry?.findViewById<ConstraintLayout>(R.id.fragment_data_fetch_container)?.
-                setBackgroundColor(ContextCompat.getColor(this, R.color.verify_delivery_valid))
-            }
-        }.start()
-
-
-        Thread {
-            var uiEntry: View? = null
-            runOnUiThread {
-                val layoutInflater = LayoutInflater.from(AppContexts.get())
-                uiEntry = layoutInflater.inflate(R.layout.activity_data_fetch_fragments, null)
-                uiEntry?.findViewById<TextView>(R.id.fragment_data_fetch_task_name)?.text = "Customer Records"
-                container.addView(uiEntry)
-            }
-            run(CustomerData::getRecords)
-            runOnUiThread {
-                uiEntry?.findViewById<ConstraintLayout>(R.id.fragment_data_fetch_container)?.
-                setBackgroundColor(ContextCompat.getColor(this, R.color.verify_delivery_valid))
-            }
-        }.start()
-
-        Thread {
-            var uiEntry: View? = null
-            runOnUiThread {
-                val layoutInflater = LayoutInflater.from(AppContexts.get())
-                uiEntry = layoutInflater.inflate(R.layout.activity_data_fetch_fragments, null)
-                uiEntry?.findViewById<TextView>(R.id.fragment_data_fetch_task_name)?.text = "Today's Data"
-                container.addView(uiEntry)
-            }
-            run(SingleAttributedData::getRecords)
-            runOnUiThread {
-                uiEntry?.findViewById<ConstraintLayout>(R.id.fragment_data_fetch_container)?.
-                setBackgroundColor(ContextCompat.getColor(this, R.color.verify_delivery_valid))
-            }
-        }.start()
-
-        Thread {
-            var uiEntry: View? = null
-            runOnUiThread {
-                val layoutInflater = LayoutInflater.from(AppContexts.get())
-                uiEntry = layoutInflater.inflate(R.layout.activity_data_fetch_fragments, null)
-                uiEntry?.findViewById<TextView>(R.id.fragment_data_fetch_task_name)?.text = "Delivered Data"
-                container.addView(uiEntry)
-            }
-            run(DeliverCustomerOrders::get)
-            runOnUiThread {
-                uiEntry?.findViewById<ConstraintLayout>(R.id.fragment_data_fetch_container)?.
-                setBackgroundColor(ContextCompat.getColor(this, R.color.verify_delivery_valid))
-            }
-        }.start()
-
-        Thread {
-            var uiEntry: View? = null
-            runOnUiThread {
-                val layoutInflater = LayoutInflater.from(AppContexts.get())
-                uiEntry = layoutInflater.inflate(R.layout.activity_data_fetch_fragments, null)
-                uiEntry?.findViewById<TextView>(R.id.fragment_data_fetch_task_name)?.text = "Day Summary"
-                container.addView(uiEntry)
-            }
-            run(DaySummary::get)
-            runOnUiThread {
-                uiEntry?.findViewById<ConstraintLayout>(R.id.fragment_data_fetch_container)?.
-                setBackgroundColor(ContextCompat.getColor(this, R.color.verify_delivery_valid))
-            }
-        }.start()
-
-        Thread {
-            var uiEntry: View? = null
-            runOnUiThread {
-                val layoutInflater = LayoutInflater.from(AppContexts.get())
-                uiEntry = layoutInflater.inflate(R.layout.activity_data_fetch_fragments, null)
-                uiEntry?.findViewById<TextView>(R.id.fragment_data_fetch_task_name)?.text = "Fuel Data"
-                container.addView(uiEntry)
-            }
-            run(Refueling::get)
-            runOnUiThread {
-                uiEntry?.findViewById<ConstraintLayout>(R.id.fragment_data_fetch_container)?.
-                setBackgroundColor(ContextCompat.getColor(this, R.color.verify_delivery_valid))
-            }
-        }.start()
-    }
-
-    fun run(function: () -> (Unit)) {
-        function.invoke()
-    }
-
-    fun run2(function: () -> (Unit)) {
-        Thread {
-            val uiEntry: View?
+        list.forEach {
+            val uiEntry: View
             val layoutInflater = LayoutInflater.from(AppContexts.get())
             uiEntry = layoutInflater.inflate(R.layout.activity_data_fetch_fragments, null)
-            uiEntry?.findViewById<TextView>(R.id.fragment_data_fetch_task_name)?.text = "Fuel Data"
+            uiEntry?.findViewById<TextView>(R.id.fragment_data_fetch_task_name)?.text = it.name
+            container.addView(uiEntry)
+            map[it] = uiEntry
+        }
+
+        map.forEach {
+            Thread {
+                @Suppress("UNCHECKED_CAST")
+                run(it.value, it.key as ((Boolean) -> Unit))
+            }.start()
+        }
+    }
+
+    private fun run(uiEntry: View, function: (Boolean) -> (Unit)) {
+        Thread {
+            function.invoke(true)
             runOnUiThread {
-                findViewById<LinearLayout>(R.id.data_fetch_entries_container).addView(uiEntry)
-            }
-            function.invoke()
-            runOnUiThread {
-                uiEntry?.findViewById<ConstraintLayout>(R.id.fragment_data_fetch_container)?.
+                uiEntry.findViewById<ConstraintLayout>(R.id.fragment_data_fetch_container)?.
                 setBackgroundColor(ContextCompat.getColor(this, R.color.verify_delivery_valid))
             }
         }.start()

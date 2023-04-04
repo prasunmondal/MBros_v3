@@ -111,9 +111,9 @@ class CustomerData: java.io.Serializable {
         }
 
         private var recordsKey = "customerRecords"
-        fun getRecords(): ArrayList<CustomerData> {
+        fun getRecords(useCache: Boolean = true): ArrayList<CustomerData> {
             LogMe.log("Getting delivery records")
-            val cacheResults = CentralCache.get<ArrayList<CustomerData>>(AppContexts.get(), recordsKey, true)
+            val cacheResults = CentralCache.get<ArrayList<CustomerData>>(AppContexts.get(), recordsKey, useCache)
             LogMe.log("Getting delivery records: Cache Hit: " + (cacheResults!=null))
             return if (cacheResults != null) {
                 cacheResults

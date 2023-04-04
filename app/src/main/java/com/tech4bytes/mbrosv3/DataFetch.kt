@@ -26,6 +26,16 @@ class DataFetch : AppCompatActivity() {
     }
 
     private fun fetchData(container: LinearLayout) {
+        var list = listOf(
+            GetCustomerOrders::get,
+            CustomerKYC::getAllCustomers,
+            CustomerData::getRecords,
+            SingleAttributedData::getRecords,
+            Refueling::get
+        )
+
+//        list.forEach { run2 {it} }
+
         Thread {
             var uiEntry: View? = null
             runOnUiThread {
@@ -105,5 +115,22 @@ class DataFetch : AppCompatActivity() {
 
     fun run(function: () -> (Unit)) {
         function.invoke()
+    }
+
+    fun run2(function: () -> (Unit)) {
+        Thread {
+            val uiEntry: View?
+            val layoutInflater = LayoutInflater.from(AppContexts.get())
+            uiEntry = layoutInflater.inflate(R.layout.activity_data_fetch_fragments, null)
+            uiEntry?.findViewById<TextView>(R.id.fragment_data_fetch_task_name)?.text = "Fuel Data"
+            runOnUiThread {
+                findViewById<LinearLayout>(R.id.data_fetch_entries_container).addView(uiEntry)
+            }
+            function.invoke()
+            runOnUiThread {
+                uiEntry?.findViewById<ConstraintLayout>(R.id.fragment_data_fetch_container)?.
+                setBackgroundColor(ContextCompat.getColor(this, R.color.verify_delivery_valid))
+            }
+        }.start()
     }
 }

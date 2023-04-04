@@ -41,9 +41,6 @@ class DataFetch : AppCompatActivity() {
             }
         }.start()
 
-
-
-
         Thread {
             var uiEntry: View? = null
             runOnUiThread {
@@ -58,9 +55,6 @@ class DataFetch : AppCompatActivity() {
                 setBackgroundColor(ContextCompat.getColor(this, R.color.verify_delivery_valid))
             }
         }.start()
-
-
-
 
 
         Thread {
@@ -78,10 +72,6 @@ class DataFetch : AppCompatActivity() {
             }
         }.start()
 
-
-
-
-
         Thread {
             var uiEntry: View? = null
             runOnUiThread {
@@ -96,10 +86,6 @@ class DataFetch : AppCompatActivity() {
                 setBackgroundColor(ContextCompat.getColor(this, R.color.verify_delivery_valid))
             }
         }.start()
-
-
-
-
 
         Thread {
             var uiEntry: View? = null

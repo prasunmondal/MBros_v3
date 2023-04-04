@@ -97,7 +97,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     }
 
     fun onClickSpoolCustomerData(view: View) {
-        CentralCache.invalidateFullCache()
+//        CentralCache.invalidateFullCache()
         CustomerData.spoolDeliveringData()
         Refueling.spoolRefuelingData()
     }

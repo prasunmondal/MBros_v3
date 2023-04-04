@@ -58,20 +58,22 @@ class CustomerData: java.io.Serializable {
     companion object {
 
         fun spoolDeliveringData() {
-            val deliveredData = DeliverCustomerOrders.get()
-            val totalProfit = DaySummary.getDayProfit()
-            LogMe.log("Total Profit: $totalProfit")
-            var actualDeliveredKg = 0.0
-            deliveredData.forEach {
-                actualDeliveredKg += NumberUtils.getDoubleOrZero(it.deliveredKg)
-            }
-            deliveredData.forEach {
-                val profitByCustomer = totalProfit * NumberUtils.getDoubleOrZero(it.deliveredKg) / actualDeliveredKg
-                LogMe.log("ProfitPerCustomer: Name: ${it.name}: $totalProfit * ${NumberUtils.getDoubleOrZero(it.deliveredKg)} / $actualDeliveredKg = $profitByCustomer")
-                val profitPercentByCustomer = profitByCustomer / totalProfit * 100
-                val record = CustomerData(it.id, it.timestamp, it.name, it.deliveredPc, it.deliveredKg, it.rate, it.prevDue, it.todaysAmount, it.totalDue, it.paid, it.balanceDue, NumberUtils.roundOff2places(profitByCustomer).toString(), NumberUtils.roundOff2places(profitPercentByCustomer).toString())
-                addToFinalizeSheet(record)
-            }
+            Thread {
+                val deliveredData = DeliverCustomerOrders.get()
+                val totalProfit = DaySummary.getDayProfit()
+                LogMe.log("Total Profit: $totalProfit")
+                var actualDeliveredKg = 0.0
+                deliveredData.forEach {
+                    actualDeliveredKg += NumberUtils.getDoubleOrZero(it.deliveredKg)
+                }
+                deliveredData.forEach {
+                    val profitByCustomer = totalProfit * NumberUtils.getDoubleOrZero(it.deliveredKg) / actualDeliveredKg
+                    LogMe.log("ProfitPerCustomer: Name: ${it.name}: $totalProfit * ${NumberUtils.getDoubleOrZero(it.deliveredKg)} / $actualDeliveredKg = $profitByCustomer")
+                    val profitPercentByCustomer = profitByCustomer / totalProfit * 100
+                    val record = CustomerData(it.id, it.timestamp, it.name, it.deliveredPc, it.deliveredKg, it.rate, it.prevDue, it.todaysAmount, it.totalDue, it.paid, it.balanceDue, NumberUtils.roundOff2places(profitByCustomer).toString(), NumberUtils.roundOff2places(profitPercentByCustomer).toString())
+                    addToFinalizeSheet(record)
+                }
+            }.start()
         }
 
         private fun addToFinalizeSheet(record: CustomerData) {

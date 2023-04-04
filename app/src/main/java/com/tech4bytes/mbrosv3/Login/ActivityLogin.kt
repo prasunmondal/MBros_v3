@@ -26,11 +26,10 @@ import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.Customer.DueShow
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard.ActivityAdminDeliveryDashboard
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
-import com.tech4bytes.mbrosv3.DataFetch
+import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetch
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotLoad

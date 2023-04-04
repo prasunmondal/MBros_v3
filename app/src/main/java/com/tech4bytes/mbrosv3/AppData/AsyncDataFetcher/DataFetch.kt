@@ -1,4 +1,4 @@
-package com.tech4bytes.mbrosv3
+package com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,12 +7,12 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet.Constraint
 import androidx.core.content.ContextCompat
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
+import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
 
@@ -33,8 +33,6 @@ class DataFetch : AppCompatActivity() {
             SingleAttributedData::getRecords,
             Refueling::get
         )
-
-//        list.forEach { run2 {it} }
 
         Thread {
             var uiEntry: View? = null
@@ -132,5 +130,9 @@ class DataFetch : AppCompatActivity() {
                 setBackgroundColor(ContextCompat.getColor(this, R.color.verify_delivery_valid))
             }
         }.start()
+    }
+
+    fun onClickDataFetchComplete(view: View) {
+        super.onBackPressed()
     }
 }

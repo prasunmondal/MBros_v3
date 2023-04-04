@@ -14,13 +14,14 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.AppData.AppUtils
-import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
-import com.tech4bytes.mbrosv3.AppUsers.RolesUtils
-import com.tech4bytes.mbrosv3.AppUsers.Config
+import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetchActivity
 import com.tech4bytes.mbrosv3.AppUsers.AppUsersModel
+import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.UserRoleUtils
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
+import com.tech4bytes.mbrosv3.AppUsers.Config
+import com.tech4bytes.mbrosv3.AppUsers.RolesUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
@@ -29,7 +30,6 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard.Activi
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
-import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetchActivity
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotLoad
@@ -207,9 +207,14 @@ class ActivityLogin : AppCompatActivity() {
         startActivity(switchActivityIntent)
     }
 
-    private fun goToShowDues() {
-        val switchActivityIntent = Intent(this, DueShow::class.java)
+    private fun goToDataFetchActivity(nextActivity: Class<*>) {
+        val switchActivityIntent = Intent(this, DataFetchActivity::class.java)
+        switchActivityIntent.putExtra("nextActivity", nextActivity)
         startActivity(switchActivityIntent)
+    }
+
+    private fun goToShowDues() {
+        goToDataFetchActivity(DueShow::class.java)
     }
 
     fun showToastConnectToAdmin() {

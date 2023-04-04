@@ -24,7 +24,7 @@ data class CustomerKYCModel(var date: String,
     }
 }
 
-class CustomerKYC {
+class CustomerKYC: java.io.Serializable {
     companion object {
 
         fun getAllCustomers(useCache: Boolean = true): List<CustomerKYCModel> {

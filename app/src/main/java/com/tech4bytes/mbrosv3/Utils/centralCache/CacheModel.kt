@@ -18,7 +18,6 @@ class CacheModel: java.io.Serializable {
 //        Toast.makeText(AppContexts.get(), "$entryTime - $expiryTime", Toast.LENGTH_SHORT).show()
         LogMe.log("$entryTime - $expiryTime")
         this.content = content
-        LogMe.log(this.toString())
     }
 
     override fun toString(): String {

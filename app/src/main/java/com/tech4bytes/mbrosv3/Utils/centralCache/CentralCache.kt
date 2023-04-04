@@ -21,7 +21,7 @@ class CentralCache {
     var cache: MutableMap<String, MutableMap<String, CacheModel>> = hashMapOf()
 
     private fun saveCacheDataToFile() {
-        LogMe.log("Saving cache data - File: ${getFileName()} - $cache")
+        LogMe.log("Saving cache data - File: ${getFileName()}")
         val writeObj = IOObjectToFile()
         writeObj.WriteObjectToFile(AppContexts.get(), getFileName(), cache)
     }
@@ -70,7 +70,7 @@ class CentralCache {
                 LogMe.log("Cache Hit (key:$cacheObjectKey)- Local Memory")
                 val cacheObj = classElements[cacheObjectKey]!!
                 if(cacheObj.expiryTime.isBefore(LocalDateTime.now())) {
-                    LogMe.log("Data Expired (key:$cacheObjectKey)- Local Memory: ${cacheObj.toString()}")
+                    LogMe.log("Data Expired (key:$cacheObjectKey)")
                     LogMe.log("Deleting cache data")
                     centralCache.cache[cacheClassKey]!!.remove(cacheObjectKey)
                     centralCache.saveCacheDataToFile()

@@ -6,7 +6,6 @@ import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
-import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.CustomerOrdersConfig
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -47,11 +46,11 @@ class Refueling: java.io.Serializable {
         }
 
         private fun getLatestRecord(useCache: Boolean = true): Refueling {
-            val list = getServerList(useCache)
+            val list = get(useCache)
             return list[list.size-1]
         }
 
-        private fun getServerList(useCache: Boolean = true): List<Refueling> {
+        fun get(useCache: Boolean = true): List<Refueling> {
             val getOrdersServerListKey = "getOrdersServerList"
             val cacheResults = CentralCache.get<ArrayList<Refueling>>(AppContexts.get(), getOrdersServerListKey, useCache)
 

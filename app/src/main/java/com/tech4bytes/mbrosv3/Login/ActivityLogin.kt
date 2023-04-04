@@ -21,18 +21,25 @@ import com.tech4bytes.mbrosv3.AppUsers.AppUsersModel
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.UserRoleUtils
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
+import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.Customer.DueShow
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard.ActivityAdminDeliveryDashboard
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
+import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
+import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotLoad
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
+import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
+import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -48,33 +55,75 @@ class ActivityLogin : AppCompatActivity() {
         AppUtils.logError()
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
-        val roles = RolesUtils.getAppUser()
-        LogMe.log("Got Role: $roles")
+        runOnUiThread {
+            val roles = RolesUtils.getAppUser()
+            LogMe.log("Got Role: $roles")
 
-        AuthorizationUtils.getAllUserAuthorizations()
+            AuthorizationUtils.getAllUserAuthorizations()
 
-        val container = findViewById<LinearLayout>(R.id.activity_login_roles_container)
-        if(UserRoleUtils.getUserRoles().isEmpty()) {
-            logUnIdentifiedDevice()
-        } else {
-            if (UserRoleUtils.getUserRoles().size == 1) {
-                // if the user has only one role, directly go to the home page.
-                goToHomePageAsPerRole(UserRoleUtils.getUserRoles()[0])
+            val container = findViewById<LinearLayout>(R.id.activity_login_roles_container)
+            if (UserRoleUtils.getUserRoles().isEmpty()) {
+                logUnIdentifiedDevice()
             } else {
-                UserRoleUtils.getUserRoles().forEach { role ->
-                    if(getRoleAndActivityMapping(role)!=null) {
-                        val layoutInflater = LayoutInflater.from(AppContexts.get())
-                        val entry = layoutInflater.inflate(R.layout.fragment_activity_login_roles, null)
+                if (UserRoleUtils.getUserRoles().size == 1) {
+                    // if the user has only one role, directly go to the home page.
+                    goToHomePageAsPerRole(UserRoleUtils.getUserRoles()[0])
+                } else {
+                    UserRoleUtils.getUserRoles().forEach { role ->
+                        if (getRoleAndActivityMapping(role) != null) {
+                            val layoutInflater = LayoutInflater.from(AppContexts.get())
+                            val entry = layoutInflater.inflate(R.layout.fragment_activity_login_roles, null)
 
-                        entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).text = role.name
+                            entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).text = role.name
 
-                        entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).setOnClickListener {
-                            goToHomePageAsPerRole(role)
+                            entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).setOnClickListener {
+                                goToHomePageAsPerRole(role)
+                            }
+                            container.addView(entry)
                         }
-                        container.addView(entry)
                     }
                 }
             }
+        }
+        preFetchData()
+    }
+
+    private fun preFetchData() {
+        var a = 0
+        runOnUiThread {
+            GetCustomerOrders.get()
+//            a += 1
+//            Toast.makeText(this, a, Toast.LENGTH_SHORT).show()
+        }
+        runOnUiThread {
+            CustomerKYC.getAllCustomers()
+//            a += 1
+//            Toast.makeText(this, a, Toast.LENGTH_SHORT).show()
+        }
+        runOnUiThread {
+            CustomerData.getRecords()
+//            a += 1
+//            Toast.makeText(this, a, Toast.LENGTH_SHORT).show()
+        }
+        runOnUiThread {
+            SingleAttributedData.getRecords()
+//            a += 1
+//            Toast.makeText(this, a, Toast.LENGTH_SHORT).show()
+        }
+        runOnUiThread {
+            Refueling.get()
+//            a += 1
+//            Toast.makeText(this, a, Toast.LENGTH_SHORT).show()
+        }
+        runOnUiThread {
+            Refueling.get()
+//            a += 1
+//            Toast.makeText(this, a, Toast.LENGTH_SHORT).show()
+        }
+        runOnUiThread {
+            DaySummary.get()
+//            a += 1
+//            Toast.makeText(this, a, Toast.LENGTH_SHORT).show()
         }
     }
 

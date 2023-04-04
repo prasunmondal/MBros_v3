@@ -1,6 +1,5 @@
 package com.tech4bytes.mbrosv3.OneShot.Delivery
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,12 +8,15 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Switch
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.google.android.material.textfield.TextInputLayout
 import com.prasunmondal.postjsontosheets.clients.delete.Delete
 import com.tech4bytes.mbrosv3.AppData.AppUtils
+import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
+import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.ActivityDeliveringDeliver
@@ -22,9 +24,6 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.De
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverOrdersConfig
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
-import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
-import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
-import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
@@ -34,6 +33,7 @@ import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
+
 
 class OneShotDelivery : AppCompatActivity() {
 
@@ -54,10 +54,13 @@ class OneShotDelivery : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar()?.hide()
 
-        populateDeliveryMap()
-        updateSingleAttributedDataOnUI()
-        showOrders()
-        initiallizeUI()
+
+        runOnUiThread {
+            populateDeliveryMap()
+            updateSingleAttributedDataOnUI()
+            showOrders()
+            initiallizeUI()
+        }
     }
 
     private fun initiallizeUI() {

@@ -43,25 +43,15 @@ class DataFetchActivity : AppCompatActivity() {
     }
 
     private fun fetchData(container: LinearLayout, executingMethods: ExecutingMethods, nextActivity: Class<*>?) {
-        val list = listOf(
-            GetCustomerOrders::get,
-            CustomerKYC::getAllCustomers,
-            CustomerData::getRecords,
-            SingleAttributedData::getRecords,
-            DeliverCustomerOrders::get,
-            DaySummary::get,
-            Refueling::get
-        )
-
         val map: MutableMap<KFunction<Any>, FetchData> = mutableMapOf()
 
         executingMethods.get().forEach {
             val uiEntry: View
             val layoutInflater = LayoutInflater.from(AppContexts.get())
             uiEntry = layoutInflater.inflate(R.layout.activity_data_fetch_fragments, null)
-            uiEntry?.findViewById<TextView>(R.id.fragment_data_fetch_task_name)?.text = it.value
+            uiEntry?.findViewById<TextView>(R.id.fragment_data_fetch_task_name)?.text = DataFetchingInfo.getDescription(it.key)
             container.addView(uiEntry)
-            map[it.key] = FetchData(uiEntry, it.value, it.key, false)
+            map[it.key] = FetchData(uiEntry, DataFetchingInfo.getDescription(it.key), it.key, false)
         }
 
         map.forEach {

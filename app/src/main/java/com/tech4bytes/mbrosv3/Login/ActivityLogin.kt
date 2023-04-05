@@ -154,8 +154,7 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     private fun goToOneShotDelivery() {
-        val switchActivityIntent = Intent(this, OneShotDelivery::class.java)
-        startActivity(switchActivityIntent)
+        goToDataFetchActivity(OneShotDelivery::class.java)
     }
 
     private fun logUnIdentifiedDevice() {

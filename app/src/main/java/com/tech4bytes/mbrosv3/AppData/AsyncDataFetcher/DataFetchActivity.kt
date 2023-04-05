@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
@@ -19,9 +20,6 @@ import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
 import kotlin.reflect.KFunction
 
 class DataFetchActivity : AppCompatActivity() {
@@ -31,10 +29,12 @@ class DataFetchActivity : AppCompatActivity() {
         val container = findViewById<LinearLayout>(R.id.data_fetch_entries_container)
 
         var nextActivity: Class<*>? = null
+        var currentActivity: ActivityAuthEnums = ActivityAuthEnums.ONE_SHOT_DELIVERY
         if (intent.extras != null) {
             nextActivity = intent.getSerializableExtra("nextActivity") as Class<*>?
+            currentActivity = intent.getSerializableExtra("currentActivity") as ActivityAuthEnums
         }
-        fetchData(container, nextActivity)
+        fetchData(container, DataFetchingInfo.get(currentActivity), nextActivity)
     }
 
     private fun goToNextActivity(nextActivity: Class<*>) {
@@ -42,7 +42,7 @@ class DataFetchActivity : AppCompatActivity() {
             startActivity(switchActivityIntent)
     }
 
-    private fun fetchData(container: LinearLayout, nextActivity: Class<*>?) {
+    private fun fetchData(container: LinearLayout, executingMethods: ExecutingMethods, nextActivity: Class<*>?) {
         val list = listOf(
             GetCustomerOrders::get,
             CustomerKYC::getAllCustomers,
@@ -55,13 +55,13 @@ class DataFetchActivity : AppCompatActivity() {
 
         val map: MutableMap<KFunction<Any>, FetchData> = mutableMapOf()
 
-        list.forEach {
+        executingMethods.get().forEach {
             val uiEntry: View
             val layoutInflater = LayoutInflater.from(AppContexts.get())
             uiEntry = layoutInflater.inflate(R.layout.activity_data_fetch_fragments, null)
-            uiEntry?.findViewById<TextView>(R.id.fragment_data_fetch_task_name)?.text = it.name
+            uiEntry?.findViewById<TextView>(R.id.fragment_data_fetch_task_name)?.text = it.value
             container.addView(uiEntry)
-            map[it] = FetchData(uiEntry, it.name, it, false)
+            map[it.key] = FetchData(uiEntry, it.value, it.key, false)
         }
 
         map.forEach {

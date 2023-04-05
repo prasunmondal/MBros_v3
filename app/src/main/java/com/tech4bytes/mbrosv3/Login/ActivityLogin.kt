@@ -15,6 +15,7 @@ import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetchActivity
+import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.ExecutingMethods
 import com.tech4bytes.mbrosv3.AppUsers.AppUsersModel
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.UserRoleUtils
@@ -27,6 +28,7 @@ import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.Customer.DueShow
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard.ActivityAdminDeliveryDashboard
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
@@ -40,6 +42,7 @@ import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
+import kotlin.reflect.KFunction
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -154,7 +157,7 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     private fun goToOneShotDelivery() {
-        goToDataFetchActivity(OneShotDelivery::class.java)
+        goToDataFetchActivity(ActivityAuthEnums.ONE_SHOT_DELIVERY, OneShotDelivery::class.java)
     }
 
     private fun logUnIdentifiedDevice() {
@@ -205,14 +208,15 @@ class ActivityLogin : AppCompatActivity() {
         startActivity(switchActivityIntent)
     }
 
-    private fun goToDataFetchActivity(nextActivity: Class<*>) {
+    private fun goToDataFetchActivity(currentActivity: ActivityAuthEnums, nextActivity: Class<*>) {
         val switchActivityIntent = Intent(this, DataFetchActivity::class.java)
         switchActivityIntent.putExtra("nextActivity", nextActivity)
+        switchActivityIntent.putExtra("currentActivity", currentActivity)
         startActivity(switchActivityIntent)
     }
 
     private fun goToShowDues() {
-        goToDataFetchActivity(DueShow::class.java)
+        goToDataFetchActivity(ActivityAuthEnums.BALANCE_VIEW, DueShow::class.java)
     }
 
     fun showToastConnectToAdmin() {

@@ -59,12 +59,11 @@ class ActivityLogin : AppCompatActivity() {
             val roles = RolesUtils.getAppUser()
             LogMe.log("Got Role: $roles")
 
-            AuthorizationUtils.getAllUserAuthorizations()
-
             val container = findViewById<LinearLayout>(R.id.activity_login_roles_container)
             if (UserRoleUtils.getUserRoles().isEmpty()) {
                 logUnIdentifiedDevice()
             } else {
+                AuthorizationUtils.getAllUserAuthorizations()
                 if (UserRoleUtils.getUserRoles().size == 1) {
                     // if the user has only one role, directly go to the home page.
                     goToHomePageAsPerRole(UserRoleUtils.getUserRoles()[0])

@@ -12,6 +12,9 @@ class UserRoleUtils {
             val appUsersData = RolesUtils.getAppUser()
 
             LogMe.log("= = = = = = = = = = = = Allowed Roles = = = = = = = = = = = =")
+            if(appUsersData == null) {
+                return mutableListOf()
+            }
             appUsersData!!.roles.split(",").forEach { role ->
                 listOfRoles.add(ActivityAuthEnums.valueOf(role.trim()))
                 LogMe.log(role.trim())

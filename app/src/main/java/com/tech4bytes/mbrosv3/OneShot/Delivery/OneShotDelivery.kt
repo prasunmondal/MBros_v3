@@ -6,6 +6,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.Switch
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -520,6 +521,14 @@ class OneShotDelivery : AppCompatActivity() {
         saveDeliveryData()
     }
 
+    fun setSaveProgressBar(value: Int) {
+        findViewById<ProgressBar>(R.id.osd_save_progress_bar)
+            .setProgress(
+                value,
+                true
+            )
+    }
+
     fun gatherSingleAttributedData() {
         val finalKmElement = findViewById<EditText>(R.id.one_shot_delivery_trip_end_km)
         val labourExpensesElement = findViewById<EditText>(R.id.one_shot_delivery_labour_expenses)
@@ -534,7 +543,10 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun saveSingleAttributeData() {
-        SingleAttributedData.save(SingleAttributedData.getRecords())
+        Thread {
+            SingleAttributedData.save(SingleAttributedData.getRecords())
+            setSaveProgressBar(10)
+        }.start()
     }
 
     private fun updateRefuelingUIDetails() {
@@ -617,20 +629,36 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun saveDeliveryData() {
-        deliveryMapOrderedCustomers.forEach {
-            LogMe.log(it.value.name + ":: deliveredKg:" + it.value.deliveredKg)
-            LogMe.log(it.value.name + ":: paid:" + it.value.paid)
-            if(NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0.0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
-                it.value.deliveryStatus = "DELIVERED"
-                DeliverCustomerOrders.save(it.value)
+        Thread {
+            var eachStep = 0
+            deliveryMapOrderedCustomers.forEach {
+                LogMe.log(it.value.name + ":: deliveredKg:" + it.value.deliveredKg)
+                LogMe.log(it.value.name + ":: paid:" + it.value.paid)
+                if(NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0.0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
+                    it.value.deliveryStatus = "DELIVERED"
+                    DeliverCustomerOrders.save(it.value)
+                    if(eachStep+10 <100) {
+                        eachStep+=10
+                    } else {
+                        eachStep=100
+                    }
+                    runOnUiThread { setSaveProgressBar(eachStep) }
+                }
             }
-        }
-        deliveryMapUnOrderedCustomers.forEach {
-            if(NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0.0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
-                it.value.deliveryStatus = "DELIVERED"
-                DeliverCustomerOrders.save(it.value)
+            deliveryMapUnOrderedCustomers.forEach {
+                if(NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0.0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
+                    it.value.deliveryStatus = "DELIVERED"
+                    DeliverCustomerOrders.save(it.value)
+                    if(eachStep+10 <100) {
+                        eachStep+=10
+                    } else {
+                        eachStep=100
+                    }
+                    runOnUiThread { setSaveProgressBar(eachStep) }
+                }
             }
-        }
+        }.start()
+        runOnUiThread { setSaveProgressBar(100) }
     }
 
     fun onClickToggleProfitViewUI(view: View) {

@@ -148,8 +148,7 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     private fun goToOneShotLoadDetailsPage() {
-        val switchActivityIntent = Intent(this, OneShotLoad::class.java)
-        startActivity(switchActivityIntent)
+        goToDataFetchActivity(ActivityAuthEnums.ONE_SHOT_LOAD_DETAILS, OneShotLoad::class.java)
     }
 
     private fun goToHomePageAsPerRole(role: ActivityAuthEnums) {
@@ -177,13 +176,11 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     private fun goToCollectorRole() {
-        val switchActivityIntent = Intent(this, CollectorVerifyMoneyCollectionActivity::class.java)
-        startActivity(switchActivityIntent)
+        goToDataFetchActivity(ActivityAuthEnums.COLLECTOR, CollectorVerifyMoneyCollectionActivity::class.java)
     }
 
     private fun goToGetOrdersPage() {
-        val switchActivityIntent = Intent(this, ActivityGetCustomerOrders::class.java)
-        startActivity(switchActivityIntent)
+        goToDataFetchActivity(ActivityAuthEnums.ORDER_COLLECTOR, ActivityGetCustomerOrders::class.java)
     }
 
     private fun goToDeliveryRole() {
@@ -198,14 +195,11 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     fun goToDeliveringDeliverPage() {
-        val switchActivityIntent = Intent(this, ActivityDeliveringListOrders::class.java)
-        startActivity(switchActivityIntent)
-        finish()
+        goToDataFetchActivity(ActivityAuthEnums.DELIVERY, ActivityDeliveringListOrders::class.java)
     }
 
     private fun goToAdminRole() {
-        val switchActivityIntent = Intent(this, ActivityAdminDeliveryDashboard::class.java)
-        startActivity(switchActivityIntent)
+        goToDataFetchActivity(ActivityAuthEnums.ADMIN, ActivityAdminDeliveryDashboard::class.java)
     }
 
     private fun goToDataFetchActivity(currentActivity: ActivityAuthEnums, nextActivity: Class<*>) {

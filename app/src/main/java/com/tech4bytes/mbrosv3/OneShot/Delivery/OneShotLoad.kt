@@ -10,6 +10,7 @@ import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import java.util.stream.Collectors
 
 
@@ -105,7 +106,7 @@ class OneShotLoad : AppCompatActivity() {
         val loadingArea = findViewById<AutoCompleteTextView>(R.id.one_shot_load_loading_area)
         val extraCashProvider = findViewById<TextInputEditText>(R.id.one_shot_load_extra_expense_provided)
         val farmRate = findViewById<TextInputEditText>(R.id.one_shot_load_farm_rate)
-        val bufferPrice = findViewById<TextInputEditText>(R.id.one_shot_load_buffer_price)
+        val finalFarmRate = findViewById<TextInputEditText>(R.id.osl_final_farm_rate)
 
         companyName.setText(obj.load_companyName)
         branch.setText(obj.load_branch)
@@ -113,7 +114,7 @@ class OneShotLoad : AppCompatActivity() {
         loadingArea.setText(obj.load_area)
         extraCashProvider.setText(obj.extra_cash_given)
         farmRate.setText(obj.finalFarmRate)
-        bufferPrice.setText(obj.bufferRate)
+        finalFarmRate.setText(obj.bufferRate + obj.finalFarmRate)
     }
 
     private fun updateObjFromUI() {
@@ -124,13 +125,13 @@ class OneShotLoad : AppCompatActivity() {
         val loadingArea = findViewById<AutoCompleteTextView>(R.id.one_shot_load_loading_area).text.toString()
         val extraCashProvider = findViewById<TextInputEditText>(R.id.one_shot_load_extra_expense_provided).text.toString()
         val farmRate = findViewById<TextInputEditText>(R.id.one_shot_load_farm_rate).text.toString()
-        val bufferPrice = findViewById<TextInputEditText>(R.id.one_shot_load_buffer_price).text.toString()
+        val finalFarmRate = findViewById<TextInputEditText>(R.id.osl_final_farm_rate).text.toString()
 
         obj.load_companyName = companyName
         obj.load_branch = branch
         obj.load_account = account
         obj.load_area = loadingArea
-        obj.bufferRate = bufferPrice
+        obj.bufferRate = (NumberUtils.getIntOrZero(finalFarmRate) - NumberUtils.getIntOrZero(farmRate)).toString()
 
         obj.extra_cash_given = extraCashProvider
         obj.finalFarmRate = farmRate
@@ -162,10 +163,10 @@ class OneShotLoad : AppCompatActivity() {
     fun onClickClearAmountsDetails(view: View) {
         val extraCashProvided = findViewById<TextInputEditText>(R.id.one_shot_load_extra_expense_provided)
         val farmRate = findViewById<TextInputEditText>(R.id.one_shot_load_farm_rate)
-        val bufferPrice = findViewById<TextInputEditText>(R.id.one_shot_load_buffer_price)
+        val finalFarmRate = findViewById<TextInputEditText>(R.id.osl_final_farm_rate)
 
         extraCashProvided.text!!.clear()
         farmRate.text!!.clear()
-        bufferPrice.text!!.clear()
+        finalFarmRate.text!!.clear()
     }
 }

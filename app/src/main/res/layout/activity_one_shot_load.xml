@@ -20,6 +20,7 @@
             android:id="@+id/textView50"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingVertical="10dp"
             android:text="Pre Load Details"
             android:textSize="24sp" />
 
@@ -105,7 +106,8 @@
                 android:layout_weight="1"
                 android:hint="Extra Cash Given"
                 android:maxEms="10"
-                android:minEms="10">
+                android:minEms="10"
+                android:paddingHorizontal="20dp">
 
                 <!--this is the actual edit text which takes the input-->
                 <com.google.android.material.textfield.TextInputEditText

@@ -32,6 +32,12 @@ class DataFetchingInfo {
             val executingMethods = ExecutingMethods()
 
             when(activity){
+                ActivityAuthEnums.ADMIN -> {
+                    executingMethods.add(CustomerKYC::getAllCustomers)
+                    executingMethods.add(GetCustomerOrders::get)
+                    executingMethods.add(SingleAttributedData::getRecords)
+                    executingMethods.add(DeliverCustomerOrders::get)
+                }
                 ActivityAuthEnums.ONE_SHOT_DELIVERY -> {
                     executingMethods.add(CustomerKYC::getAllCustomers)
                     executingMethods.add(GetCustomerOrders::get)
@@ -40,6 +46,11 @@ class DataFetchingInfo {
                     executingMethods.add(DeliverCustomerOrders::get)
                     executingMethods.add(DaySummary::get)
                     executingMethods.add(Refueling::get)
+                }
+                ActivityAuthEnums.DELIVERY -> {
+                    executingMethods.add(CustomerKYC::getAllCustomers)
+                    executingMethods.add(GetCustomerOrders::get)
+                    executingMethods.add(DeliverCustomerOrders::get)
                 }
                 ActivityAuthEnums.BALANCE_VIEW -> {
 

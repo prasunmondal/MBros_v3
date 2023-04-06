@@ -45,18 +45,22 @@ class DataFetchActivity : AppCompatActivity() {
     private fun fetchData(container: LinearLayout, executingMethods: ExecutingMethods, nextActivity: Class<*>?) {
         val map: MutableMap<KFunction<Any>, FetchData> = mutableMapOf()
 
-        executingMethods.get().forEach {
-            val uiEntry: View
-            val layoutInflater = LayoutInflater.from(AppContexts.get())
-            uiEntry = layoutInflater.inflate(R.layout.activity_data_fetch_fragments, null)
-            uiEntry?.findViewById<TextView>(R.id.fragment_data_fetch_task_name)?.text = DataFetchingInfo.getDescription(it.key)
-            container.addView(uiEntry)
-            map[it.key] = FetchData(uiEntry, DataFetchingInfo.getDescription(it.key), it.key, false)
-        }
+        if(executingMethods.get().isEmpty() && nextActivity != null) {
+            goToNextActivity(nextActivity)
+        } else {
+            executingMethods.get().forEach {
+                val uiEntry: View
+                val layoutInflater = LayoutInflater.from(AppContexts.get())
+                uiEntry = layoutInflater.inflate(R.layout.activity_data_fetch_fragments, null)
+                uiEntry?.findViewById<TextView>(R.id.fragment_data_fetch_task_name)?.text = DataFetchingInfo.getDescription(it.key)
+                container.addView(uiEntry)
+                map[it.key] = FetchData(uiEntry, DataFetchingInfo.getDescription(it.key), it.key, false)
+            }
 
-        map.forEach {
-            @Suppress("UNCHECKED_CAST")
-            run(map, it.key, nextActivity)
+            map.forEach {
+                @Suppress("UNCHECKED_CAST")
+                run(map, it.key, nextActivity)
+            }
         }
     }
 

@@ -6,6 +6,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.R
@@ -21,6 +22,12 @@ class OneShotLoad : AppCompatActivity() {
         AppContexts.set(this)
 
         AppUtils.logError()
+
+        val finalFarmRateContainer = findViewById<TextInputLayout>(R.id.osl_final_farm_rate_container)
+        finalFarmRateContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
+        val deliveryBasePriceContainer = findViewById<TextInputLayout>(R.id.one_shot_load_farm_rate_container)
+        deliveryBasePriceContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
+        
         populateOptionsCompanyName()
         populateOptionsCompanyBranch()
         populateOptionsArea()

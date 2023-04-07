@@ -42,12 +42,34 @@
                 android:orientation="vertical"
                 android:paddingHorizontal="20dp">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="onClickClearAmountsDetails"
-                    android:padding="10dp"
-                    app:srcCompat="@android:drawable/ic_menu_delete" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView49"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rate"
+                        android:textColor="#7A7013"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:id="@+id/view4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="2dp"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="onClickClearAmountsDetails"
+                        android:padding="10dp"
+                        app:srcCompat="@android:drawable/ic_menu_delete" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -152,13 +174,32 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded"
+            android:backgroundTint="#F8F4D5"
+            android:orientation="vertical"
+            android:padding="15dp">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:gravity="right"
-                android:orientation="vertical">
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView45"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Company Details"
+                    android:textColor="#7A7013"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
 
                 <ImageView
                     android:id="@+id/imageView2"
@@ -271,21 +312,38 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/button7"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginTop="10dp"
-            android:onClick="onClickOneShotLoadSaveBtn"
-            android:text="Save" />
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/button8"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#BF0D0D"
-            android:onClick="onClickOneShotLoadRefreshBtn"
-            android:text="Refresh" />
+            <Button
+                android:id="@+id/button7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="7"
+                android:background="@drawable/rounded"
+                android:hapticFeedbackEnabled="true"
+                android:onClick="onClickOneShotLoadSaveBtn"
+                android:paddingTop="2dp"
+                android:paddingBottom="0dp"
+                android:text="Save" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:background="@drawable/rounded"
+                android:backgroundTint="#C3DAA8"
+                android:hapticFeedbackEnabled="true"
+                android:onClick="onClickOneShotLoadRefreshBtn"
+                android:tint="#5C915F"
+                app:srcCompat="@android:drawable/ic_popup_sync" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

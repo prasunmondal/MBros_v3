@@ -27,7 +27,9 @@ class OneShotLoad : AppCompatActivity() {
         finalFarmRateContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
         val deliveryBasePriceContainer = findViewById<TextInputLayout>(R.id.one_shot_load_farm_rate_container)
         deliveryBasePriceContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
-        
+        val inHandContainer = findViewById<TextInputLayout>(R.id.osl_in_hand_cash_container)
+        inHandContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
+
         populateOptionsCompanyName()
         populateOptionsCompanyBranch()
         populateOptionsArea()
@@ -121,7 +123,7 @@ class OneShotLoad : AppCompatActivity() {
         loadingArea.setText(obj.load_area)
         extraCashProvider.setText(obj.extra_cash_given)
         farmRate.setText(obj.finalFarmRate)
-        finalFarmRate.setText(obj.bufferRate + obj.finalFarmRate)
+        finalFarmRate.setText((NumberUtils.getIntOrZero(obj.finalFarmRate) + NumberUtils.getIntOrZero(obj.bufferRate)).toString())
     }
 
     private fun updateObjFromUI() {

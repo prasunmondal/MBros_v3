@@ -63,9 +63,11 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:hint="Delivery Farm Rate"
+                        android:hint="₹ 0"
                         android:maxEms="10"
-                        android:minEms="10">
+                        android:minEms="10"
+                        app:hintAnimationEnabled="false"
+                        app:hintEnabled="false">
 
                         <!--this is the actual edit text which takes the input-->
                         <com.google.android.material.textfield.TextInputEditText
@@ -73,8 +75,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="#00FFFFFF"
+                            android:hint="₹ 0"
                             android:inputType="number"
-                            android:textSize="14sp" />
+                            android:textSize="16sp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,9 +86,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="Final Farm Rate"
                         android:maxEms="10"
-                        android:minEms="10">
+                        android:minEms="10"
+                        app:hintAnimationEnabled="false"
+                        app:hintEnabled="false">
 
                         <!--this is the actual edit text which takes the input-->
                         <com.google.android.material.textfield.TextInputEditText
@@ -93,6 +97,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="#00FFFFFF"
+                            android:hint="₹ 0"
                             android:inputType="numberSigned|number"
                             android:textSize="24sp"
                             android:textStyle="bold" />
@@ -100,27 +105,45 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
+
             </LinearLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Extra Cash Given"
-                android:maxEms="10"
-                android:minEms="10"
-                android:paddingHorizontal="20dp">
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
 
-                <!--this is the actual edit text which takes the input-->
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/one_shot_load_extra_expense_provided"
-                    android:layout_width="100dp"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="#00FFFFFF"
-                    android:inputType="number"
-                    android:textSize="12sp" />
+                    android:text="InHand Cash"
+                    android:textSize="16sp" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/osl_in_hand_cash_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxEms="10"
+                    android:minEms="10"
+                    android:paddingHorizontal="5dp"
+                    app:hintAnimationEnabled="false"
+                    app:hintEnabled="false">
+
+                    <!--this is the actual edit text which takes the input-->
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/one_shot_load_extra_expense_provided"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:background="#00FFFFFF"
+                        android:gravity="center"
+                        android:hint="₹ 0"
+                        android:inputType="number"
+                        android:textSize="14sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 

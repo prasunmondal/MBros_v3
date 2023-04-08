@@ -7,13 +7,16 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.textview.MaterialTextView
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetchActivity
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
@@ -28,12 +31,18 @@ import java.util.stream.Collectors
 class OneShotLoad : AppCompatActivity() {
 
     var isDataFresh: Boolean = true
+    lateinit var oslSaveBtn: MaterialButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_one_shot_load)
         AppContexts.set(this)
         AppUtils.logError()
+        initializeVariables()
         initializeUI()
+    }
+
+    private fun initializeVariables() {
+        oslSaveBtn = findViewById(R.id.osl_save_btn)
     }
 
     fun initializeUI() {
@@ -196,10 +205,18 @@ class OneShotLoad : AppCompatActivity() {
     fun onClickOneShotLoadSaveBtn(view: View) {
         updateObjFromUI()
         Thread {
+            runOnUiThread {
+                oslSaveBtn.isEnabled = false
+                oslSaveBtn.alpha = .5f
+                oslSaveBtn.isClickable = false;
+            }
             SingleAttributedData.save(SingleAttributedData.getRecords())
             runOnUiThread {
                 markDataFresh(true)
                 Toast.makeText(this, "Data Saved!", Toast.LENGTH_LONG).show()
+                oslSaveBtn.isEnabled = true
+                oslSaveBtn.alpha = 1.0f;
+                oslSaveBtn.isClickable = true;
             }
         }.start()
     }

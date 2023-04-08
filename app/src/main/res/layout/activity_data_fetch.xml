@@ -34,7 +34,8 @@
                 android:layout_marginBottom="20dp"
                 android:gravity="center"
                 android:text="Fetching Data..."
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textStyle="bold|italic" />
 
             <View
                 android:id="@+id/view2"
@@ -43,16 +44,17 @@
                 android:background="#2196F3" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/data_fetch_entries_container"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"></LinearLayout>
+            android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:orientation="vertical" />
+            <LinearLayout
+                android:id="@+id/data_fetch_entries_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"></LinearLayout>
+        </ScrollView>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

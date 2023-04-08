@@ -15,6 +15,7 @@ import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetchActivity
+import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetchingInfo
 import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.ExecutingMethods
 import com.tech4bytes.mbrosv3.AppUsers.AppUsersModel
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
@@ -203,10 +204,15 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     private fun goToDataFetchActivity(currentActivity: ActivityAuthEnums, nextActivity: Class<*>) {
-        val switchActivityIntent = Intent(this, DataFetchActivity::class.java)
-        switchActivityIntent.putExtra("nextActivity", nextActivity)
-        switchActivityIntent.putExtra("currentActivity", currentActivity)
-        startActivity(switchActivityIntent)
+        var switchActivityIntent = Intent(this, DataFetchActivity::class.java)
+        if(DataFetchingInfo.get(currentActivity).get().isEmpty()) {
+            switchActivityIntent = Intent(this, nextActivity)
+            startActivity(switchActivityIntent)
+        } else {
+            switchActivityIntent.putExtra("nextActivity", nextActivity)
+            switchActivityIntent.putExtra("currentActivity", currentActivity)
+            startActivity(switchActivityIntent)
+        }
     }
 
     private fun goToShowDues() {

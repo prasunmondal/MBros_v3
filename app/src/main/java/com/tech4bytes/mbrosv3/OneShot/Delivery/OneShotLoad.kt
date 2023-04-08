@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
@@ -16,6 +17,7 @@ import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import java.util.stream.Collectors
 
@@ -41,9 +43,9 @@ class OneShotLoad : AppCompatActivity() {
     }
 
     private fun setListeners() {
-        val initialFarmRate = findViewById<AutoCompleteTextView>(R.id.one_shot_load_farm_rate)
-        val finalFarmRate = findViewById<AutoCompleteTextView>(R.id.osl_final_farm_rate)
-        val inHandCash = findViewById<AutoCompleteTextView>(R.id.one_shot_load_extra_expense_provided)
+        val initialFarmRate = findViewById<TextInputEditText>(R.id.one_shot_load_farm_rate)
+        val finalFarmRate = findViewById<TextInputEditText>(R.id.osl_final_farm_rate)
+        val inHandCash = findViewById<TextInputEditText>(R.id.one_shot_load_extra_expense_provided)
         val loadingCompany = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name)
         val loadingCompanyBranch = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_branch)
         val loadingCompanyArea = findViewById<AutoCompleteTextView>(R.id.one_shot_load_loading_area)
@@ -189,7 +191,10 @@ class OneShotLoad : AppCompatActivity() {
         updateObjFromUI()
         Thread {
             SingleAttributedData.save(SingleAttributedData.getRecords())
-            markDataFresh(true)
+            runOnUiThread {
+                markDataFresh(true)
+                Toast.makeText(this, "Data Saved!", Toast.LENGTH_LONG).show()
+            }
         }.start()
     }
 
@@ -202,21 +207,14 @@ class OneShotLoad : AppCompatActivity() {
             return
         }
 
-        if(forceUpdate || this.isDataFresh != isDataFresh) {
-            val oslRateInnerContainerElement = findViewById<LinearLayout>(R.id.osl_rate_inner_container)
-            val oslRateOuterContainerElement = findViewById<LinearLayout>(R.id.osl_rate_outer_container)
-            val oslCompanyDetailsOuterContainerElement = findViewById<LinearLayout>(R.id.osl_company_details_outer_container)
+        this.isDataFresh = isDataFresh
+        val oslRateInnerContainerElement = findViewById<LinearLayout>(R.id.osl_rate_inner_container)
+        val oslRateOuterContainerElement = findViewById<LinearLayout>(R.id.osl_rate_outer_container)
+        val oslCompanyDetailsOuterContainerElement = findViewById<LinearLayout>(R.id.osl_company_details_outer_container)
 
-            if (isDataFresh) {
-                oslRateOuterContainerElement.setBackgroundColor(ContextCompat.getColor(this, R.color.osl_data_status_fresh_light))
-                oslCompanyDetailsOuterContainerElement.setBackgroundColor(ContextCompat.getColor(this, R.color.osl_data_status_fresh_light))
-                oslRateInnerContainerElement.setBackgroundColor(ContextCompat.getColor(this, R.color.osl_data_status_fresh_dark))
-            } else {
-                oslRateOuterContainerElement.setBackgroundColor(ContextCompat.getColor(this, R.color.osl_data_status_stale_light))
-                oslCompanyDetailsOuterContainerElement.setBackgroundColor(ContextCompat.getColor(this, R.color.osl_data_status_stale_light))
-                oslRateInnerContainerElement.setBackgroundColor(ContextCompat.getColor(this, R.color.osl_data_status_stale_dark))
-            }
-        }
+        oslRateOuterContainerElement.backgroundTintList = if (isDataFresh) this.resources.getColorStateList(R.color.osl_data_status_fresh_light) else this.resources.getColorStateList(R.color.osl_data_status_stale_light)
+        oslCompanyDetailsOuterContainerElement.backgroundTintList = if (isDataFresh) this.resources.getColorStateList(R.color.osl_data_status_fresh_light) else this.resources.getColorStateList(R.color.osl_data_status_stale_light)
+        oslRateInnerContainerElement.backgroundTintList = if (isDataFresh) this.resources.getColorStateList(R.color.osl_data_status_fresh_dark) else this.resources.getColorStateList(R.color.osl_data_status_stale_dark)
     }
 
     fun onClickClearCompanyLoadingDetails(view: View) {

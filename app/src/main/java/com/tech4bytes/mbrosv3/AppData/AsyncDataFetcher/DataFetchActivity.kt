@@ -26,6 +26,7 @@ class DataFetchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_data_fetch)
+        AppContexts.set(this)
         val container = findViewById<LinearLayout>(R.id.data_fetch_entries_container)
 
         var nextActivity: Class<*>? = null
@@ -54,20 +55,20 @@ class DataFetchActivity : AppCompatActivity() {
                 uiEntry = layoutInflater.inflate(R.layout.activity_data_fetch_fragments, null)
                 uiEntry?.findViewById<TextView>(R.id.fragment_data_fetch_task_name)?.text = DataFetchingInfo.getDescription(it.key)
                 container.addView(uiEntry)
-                map[it.key] = FetchData(uiEntry, DataFetchingInfo.getDescription(it.key), it.key, false)
+                map[it.key] = FetchData(uiEntry, DataFetchingInfo.getDescription(it.key), it.key, it.value.useCache, false)
             }
 
             map.forEach {
                 @Suppress("UNCHECKED_CAST")
-                run(map, it.key, nextActivity)
+                run(map, it.key, it.value.useCache, nextActivity)
             }
         }
     }
 
-    private fun run(list: MutableMap<KFunction<Any>, FetchData>, key: KFunction<Any>, nextActivity: Class<*>?) { //uiEntry: View, function: (Boolean) -> (Unit)) {
+    private fun run(list: MutableMap<KFunction<Any>, FetchData>, key: KFunction<Any>, useCache: Boolean, nextActivity: Class<*>?) { //uiEntry: View, function: (Boolean) -> (Unit)) {
         Thread {
             @Suppress("UNCHECKED_CAST")
-            (key as ((Boolean) -> Unit)).invoke(true)
+            (key as ((Boolean) -> Unit)).invoke(useCache)
             runOnUiThread {
                 list[key]!!.view.findViewById<ConstraintLayout>(R.id.fragment_data_fetch_container)?.
                 setBackgroundColor(ContextCompat.getColor(this, R.color.verify_delivery_valid))

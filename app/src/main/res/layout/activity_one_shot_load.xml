@@ -332,6 +332,7 @@
                 android:backgroundTint="#D2EAF4"
                 android:hapticFeedbackEnabled="true"
                 android:onClick="onClickOneShotLoadRefreshBtn"
+                android:padding="4dp"
                 android:tint="#92BFD3"
                 app:srcCompat="@android:drawable/ic_popup_sync" />
 
@@ -357,6 +358,7 @@
                 android:backgroundTint="#F1A891"
                 android:hapticFeedbackEnabled="true"
                 android:onClick="onClickExitButton"
+                android:padding="4dp"
                 app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
                 app:tint="#530303" />
 

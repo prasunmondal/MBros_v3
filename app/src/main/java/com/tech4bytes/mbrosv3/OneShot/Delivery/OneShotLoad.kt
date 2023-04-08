@@ -54,7 +54,10 @@ class OneShotLoad : AppCompatActivity() {
         val loadingCompanyArea = findViewById<AutoCompleteTextView>(R.id.one_shot_load_loading_area)
         val loadingCompanyMoneyAccount = findViewById<AutoCompleteTextView>(R.id.one_shot_load_money_account)
 
-        initialFarmRate.addTextChangedListener { markDataFresh(false) }
+        initialFarmRate.addTextChangedListener {
+            markDataFresh(false)
+            finalFarmRate.text = initialFarmRate.text
+        }
         finalFarmRate.addTextChangedListener { markDataFresh(false) }
         inHandCash.addTextChangedListener { markDataFresh(false) }
         loadingCompany.addTextChangedListener { markDataFresh(false) }

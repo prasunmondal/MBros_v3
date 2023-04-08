@@ -247,4 +247,8 @@ class OneShotLoad : AppCompatActivity() {
         startActivity(switchActivityIntent)
         finish()
     }
+
+    fun onClickExitButton(view: View) {
+        this.finishAffinity()
+    }
 }

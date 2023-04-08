@@ -323,11 +323,24 @@
             android:gravity="center"
             android:orientation="horizontal">
 
+            <ImageView
+                android:id="@+id/imageView8"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight=".25"
+                android:background="@drawable/rounded"
+                android:backgroundTint="#F1A891"
+                android:hapticFeedbackEnabled="true"
+                android:onClick="onClickExitButton"
+                app:tint="#530303"
+                app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
             <Button
                 android:id="@+id/button7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="7"
+                android:layout_marginHorizontal="20dp"
+                android:layout_weight=".5"
                 android:background="@drawable/rounded"
                 android:hapticFeedbackEnabled="true"
                 android:onClick="onClickOneShotLoadSaveBtn"
@@ -337,9 +350,9 @@
 
             <ImageView
                 android:id="@+id/imageView4"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
+                android:layout_weight=".25"
                 android:background="@drawable/rounded"
                 android:backgroundTint="#C3DAA8"
                 android:hapticFeedbackEnabled="true"

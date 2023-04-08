@@ -26,22 +26,24 @@
             android:textStyle="bold" />
 
         <LinearLayout
+            android:id="@+id/osl_rate_outer_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/rounded"
-            android:backgroundTint="#F8F4D5"
+            android:backgroundTint="#C8E8A3"
             android:orientation="vertical"
             android:padding="15dp"
             android:paddingTop="10dp">
 
             <LinearLayout
+                android:id="@+id/osl_rate_inner_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/rounded"
-                android:backgroundTint="#C4FBEF7F"
+                android:backgroundTint="#AFD682"
                 android:gravity="right"
                 android:orientation="vertical"
-                android:paddingHorizontal="20dp">
+                android:paddingLeft="20dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -173,11 +175,12 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/osl_company_details_outer_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="20dp"
             android:background="@drawable/rounded"
-            android:backgroundTint="#F8F4D5"
+            android:backgroundTint="#C8E8A3"
             android:orientation="vertical"
             android:padding="15dp">
 

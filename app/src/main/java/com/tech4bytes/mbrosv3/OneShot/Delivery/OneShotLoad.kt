@@ -1,10 +1,15 @@
 package com.tech4bytes.mbrosv3.OneShot.Delivery
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.tech4bytes.mbrosv3.AppData.AppUtils
@@ -16,24 +21,56 @@ import java.util.stream.Collectors
 
 
 class OneShotLoad : AppCompatActivity() {
+
+    var isDataFresh: Boolean = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_one_shot_load)
         AppContexts.set(this)
-
         AppUtils.logError()
+        initializeUI()
+    }
 
+    fun initializeUI() {
+        setDecors()
+        setListeners()
+        populateDropDowns()
+        setListeners()
+        updateUIFromObj(false)
+        markDataFresh(true, true)
+    }
+
+    private fun setListeners() {
+        val initialFarmRate = findViewById<AutoCompleteTextView>(R.id.one_shot_load_farm_rate)
+        val finalFarmRate = findViewById<AutoCompleteTextView>(R.id.osl_final_farm_rate)
+        val inHandCash = findViewById<AutoCompleteTextView>(R.id.one_shot_load_extra_expense_provided)
+        val loadingCompany = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name)
+        val loadingCompanyBranch = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_branch)
+        val loadingCompanyArea = findViewById<AutoCompleteTextView>(R.id.one_shot_load_loading_area)
+        val loadingCompanyMoneyAccount = findViewById<AutoCompleteTextView>(R.id.one_shot_load_money_account)
+
+        initialFarmRate.addTextChangedListener { markDataFresh(false) }
+        finalFarmRate.addTextChangedListener { markDataFresh(false) }
+        inHandCash.addTextChangedListener { markDataFresh(false) }
+        loadingCompany.addTextChangedListener { markDataFresh(false) }
+        loadingCompanyBranch.addTextChangedListener { markDataFresh(false) }
+        loadingCompanyArea.addTextChangedListener { markDataFresh(false) }
+        loadingCompanyMoneyAccount.addTextChangedListener { markDataFresh(false) }
+    }
+
+    private fun populateDropDowns() {
+        populateOptionsCompanyName()
+        populateOptionsCompanyBranch()
+        populateOptionsArea()
+    }
+
+    private fun setDecors() {
         val finalFarmRateContainer = findViewById<TextInputLayout>(R.id.osl_final_farm_rate_container)
         finalFarmRateContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
         val deliveryBasePriceContainer = findViewById<TextInputLayout>(R.id.one_shot_load_farm_rate_container)
         deliveryBasePriceContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
         val inHandContainer = findViewById<TextInputLayout>(R.id.osl_in_hand_cash_container)
         inHandContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
-
-        populateOptionsCompanyName()
-        populateOptionsCompanyBranch()
-        populateOptionsArea()
-        updateUIFromObj(false)
     }
 
     private fun populateOptionsCompanyName() {
@@ -150,11 +187,36 @@ class OneShotLoad : AppCompatActivity() {
 
     fun onClickOneShotLoadSaveBtn(view: View) {
         updateObjFromUI()
-        SingleAttributedData.save(SingleAttributedData.getRecords())
+        Thread {
+            SingleAttributedData.save(SingleAttributedData.getRecords())
+            markDataFresh(true)
+        }.start()
     }
 
     fun onClickOneShotLoadRefreshBtn(view: View) {
         AppUtils.invalidateAllDataAndRestartApp()
+    }
+
+    private fun markDataFresh(isDataFresh: Boolean, forceUpdate: Boolean = false) {
+        if (!forceUpdate && this.isDataFresh == isDataFresh) {
+            return
+        }
+
+        if(forceUpdate || this.isDataFresh != isDataFresh) {
+            val oslRateInnerContainerElement = findViewById<LinearLayout>(R.id.osl_rate_inner_container)
+            val oslRateOuterContainerElement = findViewById<LinearLayout>(R.id.osl_rate_outer_container)
+            val oslCompanyDetailsOuterContainerElement = findViewById<LinearLayout>(R.id.osl_company_details_outer_container)
+
+            if (isDataFresh) {
+                oslRateOuterContainerElement.setBackgroundColor(ContextCompat.getColor(this, R.color.osl_data_status_fresh_light))
+                oslCompanyDetailsOuterContainerElement.setBackgroundColor(ContextCompat.getColor(this, R.color.osl_data_status_fresh_light))
+                oslRateInnerContainerElement.setBackgroundColor(ContextCompat.getColor(this, R.color.osl_data_status_fresh_dark))
+            } else {
+                oslRateOuterContainerElement.setBackgroundColor(ContextCompat.getColor(this, R.color.osl_data_status_stale_light))
+                oslCompanyDetailsOuterContainerElement.setBackgroundColor(ContextCompat.getColor(this, R.color.osl_data_status_stale_light))
+                oslRateInnerContainerElement.setBackgroundColor(ContextCompat.getColor(this, R.color.osl_data_status_stale_dark))
+            }
+        }
     }
 
     fun onClickClearCompanyLoadingDetails(view: View) {

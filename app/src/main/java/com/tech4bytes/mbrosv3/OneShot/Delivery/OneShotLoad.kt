@@ -38,7 +38,7 @@ class OneShotLoad : AppCompatActivity() {
         setListeners()
         populateDropDowns()
         setListeners()
-        updateUIFromObj(false)
+        updateUIFromObj()
         markDataFresh(true, true)
     }
 
@@ -146,7 +146,7 @@ class OneShotLoad : AppCompatActivity() {
         autoCompleteTextView.setAdapter(arrayAdapter)
     }
 
-    private fun updateUIFromObj(useCache: Boolean) {
+    private fun updateUIFromObj(useCache: Boolean = true) {
         val obj = SingleAttributedData.getRecords(useCache)
         val companyName = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name)
         val branch = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_branch)

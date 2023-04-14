@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.prasunmondal.postjsontosheets.clients.delete.Delete
 import com.tech4bytes.mbrosv3.AppData.AppUtils
@@ -250,18 +251,20 @@ class OneShotDelivery : AppCompatActivity() {
             val entry = layoutInflater.inflate(R.layout.activity_one_shot_delivery_fragment, null)
 
             val nameElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_name)
-            val rateElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_rate)
-            val pcElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc)
+            val rateElementContainer = entry.findViewById<TextInputLayout>(R.id.osd_rate_for_customer_container)
+            val rateElement = entry.findViewById<TextInputEditText>(R.id.osd_rate_for_customer)
+            val pcElement = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_pc)
             val kgElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_kg)
             val paidElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid)
             val balanceElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
             val moreDetailsContainer = entry.findViewById<LinearLayout>(R.id.one_shot_delivery_fragment_more_details_container)
+            rateElementContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
 
             nameElement.text = order.value.name
             balanceElement.text = order.value.prevDue
             val deliveryRecord = ActivityDeliveringDeliver.getDeliveryRecord(order.value.name)
             if(deliveryRecord != null) {
-                pcElement.text = deliveryRecord.deliveredPc
+                pcElement.setText(deliveryRecord.deliveredPc)
                 kgElement.text = deliveryRecord.deliveredKg
                 paidElement.text = deliveryRecord.paid
             }
@@ -270,7 +273,7 @@ class OneShotDelivery : AppCompatActivity() {
             LogMe.log(SingleAttributedData.getBufferRateInt().toString())
             LogMe.log(CustomerKYC.get(order.value.name)!!.rateDifference)
             LogMe.log("${SingleAttributedData.getFinalRateInt() + SingleAttributedData.getBufferRateInt() + CustomerKYC.get(order.value.name)!!.rateDifference.toInt()}")
-            rateElement.text = "${CustomerData.getDeliveryRate(order.value.name)}"
+            rateElement.setText("${CustomerData.getDeliveryRate(order.value.name)}")
 
             rateElement.doOnTextChanged { text, start, before, count ->
                 updateEntry(order, entry)
@@ -315,7 +318,7 @@ class OneShotDelivery : AppCompatActivity() {
     private fun updateRates() {
         uiMaps.forEach {
             val rate = CustomerData.getCustomerDefaultRate(it.key)
-            val rateElement = it.value.findViewById<TextView>(R.id.one_shot_delivery_fragment_rate)
+            val rateElement = it.value.findViewById<TextView>(R.id.osd_rate_for_customer)
             rateElement.text = rate.toString()
         }
     }
@@ -381,7 +384,7 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun getRateForEntry(entry: View): Int {
-        val rate = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_rate).text.toString()
+        val rate = entry.findViewById<TextView>(R.id.osd_rate_for_customer).text.toString()
         if(rate.isEmpty())
             return 0
         return rate.toInt()

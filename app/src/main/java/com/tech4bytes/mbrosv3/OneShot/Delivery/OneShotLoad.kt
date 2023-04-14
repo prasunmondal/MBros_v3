@@ -2,28 +2,21 @@ package com.tech4bytes.mbrosv3.OneShot.Delivery
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.google.android.material.textview.MaterialTextView
 import com.tech4bytes.mbrosv3.AppData.AppUtils
-import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetchActivity
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
-import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import java.util.stream.Collectors
 
@@ -47,10 +40,9 @@ class OneShotLoad : AppCompatActivity() {
 
     fun initializeUI() {
         setDecors()
-        setListeners()
+        updateUIFromObj()
         populateDropDowns()
         setListeners()
-        updateUIFromObj()
         markDataFresh(true, true)
     }
 
@@ -168,16 +160,16 @@ class OneShotLoad : AppCompatActivity() {
         val account = findViewById<AutoCompleteTextView>(R.id.one_shot_load_money_account)
         val loadingArea = findViewById<AutoCompleteTextView>(R.id.one_shot_load_loading_area)
         val extraCashProvider = findViewById<TextInputEditText>(R.id.one_shot_load_extra_expense_provided)
-        val farmRate = findViewById<TextInputEditText>(R.id.one_shot_load_farm_rate)
-        val finalFarmRate = findViewById<TextInputEditText>(R.id.osl_final_farm_rate)
+        val deliveryBasePrice = findViewById<TextInputEditText>(R.id.one_shot_load_farm_rate)
+        val farmRate = findViewById<TextInputEditText>(R.id.osl_final_farm_rate)
 
         companyName.setText(obj.load_companyName)
         branch.setText(obj.load_branch)
         account.setText(obj.load_account)
         loadingArea.setText(obj.load_area)
         extraCashProvider.setText(obj.extra_cash_given)
+        deliveryBasePrice.setText((NumberUtils.getIntOrZero(obj.finalFarmRate) + NumberUtils.getIntOrZero(obj.bufferRate)).toString())
         farmRate.setText(obj.finalFarmRate)
-        finalFarmRate.setText((NumberUtils.getIntOrZero(obj.finalFarmRate) + NumberUtils.getIntOrZero(obj.bufferRate)).toString())
     }
 
     private fun updateObjFromUI() {
@@ -194,10 +186,10 @@ class OneShotLoad : AppCompatActivity() {
         obj.load_branch = branch
         obj.load_account = account
         obj.load_area = loadingArea
-        obj.bufferRate = (NumberUtils.getIntOrZero(finalFarmRate) - NumberUtils.getIntOrZero(farmRate)).toString()
+        obj.bufferRate = (NumberUtils.getIntOrZero(farmRate) - NumberUtils.getIntOrZero(finalFarmRate)).toString()
 
         obj.extra_cash_given = extraCashProvider
-        obj.finalFarmRate = farmRate
+        obj.finalFarmRate = finalFarmRate
 
         SingleAttributedData.saveToLocal(obj)
     }

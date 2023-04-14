@@ -274,9 +274,11 @@ class OneShotDelivery : AppCompatActivity() {
             LogMe.log(CustomerKYC.get(order.value.name)!!.rateDifference)
             LogMe.log("${SingleAttributedData.getFinalRateInt() + SingleAttributedData.getBufferRateInt() + CustomerKYC.get(order.value.name)!!.rateDifference.toInt()}")
             rateElement.setText("${CustomerData.getDeliveryRate(order.value.name)}")
+            fragmentUpdateCustomerWiseRateView(order, entry)
 
             rateElement.doOnTextChanged { text, start, before, count ->
                 updateEntry(order, entry)
+                fragmentUpdateCustomerWiseRateView(order, entry)
             }
 
             pcElement.doOnTextChanged { text, start, before, count ->
@@ -312,6 +314,18 @@ class OneShotDelivery : AppCompatActivity() {
             listContainer.addView(entry)
             updateEntry(order, entry)
             uiMaps[order.value.name] = entry
+        }
+    }
+
+    private fun fragmentUpdateCustomerWiseRateView(order: Map.Entry<String, DeliverCustomerOrders>, entry: View) {
+        val rateElement = entry.findViewById<TextInputEditText>(R.id.osd_rate_for_customer)
+        if(NumberUtils.getIntOrZero(rateElement.text.toString()) != CustomerData.getCustomerDefaultRate(order.value.name)) {
+            rateElement.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
+            rateElement.setTextColor(ContextCompat.getColor(this, R.color.white))
+        } else
+        {
+            rateElement.setBackgroundColor(0x00000000)
+            rateElement.setTextColor(rateElement.textColors.defaultColor)
         }
     }
 

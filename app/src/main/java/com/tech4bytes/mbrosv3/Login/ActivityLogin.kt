@@ -97,7 +97,7 @@ class ActivityLogin : AppCompatActivity() {
         }
         return when (role) {
             ActivityAuthEnums.ADMIN -> ::goToAdminRole
-            ActivityAuthEnums.DELIVERY -> ::goToDeliveryRole
+            ActivityAuthEnums.DELIVERY -> ::goToDeliveringDeliverPage
             ActivityAuthEnums.COLLECTOR -> ::goToCollectorRole
             ActivityAuthEnums.ORDER_COLLECTOR -> ::goToGetOrdersPage
             ActivityAuthEnums.BALANCE_VIEW -> ::goToShowDues
@@ -144,18 +144,7 @@ class ActivityLogin : AppCompatActivity() {
         goToDataFetchActivity(ActivityAuthEnums.ORDER_COLLECTOR, ActivityGetCustomerOrders::class.java)
     }
 
-    private fun goToDeliveryRole() {
-//        val loadObj = LoadModel.get()
-        goToDeliveringDeliverPage()
-//        if(ActivityDeliveringLoad.isLoadingComplete(loadObj)) {
-//            goToDeliveringDeliverPage()
-//        } else {
-//            val switchActivityIntent = Intent(this, ActivityDeliveringLoad::class.java)
-//            startActivity(switchActivityIntent)
-//        }
-    }
-
-    fun goToDeliveringDeliverPage() {
+    private fun goToDeliveringDeliverPage() {
         goToDataFetchActivity(ActivityAuthEnums.DELIVERY, ActivityDeliveringListOrders::class.java)
     }
 

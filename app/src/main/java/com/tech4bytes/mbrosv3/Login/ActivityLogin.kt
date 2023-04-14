@@ -88,46 +88,6 @@ class ActivityLogin : AppCompatActivity() {
                 }
             }
         }
-//        preFetchData()
-    }
-
-    private fun preFetchData() {
-        var a = 0
-        runOnUiThread {
-            GetCustomerOrders.get()
-//            a += 1
-//            Toast.makeText(this, a, Toast.LENGTH_SHORT).show()
-        }
-        runOnUiThread {
-            CustomerKYC.getAllCustomers()
-//            a += 1
-//            Toast.makeText(this, a, Toast.LENGTH_SHORT).show()
-        }
-        runOnUiThread {
-            CustomerData.getRecords()
-//            a += 1
-//            Toast.makeText(this, a, Toast.LENGTH_SHORT).show()
-        }
-        runOnUiThread {
-            SingleAttributedData.getRecords()
-//            a += 1
-//            Toast.makeText(this, a, Toast.LENGTH_SHORT).show()
-        }
-        runOnUiThread {
-            Refueling.get()
-//            a += 1
-//            Toast.makeText(this, a, Toast.LENGTH_SHORT).show()
-        }
-        runOnUiThread {
-            Refueling.get()
-//            a += 1
-//            Toast.makeText(this, a, Toast.LENGTH_SHORT).show()
-        }
-        runOnUiThread {
-            DaySummary.get()
-//            a += 1
-//            Toast.makeText(this, a, Toast.LENGTH_SHORT).show()
-        }
     }
 
     private fun getRoleAndActivityMapping(role: ActivityAuthEnums): (() -> Unit)? {

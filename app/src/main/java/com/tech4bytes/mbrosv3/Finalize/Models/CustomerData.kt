@@ -7,6 +7,7 @@ import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.ActivityDeliveringDeliver
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
@@ -140,6 +141,20 @@ class CustomerData: java.io.Serializable {
 
         fun getCustomerDefaultRate(name: String): Int {
             return SingleAttributedData.getFinalRateInt() + SingleAttributedData.getBufferRateInt() + CustomerKYC.get(name)!!.rateDifference.toInt()
+        }
+
+        fun getDeliveryRate(name: String): Int {
+            val customerDeliveryRateFromSavedDeliveredData = getCustomerDeliveryRateFromSavedDeliveredData(name)
+
+            return if(customerDeliveryRateFromSavedDeliveredData > 0) customerDeliveryRateFromSavedDeliveredData
+            else getCustomerDefaultRate(name)
+        }
+
+        private fun getCustomerDeliveryRateFromSavedDeliveredData(name: String): Int {
+            return when {
+                NumberUtils.getIntOrZero(ActivityDeliveringDeliver.getDeliveryRecord(name)!!.rate) > 0 -> NumberUtils.getIntOrZero(ActivityDeliveringDeliver.getDeliveryRecord(name)!!.rate)
+                else -> 0
+            }
         }
     }
 }

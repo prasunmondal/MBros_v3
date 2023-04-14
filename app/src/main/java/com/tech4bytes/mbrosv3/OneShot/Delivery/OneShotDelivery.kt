@@ -207,7 +207,7 @@ class OneShotDelivery : AppCompatActivity() {
                 name = it.name,
                 orderedPc = it.orderedPc,
                 orderedKg = it.orderedKg,
-                rate = it.rate,
+                rate = "${CustomerData.getDeliveryRate(it.name)}",
                 prevDue = it.prevDue,
                 deliveryStatus = "DELIVERING")
 
@@ -222,7 +222,7 @@ class OneShotDelivery : AppCompatActivity() {
                 name = it.name,
                 orderedPc = "0",
                 orderedKg = "0",
-                rate = it.rate,
+                rate = "${CustomerData.getDeliveryRate(it.name)}",
                 prevDue = CustomerData.getLastDue(it.name),
                 deliveryStatus = "DELIVERING")
 
@@ -268,7 +268,7 @@ class OneShotDelivery : AppCompatActivity() {
             LogMe.log(SingleAttributedData.getBufferRateInt().toString())
             LogMe.log(CustomerKYC.get(order.value.name)!!.rateDifference)
             LogMe.log("${SingleAttributedData.getFinalRateInt() + SingleAttributedData.getBufferRateInt() + CustomerKYC.get(order.value.name)!!.rateDifference.toInt()}")
-            rateElement.text = "${CustomerData.getCustomerDefaultRate(order.value.name)}"
+            rateElement.text = "${CustomerData.getDeliveryRate(order.value.name)}"
 
             rateElement.doOnTextChanged { text, start, before, count ->
                 updateEntry(order, entry)

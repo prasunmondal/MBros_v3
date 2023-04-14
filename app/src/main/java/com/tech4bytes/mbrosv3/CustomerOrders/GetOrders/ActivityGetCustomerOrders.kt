@@ -15,6 +15,7 @@ import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.Loading.LoadModel
+import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -160,5 +161,11 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         val switchActivityIntent = Intent(this, OrdersMakeList::class.java)
         startActivity(switchActivityIntent)
         finish()
+    }
+
+    override fun onBackPressed() {
+        val switchActivityIntent = Intent(this, ActivityLogin::class.java)
+        switchActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(switchActivityIntent)
     }
 }

@@ -99,4 +99,10 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
         val switchActivityIntent = Intent(this, ActivityDeliveringLoad::class.java)
         startActivity(switchActivityIntent)
     }
+
+    override fun onBackPressed() {
+        val switchActivityIntent = Intent(this, ActivityLogin::class.java)
+        switchActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(switchActivityIntent)
+    }
 }

@@ -1,5 +1,6 @@
 package com.tech4bytes.mbrosv3
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
+import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 
@@ -72,5 +74,11 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
     fun activity_collector_verify_money_collection_sync_data_btn(view: View) {
         AppUtils.invalidateAllDataAndRestartApp()
         finish()
+    }
+
+    override fun onBackPressed() {
+        val switchActivityIntent = Intent(this, ActivityLogin::class.java)
+        switchActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(switchActivityIntent)
     }
 }

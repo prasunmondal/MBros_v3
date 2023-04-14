@@ -89,6 +89,8 @@ class OneShotLoad : AppCompatActivity() {
             .map(CompanyLoadMap::companyName)
             .collect(Collectors.toSet()).toList()
         val arrayAdapter: ArrayAdapter<*> = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, arrayList)
+        autoCompleteTextView.setAdapter(arrayAdapter)
+        if(arrayList.isNotEmpty()) autoCompleteTextView.setText(arrayList[0])
         if (showDropdown) autoCompleteTextView.showDropDown()
         autoCompleteTextView.setOnTouchListener { _, _ ->
             autoCompleteTextView.showDropDown()
@@ -99,7 +101,6 @@ class OneShotLoad : AppCompatActivity() {
             populateOptionsCompanyBranch(true)
             populateOptionsMoneyAccount(false)
         }
-        autoCompleteTextView.setAdapter(arrayAdapter)
     }
 
     private fun populateOptionsCompanyBranch(showDropdown: Boolean) {
@@ -112,6 +113,7 @@ class OneShotLoad : AppCompatActivity() {
         val arrayAdapter: ArrayAdapter<*> = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, arrayList)
         autoCompleteTextView.setAdapter(arrayAdapter)
         if (showDropdown) autoCompleteTextView.showDropDown()
+        if(arrayList.isNotEmpty()) autoCompleteTextView.setText(arrayList[0])
         autoCompleteTextView.setOnTouchListener { _, _ ->
             autoCompleteTextView.showDropDown()
             autoCompleteTextView.requestFocus()
@@ -132,6 +134,7 @@ class OneShotLoad : AppCompatActivity() {
             .collect(Collectors.toSet()).toList()
         val arrayAdapter: ArrayAdapter<*> = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, arrayList)
         autoCompleteTextView.setAdapter(arrayAdapter)
+        if(arrayList.isNotEmpty()) autoCompleteTextView.setText(arrayList[0])
         if (showDropdown) autoCompleteTextView.showDropDown()
         autoCompleteTextView.setOnTouchListener { _, _ ->
             autoCompleteTextView.showDropDown()
@@ -149,7 +152,10 @@ class OneShotLoad : AppCompatActivity() {
             .collect(Collectors.toSet()).toList()
         val arrayAdapter: ArrayAdapter<*> = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, arrayList)
         autoCompleteTextView.setAdapter(arrayAdapter)
+
+        if(arrayList.isNotEmpty()) autoCompleteTextView.setText(arrayList[0])
         if (showDropdown) autoCompleteTextView.showDropDown()
+
         autoCompleteTextView.setOnTouchListener { _, _ ->
             autoCompleteTextView.showDropDown()
             autoCompleteTextView.requestFocus()

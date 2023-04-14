@@ -593,8 +593,10 @@
                 <TextView
                     android:id="@+id/osd_profit"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                    android:layout_height="30dp"
                     android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="pr"
                     android:textColor="#189C1D"
                     android:textSize="18sp" />
 

@@ -621,11 +621,13 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     fun deleteDeliveryDataOnServer() {
-        Delete.builder()
-            .scriptId(ProjectConfig.dBServerScriptURL)
-            .sheetId(ProjectConfig.DB_SHEET_ID)
-            .tabName(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
-            .build().execute()
+        Thread {
+            Delete.builder()
+                .scriptId(ProjectConfig.dBServerScriptURL)
+                .sheetId(ProjectConfig.DB_SHEET_ID)
+                .tabName(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
+                .build().execute()
+        }.start()
     }
 
     private fun saveDeliveryData() {

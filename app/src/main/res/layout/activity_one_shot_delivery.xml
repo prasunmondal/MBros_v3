@@ -508,7 +508,7 @@
                         android:layout_weight="1"
                         android:hint="sale"
                         android:textColor="#189C1D"
-                        android:textSize="18sp" />
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -532,7 +532,30 @@
                         android:layout_weight="1"
                         android:hint="amount_collected"
                         android:textColor="#085E0C"
-                        android:textSize="18sp" />
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imageView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        app:srcCompat="@drawable/today_due_sum_icon" />
+
+                    <TextView
+                        android:id="@+id/osd_total_due"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:textColor="#E81414"
+                        android:textSize="14sp" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -555,7 +578,7 @@
                         android:layout_weight="1"
                         android:hint="due_balance"
                         android:textColor="#E81414"
-                        android:textSize="18sp" />
+                        android:textSize="14sp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -573,14 +596,6 @@
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:textColor="#189C1D"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/osd_total_due"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:textColor="#E81414"
                     android:textSize="18sp" />
 
             </LinearLayout>

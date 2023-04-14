@@ -16,15 +16,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textView50"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="10dp"
-            android:text="Company Transactions"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
         <LinearLayout
             android:id="@+id/osl_company_details_outer_container"
             android:layout_width="match_parent"

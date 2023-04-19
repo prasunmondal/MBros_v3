@@ -40,9 +40,9 @@ class OneShotLoad : AppCompatActivity() {
 
     fun initializeUI() {
         setDecors()
-        updateUIFromObj()
         populateDropDowns()
         setListeners()
+        updateUIFromObj()
         markDataFresh(true, true)
     }
 
@@ -57,7 +57,7 @@ class OneShotLoad : AppCompatActivity() {
 
         initialFarmRate.addTextChangedListener {
             markDataFresh(false)
-            finalFarmRate.text = initialFarmRate.text
+            finalFarmRate.setText(((NumberUtils.getIntOrZero(initialFarmRate.text.toString()) - 10)).toString())
         }
         finalFarmRate.addTextChangedListener { markDataFresh(false) }
         inHandCash.addTextChangedListener { markDataFresh(false) }
@@ -178,7 +178,7 @@ class OneShotLoad : AppCompatActivity() {
         account.setText(obj.load_account)
         loadingArea.setText(obj.load_area)
         extraCashProvider.setText(obj.extra_cash_given)
-        deliveryBasePrice.setText((NumberUtils.getIntOrZero(obj.finalFarmRate) + NumberUtils.getIntOrZero(obj.bufferRate)).toString())
+        deliveryBasePrice.setText((NumberUtils.getIntOrZero(obj.finalFarmRate) + NumberUtils.getIntOrZero(obj.bufferRate) + 10).toString())
         farmRate.setText(obj.finalFarmRate)
     }
 
@@ -196,11 +196,10 @@ class OneShotLoad : AppCompatActivity() {
         obj.load_branch = branch
         obj.load_account = account
         obj.load_area = loadingArea
-        obj.bufferRate = (NumberUtils.getIntOrZero(farmRate) - NumberUtils.getIntOrZero(finalFarmRate)).toString()
+        obj.finalFarmRate = finalFarmRate
+        obj.bufferRate = (NumberUtils.getIntOrZero(farmRate) - 10 - NumberUtils.getIntOrZero(finalFarmRate)).toString()
 
         obj.extra_cash_given = extraCashProvider
-        obj.finalFarmRate = finalFarmRate
-
         SingleAttributedData.saveToLocal(obj)
     }
 

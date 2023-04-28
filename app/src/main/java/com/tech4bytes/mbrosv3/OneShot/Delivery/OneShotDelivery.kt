@@ -45,7 +45,7 @@ class OneShotDelivery : AppCompatActivity() {
     var deliveryMapOrderedCustomers: MutableMap<String, DeliverCustomerOrders> = mutableMapOf()
     var deliveryMapUnOrderedCustomers: MutableMap<String, DeliverCustomerOrders> = mutableMapOf()
     var uiMaps: MutableMap<String, View> = mutableMapOf()
-    val saveOneSortDeliveryButton = findViewById<Button>(R.id.one_shot_delivery_save_data_btn)
+    lateinit var saveOneSortDeliveryButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +59,7 @@ class OneShotDelivery : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar()?.hide()
 
-
+        saveOneSortDeliveryButton = findViewById(R.id.one_shot_delivery_save_data_btn)
         runOnUiThread {
             populateDeliveryMap()
             updateSingleAttributedDataOnUI()

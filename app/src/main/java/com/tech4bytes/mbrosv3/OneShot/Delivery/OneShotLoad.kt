@@ -205,6 +205,7 @@ class OneShotLoad : AppCompatActivity() {
 
     fun onClickOneShotLoadSaveBtn(view: View) {
         updateObjFromUI()
+        SingleAttributedData.saveToLocal(SingleAttributedData.getRecords())
         Thread {
             runOnUiThread {
                 oslSaveBtn.isEnabled = false

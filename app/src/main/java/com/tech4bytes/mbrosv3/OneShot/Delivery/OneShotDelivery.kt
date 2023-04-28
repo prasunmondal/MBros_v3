@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.ProgressBar
@@ -44,7 +45,7 @@ class OneShotDelivery : AppCompatActivity() {
     var deliveryMapOrderedCustomers: MutableMap<String, DeliverCustomerOrders> = mutableMapOf()
     var deliveryMapUnOrderedCustomers: MutableMap<String, DeliverCustomerOrders> = mutableMapOf()
     var uiMaps: MutableMap<String, View> = mutableMapOf()
-
+    val saveOneSortDeliveryButton = findViewById<Button>(R.id.one_shot_delivery_save_data_btn)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -533,12 +534,26 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     fun onClickSaveOneShotDeliveryDataBtn(view: View) {
+    Thread {
+        runOnUiThread()
+        {
+            saveOneSortDeliveryButton.isEnabled = false
+            saveOneSortDeliveryButton.alpha = .5f
+            saveOneSortDeliveryButton.isClickable = false;
+        }
         gatherSingleAttributedData()
         gatherFuelData()
         saveSingleAttributeData()
         deleteDeliveryDataOnServer()
         saveDeliveryData()
-    }
+        runOnUiThread()
+        {
+            saveOneSortDeliveryButton.isEnabled = true
+            saveOneSortDeliveryButton.alpha = 1.0f;
+            saveOneSortDeliveryButton.isClickable = true;
+        }
+    }.start()
+        }
 
     fun setSaveProgressBar(value: Int) {
         findViewById<ProgressBar>(R.id.osd_save_progress_bar)
@@ -640,17 +655,14 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     fun deleteDeliveryDataOnServer() {
-        Thread {
             Delete.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
                 .sheetId(ProjectConfig.DB_SHEET_ID)
                 .tabName(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
                 .build().execute()
-        }.start()
     }
 
     private fun saveDeliveryData() {
-        Thread {
             var eachStep = 0
             deliveryMapOrderedCustomers.forEach {
                 LogMe.log(it.value.name + ":: deliveredKg:" + it.value.deliveredKg)
@@ -678,7 +690,6 @@ class OneShotDelivery : AppCompatActivity() {
                     runOnUiThread { setSaveProgressBar(eachStep) }
                 }
             }
-        }.start()
         runOnUiThread { setSaveProgressBar(100) }
     }
 

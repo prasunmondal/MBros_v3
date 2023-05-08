@@ -24,7 +24,7 @@ import java.util.stream.Collectors
 
 class OneShotLoad : AppCompatActivity() {
 
-    var isDataFresh: Boolean = true
+    private var isDataFresh: Boolean = true
     private lateinit var oslSaveBtn: MaterialButton
     private lateinit var labelCompanyName: TextView
     private lateinit var labelCompanyBranch: TextView
@@ -54,7 +54,7 @@ class OneShotLoad : AppCompatActivity() {
         inHandCash = findViewById(R.id.one_shot_load_extra_expense_provided)
     }
 
-    fun initializeUI() {
+    private fun initializeUI() {
         setDecors()
         setUIValues()
         setListeners()
@@ -69,7 +69,7 @@ class OneShotLoad : AppCompatActivity() {
         labelAccount.text = SingleAttributedData.getRecords().load_account
     }
 
-    private fun showOptions(list: List<String>, uiView: TextView, selectedValue: String = "", updateElementText: Boolean = true) {
+    private fun showOptions(list: List<String>, uiView: TextView, selectedValue: String = "") {
         val container = findViewById<LinearLayout>(R.id.osl_options_picker_container)
         container.removeAllViews()
         list.forEach { list_entry ->
@@ -81,7 +81,7 @@ class OneShotLoad : AppCompatActivity() {
             entry.setOnClickListener {
                 uiView.text = list_entry
                 markDataFresh(false)
-                showOptions(list, uiView, list_entry, false)
+                showOptions(list, uiView, list_entry)
                 container.removeAllViews()
             }
             container.addView(entry)
@@ -209,15 +209,15 @@ class OneShotLoad : AppCompatActivity() {
             runOnUiThread {
                 oslSaveBtn.isEnabled = false
                 oslSaveBtn.alpha = .5f
-                oslSaveBtn.isClickable = false;
+                oslSaveBtn.isClickable = false
             }
             SingleAttributedData.save(SingleAttributedData.getRecords())
             runOnUiThread {
                 markDataFresh(true)
                 Toast.makeText(this, "Data Saved!", Toast.LENGTH_LONG).show()
                 oslSaveBtn.isEnabled = true
-                oslSaveBtn.alpha = 1.0f;
-                oslSaveBtn.isClickable = true;
+                oslSaveBtn.alpha = 1.0f
+                oslSaveBtn.isClickable = true
             }
         }.start()
     }

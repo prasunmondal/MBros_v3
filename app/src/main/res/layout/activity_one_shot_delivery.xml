@@ -392,13 +392,30 @@
 
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/one_shot_delivery_save_data_btn"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:onClick="onClickSaveOneShotDeliveryDataBtn"
-                    android:text="Save" />
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/osd_delete_delivery_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:onClick="onClickDeleteDeliveryDataBtn"
+                        android:text="Delete" />
+
+                    <Button
+                        android:id="@+id/one_shot_delivery_save_data_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:onClick="onClickSaveOneShotDeliveryDataBtn"
+                        android:text="Save" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

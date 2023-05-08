@@ -46,6 +46,7 @@ class OneShotDelivery : AppCompatActivity() {
     var deliveryMapUnOrderedCustomers: MutableMap<String, DeliverCustomerOrders> = mutableMapOf()
     var uiMaps: MutableMap<String, View> = mutableMapOf()
     lateinit var saveOneSortDeliveryButton: Button
+    lateinit var deleteDeliveryDataButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +61,8 @@ class OneShotDelivery : AppCompatActivity() {
         getSupportActionBar()?.hide()
 
         saveOneSortDeliveryButton = findViewById(R.id.one_shot_delivery_save_data_btn)
+        deleteDeliveryDataButton = findViewById(R.id.osd_delete_delivery_data)
+
         runOnUiThread {
             populateDeliveryMap()
             updateSingleAttributedDataOnUI()
@@ -703,5 +706,23 @@ class OneShotDelivery : AppCompatActivity() {
         val switchActivityIntent = Intent(this, ActivityLogin::class.java)
         switchActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(switchActivityIntent)
+    }
+
+    fun onClickDeleteDeliveryDataBtn(view: View) {
+        Thread {
+            runOnUiThread()
+            {
+                deleteDeliveryDataButton.isEnabled = false
+                deleteDeliveryDataButton.alpha = 0.5f
+                deleteDeliveryDataButton.isClickable = false
+            }
+            deleteDeliveryDataOnServer()
+            runOnUiThread()
+            {
+                deleteDeliveryDataButton.isEnabled = true
+                deleteDeliveryDataButton.alpha = 1.0f
+                deleteDeliveryDataButton.isClickable = true
+            }
+        }.start()
     }
 }

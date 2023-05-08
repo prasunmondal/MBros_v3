@@ -63,7 +63,7 @@ class OneShotLoad : AppCompatActivity() {
         labelLoadArea.text = SingleAttributedData.getRecords().load_area
     }
 
-    private fun showOptions(list: List<String>, selectedValue: String = "") {
+    private fun showOptions(list: List<String>, uiView: TextView, selectedValue: String = "") {
         val container = findViewById<LinearLayout>(R.id.osl_options_picker_container)
         container.removeAllViews()
         list.forEach { list_entry ->
@@ -73,8 +73,10 @@ class OneShotLoad : AppCompatActivity() {
                 entry.findViewById<ConstraintLayout>(R.id.osl_fragment_record_container).setBackgroundColor(ContextCompat.getColor(this, R.color.verify_delivery_valid))
             }
             entry.setOnClickListener {
+                uiView.text = list_entry
                 markDataFresh(false)
-                showOptions(list, list_entry)
+                showOptions(list, uiView, list_entry)
+                container.removeAllViews()
             }
             container.addView(entry)
         }
@@ -106,15 +108,22 @@ class OneShotLoad : AppCompatActivity() {
     }
 
     private fun showCompanyNames() {
-        showOptions(getCompanyNames())
+        showOptions(getCompanyNames(),
+            labelCompanyName,
+            SingleAttributedData.getRecords().load_companyName)
     }
 
     private fun showCompanyBranchNames() {
-        showOptions(getBranchNames(SingleAttributedData.getRecords().load_companyName))
+        showOptions(getBranchNames(SingleAttributedData.getRecords().load_companyName),
+            labelCompanyBranch,
+            SingleAttributedData.getRecords().load_branch)
     }
 
     private fun showAreaNames() {
-        showOptions(getLoadAreas(SingleAttributedData.getRecords().load_companyName, SingleAttributedData.getRecords().load_branch))
+        showOptions(getLoadAreas(SingleAttributedData.getRecords().load_companyName,
+            SingleAttributedData.getRecords().load_branch),
+            labelLoadArea,
+            SingleAttributedData.getRecords().load_area)
     }
 
     private fun populateDropDowns() {

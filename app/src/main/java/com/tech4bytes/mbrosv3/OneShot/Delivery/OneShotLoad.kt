@@ -31,6 +31,10 @@ class OneShotLoad : AppCompatActivity() {
     lateinit var labelCompanyName: TextView
     lateinit var labelCompanyBranch: TextView
     lateinit var labelLoadArea: TextView
+    lateinit var labelAccount: TextView
+    lateinit var initialFarmRate: TextInputEditText
+    lateinit var finalFarmRate: TextInputEditText
+    lateinit var inHandCash: TextInputEditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,12 +50,15 @@ class OneShotLoad : AppCompatActivity() {
         labelCompanyName = findViewById(R.id.osl_label_company_name)
         labelCompanyBranch = findViewById(R.id.osl_label_company_branch)
         labelLoadArea = findViewById(R.id.osl_label_load_area)
+        labelAccount = findViewById(R.id.osl_label_account)
+        initialFarmRate = findViewById(R.id.one_shot_load_farm_rate)
+        finalFarmRate = findViewById(R.id.osl_final_farm_rate)
+        inHandCash = findViewById(R.id.one_shot_load_extra_expense_provided)
     }
 
     fun initializeUI() {
         setDecors()
         setUIValues()
-        populateDropDowns()
         setListeners()
         updateUIFromObj()
         markDataFresh(true, true)
@@ -61,21 +68,22 @@ class OneShotLoad : AppCompatActivity() {
         labelCompanyName.text = SingleAttributedData.getRecords().load_companyName
         labelCompanyBranch.text = SingleAttributedData.getRecords().load_branch
         labelLoadArea.text = SingleAttributedData.getRecords().load_area
+        labelAccount.text = SingleAttributedData.getRecords().load_account
     }
 
-    private fun showOptions(list: List<String>, uiView: TextView, selectedValue: String = "") {
+    private fun showOptions(list: List<String>, uiView: TextView, selectedValue: String = "", updateElementText: Boolean = true) {
         val container = findViewById<LinearLayout>(R.id.osl_options_picker_container)
         container.removeAllViews()
         list.forEach { list_entry ->
             val entry = layoutInflater.inflate(R.layout.activity_one_shot_load_fragment, null)
             entry.findViewById<TextView>(R.id.osl_list_entry).text = list_entry
             if(selectedValue.isNotEmpty() && list_entry == selectedValue) {
-                entry.findViewById<ConstraintLayout>(R.id.osl_fragment_record_container).setBackgroundColor(ContextCompat.getColor(this, R.color.verify_delivery_valid))
+                entry.findViewById<ConstraintLayout>(R.id.osl_fragment_record_container).setBackgroundColor(ContextCompat.getColor(this, R.color.button_enabled))
             }
             entry.setOnClickListener {
                 uiView.text = list_entry
                 markDataFresh(false)
-                showOptions(list, uiView, list_entry)
+                showOptions(list, uiView, list_entry, false)
                 container.removeAllViews()
             }
             container.addView(entry)
@@ -83,53 +91,42 @@ class OneShotLoad : AppCompatActivity() {
     }
 
     private fun setListeners() {
-        val initialFarmRate = findViewById<TextInputEditText>(R.id.one_shot_load_farm_rate)
-        val finalFarmRate = findViewById<TextInputEditText>(R.id.osl_final_farm_rate)
-        val inHandCash = findViewById<TextInputEditText>(R.id.one_shot_load_extra_expense_provided)
-        val loadingCompany = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name)
-        val loadingCompanyBranch = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_branch)
-        val loadingCompanyArea = findViewById<AutoCompleteTextView>(R.id.one_shot_load_loading_area)
-        val loadingCompanyMoneyAccount = findViewById<AutoCompleteTextView>(R.id.one_shot_load_money_account)
-
         initialFarmRate.addTextChangedListener {
             markDataFresh(false)
             finalFarmRate.setText(((NumberUtils.getIntOrZero(initialFarmRate.text.toString()) - 10)).toString())
         }
         finalFarmRate.addTextChangedListener { markDataFresh(false) }
         inHandCash.addTextChangedListener { markDataFresh(false) }
-        loadingCompany.addTextChangedListener { markDataFresh(false) }
-        loadingCompanyBranch.addTextChangedListener { markDataFresh(false) }
-        loadingCompanyArea.addTextChangedListener { markDataFresh(false) }
-        loadingCompanyMoneyAccount.addTextChangedListener { markDataFresh(false) }
 
         labelCompanyName.setOnClickListener { showCompanyNames() }
         labelCompanyBranch.setOnClickListener { showCompanyBranchNames() }
         labelLoadArea.setOnClickListener { showAreaNames() }
+        labelAccount.setOnClickListener { showAccountNames() }
     }
 
     private fun showCompanyNames() {
         showOptions(getCompanyNames(),
             labelCompanyName,
-            SingleAttributedData.getRecords().load_companyName)
+            labelCompanyName.text.toString())
     }
 
     private fun showCompanyBranchNames() {
-        showOptions(getBranchNames(SingleAttributedData.getRecords().load_companyName),
+        showOptions(getBranchNames(labelCompanyName.text.toString()),
             labelCompanyBranch,
-            SingleAttributedData.getRecords().load_branch)
+            labelCompanyBranch.text.toString())
     }
 
     private fun showAreaNames() {
-        showOptions(getLoadAreas(SingleAttributedData.getRecords().load_companyName,
-            SingleAttributedData.getRecords().load_branch),
+        showOptions(getLoadAreas(labelCompanyName.text.toString(),
+            labelCompanyBranch.text.toString()),
             labelLoadArea,
-            SingleAttributedData.getRecords().load_area)
+            labelLoadArea.text.toString())
     }
 
-    private fun populateDropDowns() {
-        populateOptionsCompanyName(false)
-        populateOptionsCompanyBranch(false)
-        populateOptionsArea(false)
+    private fun showAccountNames() {
+        showOptions(getAccountName(labelCompanyName.text.toString()),
+            labelAccount,
+            labelAccount.text.toString())
     }
 
     private fun setDecors() {
@@ -148,47 +145,12 @@ class OneShotLoad : AppCompatActivity() {
             .collect(Collectors.toSet()).toList()
     }
 
-    private fun populateOptionsCompanyName(showDropdown: Boolean) {
-        val autoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name)
-        val companyNames = getCompanyNames()
-        val arrayAdapter: ArrayAdapter<*> = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, companyNames)
-        autoCompleteTextView.setAdapter(arrayAdapter)
-        if(companyNames.isNotEmpty()) autoCompleteTextView.setText(companyNames[0])
-        if (showDropdown) autoCompleteTextView.showDropDown()
-        autoCompleteTextView.setOnTouchListener { _, _ ->
-            autoCompleteTextView.showDropDown()
-            autoCompleteTextView.requestFocus()
-            false
-        }
-        autoCompleteTextView.setOnItemClickListener { parent, view, position, id ->
-            populateOptionsCompanyBranch(true)
-            populateOptionsMoneyAccount(false)
-        }
-    }
-
     private fun getBranchNames(companyName: String): List<String> {
         return CompanyLoadMap.get().stream()
-            .filter {c -> companyName == c.companyName}
-            .filter {d -> d.branch.isNotEmpty()}
+            .filter { c -> companyName == c.companyName }
+            .filter { d -> d.branch.isNotEmpty() }
             .map(CompanyLoadMap::branch)
             .collect(Collectors.toSet()).toList()
-    }
-
-    private fun populateOptionsCompanyBranch(showDropdown: Boolean) {
-        val autoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_branch)
-        val branchNames = getBranchNames(findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name).text.toString())
-        val arrayAdapter: ArrayAdapter<*> = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, branchNames)
-        autoCompleteTextView.setAdapter(arrayAdapter)
-        if (showDropdown) autoCompleteTextView.showDropDown()
-        if(branchNames.isNotEmpty()) autoCompleteTextView.setText(branchNames[0])
-        autoCompleteTextView.setOnTouchListener { _, _ ->
-            autoCompleteTextView.showDropDown()
-            autoCompleteTextView.requestFocus()
-            false
-        }
-        autoCompleteTextView.setOnItemClickListener { parent, view, position, id ->
-            populateOptionsArea(true)
-        }
     }
 
     private fun getLoadAreas(companyName: String, branchName: String): List<String> {
@@ -200,69 +162,36 @@ class OneShotLoad : AppCompatActivity() {
             .collect(Collectors.toSet()).toList()
     }
 
-    private fun populateOptionsArea(showDropdown: Boolean) {
-        val autoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.one_shot_load_loading_area)
-        val areaNames: List<String> = getLoadAreas(findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name).text.toString(),
-            findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_branch).text.toString())
-        val arrayAdapter: ArrayAdapter<*> = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, areaNames)
-        autoCompleteTextView.setAdapter(arrayAdapter)
-        if(areaNames.isNotEmpty()) autoCompleteTextView.setText(areaNames[0])
-        if (showDropdown) autoCompleteTextView.showDropDown()
-        autoCompleteTextView.setOnTouchListener { _, _ ->
-            autoCompleteTextView.showDropDown()
-            autoCompleteTextView.requestFocus()
-            false
-        }
-    }
-
-    private fun populateOptionsMoneyAccount(showDropdown: Boolean) {
-        val autoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.one_shot_load_money_account)
-        val arrayList: List<String> = CompanyLoadMap.get().stream()
-            .filter {c -> findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name).text.toString() == c.companyName}
+    private fun getAccountName(companyName: String): List<String> {
+        return CompanyLoadMap.get().stream()
+            .filter {c -> companyName == c.companyName}
             .filter {d -> d.moneyAccount.isNotEmpty()}
             .map(CompanyLoadMap::moneyAccount)
             .collect(Collectors.toSet()).toList()
-        val arrayAdapter: ArrayAdapter<*> = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, arrayList)
-        autoCompleteTextView.setAdapter(arrayAdapter)
-
-        if(arrayList.isNotEmpty()) autoCompleteTextView.setText(arrayList[0])
-        if (showDropdown) autoCompleteTextView.showDropDown()
-
-        autoCompleteTextView.setOnTouchListener { _, _ ->
-            autoCompleteTextView.showDropDown()
-            autoCompleteTextView.requestFocus()
-            false
-        }
     }
 
     private fun updateUIFromObj(useCache: Boolean = true) {
         val obj = SingleAttributedData.getRecords(useCache)
-        val companyName = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name)
-        val branch = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_branch)
-        val account = findViewById<AutoCompleteTextView>(R.id.one_shot_load_money_account)
-        val loadingArea = findViewById<AutoCompleteTextView>(R.id.one_shot_load_loading_area)
-        val extraCashProvider = findViewById<TextInputEditText>(R.id.one_shot_load_extra_expense_provided)
-        val deliveryBasePrice = findViewById<TextInputEditText>(R.id.one_shot_load_farm_rate)
-        val farmRate = findViewById<TextInputEditText>(R.id.osl_final_farm_rate)
+        val deliveryBasePrice = initialFarmRate
 
-        companyName.setText(obj.load_companyName)
-        branch.setText(obj.load_branch)
-        account.setText(obj.load_account)
-        loadingArea.setText(obj.load_area)
-        extraCashProvider.setText(obj.extra_cash_given)
+        labelCompanyName.text = obj.load_companyName
+        labelCompanyBranch.text = obj.load_branch
+        labelAccount.text = obj.load_account
+        labelLoadArea.text = obj.load_area
+        inHandCash.setText(obj.extra_cash_given)
         deliveryBasePrice.setText((NumberUtils.getIntOrZero(obj.finalFarmRate) + NumberUtils.getIntOrZero(obj.bufferRate) + 10).toString())
-        farmRate.setText(obj.finalFarmRate)
+        finalFarmRate.setText(obj.finalFarmRate)
     }
 
     private fun updateObjFromUI() {
         val obj = SingleAttributedData.getRecords()
-        val companyName = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name).text.toString()
-        val branch = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_branch).text.toString()
-        val account = findViewById<AutoCompleteTextView>(R.id.one_shot_load_money_account).text.toString()
-        val loadingArea = findViewById<AutoCompleteTextView>(R.id.one_shot_load_loading_area).text.toString()
-        val extraCashProvider = findViewById<TextInputEditText>(R.id.one_shot_load_extra_expense_provided).text.toString()
-        val farmRate = findViewById<TextInputEditText>(R.id.one_shot_load_farm_rate).text.toString()
-        val finalFarmRate = findViewById<TextInputEditText>(R.id.osl_final_farm_rate).text.toString()
+        val companyName = labelCompanyName.text.toString()
+        val branch = labelCompanyBranch.text.toString()
+        val account = labelAccount.text.toString()
+        val loadingArea = labelLoadArea.text.toString()
+        val extraCashProvider = inHandCash.text.toString()
+        val farmRate = initialFarmRate.text.toString()
+        val finalFarmRate = finalFarmRate.text.toString()
 
         obj.load_companyName = companyName
         obj.load_branch = branch
@@ -314,25 +243,9 @@ class OneShotLoad : AppCompatActivity() {
         oslRateInnerContainerElement.backgroundTintList = if (isDataFresh) this.resources.getColorStateList(R.color.osl_data_status_fresh_dark) else this.resources.getColorStateList(R.color.osl_data_status_stale_dark)
     }
 
-    fun onClickClearCompanyLoadingDetails(view: View) {
-        val companyName = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name)
-        val branch = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_branch)
-        val account = findViewById<AutoCompleteTextView>(R.id.one_shot_load_money_account)
-        val loadingArea = findViewById<AutoCompleteTextView>(R.id.one_shot_load_loading_area)
-
-        companyName.text!!.clear()
-        branch.text!!.clear()
-        account.text!!.clear()
-        loadingArea.text!!.clear()
-    }
-
     fun onClickClearAmountsDetails(view: View) {
-        val extraCashProvided = findViewById<TextInputEditText>(R.id.one_shot_load_extra_expense_provided)
-        val farmRate = findViewById<TextInputEditText>(R.id.one_shot_load_farm_rate)
-        val finalFarmRate = findViewById<TextInputEditText>(R.id.osl_final_farm_rate)
-
-        extraCashProvided.text!!.clear()
-        farmRate.text!!.clear()
+        inHandCash.text!!.clear()
+        initialFarmRate.text!!.clear()
         finalFarmRate.text!!.clear()
     }
 

@@ -56,7 +56,7 @@ class DataFetchingInfo {
 
                 }
                 ActivityAuthEnums.ONE_SHOT_LOAD_DETAILS -> {
-                    executingMethods.add(SingleAttributedData::getRecords, false)
+                    executingMethods.add(SingleAttributedData::getRecords, true)
                 }
                 else -> {}
             }

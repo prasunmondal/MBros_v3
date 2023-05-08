@@ -9,6 +9,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
@@ -61,6 +63,23 @@ class OneShotLoad : AppCompatActivity() {
         labelLoadArea.text = SingleAttributedData.getRecords().load_area
     }
 
+    private fun showOptions(list: List<String>, selectedValue: String = "") {
+        val container = findViewById<LinearLayout>(R.id.osl_options_picker_container)
+        container.removeAllViews()
+        list.forEach { list_entry ->
+            val entry = layoutInflater.inflate(R.layout.activity_one_shot_load_fragment, null)
+            entry.findViewById<TextView>(R.id.osl_list_entry).text = list_entry
+            if(selectedValue.isNotEmpty() && list_entry == selectedValue) {
+                entry.findViewById<ConstraintLayout>(R.id.osl_fragment_record_container).setBackgroundColor(ContextCompat.getColor(this, R.color.verify_delivery_valid))
+            }
+            entry.setOnClickListener {
+                markDataFresh(false)
+                showOptions(list, list_entry)
+            }
+            container.addView(entry)
+        }
+    }
+
     private fun setListeners() {
         val initialFarmRate = findViewById<TextInputEditText>(R.id.one_shot_load_farm_rate)
         val finalFarmRate = findViewById<TextInputEditText>(R.id.osl_final_farm_rate)
@@ -86,16 +105,16 @@ class OneShotLoad : AppCompatActivity() {
         labelLoadArea.setOnClickListener { showAreaNames() }
     }
 
-    private fun showAreaNames() {
-//        TODO("Not yet implemented")
+    private fun showCompanyNames() {
+        showOptions(getCompanyNames())
     }
 
     private fun showCompanyBranchNames() {
-//        TODO("Not yet implemented")
+        showOptions(getBranchNames(SingleAttributedData.getRecords().load_companyName))
     }
 
-    private fun showCompanyNames() {
-//        TODO("Not yet implemented")
+    private fun showAreaNames() {
+        showOptions(getLoadAreas(SingleAttributedData.getRecords().load_companyName, SingleAttributedData.getRecords().load_branch))
     }
 
     private fun populateDropDowns() {
@@ -113,15 +132,19 @@ class OneShotLoad : AppCompatActivity() {
         inHandContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
     }
 
-    private fun populateOptionsCompanyName(showDropdown: Boolean) {
-        val autoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name)
-        val arrayList: List<String> = CompanyLoadMap.get().stream()
+    private fun getCompanyNames(): List<String> {
+        return CompanyLoadMap.get().stream()
             .filter {d -> d.companyName.isNotEmpty()}
             .map(CompanyLoadMap::companyName)
             .collect(Collectors.toSet()).toList()
-        val arrayAdapter: ArrayAdapter<*> = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, arrayList)
+    }
+
+    private fun populateOptionsCompanyName(showDropdown: Boolean) {
+        val autoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name)
+        val companyNames = getCompanyNames()
+        val arrayAdapter: ArrayAdapter<*> = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, companyNames)
         autoCompleteTextView.setAdapter(arrayAdapter)
-        if(arrayList.isNotEmpty()) autoCompleteTextView.setText(arrayList[0])
+        if(companyNames.isNotEmpty()) autoCompleteTextView.setText(companyNames[0])
         if (showDropdown) autoCompleteTextView.showDropDown()
         autoCompleteTextView.setOnTouchListener { _, _ ->
             autoCompleteTextView.showDropDown()
@@ -134,17 +157,21 @@ class OneShotLoad : AppCompatActivity() {
         }
     }
 
-    private fun populateOptionsCompanyBranch(showDropdown: Boolean) {
-        val autoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_branch)
-        val arrayList: List<String> = CompanyLoadMap.get().stream()
-            .filter {c -> findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name).text.toString() == c.companyName}
+    private fun getBranchNames(companyName: String): List<String> {
+        return CompanyLoadMap.get().stream()
+            .filter {c -> companyName == c.companyName}
             .filter {d -> d.branch.isNotEmpty()}
             .map(CompanyLoadMap::branch)
             .collect(Collectors.toSet()).toList()
-        val arrayAdapter: ArrayAdapter<*> = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, arrayList)
+    }
+
+    private fun populateOptionsCompanyBranch(showDropdown: Boolean) {
+        val autoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_branch)
+        val branchNames = getBranchNames(findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name).text.toString())
+        val arrayAdapter: ArrayAdapter<*> = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, branchNames)
         autoCompleteTextView.setAdapter(arrayAdapter)
         if (showDropdown) autoCompleteTextView.showDropDown()
-        if(arrayList.isNotEmpty()) autoCompleteTextView.setText(arrayList[0])
+        if(branchNames.isNotEmpty()) autoCompleteTextView.setText(branchNames[0])
         autoCompleteTextView.setOnTouchListener { _, _ ->
             autoCompleteTextView.showDropDown()
             autoCompleteTextView.requestFocus()
@@ -154,18 +181,23 @@ class OneShotLoad : AppCompatActivity() {
             populateOptionsArea(true)
         }
     }
-//
-    private fun populateOptionsArea(showDropdown: Boolean) {
-        val autoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.one_shot_load_loading_area)
-        val arrayList: List<String> = CompanyLoadMap.get().stream()
-            .filter {c -> findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name).text.toString() == c.companyName}
-            .filter {d -> findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_branch).text.toString() == d.branch}
+
+    private fun getLoadAreas(companyName: String, branchName: String): List<String> {
+        return CompanyLoadMap.get().stream()
+            .filter {c -> companyName == c.companyName}
+            .filter {d -> branchName == d.branch}
             .filter {d -> d.area.isNotEmpty()}
             .map(CompanyLoadMap::area)
             .collect(Collectors.toSet()).toList()
-        val arrayAdapter: ArrayAdapter<*> = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, arrayList)
+    }
+
+    private fun populateOptionsArea(showDropdown: Boolean) {
+        val autoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.one_shot_load_loading_area)
+        val areaNames: List<String> = getLoadAreas(findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_name).text.toString(),
+            findViewById<AutoCompleteTextView>(R.id.one_shot_load_company_branch).text.toString())
+        val arrayAdapter: ArrayAdapter<*> = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, areaNames)
         autoCompleteTextView.setAdapter(arrayAdapter)
-        if(arrayList.isNotEmpty()) autoCompleteTextView.setText(arrayList[0])
+        if(areaNames.isNotEmpty()) autoCompleteTextView.setText(areaNames[0])
         if (showDropdown) autoCompleteTextView.showDropDown()
         autoCompleteTextView.setOnTouchListener { _, _ ->
             autoCompleteTextView.showDropDown()

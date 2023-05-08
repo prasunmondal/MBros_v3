@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
@@ -25,6 +26,10 @@ class OneShotLoad : AppCompatActivity() {
 
     var isDataFresh: Boolean = true
     lateinit var oslSaveBtn: MaterialButton
+    lateinit var labelCompanyName: TextView
+    lateinit var labelCompanyBranch: TextView
+    lateinit var labelLoadArea: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_one_shot_load)
@@ -36,14 +41,24 @@ class OneShotLoad : AppCompatActivity() {
 
     private fun initializeVariables() {
         oslSaveBtn = findViewById(R.id.osl_save_btn)
+        labelCompanyName = findViewById(R.id.osl_label_company_name)
+        labelCompanyBranch = findViewById(R.id.osl_label_company_branch)
+        labelLoadArea = findViewById(R.id.osl_label_load_area)
     }
 
     fun initializeUI() {
         setDecors()
+        setUIValues()
         populateDropDowns()
         setListeners()
         updateUIFromObj()
         markDataFresh(true, true)
+    }
+
+    private fun setUIValues() {
+        labelCompanyName.text = SingleAttributedData.getRecords().load_companyName
+        labelCompanyBranch.text = SingleAttributedData.getRecords().load_branch
+        labelLoadArea.text = SingleAttributedData.getRecords().load_area
     }
 
     private fun setListeners() {
@@ -65,6 +80,22 @@ class OneShotLoad : AppCompatActivity() {
         loadingCompanyBranch.addTextChangedListener { markDataFresh(false) }
         loadingCompanyArea.addTextChangedListener { markDataFresh(false) }
         loadingCompanyMoneyAccount.addTextChangedListener { markDataFresh(false) }
+
+        labelCompanyName.setOnClickListener { showCompanyNames() }
+        labelCompanyBranch.setOnClickListener { showCompanyBranchNames() }
+        labelLoadArea.setOnClickListener { showAreaNames() }
+    }
+
+    private fun showAreaNames() {
+//        TODO("Not yet implemented")
+    }
+
+    private fun showCompanyBranchNames() {
+//        TODO("Not yet implemented")
+    }
+
+    private fun showCompanyNames() {
+//        TODO("Not yet implemented")
     }
 
     private fun populateDropDowns() {

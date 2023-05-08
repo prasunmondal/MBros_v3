@@ -3,8 +3,6 @@ package com.tech4bytes.mbrosv3.OneShot.Delivery
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -27,14 +25,14 @@ import java.util.stream.Collectors
 class OneShotLoad : AppCompatActivity() {
 
     var isDataFresh: Boolean = true
-    lateinit var oslSaveBtn: MaterialButton
-    lateinit var labelCompanyName: TextView
-    lateinit var labelCompanyBranch: TextView
-    lateinit var labelLoadArea: TextView
-    lateinit var labelAccount: TextView
-    lateinit var initialFarmRate: TextInputEditText
-    lateinit var finalFarmRate: TextInputEditText
-    lateinit var inHandCash: TextInputEditText
+    private lateinit var oslSaveBtn: MaterialButton
+    private lateinit var labelCompanyName: TextView
+    private lateinit var labelCompanyBranch: TextView
+    private lateinit var labelLoadArea: TextView
+    private lateinit var labelAccount: TextView
+    private lateinit var initialFarmRate: TextInputEditText
+    private lateinit var finalFarmRate: TextInputEditText
+    private lateinit var inHandCash: TextInputEditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

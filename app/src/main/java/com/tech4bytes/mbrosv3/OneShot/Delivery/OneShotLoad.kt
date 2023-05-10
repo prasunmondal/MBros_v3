@@ -115,7 +115,7 @@ class OneShotLoad : AppCompatActivity() {
         dropdownContainer.visibility = View.GONE
         uiView.setTextColor(ContextCompat.getColor(this, R.color.osl_company_details_view))
         uiView.setTypeface(null, Typeface.NORMAL)
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     private fun setListeners() {
@@ -255,6 +255,7 @@ class OneShotLoad : AppCompatActivity() {
     }
 
     fun onClickOneShotLoadSaveBtn(view: View) {
+        this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
         updateObjFromUI()
         SingleAttributedData.saveToLocal(SingleAttributedData.getRecords())
         Thread {

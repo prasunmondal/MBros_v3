@@ -82,6 +82,7 @@ class OneShotLoad : AppCompatActivity() {
     private fun showOptions(list: List<String>, uiView: TextView, selectedValue: String = "") {
         val container = findViewById<LinearLayout>(R.id.osl_options_picker_container)
         container.removeAllViews()
+        hideAllDropdowns()
         dropdownContainer.visibility = View.VISIBLE
         uiView.setTextColor(ContextCompat.getColor(this, R.color.osl_company_details_view_editing))
         uiView.setTypeface(null, Typeface.BOLD_ITALIC)
@@ -110,6 +111,13 @@ class OneShotLoad : AppCompatActivity() {
         }
     }
 
+    private fun hideAllDropdowns() {
+        hideDropdown(labelCompanyName)
+        hideDropdown(labelCompanyBranch)
+        hideDropdown(labelLoadArea)
+        hideDropdown(labelAccount)
+    }
+
     private fun hideDropdown(uiView: TextView) {
         dropdownContainer.visibility = View.GONE
         uiView.setTextColor(ContextCompat.getColor(this, R.color.osl_company_details_view))
@@ -132,31 +140,27 @@ class OneShotLoad : AppCompatActivity() {
     }
 
     fun showCompanyNames(view: View) {
-        if(dropdownContainer.visibility == View.GONE) {
-            showOptions(
-                getCompanyNames(),
-                labelCompanyName,
-                labelCompanyName.text.toString()
-            )
-        } else {
-            hideDropdown(labelCompanyName)
+        if(dropdownContainer.visibility != View.GONE) {
+            hideAllDropdowns()
         }
+        showOptions(getCompanyNames(), labelCompanyName, labelCompanyName.text.toString())
     }
 
     fun showCompanyBranchNames(view: View) {
-        if(dropdownContainer.visibility == View.GONE) {
+        if(dropdownContainer.visibility != View.GONE) {
+            hideAllDropdowns()
+        }
             showOptions(
                 getBranchNames(labelCompanyName.text.toString()),
                 labelCompanyBranch,
                 labelCompanyBranch.text.toString()
             )
-        } else {
-            hideDropdown(labelCompanyBranch)
-        }
     }
 
     fun showAreaNames(view: View) {
-        if(dropdownContainer.visibility == View.GONE) {
+        if(dropdownContainer.visibility != View.GONE) {
+            hideAllDropdowns()
+        }
             showOptions(
                 getLoadAreas(
                     labelCompanyName.text.toString(),
@@ -165,21 +169,17 @@ class OneShotLoad : AppCompatActivity() {
                 labelLoadArea,
                 labelLoadArea.text.toString()
             )
-        } else {
-            hideDropdown(labelLoadArea)
-        }
     }
 
     fun showAccountNames(view: View) {
-        if(dropdownContainer.visibility == View.GONE) {
-            showOptions(
+        if(dropdownContainer.visibility != View.GONE) {
+            hideAllDropdowns()
+        }
+        showOptions(
                 getAccountName(labelCompanyName.text.toString()),
                 labelAccount,
                 labelAccount.text.toString()
             )
-        } else {
-            hideDropdown(labelAccount)
-        }
     }
 
     private fun setDecors() {

@@ -23,7 +23,9 @@
             android:background="@drawable/rounded"
             android:backgroundTint="#C8E8A3"
             android:orientation="vertical"
-            android:padding="15dp">
+            android:paddingHorizontal="15dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="15dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -51,7 +53,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingTop="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -127,8 +130,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:orientation="horizontal"
                             android:onClick="showCompanyBranchNames"
+                            android:orientation="horizontal"
                             android:paddingVertical="5dp">
 
                             <TextView
@@ -154,8 +157,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:orientation="horizontal"
                             android:onClick="showAccountNames"
+                            android:orientation="horizontal"
                             android:paddingVertical="5dp">
 
                             <TextView
@@ -210,12 +213,14 @@
                             android:id="@+id/osl_editText_freeText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="10dp"
                             android:layout_weight=".7"
                             android:ems="10"
                             android:hint="Text"
                             android:inputType="textPersonName"
                             android:textColor="#E9F5F6"
-                            android:textColorHint="#295055" />
+                            android:textColorHint="#295055"
+                            android:textSize="16sp" />
 
                         <Button
                             android:id="@+id/osl_btn_saveFreeText"

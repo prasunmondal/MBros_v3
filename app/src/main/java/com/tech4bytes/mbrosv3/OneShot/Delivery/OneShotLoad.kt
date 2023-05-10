@@ -1,9 +1,12 @@
 package com.tech4bytes.mbrosv3.OneShot.Delivery
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -112,6 +115,7 @@ class OneShotLoad : AppCompatActivity() {
         dropdownContainer.visibility = View.GONE
         uiView.setTextColor(ContextCompat.getColor(this, R.color.osl_company_details_view))
         uiView.setTypeface(null, Typeface.NORMAL)
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     private fun setListeners() {

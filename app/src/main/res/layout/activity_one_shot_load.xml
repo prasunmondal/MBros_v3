@@ -81,7 +81,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Company: "
                                 android:textColor="@color/osl_company_details_view"
-                                android:textSize="16sp" />
+                                android:textSize="14sp" />
 
                             <TextView
                                 android:id="@+id/osl_label_company_name"
@@ -90,7 +90,7 @@
                                 android:layout_weight="1"
                                 android:text="Company"
                                 android:textColor="@color/osl_company_details_view"
-                                android:textSize="16sp" />
+                                android:textSize="14sp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -107,7 +107,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Area: "
                                 android:textColor="@color/osl_company_details_view"
-                                android:textSize="16sp" />
+                                android:textSize="14sp" />
 
                             <TextView
                                 android:id="@+id/osl_label_load_area"
@@ -115,7 +115,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Area"
                                 android:textColor="@color/osl_company_details_view"
-                                android:textSize="16sp" />
+                                android:textSize="14sp" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -140,7 +140,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Branch: "
                                 android:textColor="@color/osl_company_details_view"
-                                android:textSize="16sp" />
+                                android:textSize="14sp" />
 
                             <TextView
                                 android:id="@+id/osl_label_company_branch"
@@ -149,7 +149,7 @@
                                 android:layout_weight="1"
                                 android:text="Branch"
                                 android:textColor="@color/osl_company_details_view"
-                                android:textSize="16sp" />
+                                android:textSize="14sp" />
 
                         </LinearLayout>
 
@@ -167,7 +167,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Account: "
                                 android:textColor="@color/osl_company_details_view"
-                                android:textSize="16sp" />
+                                android:textSize="14sp" />
 
                             <TextView
                                 android:id="@+id/osl_label_account"
@@ -175,7 +175,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Account"
                                 android:textColor="@color/osl_company_details_view"
-                                android:textSize="16sp" />
+                                android:textSize="14sp" />
                         </LinearLayout>
                     </LinearLayout>
 

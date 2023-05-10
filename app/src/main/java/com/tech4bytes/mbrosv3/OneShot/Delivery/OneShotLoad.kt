@@ -1,6 +1,7 @@
 package com.tech4bytes.mbrosv3.OneShot.Delivery
 
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -80,6 +81,9 @@ class OneShotLoad : AppCompatActivity() {
         val container = findViewById<LinearLayout>(R.id.osl_options_picker_container)
         container.removeAllViews()
         dropdownContainer.visibility = View.VISIBLE
+        uiView.setTextColor(ContextCompat.getColor(this, R.color.osl_company_details_view_editing))
+        uiView.setTypeface(null, Typeface.BOLD_ITALIC)
+
         freeTextOkBtn.setOnClickListener {
             val textEntered = freeTextView.text.toString()
             if(textEntered.isNotEmpty()) {
@@ -87,7 +91,7 @@ class OneShotLoad : AppCompatActivity() {
                 markDataFresh(false)
                 freeTextView.text = ""
             }
-            dropdownContainer.visibility = View.GONE
+            hideDropdown(uiView)
         }
         list.forEach { list_entry ->
             val entry = layoutInflater.inflate(R.layout.activity_one_shot_load_fragment, null)
@@ -98,10 +102,16 @@ class OneShotLoad : AppCompatActivity() {
             entry.setOnClickListener {
                 uiView.text = list_entry
                 markDataFresh(false)
-                dropdownContainer.visibility = View.GONE
+                hideDropdown(uiView)
             }
             container.addView(entry)
         }
+    }
+
+    private fun hideDropdown(uiView: TextView) {
+        dropdownContainer.visibility = View.GONE
+        uiView.setTextColor(ContextCompat.getColor(this, R.color.osl_company_details_view))
+        uiView.setTypeface(null, Typeface.NORMAL)
     }
 
     private fun setListeners() {
@@ -111,11 +121,6 @@ class OneShotLoad : AppCompatActivity() {
         }
         finalFarmRate.addTextChangedListener { markDataFresh(false) }
         inHandCash.addTextChangedListener { markDataFresh(false) }
-
-//        labelCompanyName.setOnClickListener { showCompanyNames(labelCompanyName) }
-//        labelCompanyBranch.setOnClickListener { showCompanyBranchNames(labelCompanyBranch) }
-//        labelLoadArea.setOnClickListener { showAreaNames(labelLoadArea) }
-//        labelAccount.setOnClickListener { showAccountNames(labelAccount) }
     }
 
     fun showCompanyNames(view: View) {
@@ -126,7 +131,7 @@ class OneShotLoad : AppCompatActivity() {
                 labelCompanyName.text.toString()
             )
         } else {
-            dropdownContainer.visibility = View.GONE
+            hideDropdown(labelCompanyName)
         }
     }
 
@@ -138,7 +143,7 @@ class OneShotLoad : AppCompatActivity() {
                 labelCompanyBranch.text.toString()
             )
         } else {
-            dropdownContainer.visibility = View.GONE
+            hideDropdown(labelCompanyBranch)
         }
     }
 
@@ -153,7 +158,7 @@ class OneShotLoad : AppCompatActivity() {
                 labelLoadArea.text.toString()
             )
         } else {
-            dropdownContainer.visibility = View.GONE
+            hideDropdown(labelLoadArea)
         }
     }
 
@@ -165,7 +170,7 @@ class OneShotLoad : AppCompatActivity() {
                 labelAccount.text.toString()
             )
         } else {
-            dropdownContainer.visibility = View.GONE
+            hideDropdown(labelAccount)
         }
     }
 

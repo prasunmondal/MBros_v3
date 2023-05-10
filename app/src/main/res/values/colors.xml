@@ -38,4 +38,6 @@
     <color name="osl_data_status_stale_light">#F8F4D5</color>
     <color name="osl_data_status_stale_dark">#C4FBEF7F</color>
     <color name="osl_option_seleted">#024149</color>
+    <color name="osl_company_details_view">#024149</color>
+    <color name="osl_company_details_view_editing">#FB7065</color>
 </resources>

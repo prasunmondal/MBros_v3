@@ -111,10 +111,6 @@ class OneShotLoad : AppCompatActivity() {
             }
             container.addView(entry)
         }
-
-        if(doesHaveMatchingOption) {
-            uiView.text = list[0]
-        }
     }
 
     private fun hideAllDropdowns() {

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.LinearLayout
@@ -115,7 +114,12 @@ class OneShotLoad : AppCompatActivity() {
         dropdownContainer.visibility = View.GONE
         uiView.setTextColor(ContextCompat.getColor(this, R.color.osl_company_details_view))
         uiView.setTypeface(null, Typeface.NORMAL)
-        this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        hideKeyboard()
+    }
+
+    fun hideKeyboard() {
+        val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(oslSaveBtn.windowToken, 0)
     }
 
     private fun setListeners() {
@@ -255,7 +259,7 @@ class OneShotLoad : AppCompatActivity() {
     }
 
     fun onClickOneShotLoadSaveBtn(view: View) {
-        this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+        hideKeyboard()
         updateObjFromUI()
         SingleAttributedData.saveToLocal(SingleAttributedData.getRecords())
         Thread {

@@ -68,6 +68,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:onClick="showCompanyNames"
                             android:orientation="horizontal"
                             android:paddingVertical="5dp">
 
@@ -91,6 +92,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:onClick="showAreaNames"
                             android:orientation="horizontal"
                             android:paddingVertical="5dp">
 
@@ -122,6 +124,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:orientation="horizontal"
+                            android:onClick="showCompanyBranchNames"
                             android:paddingVertical="5dp">
 
                             <TextView
@@ -146,6 +149,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:orientation="horizontal"
+                            android:onClick="showAccountNames"
                             android:paddingVertical="5dp">
 
                             <TextView

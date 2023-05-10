@@ -112,35 +112,61 @@ class OneShotLoad : AppCompatActivity() {
         finalFarmRate.addTextChangedListener { markDataFresh(false) }
         inHandCash.addTextChangedListener { markDataFresh(false) }
 
-        labelCompanyName.setOnClickListener { showCompanyNames() }
-        labelCompanyBranch.setOnClickListener { showCompanyBranchNames() }
-        labelLoadArea.setOnClickListener { showAreaNames() }
-        labelAccount.setOnClickListener { showAccountNames() }
+//        labelCompanyName.setOnClickListener { showCompanyNames(labelCompanyName) }
+//        labelCompanyBranch.setOnClickListener { showCompanyBranchNames(labelCompanyBranch) }
+//        labelLoadArea.setOnClickListener { showAreaNames(labelLoadArea) }
+//        labelAccount.setOnClickListener { showAccountNames(labelAccount) }
     }
 
-    private fun showCompanyNames() {
-        showOptions(getCompanyNames(),
-            labelCompanyName,
-            labelCompanyName.text.toString())
+    fun showCompanyNames(view: View) {
+        if(dropdownContainer.visibility == View.GONE) {
+            showOptions(
+                getCompanyNames(),
+                labelCompanyName,
+                labelCompanyName.text.toString()
+            )
+        } else {
+            dropdownContainer.visibility = View.GONE
+        }
     }
 
-    private fun showCompanyBranchNames() {
-        showOptions(getBranchNames(labelCompanyName.text.toString()),
-            labelCompanyBranch,
-            labelCompanyBranch.text.toString())
+    fun showCompanyBranchNames(view: View) {
+        if(dropdownContainer.visibility == View.GONE) {
+            showOptions(
+                getBranchNames(labelCompanyName.text.toString()),
+                labelCompanyBranch,
+                labelCompanyBranch.text.toString()
+            )
+        } else {
+            dropdownContainer.visibility = View.GONE
+        }
     }
 
-    private fun showAreaNames() {
-        showOptions(getLoadAreas(labelCompanyName.text.toString(),
-            labelCompanyBranch.text.toString()),
-            labelLoadArea,
-            labelLoadArea.text.toString())
+    fun showAreaNames(view: View) {
+        if(dropdownContainer.visibility == View.GONE) {
+            showOptions(
+                getLoadAreas(
+                    labelCompanyName.text.toString(),
+                    labelCompanyBranch.text.toString()
+                ),
+                labelLoadArea,
+                labelLoadArea.text.toString()
+            )
+        } else {
+            dropdownContainer.visibility = View.GONE
+        }
     }
 
-    private fun showAccountNames() {
-        showOptions(getAccountName(labelCompanyName.text.toString()),
-            labelAccount,
-            labelAccount.text.toString())
+    fun showAccountNames(view: View) {
+        if(dropdownContainer.visibility == View.GONE) {
+            showOptions(
+                getAccountName(labelCompanyName.text.toString()),
+                labelAccount,
+                labelAccount.text.toString()
+            )
+        } else {
+            dropdownContainer.visibility = View.GONE
+        }
     }
 
     private fun setDecors() {
@@ -165,7 +191,7 @@ class OneShotLoad : AppCompatActivity() {
             .filter { c -> companyName == c.companyName }
             .filter { d -> d.branch.isNotEmpty() }
             .map(CompanyLoadMap::branch)
-            .collect(Collectors.toSet()).toList()
+            .collect(Collectors.toSet()).sorted().toList()
     }
 
     private fun getLoadAreas(companyName: String, branchName: String): List<String> {
@@ -174,7 +200,7 @@ class OneShotLoad : AppCompatActivity() {
             .filter {d -> branchName == d.branch}
             .filter {d -> d.area.isNotEmpty()}
             .map(CompanyLoadMap::area)
-            .collect(Collectors.toSet()).toList()
+            .collect(Collectors.toSet()).sorted().toList()
     }
 
     private fun getAccountName(companyName: String): List<String> {

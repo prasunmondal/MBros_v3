@@ -87,6 +87,7 @@ class OneShotLoad : AppCompatActivity() {
         uiView.setTextColor(ContextCompat.getColor(this, R.color.osl_company_details_view_editing))
         uiView.setTypeface(null, Typeface.BOLD_ITALIC)
 
+        var doesHaveMatchingOption = false
         freeTextOkBtn.setOnClickListener {
             val textEntered = freeTextView.text.toString()
             if(textEntered.isNotEmpty()) {
@@ -100,6 +101,7 @@ class OneShotLoad : AppCompatActivity() {
             val entry = layoutInflater.inflate(R.layout.activity_one_shot_load_fragment, null)
             entry.findViewById<TextView>(R.id.osl_list_entry).text = list_entry
             if(selectedValue.isNotEmpty() && list_entry == selectedValue) {
+                doesHaveMatchingOption = true
                 entry.findViewById<ConstraintLayout>(R.id.osl_fragment_record_container).setBackgroundColor(ContextCompat.getColor(this, R.color.osl_option_seleted))
             }
             entry.setOnClickListener {
@@ -108,6 +110,10 @@ class OneShotLoad : AppCompatActivity() {
                 hideDropdown(uiView)
             }
             container.addView(entry)
+        }
+
+        if(doesHaveMatchingOption) {
+            uiView.text = list[0]
         }
     }
 

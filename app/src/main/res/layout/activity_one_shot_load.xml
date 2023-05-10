@@ -83,43 +83,50 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/osl_options_picker_container"
+                android:id="@+id/osl_dropdown_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="#01262B"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/textView55"
+                <LinearLayout
+                    android:id="@+id/osl_options_picker_container"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="TextView" />
-            </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingVertical="10dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
-                    <EditText
-                        android:id="@+id/editTextTextPersonName"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight=".7"
-                        android:ems="10"
-                        android:hint="Text"
-                        android:inputType="textPersonName" />
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
 
-                    <Button
-                        android:id="@+id/button6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="45dp"
-                        android:layout_weight=".3"
-                        android:text="Ok" />
+                        <EditText
+                            android:id="@+id/osl_editText_freeText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".7"
+                            android:ems="10"
+                            android:hint="Text"
+                            android:inputType="textPersonName"
+                            android:textColor="#E9F5F6"
+                            android:textColorHint="#295055" />
+
+                        <Button
+                            android:id="@+id/osl_btn_saveFreeText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="45dp"
+                            android:layout_weight=".3"
+                            android:text="Ok" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </LinearLayout>

@@ -21,9 +21,11 @@
             android:layout_height="30dp"
             android:layout_marginStart="10dp"
             android:gravity="center_vertical"
-            android:hint="Text"
-            android:textColor="#E3F4F6"
+            android:hint="Name"
+            android:text="Name"
+            android:textColor="#E2EEEF"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

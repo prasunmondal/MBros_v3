@@ -3,6 +3,7 @@ package com.tech4bytes.mbrosv3.OneShot.Delivery
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -33,6 +34,9 @@ class OneShotLoad : AppCompatActivity() {
     private lateinit var initialFarmRate: TextInputEditText
     private lateinit var finalFarmRate: TextInputEditText
     private lateinit var inHandCash: TextInputEditText
+    private lateinit var dropdownContainer: LinearLayout
+    private lateinit var freeTextView: TextView
+    private lateinit var freeTextOkBtn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +56,9 @@ class OneShotLoad : AppCompatActivity() {
         initialFarmRate = findViewById(R.id.one_shot_load_farm_rate)
         finalFarmRate = findViewById(R.id.osl_final_farm_rate)
         inHandCash = findViewById(R.id.one_shot_load_extra_expense_provided)
+        dropdownContainer = findViewById(R.id.osl_dropdown_container)
+        freeTextView = findViewById(R.id.osl_editText_freeText)
+        freeTextOkBtn = findViewById(R.id.osl_btn_saveFreeText)
     }
 
     private fun initializeUI() {
@@ -72,17 +79,26 @@ class OneShotLoad : AppCompatActivity() {
     private fun showOptions(list: List<String>, uiView: TextView, selectedValue: String = "") {
         val container = findViewById<LinearLayout>(R.id.osl_options_picker_container)
         container.removeAllViews()
+        dropdownContainer.visibility = View.VISIBLE
+        freeTextOkBtn.setOnClickListener {
+            val textEntered = freeTextView.text.toString()
+            if(textEntered.isNotEmpty()) {
+                uiView.text = textEntered
+                markDataFresh(false)
+                freeTextView.text = ""
+            }
+            dropdownContainer.visibility = View.GONE
+        }
         list.forEach { list_entry ->
             val entry = layoutInflater.inflate(R.layout.activity_one_shot_load_fragment, null)
             entry.findViewById<TextView>(R.id.osl_list_entry).text = list_entry
             if(selectedValue.isNotEmpty() && list_entry == selectedValue) {
-                entry.findViewById<ConstraintLayout>(R.id.osl_fragment_record_container).setBackgroundColor(ContextCompat.getColor(this, R.color.button_enabled))
+                entry.findViewById<ConstraintLayout>(R.id.osl_fragment_record_container).setBackgroundColor(ContextCompat.getColor(this, R.color.osl_option_seleted))
             }
             entry.setOnClickListener {
                 uiView.text = list_entry
                 markDataFresh(false)
-                showOptions(list, uiView, list_entry)
-                container.removeAllViews()
+                dropdownContainer.visibility = View.GONE
             }
             container.addView(entry)
         }
@@ -134,6 +150,7 @@ class OneShotLoad : AppCompatActivity() {
         deliveryBasePriceContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
         val inHandContainer = findViewById<TextInputLayout>(R.id.osl_in_hand_cash_container)
         inHandContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
+        dropdownContainer.visibility = View.GONE
     }
 
     private fun getCompanyNames(): List<String> {

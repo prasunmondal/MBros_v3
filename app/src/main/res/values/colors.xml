@@ -37,4 +37,5 @@
     <color name="osl_data_status_fresh_dark">#AFD682</color>
     <color name="osl_data_status_stale_light">#F8F4D5</color>
     <color name="osl_data_status_stale_dark">#C4FBEF7F</color>
+    <color name="osl_option_seleted">#024149</color>
 </resources>

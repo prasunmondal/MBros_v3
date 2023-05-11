@@ -244,7 +244,7 @@
             android:background="@drawable/rounded"
             android:backgroundTint="#C8E8A3"
             android:orientation="vertical"
-            android:padding="15dp"
+            android:padding="5dp"
             android:paddingTop="10dp">
 
             <LinearLayout

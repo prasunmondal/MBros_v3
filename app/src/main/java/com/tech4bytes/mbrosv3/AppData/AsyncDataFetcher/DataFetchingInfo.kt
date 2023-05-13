@@ -7,6 +7,7 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.De
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
+import com.tech4bytes.mbrosv3.Summary.SummaryConfig
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
 import kotlin.reflect.KFunction
@@ -57,6 +58,7 @@ class DataFetchingInfo {
                 }
                 ActivityAuthEnums.ONE_SHOT_LOAD_DETAILS -> {
                     executingMethods.add(SingleAttributedData::getRecords, false)
+                    executingMethods.add(DaySummary::get, false)
                 }
                 else -> {}
             }

@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.tech4bytes.extrack.centralCache.CentralCache
@@ -99,9 +100,23 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     }
 
     fun onClickSpoolCustomerData(view: View) {
-//        CentralCache.invalidateFullCache()
-        CustomerData.spoolDeliveringData()
-        Refueling.spoolRefuelingData()
+        val spoolBtn = findViewById<Button>(R.id.admin_dashboard_spool_customer_delivery_data)
+        Thread {
+            runOnUiThread {
+                spoolBtn.isEnabled = false
+                spoolBtn.alpha = .5f
+                spoolBtn.isClickable = false
+                spoolBtn.text = "Finalizing Data... .. ."
+            }
+            CustomerData.spoolDeliveringData()
+            Refueling.spoolRefuelingData()
+            runOnUiThread {
+                spoolBtn.isEnabled = true
+                spoolBtn.alpha = 1.0f
+                spoolBtn.isClickable = true
+                spoolBtn.text = "Finalize Data"
+            }
+        }.start()
     }
 
     fun onClickSaveRate(view: View) {

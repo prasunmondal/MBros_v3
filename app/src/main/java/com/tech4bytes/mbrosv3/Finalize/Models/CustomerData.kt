@@ -59,7 +59,6 @@ class CustomerData: java.io.Serializable {
     companion object {
 
         fun spoolDeliveringData() {
-            Thread {
                 val deliveredData = DeliverCustomerOrders.get()
                 val totalProfit = DaySummary.getDayProfit()
                 LogMe.log("Total Profit: $totalProfit")
@@ -74,7 +73,6 @@ class CustomerData: java.io.Serializable {
                     val record = CustomerData(it.id, it.timestamp, it.name, it.deliveredPc, it.deliveredKg, it.rate, it.prevDue, it.todaysAmount, it.totalDue, it.paid, it.balanceDue, NumberUtils.roundOff2places(profitByCustomer).toString(), NumberUtils.roundOff2places(profitPercentByCustomer).toString())
                     addToFinalizeSheet(record)
                 }
-            }.start()
         }
 
         private fun addToFinalizeSheet(record: CustomerData) {

@@ -466,11 +466,11 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/admin_dashboard_spool_customer_delivery_data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onClickSpoolCustomerData"
-                android:text="spool customer data" />
+                android:text="Finalize Data" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/floatingActionButton"

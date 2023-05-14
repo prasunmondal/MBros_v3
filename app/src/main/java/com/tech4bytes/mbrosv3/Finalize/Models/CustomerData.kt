@@ -56,6 +56,10 @@ class CustomerData: java.io.Serializable {
         return customerNames
     }
 
+    override fun toString(): String {
+        return "CustomerData(orderId='$orderId', timestamp='$timestamp', name='$name', deliveredPc='$deliveredPc', deliveredKg='$deliveredKg', rate='$rate', prevAmount='$prevAmount', deliveredAmount='$deliveredAmount', totalAmount='$totalAmount', paid='$paid', balanceDue='$balanceDue', avgWt='$avgWt', profit='$profit', profitPercent='$profitPercent')"
+    }
+
     companion object {
 
         fun spoolDeliveringData() {

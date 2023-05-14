@@ -135,6 +135,10 @@ data class DeliverCustomerOrders(
             CentralCache.put(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, objects)
         }
 
+        fun deleteFromLocal() {
+            CentralCache.put(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, listOf<DeliverCustomerOrders>())
+        }
+
         private fun getFromServer(): List<DeliverCustomerOrders> {
             // val waitDialog = ProgressDialog.show(AppContexts.get(), "Please Wait", "লোড হচ্ছে", true)
             val result: GetResponse = Get.builder()

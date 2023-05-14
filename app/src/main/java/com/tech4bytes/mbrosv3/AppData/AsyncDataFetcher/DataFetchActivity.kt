@@ -7,19 +7,11 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
-import com.tech4bytes.mbrosv3.Customer.CustomerKYC
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
-import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
-import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.R
-import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
-import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
 import kotlin.reflect.KFunction
 
 class DataFetchActivity : AppCompatActivity() {
@@ -39,14 +31,14 @@ class DataFetchActivity : AppCompatActivity() {
     }
 
     private fun goToNextActivity(nextActivity: Class<*>) {
-            val switchActivityIntent = Intent(this, nextActivity)
-            startActivity(switchActivityIntent)
+        val switchActivityIntent = Intent(this, nextActivity)
+        startActivity(switchActivityIntent)
     }
 
     private fun fetchData(container: LinearLayout, executingMethods: ExecutingMethods, nextActivity: Class<*>?) {
         val map: MutableMap<KFunction<Any>, FetchData> = mutableMapOf()
 
-        if(executingMethods.get().isEmpty() && nextActivity != null) {
+        if (executingMethods.get().isEmpty() && nextActivity != null) {
             goToNextActivity(nextActivity)
         } else {
             executingMethods.get().forEach {
@@ -70,15 +62,14 @@ class DataFetchActivity : AppCompatActivity() {
             @Suppress("UNCHECKED_CAST")
             (key as ((Boolean) -> Unit)).invoke(useCache)
             runOnUiThread {
-                list[key]!!.view.findViewById<TextView>(R.id.fragment_data_fetch_task_name)?.
-                    setTextColor(ContextCompat.getColor(this, R.color.light_blue_A400))
+                list[key]!!.view.findViewById<TextView>(R.id.fragment_data_fetch_task_name)?.setTextColor(ContextCompat.getColor(this, R.color.light_blue_A400))
                 list[key]!!.isCompleted = true
 
                 var allCompleted = true
                 var countCompletedExecutions = 0
                 LogMe.log("==== Checking Completeness ====")
                 list.forEach {
-                    if(!it.value.isCompleted) {
+                    if (!it.value.isCompleted) {
                         LogMe.log(it.key.name + " : " + it.value.isCompleted)
                         allCompleted = false
                     } else {

@@ -1,30 +1,30 @@
 package com.tech4bytes.mbrosv3.Customer
 
-import android.app.ProgressDialog
 import com.google.gson.reflect.TypeToken
 import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.tech4bytes.extrack.centralCache.CentralCache
-import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 
-data class CustomerKYCModel(var date: String,
-                            var nameEng: String,
-                            var nameBeng: String,
-                            var phNo1: String,
-                            var phNo2: String,
-                            var address: String,
-                            var showDue: String,
-                            var rateDifference: String = "",
-                            var isActiveCustomer: String = ""): java.io.Serializable {
+data class CustomerKYCModel(
+    var date: String,
+    var nameEng: String,
+    var nameBeng: String,
+    var phNo1: String,
+    var phNo2: String,
+    var address: String,
+    var showDue: String,
+    var rateDifference: String = "",
+    var isActiveCustomer: String = ""
+) : java.io.Serializable {
 
     fun getDisplayName(): String {
         return this.nameEng
     }
 }
 
-class CustomerKYC: java.io.Serializable {
+class CustomerKYC : java.io.Serializable {
     companion object {
 
         fun getAllCustomers(useCache: Boolean = true): List<CustomerKYCModel> {
@@ -73,7 +73,8 @@ class CustomerKYC: java.io.Serializable {
                 .build().execute()
 
             // waitDialog!!.dismiss()
-            return result.parseToObject(result.getRawResponse(),
+            return result.parseToObject(
+                result.getRawResponse(),
                 object : TypeToken<ArrayList<CustomerKYCModel>?>() {}.type
             )
         }

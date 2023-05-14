@@ -90,7 +90,7 @@ class OneShotLoad : AppCompatActivity() {
         var doesHaveMatchingOption = false
         freeTextOkBtn.setOnClickListener {
             val textEntered = freeTextView.text.toString()
-            if(textEntered.isNotEmpty()) {
+            if (textEntered.isNotEmpty()) {
                 uiView.text = textEntered
                 markDataFresh(false)
                 freeTextView.text = ""
@@ -100,7 +100,7 @@ class OneShotLoad : AppCompatActivity() {
         list.forEach { list_entry ->
             val entry = layoutInflater.inflate(R.layout.activity_one_shot_load_fragment, null)
             entry.findViewById<TextView>(R.id.osl_list_entry).text = list_entry
-            if(selectedValue.isNotEmpty() && list_entry == selectedValue) {
+            if (selectedValue.isNotEmpty() && list_entry == selectedValue) {
                 doesHaveMatchingOption = true
                 entry.findViewById<ConstraintLayout>(R.id.osl_fragment_record_container).setBackgroundColor(ContextCompat.getColor(this, R.color.osl_option_seleted))
             }
@@ -142,46 +142,46 @@ class OneShotLoad : AppCompatActivity() {
     }
 
     fun showCompanyNames(view: View) {
-        if(dropdownContainer.visibility != View.GONE) {
+        if (dropdownContainer.visibility != View.GONE) {
             hideAllDropdowns()
         }
         showOptions(getCompanyNames(), labelCompanyName, labelCompanyName.text.toString())
     }
 
     fun showCompanyBranchNames(view: View) {
-        if(dropdownContainer.visibility != View.GONE) {
-            hideAllDropdowns()
-        }
-            showOptions(
-                getBranchNames(labelCompanyName.text.toString()),
-                labelCompanyBranch,
-                labelCompanyBranch.text.toString()
-            )
-    }
-
-    fun showAreaNames(view: View) {
-        if(dropdownContainer.visibility != View.GONE) {
-            hideAllDropdowns()
-        }
-            showOptions(
-                getLoadAreas(
-                    labelCompanyName.text.toString(),
-                    labelCompanyBranch.text.toString()
-                ),
-                labelLoadArea,
-                labelLoadArea.text.toString()
-            )
-    }
-
-    fun showAccountNames(view: View) {
-        if(dropdownContainer.visibility != View.GONE) {
+        if (dropdownContainer.visibility != View.GONE) {
             hideAllDropdowns()
         }
         showOptions(
-                getAccountName(labelCompanyName.text.toString()),
-                labelAccount,
-                labelAccount.text.toString()
-            )
+            getBranchNames(labelCompanyName.text.toString()),
+            labelCompanyBranch,
+            labelCompanyBranch.text.toString()
+        )
+    }
+
+    fun showAreaNames(view: View) {
+        if (dropdownContainer.visibility != View.GONE) {
+            hideAllDropdowns()
+        }
+        showOptions(
+            getLoadAreas(
+                labelCompanyName.text.toString(),
+                labelCompanyBranch.text.toString()
+            ),
+            labelLoadArea,
+            labelLoadArea.text.toString()
+        )
+    }
+
+    fun showAccountNames(view: View) {
+        if (dropdownContainer.visibility != View.GONE) {
+            hideAllDropdowns()
+        }
+        showOptions(
+            getAccountName(labelCompanyName.text.toString()),
+            labelAccount,
+            labelAccount.text.toString()
+        )
     }
 
     private fun setDecors() {
@@ -196,7 +196,7 @@ class OneShotLoad : AppCompatActivity() {
 
     private fun getCompanyNames(): List<String> {
         return CompanyLoadMap.get().stream()
-            .filter {d -> d.companyName.isNotEmpty()}
+            .filter { d -> d.companyName.isNotEmpty() }
             .map(CompanyLoadMap::companyName)
             .collect(Collectors.toSet()).toList()
     }
@@ -211,17 +211,17 @@ class OneShotLoad : AppCompatActivity() {
 
     private fun getLoadAreas(companyName: String, branchName: String): List<String> {
         return CompanyLoadMap.get().stream()
-            .filter {c -> companyName == c.companyName}
-            .filter {d -> branchName == d.branch}
-            .filter {d -> d.area.isNotEmpty()}
+            .filter { c -> companyName == c.companyName }
+            .filter { d -> branchName == d.branch }
+            .filter { d -> d.area.isNotEmpty() }
             .map(CompanyLoadMap::area)
             .collect(Collectors.toSet()).sorted().toList()
     }
 
     private fun getAccountName(companyName: String): List<String> {
         return CompanyLoadMap.get().stream()
-            .filter {c -> companyName == c.companyName}
-            .filter {d -> d.moneyAccount.isNotEmpty()}
+            .filter { c -> companyName == c.companyName }
+            .filter { d -> d.moneyAccount.isNotEmpty() }
             .map(CompanyLoadMap::moneyAccount)
             .collect(Collectors.toSet()).toList()
     }

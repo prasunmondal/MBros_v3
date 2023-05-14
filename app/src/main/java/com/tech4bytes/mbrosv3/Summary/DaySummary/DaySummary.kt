@@ -14,31 +14,33 @@ import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 
-data class DaySummary(var timestamp: String = "",
-                      var date: String = "",
-                      var pc: String = "",
-                      var kg: String = "",
-                      var avgLoadingWt: String = "",
-                      var shortage: String = "",
-                      var sold_amount: String = "",
-                      var paid_amount: String = "",
-                      var prev_due_balance: String = "",
-                      var new_due_balance: String = "",
-                      var loadingCompany: String = "",
-                      var loadingBranch: String = "",
-                      var loadingArea: String = "",
-                      var loadingComapnyAccount: String = "",
-                      var loadingCompanyAccountBalance: String = "",
-                      var car_expense: String = "",
-                      var labour_expense: String = "",
-                      var extra_expenses: String = "",
-                      var total_expenses: String = "",
-                      var farm_rate: String = "",
-                      var buffer: String = "",
-                      var transport_income: String = "",
-                      var transport_expenses: String = "",
-                      var profit: String = "",
-                      var trip_end_km: String = ""): java.io.Serializable {
+data class DaySummary(
+    var timestamp: String = "",
+    var date: String = "",
+    var pc: String = "",
+    var kg: String = "",
+    var avgLoadingWt: String = "",
+    var shortage: String = "",
+    var sold_amount: String = "",
+    var paid_amount: String = "",
+    var prev_due_balance: String = "",
+    var new_due_balance: String = "",
+    var loadingCompany: String = "",
+    var loadingBranch: String = "",
+    var loadingArea: String = "",
+    var loadingComapnyAccount: String = "",
+    var loadingCompanyAccountBalance: String = "",
+    var car_expense: String = "",
+    var labour_expense: String = "",
+    var extra_expenses: String = "",
+    var total_expenses: String = "",
+    var farm_rate: String = "",
+    var buffer: String = "",
+    var transport_income: String = "",
+    var transport_expenses: String = "",
+    var profit: String = "",
+    var trip_end_km: String = ""
+) : java.io.Serializable {
 
     companion object {
         fun get(useCache: Boolean = true): List<DaySummary> {

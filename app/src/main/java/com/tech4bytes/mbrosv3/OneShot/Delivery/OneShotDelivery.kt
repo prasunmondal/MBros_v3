@@ -5,12 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.Switch
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -54,10 +49,12 @@ class OneShotDelivery : AppCompatActivity() {
 
         AppContexts.set(this)
         AppUtils.logError()
-        window.addFlags (WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        window.addFlags (WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        );
         getSupportActionBar()?.hide()
 
         saveOneSortDeliveryButton = findViewById(R.id.one_shot_delivery_save_data_btn)
@@ -163,7 +160,7 @@ class OneShotDelivery : AppCompatActivity() {
         val prevKm = DaySummary.getPrevTripEndKm()
         prevKmElement.text = prevKm.toString()
 
-        if(currentKm < prevKm) {
+        if (currentKm < prevKm) {
             kmDiffElement.text = "N/A"
             kmCostElement.text = "N/A"
             return
@@ -216,7 +213,8 @@ class OneShotDelivery : AppCompatActivity() {
                 orderedKg = it.orderedKg,
                 rate = "${CustomerData.getDeliveryRate(it.name)}",
                 prevDue = it.prevDue,
-                deliveryStatus = "DELIVERING")
+                deliveryStatus = "DELIVERING"
+            )
 
             deliveryMapOrderedCustomers[it.name] = deliverCustomersOrders
         }
@@ -231,7 +229,8 @@ class OneShotDelivery : AppCompatActivity() {
                 orderedKg = "0",
                 rate = "${CustomerData.getDeliveryRate(it.name)}",
                 prevDue = CustomerData.getLastDue(it.name),
-                deliveryStatus = "DELIVERING")
+                deliveryStatus = "DELIVERING"
+            )
 
             deliveryMapUnOrderedCustomers[it.name] = deliverCustomersOrders
         }
@@ -267,7 +266,7 @@ class OneShotDelivery : AppCompatActivity() {
             nameElement.text = order.value.name
             balanceElement.text = order.value.prevDue
             val deliveryRecord = ActivityDeliveringDeliver.getDeliveryRecord(order.value.name)
-            if(deliveryRecord != null) {
+            if (deliveryRecord != null) {
                 pcElement.setText(deliveryRecord.deliveredPc)
                 kgElement.text = deliveryRecord.deliveredKg
                 paidElement.text = deliveryRecord.paid
@@ -298,7 +297,7 @@ class OneShotDelivery : AppCompatActivity() {
             }
 
             balanceElement.setOnClickListener {
-                if(moreDetailsContainer.visibility == View.VISIBLE) {
+                if (moreDetailsContainer.visibility == View.VISIBLE) {
                     moreDetailsContainer.visibility = View.GONE
                 } else {
                     moreDetailsContainer.visibility = View.VISIBLE
@@ -308,8 +307,7 @@ class OneShotDelivery : AppCompatActivity() {
 
             val recordContainer = entry.findViewById<ConstraintLayout>(R.id.one_shot_delivery_fragment_record_container)
             var cardColor = ContextCompat.getColor(this, R.color.one_shot_delivery_odd_card_color)
-            if(entrynumber % 2 == 0)
-            {
+            if (entrynumber % 2 == 0) {
                 cardColor = ContextCompat.getColor(this, R.color.one_shot_delivery_even_card_color)
             }
             entrynumber++
@@ -323,11 +321,10 @@ class OneShotDelivery : AppCompatActivity() {
 
     private fun fragmentUpdateCustomerWiseRateView(order: Map.Entry<String, DeliverCustomerOrders>, entry: View) {
         val rateElement = entry.findViewById<TextInputEditText>(R.id.osd_rate_for_customer)
-        if(NumberUtils.getIntOrZero(rateElement.text.toString()) != CustomerData.getCustomerDefaultRate(order.value.name)) {
+        if (NumberUtils.getIntOrZero(rateElement.text.toString()) != CustomerData.getCustomerDefaultRate(order.value.name)) {
             rateElement.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
             rateElement.setTextColor(ContextCompat.getColor(this, R.color.white))
-        } else
-        {
+        } else {
             rateElement.setBackgroundColor(0x00000000)
             rateElement.setTextColor(rateElement.textColors.defaultColor)
         }
@@ -359,7 +356,7 @@ class OneShotDelivery : AppCompatActivity() {
 
     fun updateHiddenData() {
         val profitViewContainer = findViewById<LinearLayout>(R.id.osd_profit_details_container)
-        if(profitViewContainer.visibility == View.VISIBLE) {
+        if (profitViewContainer.visibility == View.VISIBLE) {
             val profitElement = findViewById<TextView>(R.id.osd_profit)
             val totalDueElement = findViewById<TextView>(R.id.osd_total_due)
 
@@ -382,7 +379,7 @@ class OneShotDelivery : AppCompatActivity() {
     private fun updateDetailedInfo(order: Map.Entry<String, DeliverCustomerOrders>, entry: View) {
         val container = entry.findViewById<LinearLayout>(R.id.one_shot_delivery_fragment_more_details_container)
 
-        if(container.visibility == View.VISIBLE) {
+        if (container.visibility == View.VISIBLE) {
             val prevDue = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_prev_due)
             val kg = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_kg)
             val rate = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_rate)
@@ -403,14 +400,14 @@ class OneShotDelivery : AppCompatActivity() {
 
     private fun getRateForEntry(entry: View): Int {
         val rate = entry.findViewById<TextView>(R.id.osd_rate_for_customer).text.toString()
-        if(rate.isEmpty())
+        if (rate.isEmpty())
             return 0
         return rate.toInt()
     }
 
     private fun getPcForEntry(entry: View): Int {
         val pc = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc).text.toString()
-        if(pc.isEmpty())
+        if (pc.isEmpty())
             return 0
         return pc.toInt()
 
@@ -418,7 +415,7 @@ class OneShotDelivery : AppCompatActivity() {
 
     private fun getKgForEntry(entry: View): Double {
         val kg = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_kg).text.toString()
-        if(kg.isEmpty())
+        if (kg.isEmpty())
             return 0.0
         return kg.toDouble()
 
@@ -426,15 +423,15 @@ class OneShotDelivery : AppCompatActivity() {
 
     private fun getPaidAmountForEntry(entry: View): Int {
         val paid = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid).text.toString()
-        if(paid.isEmpty())
+        if (paid.isEmpty())
             return 0
         return paid.toInt()
     }
 
     private fun getTodaysSaleAmountForEntry(entry: View): Int {
         val kg = getKgForEntry(entry)
-        val rate= getRateForEntry(entry)
-        return (kg*rate).toInt()
+        val rate = getRateForEntry(entry)
+        return (kg * rate).toInt()
     }
 
     private fun getDueBalance(order: DeliverCustomerOrders, entry: View): Int {
@@ -444,7 +441,7 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun getPrevDueBalance(order: DeliverCustomerOrders): Int {
-        if(order.prevDue.isEmpty()) {
+        if (order.prevDue.isEmpty()) {
             return CustomerData.getLastDue(order.name).toInt()
         }
         return order.prevDue.toInt()
@@ -457,14 +454,14 @@ class OneShotDelivery : AppCompatActivity() {
         loadedPc.setText(SingleAttributedData.getRecords().actualLoadPc)
         loadedKg.setText(SingleAttributedData.getRecords().actualLoadKg)
 
-        if(AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_FARM_RATE)) {
+        if (AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_FARM_RATE)) {
             val loadPriceElement = findViewById<EditText>(R.id.one_shot_delivery_price)
             loadPriceElement.setText(SingleAttributedData.getRecords().finalFarmRate)
         } else {
             findViewById<TextInputLayout>(R.id.osd_farm_rate_container).visibility = View.GONE
         }
 
-        if(AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_BUFFER_RATE)) {
+        if (AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_BUFFER_RATE)) {
             val loadBufferElement = findViewById<EditText>(R.id.one_shot_delivery_buffer)
             loadBufferElement.setText(SingleAttributedData.getRecords().bufferRate)
         } else {
@@ -501,21 +498,21 @@ class OneShotDelivery : AppCompatActivity() {
         var sumBalanceDue = 0
 
         deliveryMapOrderedCustomers.forEach {
-                sumPc += NumberUtils.getIntOrZero(it.value.deliveredPc)
-                sumKg += NumberUtils.getDoubleOrZero(it.value.deliveredKg)
-                sumSale += NumberUtils.getIntOrZero(it.value.todaysAmount)
-                sumAmountCollected += NumberUtils.getIntOrZero(it.value.paid)
-            if(NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
+            sumPc += NumberUtils.getIntOrZero(it.value.deliveredPc)
+            sumKg += NumberUtils.getDoubleOrZero(it.value.deliveredKg)
+            sumSale += NumberUtils.getIntOrZero(it.value.todaysAmount)
+            sumAmountCollected += NumberUtils.getIntOrZero(it.value.paid)
+            if (NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
                 sumBalanceDue += NumberUtils.getIntOrZero(it.value.balanceDue)
             }
         }
 
         deliveryMapUnOrderedCustomers.forEach {
-                sumPc += NumberUtils.getIntOrZero(it.value.deliveredPc)
-                sumKg += NumberUtils.getDoubleOrZero(it.value.deliveredKg)
-                sumSale += NumberUtils.getIntOrZero(it.value.todaysAmount)
-                sumAmountCollected += NumberUtils.getIntOrZero(it.value.paid)
-            if(NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0.0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
+            sumPc += NumberUtils.getIntOrZero(it.value.deliveredPc)
+            sumKg += NumberUtils.getDoubleOrZero(it.value.deliveredKg)
+            sumSale += NumberUtils.getIntOrZero(it.value.todaysAmount)
+            sumAmountCollected += NumberUtils.getIntOrZero(it.value.paid)
+            if (NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0.0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
                 sumBalanceDue += NumberUtils.getIntOrZero(it.value.balanceDue)
             }
         }
@@ -537,27 +534,27 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     fun onClickSaveOneShotDeliveryDataBtn(view: View) {
-    Thread {
-        runOnUiThread()
-        {
-            saveOneSortDeliveryButton.isEnabled = false
-            saveOneSortDeliveryButton.alpha = .5f
-            saveOneSortDeliveryButton.isClickable = false;
-        }
-        gatherSingleAttributedData()
-        gatherFuelData()
-        saveSingleAttributeData()
+        Thread {
+            runOnUiThread()
+            {
+                saveOneSortDeliveryButton.isEnabled = false
+                saveOneSortDeliveryButton.alpha = .5f
+                saveOneSortDeliveryButton.isClickable = false;
+            }
+            gatherSingleAttributedData()
+            gatherFuelData()
+            saveSingleAttributeData()
 //        DeliverCustomerOrders.deleteFromLocal()
-        deleteDeliveryDataOnServer()
-        saveDeliveryData()
-        runOnUiThread()
-        {
-            saveOneSortDeliveryButton.isEnabled = true
-            saveOneSortDeliveryButton.alpha = 1.0f;
-            saveOneSortDeliveryButton.isClickable = true;
-        }
-    }.start()
-        }
+            deleteDeliveryDataOnServer()
+            saveDeliveryData()
+            runOnUiThread()
+            {
+                saveOneSortDeliveryButton.isEnabled = true
+                saveOneSortDeliveryButton.alpha = 1.0f;
+                saveOneSortDeliveryButton.isClickable = true;
+            }
+        }.start()
+    }
 
     fun setSaveProgressBar(value: Int) {
         findViewById<ProgressBar>(R.id.osd_save_progress_bar)
@@ -596,12 +593,12 @@ class OneShotDelivery : AppCompatActivity() {
         val didTankFullElement = findViewById<Switch>(R.id.one_shot_delivery_did_fuel_upto_tank_full)
         val didRefuelElement = findViewById<Switch>(R.id.one_shot_delivery_did_refuel)
 
-        refuelingDetailsContainer.visibility = if(didRefuelElement.isChecked) View.VISIBLE else View.GONE
-        didTankFullElement.visibility = if(didRefuelElement.isChecked) View.VISIBLE else View.GONE
-        refuelingKmContainer.visibility = if(didTankFullElement.isChecked) View.VISIBLE else View.GONE
+        refuelingDetailsContainer.visibility = if (didRefuelElement.isChecked) View.VISIBLE else View.GONE
+        didTankFullElement.visibility = if (didRefuelElement.isChecked) View.VISIBLE else View.GONE
+        refuelingKmContainer.visibility = if (didTankFullElement.isChecked) View.VISIBLE else View.GONE
 
-        refuelingKmDiffLabel.text = if(didTankFullElement.isChecked) Refueling.getKmDifferenceForRefueling(refuelingKmElement.text.toString()).toString() else "N/A"
-        mileageLabel.text = if(didTankFullElement.isChecked) getMileage() + " km/L" else "N/A"
+        refuelingKmDiffLabel.text = if (didTankFullElement.isChecked) Refueling.getKmDifferenceForRefueling(refuelingKmElement.text.toString()).toString() else "N/A"
+        mileageLabel.text = if (didTankFullElement.isChecked) getMileage() + " km/L" else "N/A"
 
         LogMe.log("KM: " + refuelingKmElement.text.toString())
         LogMe.log("Mileage: " + getMileage())
@@ -614,7 +611,7 @@ class OneShotDelivery : AppCompatActivity() {
         val refuelingKM = refuelingKmElement.text.toString()
         val refuelingQty = refuelingQtyElement.text.toString()
         LogMe.log("Converting String: " + Refueling.getMileage(refuelingKM, refuelingQty))
-        return if(NumberUtils.getDoubleOrZero(refuelingQty) > 0.0)
+        return if (NumberUtils.getDoubleOrZero(refuelingQty) > 0.0)
             Refueling.getMileage(refuelingKM, refuelingQty)
 //            "%.3f".format(Refueling.getMileage(refuelingKM, refuelingQty))
         else
@@ -633,7 +630,7 @@ class OneShotDelivery : AppCompatActivity() {
         obj.refueling_amount = ""
         obj.did_refueled = didRefuelElement.isChecked.toString()
 
-        if(didRefuelElement.isChecked) {
+        if (didRefuelElement.isChecked) {
             val refuelQtyElement = findViewById<EditText>(R.id.one_shot_delivery_fuel_quantity)
             val refuelAmountElement = findViewById<EditText>(R.id.one_shot_delivery_fuel_amount)
             val didTankFullElement = findViewById<Switch>(R.id.one_shot_delivery_did_fuel_upto_tank_full)
@@ -644,7 +641,7 @@ class OneShotDelivery : AppCompatActivity() {
             obj.refueling_qty = refuelQtyElement.text.toString()
             obj.refueling_amount = refuelAmountElement.text.toString()
 
-            if(didTankFullElement.isChecked) {
+            if (didTankFullElement.isChecked) {
                 obj.refueling_km = refuelingKmElement.text.toString()
                 obj.refueling_prevKm = Refueling.getPreviousRefuelingKM()
                 obj.refuel_mileage = getMileage()
@@ -659,47 +656,47 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     fun deleteDeliveryDataOnServer() {
-            Delete.builder()
-                .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.DB_SHEET_ID)
-                .tabName(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
-                .build().execute()
+        Delete.builder()
+            .scriptId(ProjectConfig.dBServerScriptURL)
+            .sheetId(ProjectConfig.DB_SHEET_ID)
+            .tabName(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
+            .build().execute()
     }
 
     private fun saveDeliveryData() {
-            var eachStep = 0
-            deliveryMapOrderedCustomers.forEach {
-                LogMe.log(it.value.name + ":: deliveredKg:" + it.value.deliveredKg)
-                LogMe.log(it.value.name + ":: paid:" + it.value.paid)
-                if(NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0.0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
-                    it.value.deliveryStatus = "DELIVERED"
-                    DeliverCustomerOrders.save(it.value)
-                    if(eachStep+10 <100) {
-                        eachStep+=10
-                    } else {
-                        eachStep=100
-                    }
-                    runOnUiThread { setSaveProgressBar(eachStep) }
+        var eachStep = 0
+        deliveryMapOrderedCustomers.forEach {
+            LogMe.log(it.value.name + ":: deliveredKg:" + it.value.deliveredKg)
+            LogMe.log(it.value.name + ":: paid:" + it.value.paid)
+            if (NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0.0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
+                it.value.deliveryStatus = "DELIVERED"
+                DeliverCustomerOrders.save(it.value)
+                if (eachStep + 10 < 100) {
+                    eachStep += 10
+                } else {
+                    eachStep = 100
                 }
+                runOnUiThread { setSaveProgressBar(eachStep) }
             }
-            deliveryMapUnOrderedCustomers.forEach {
-                if(NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0.0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
-                    it.value.deliveryStatus = "DELIVERED"
-                    DeliverCustomerOrders.save(it.value)
-                    if(eachStep+10 <100) {
-                        eachStep+=10
-                    } else {
-                        eachStep=100
-                    }
-                    runOnUiThread { setSaveProgressBar(eachStep) }
+        }
+        deliveryMapUnOrderedCustomers.forEach {
+            if (NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0.0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
+                it.value.deliveryStatus = "DELIVERED"
+                DeliverCustomerOrders.save(it.value)
+                if (eachStep + 10 < 100) {
+                    eachStep += 10
+                } else {
+                    eachStep = 100
                 }
+                runOnUiThread { setSaveProgressBar(eachStep) }
             }
+        }
         runOnUiThread { setSaveProgressBar(100) }
     }
 
     fun onClickToggleProfitViewUI(view: View) {
         val profitViewContainer = findViewById<LinearLayout>(R.id.osd_profit_details_container)
-        profitViewContainer.visibility = if(profitViewContainer.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        profitViewContainer.visibility = if (profitViewContainer.visibility == View.VISIBLE) View.GONE else View.VISIBLE
         updateHiddenData()
     }
 

@@ -88,9 +88,11 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         val avg_wt = findViewById<EditText>(R.id.get_orders_avg_wt)
         avg_wt.doOnTextChanged { text, start, before, count ->
             val metadata = SingleAttributedData.getRecords()
-            metadata.estimatedLoadAvgWt = if(avg_wt.text.toString().isEmpty()) {
+            metadata.estimatedLoadAvgWt = if (avg_wt.text.toString().isEmpty()) {
                 ""
-            } else { "${avg_wt.text.toString().toInt()}" }
+            } else {
+                "${avg_wt.text.toString().toInt()}"
+            }
             SingleAttributedData.saveToLocal(metadata)
         }
 
@@ -99,8 +101,8 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
     }
 
     private fun getJustTheNumber(str: String): Int {
-        val trimmedStr = str.replace(" ","").replace("-","")
-        if(trimmedStr.isEmpty())
+        val trimmedStr = str.replace(" ", "").replace("-", "")
+        if (trimmedStr.isEmpty())
             return 0
         return trimmedStr.toInt()
     }
@@ -144,7 +146,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
     }
 
     fun onClickGoToFinalizeOrdersPage(view: View) {
-        if(SingleAttributedData.getRecords().estimatedLoadAvgWt.isEmpty()) {
+        if (SingleAttributedData.getRecords().estimatedLoadAvgWt.isEmpty()) {
             Toast.makeText(this, "Please enter avg wt.", Toast.LENGTH_LONG).show()
             return
         }
@@ -154,7 +156,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
     }
 
     fun onClickGoToMakeListPage(view: View) {
-        if(SingleAttributedData.getRecords().estimatedLoadAvgWt.isEmpty()) {
+        if (SingleAttributedData.getRecords().estimatedLoadAvgWt.isEmpty()) {
             Toast.makeText(this, "Please enter avg wt.", Toast.LENGTH_LONG).show()
             return
         }

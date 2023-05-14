@@ -17,7 +17,7 @@ import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 
 
-class UIUtils: AppCompatActivity() {
+class UIUtils : AppCompatActivity() {
 
     companion object {
 

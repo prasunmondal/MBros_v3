@@ -1,6 +1,5 @@
 package com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer
 
-import android.app.ProgressDialog
 import android.view.View
 import android.widget.TextView
 import com.google.gson.reflect.TypeToken
@@ -9,7 +8,6 @@ import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
-import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -33,13 +31,14 @@ data class DeliverCustomerOrders(
     var totalDue: String = "",
     var paid: String = "",
     var balanceDue: String = "",
-    var deliveryStatus: String = ""): java.io.Serializable {
-    
+    var deliveryStatus: String = ""
+) : java.io.Serializable {
+
     companion object {
 
         fun getByName(inputName: String): DeliverCustomerOrders? {
             get().forEach {
-                if(it.name == inputName) {
+                if (it.name == inputName) {
                     return it
                 }
             }
@@ -49,12 +48,12 @@ data class DeliverCustomerOrders(
         fun get(useCache: Boolean = true): List<DeliverCustomerOrders> {
             var cacheResults = CentralCache.get<List<DeliverCustomerOrders>>(AppContexts.get(), DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, useCache)
 
-            if(cacheResults == null) {
+            if (cacheResults == null) {
                 cacheResults = getFromServer()
                 CentralCache.put(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, cacheResults)
             }
 
-            return if(cacheResults != null)
+            return if (cacheResults != null)
                 filterToOnlyLatest(cacheResults)
             else
                 listOf()
@@ -81,7 +80,7 @@ data class DeliverCustomerOrders(
             val map = mutableMapOf<String, DeliverCustomerOrders>()
 
             sorted.forEach {
-                if(!map.containsKey(it.name)) {
+                if (!map.containsKey(it.name)) {
                     map.put(it.name, it)
                 }
             }
@@ -148,7 +147,8 @@ data class DeliverCustomerOrders(
                 .build().execute()
 
             // waitDialog!!.dismiss()
-            return result.parseToObject(result.getRawResponse(),
+            return result.parseToObject(
+                result.getRawResponse(),
                 object : TypeToken<ArrayList<DeliverCustomerOrders>?>() {}.type
             )
         }

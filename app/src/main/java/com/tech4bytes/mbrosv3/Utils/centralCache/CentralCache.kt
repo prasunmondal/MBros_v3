@@ -1,7 +1,6 @@
 package com.tech4bytes.extrack.centralCache
 
 import android.content.Context
-import android.text.format.DateUtils
 import com.tech4bytes.extrack.centralCache.utils.CacheUtils
 import com.tech4bytes.extrack.centralCache.utils.ClassDetailsUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -9,9 +8,7 @@ import com.tech4bytes.mbrosv3.Utils.Files.IOObjectToFile
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.centralCache.CacheFilesList
 import com.tech4bytes.mbrosv3.Utils.centralCache.CacheModel
-import java.io.File
 import java.time.LocalDateTime
-import java.util.Date
 import kotlin.reflect.KClass
 
 @Suppress("UNCHECKED_CAST")
@@ -46,7 +43,7 @@ class CentralCache {
         private var centralCache = CentralCache()
 
         private fun getFileName(): String {
-            return "CentralCache:" + if(Configuration.configs.storagePatternType == Configuration.DATA_STORING_TYPE.CLASS_FILES) {
+            return "CentralCache:" + if (Configuration.configs.storagePatternType == Configuration.DATA_STORING_TYPE.CLASS_FILES) {
                 CacheUtils.getClassKey()
             } else {
                 "data.dat"
@@ -56,7 +53,7 @@ class CentralCache {
         fun <T> get(context: Context, key: String, useCache: Boolean = true): T? {
 
             // if user wants to force refresh the values in the cache, pass useCache as false
-            if(!useCache) {
+            if (!useCache) {
                 LogMe.log("UseCache: False (Forced to not use cached data)")
                 return null
             }
@@ -69,7 +66,7 @@ class CentralCache {
             if (classElements != null && classElements.containsKey(cacheObjectKey)) {
                 LogMe.log("Cache Hit (key:$cacheObjectKey)- Local Memory")
                 val cacheObj = classElements[cacheObjectKey]!!
-                if(cacheObj.expiryTime.isBefore(LocalDateTime.now())) {
+                if (cacheObj.expiryTime.isBefore(LocalDateTime.now())) {
                     LogMe.log("Data Expired (key:$cacheObjectKey)")
                     LogMe.log("Deleting cache data")
                     centralCache.cache[cacheClassKey]!!.remove(cacheObjectKey)
@@ -84,7 +81,7 @@ class CentralCache {
             if (classElements != null && classElements.containsKey(cacheObjectKey)) {
                 LogMe.log("Cache Hit (key:$cacheObjectKey)- File")
                 val cacheObj = classElements[cacheObjectKey]!!
-                if(cacheObj.expiryTime.isBefore(LocalDateTime.now())) {
+                if (cacheObj.expiryTime.isBefore(LocalDateTime.now())) {
                     LogMe.log("Data Expired (key:$cacheObjectKey)- Local Memory")
                     LogMe.log("Deleting cache data")
                     centralCache.cache[cacheClassKey]!!.remove(cacheObjectKey)
@@ -116,7 +113,7 @@ class CentralCache {
             val cacheClassKey = CacheUtils.getClassKey()
             val cacheKey = CacheUtils.getCacheKey(key)
             val presentData = centralCache.cache[cacheClassKey]
-            if(presentData == null) {
+            if (presentData == null) {
                 centralCache.cache[cacheClassKey] = hashMapOf()
             }
             centralCache.cache[cacheClassKey]!![cacheKey] = CacheModel(data as Any?)
@@ -148,7 +145,7 @@ class CentralCache {
             centralCache.saveCacheDataToFile()
         }
 
-        fun <T: Any> invalidateClassCache(clazz: KClass<T>) {
+        fun <T : Any> invalidateClassCache(clazz: KClass<T>) {
             centralCache.cache[ClassDetailsUtils.getClassName(clazz)] = hashMapOf()
             centralCache.saveCacheDataToFile()
         }

@@ -1,6 +1,5 @@
 package com.tech4bytes.mbrosv3.Utils.Date
 
-import java.sql.Timestamp
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -15,7 +14,7 @@ class DateUtils {
         var timeZone = "Asia/Kolkata"
 
         fun getDateString(datetime: String): String {
-            return if(timeZoneConversionRequired(datetime)) {
+            return if (timeZoneConversionRequired(datetime)) {
                 convertTimeZones(datetime)
             } else {
                 datetime
@@ -54,7 +53,7 @@ class DateUtils {
         }
 
         fun getSelectedValidTimeOrCurrentTime(str: String): String {
-            return if(!isTimestamp(str)){
+            return if (!isTimestamp(str)) {
                 getCurrentTimestamp()
             } else {
                 str
@@ -106,9 +105,9 @@ class DateUtils {
         fun getNextTimeOccurrenceTimestamp(hourIn24Hour: Int): LocalDateTime {
             val currentDateTime: LocalDateTime? = LocalDateTime.now()
             val todayAt4Pm: LocalDateTime? = currentDateTime!!.toLocalDate().atTime(hourIn24Hour, 0)
-            val tomorrowAt4Pm: LocalDateTime? = currentDateTime.toLocalDate().plusDays(1).atTime(hourIn24Hour,0)
+            val tomorrowAt4Pm: LocalDateTime? = currentDateTime.toLocalDate().plusDays(1).atTime(hourIn24Hour, 0)
 
-            if(todayAt4Pm!!.isAfter(currentDateTime)) {
+            if (todayAt4Pm!!.isAfter(currentDateTime)) {
                 return todayAt4Pm
             }
             return tomorrowAt4Pm!!

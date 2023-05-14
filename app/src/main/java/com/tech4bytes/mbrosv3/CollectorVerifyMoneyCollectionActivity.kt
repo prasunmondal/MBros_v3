@@ -1,13 +1,13 @@
 package com.tech4bytes.mbrosv3
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
@@ -21,7 +21,7 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_collector_verify_money_collection)
         AppContexts.set(this, this)
         AppUtils.logError()
-        window.addFlags (WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         showDeliveryData()
     }
@@ -62,7 +62,7 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
     }
 
     fun updateColors(entry: View, isKgPcVerified: Boolean, isPaidAmountVerified: Boolean) {
-        if(isKgPcVerified && isPaidAmountVerified) {
+        if (isKgPcVerified && isPaidAmountVerified) {
             entry.findViewById<LinearLayout>(R.id.activity_collector_verify_money_collection_fragment_container)
                 .setBackgroundColor(ContextCompat.getColor(this, R.color.verify_delivery_valid))
         } else {

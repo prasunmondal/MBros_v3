@@ -1,6 +1,5 @@
 package com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth
 
-import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.RolesUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 
@@ -12,7 +11,7 @@ class UserRoleUtils {
             val appUsersData = RolesUtils.getAppUser()
 
             LogMe.log("= = = = = = = = = = = = Allowed Roles = = = = = = = = = = = =")
-            if(appUsersData == null) {
+            if (appUsersData == null) {
                 return mutableListOf()
             }
             appUsersData!!.roles.split(",").forEach { role ->

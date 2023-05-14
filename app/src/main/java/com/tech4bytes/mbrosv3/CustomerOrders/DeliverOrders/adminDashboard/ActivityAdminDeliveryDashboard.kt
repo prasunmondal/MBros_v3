@@ -1,13 +1,12 @@
 package com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import com.tech4bytes.extrack.centralCache.CentralCache
+import androidx.appcompat.app.AppCompatActivity
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
@@ -61,12 +60,18 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         val deliveredPcKgElement = findViewById<TextView>(R.id.activity_admin_delivery_dashboard_delivered_pc_kg)
         val deliveredAvgWtElement = findViewById<TextView>(R.id.activity_admin_delivery_dashboard_delivered_avg_wt)
 
-        UIUtils.setUIElementValue(deliveredNumberElement,
-            "$numberOfCustomersDelivered / $totalNumberOfCustomers Counters")
-        UIUtils.setUIElementValue(deliveredPcKgElement,
-            "$deliveredPc pc - $deliveredKg kg")
-        UIUtils.setUIElementValue(deliveredAvgWtElement,
-            "${WeightUtils.roundOff3places(avgWt)} kg/pc")
+        UIUtils.setUIElementValue(
+            deliveredNumberElement,
+            "$numberOfCustomersDelivered / $totalNumberOfCustomers Counters"
+        )
+        UIUtils.setUIElementValue(
+            deliveredPcKgElement,
+            "$deliveredPc pc - $deliveredKg kg"
+        )
+        UIUtils.setUIElementValue(
+            deliveredAvgWtElement,
+            "${WeightUtils.roundOff3places(avgWt)} kg/pc"
+        )
     }
 
     fun onClickUpdateDashboard(view: View) {

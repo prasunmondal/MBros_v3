@@ -13,7 +13,7 @@ import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 
-class Refueling: java.io.Serializable {
+class Refueling : java.io.Serializable {
 
     var id: String = ""
     var timestamp: String = ""
@@ -47,7 +47,7 @@ class Refueling: java.io.Serializable {
 
         private fun getLatestRecord(useCache: Boolean = true): Refueling {
             val list = get(useCache)
-            return list[list.size-1]
+            return list[list.size - 1]
         }
 
         fun get(useCache: Boolean = true): List<Refueling> {
@@ -72,7 +72,8 @@ class Refueling: java.io.Serializable {
                 .build().execute()
 
             // waitDialog!!.dismiss()
-            return result.parseToObject(result.getRawResponse(),
+            return result.parseToObject(
+                result.getRawResponse(),
                 object : TypeToken<ArrayList<Refueling>?>() {}.type
             )
         }
@@ -101,7 +102,7 @@ class Refueling: java.io.Serializable {
 
         fun spoolRefuelingData() {
             val singleAttributedObj = SingleAttributedData.getRecords()
-            if(singleAttributedObj.did_refueled.toBoolean()) {
+            if (singleAttributedObj.did_refueled.toBoolean()) {
                 val refuelingObj = Refueling("", "", "", false)
                 refuelingObj.id = singleAttributedObj.id
                 refuelingObj.timestamp = singleAttributedObj.date

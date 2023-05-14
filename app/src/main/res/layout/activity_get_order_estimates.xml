@@ -192,9 +192,9 @@
                 android:layout_weight="1"
                 android:background="#8BC34A"
                 android:gravity="center"
+                android:onClick="onClickGoToMakeListPage"
                 android:paddingVertical="3dp"
                 android:text="3"
-                android:onClick="onClickGoToMakeListPage"
                 android:textSize="30sp"
                 android:textStyle="bold" />
 

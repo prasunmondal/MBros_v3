@@ -1,13 +1,10 @@
 package com.tech4bytes.mbrosv3.Utils.centralCache
 
-import android.util.Log
-import android.widget.Toast
-import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import java.time.LocalDateTime
 
-class CacheModel: java.io.Serializable {
+class CacheModel : java.io.Serializable {
     var entryTime: LocalDateTime
     var expiryTime: LocalDateTime
     var content: Any?

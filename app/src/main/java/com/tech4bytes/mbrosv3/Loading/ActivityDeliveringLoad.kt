@@ -65,7 +65,7 @@ class ActivityDeliveringLoad : AppCompatActivity() {
             LogMe.log((LoadModel.getUiElementFromLoadingPage(view, LoadModel::actualPc) as EditText).text.toString())
             val actualKg = UIUtils.getUIElementValue(LoadModel.getUiElementFromLoadingPage(view, LoadModel::actualKg)).toDouble()
             val actualPc = UIUtils.getUIElementValue(LoadModel.getUiElementFromLoadingPage(view, LoadModel::actualPc)).toInt()
-            val avgWt = actualKg/actualPc
+            val avgWt = actualKg / actualPc
             UIUtils.setUIElementValue(view.findViewById<TextView>(R.id.activity_delivering_load_actualAvgWt), format("%.3f", avgWt))
         } catch (e: NumberFormatException) {
             LogMe.log(e)
@@ -86,9 +86,9 @@ class ActivityDeliveringLoad : AppCompatActivity() {
 
         val finalFarmRateFromUI = findViewById<EditText>(R.id.activity_delivering_load_finalFarmRate).text.toString()
         val bufferRateFromUI = findViewById<EditText>(R.id.activity_delivering_load_bufferRate).text.toString()
-        if(finalFarmRateFromUI.isNotEmpty())
+        if (finalFarmRateFromUI.isNotEmpty())
             record.finalFarmRate = finalFarmRateFromUI
-        if(bufferRateFromUI.isNotEmpty())
+        if (bufferRateFromUI.isNotEmpty())
             record.bufferRate = bufferRateFromUI
 
         SingleAttributedData.save(record)

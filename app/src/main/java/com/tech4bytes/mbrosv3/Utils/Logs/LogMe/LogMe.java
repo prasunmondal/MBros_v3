@@ -14,7 +14,7 @@ public class LogMe extends LogExceptions {
     }
 
     public static void log(String msg) {
-        if(msg == null) {
+        if (msg == null) {
             msg = "<null string detected in log>";
         }
         log(msg, true, false);

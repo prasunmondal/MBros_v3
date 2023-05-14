@@ -16,7 +16,6 @@ import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetchActivity
 import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetchingInfo
-import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.ExecutingMethods
 import com.tech4bytes.mbrosv3.AppUsers.AppUsersModel
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.UserRoleUtils
@@ -24,26 +23,18 @@ import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.AppUsers.Config
 import com.tech4bytes.mbrosv3.AppUsers.RolesUtils
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
-import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.Customer.DueShow
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard.ActivityAdminDeliveryDashboard
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
-import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
-import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotLoad
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
-import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
-import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
-import kotlin.reflect.KFunction
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -91,7 +82,7 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     private fun getRoleAndActivityMapping(role: ActivityAuthEnums): (() -> Unit)? {
-        if(role == ActivityAuthEnums.UNIDENTIFIED) {
+        if (role == ActivityAuthEnums.UNIDENTIFIED) {
             showToastConnectToAdmin()
             return null
         }
@@ -154,7 +145,7 @@ class ActivityLogin : AppCompatActivity() {
 
     private fun goToDataFetchActivity(currentActivity: ActivityAuthEnums, nextActivity: Class<*>) {
         var switchActivityIntent = Intent(this, DataFetchActivity::class.java)
-        if(DataFetchingInfo.get(currentActivity).get().isEmpty()) {
+        if (DataFetchingInfo.get(currentActivity).get().isEmpty()) {
             switchActivityIntent = Intent(this, nextActivity)
             startActivity(switchActivityIntent)
         } else {
@@ -174,8 +165,10 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     private fun getPhoneId(): String {
-        return Secure.getString(applicationContext.contentResolver,
-            Secure.ANDROID_ID);
+        return Secure.getString(
+            applicationContext.contentResolver,
+            Secure.ANDROID_ID
+        );
     }
 
     fun loginPageOnClickRefresh(view: View) {

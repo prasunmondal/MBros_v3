@@ -5,7 +5,6 @@ import com.google.gson.reflect.TypeToken
 import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.tech4bytes.extrack.centralCache.CentralCache
-import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -36,7 +35,7 @@ class RolesUtils {
                 .tabName(Config.SHEET_TAB_NAME)
                 .build().execute()
 
-            val deviceList = result.parseToObject<AppUsersModel>(result.getRawResponse(), object: TypeToken<ArrayList<AppUsersModel>?>() {}.type)
+            val deviceList = result.parseToObject<AppUsersModel>(result.getRawResponse(), object : TypeToken<ArrayList<AppUsersModel>?>() {}.type)
             deviceList.sortBy { it.id }
             deviceList.reverse()
 
@@ -46,7 +45,7 @@ class RolesUtils {
 
 
             deviceList.forEach {
-                if(getPhoneId() == it.device_id) {
+                if (getPhoneId() == it.device_id) {
                     return it
                 }
             }
@@ -54,8 +53,10 @@ class RolesUtils {
         }
 
         private fun getPhoneId(): String {
-            return Settings.Secure.getString(AppContexts.get().contentResolver,
-                Settings.Secure.ANDROID_ID);
+            return Settings.Secure.getString(
+                AppContexts.get().contentResolver,
+                Settings.Secure.ANDROID_ID
+            );
         }
     }
 }

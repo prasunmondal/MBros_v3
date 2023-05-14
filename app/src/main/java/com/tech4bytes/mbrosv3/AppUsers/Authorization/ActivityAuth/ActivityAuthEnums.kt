@@ -1,6 +1,6 @@
 package com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth
 
-enum class ActivityAuthEnums: java.io.Serializable {
+enum class ActivityAuthEnums : java.io.Serializable {
     ADMIN,
     DELIVERY,
     COLLECTOR,

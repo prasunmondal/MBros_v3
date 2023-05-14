@@ -48,7 +48,7 @@ class ListUtils {
 
         fun <T> getFilteredResultsFilterByAttribute(data: List<T>, attributeName: String, value: String): List<T> {
             LogMe.log("Filtering Results:: $attributeName: $value")
-            if(value.isEmpty())
+            if (value.isEmpty())
                 return data
             val result = data.stream().filter { d ->
                 ReflectionUtils.readInstanceProperty<String>(
@@ -77,7 +77,7 @@ class ListUtils {
             var attributeName = ReflectionUtils.getAttributeNameAsString(attribute)
             val sum: Double = data.stream()
                 .mapToDouble { x ->
-                    if(ReflectionUtils.readInstanceProperty<String>(x as Any, attributeName).isEmpty()) {
+                    if (ReflectionUtils.readInstanceProperty<String>(x as Any, attributeName).isEmpty()) {
                         0.0
                     } else {
                         ReflectionUtils.readInstanceProperty<String>(x as Any, attributeName).toDouble()

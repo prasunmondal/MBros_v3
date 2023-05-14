@@ -1,6 +1,5 @@
 package com.tech4bytes.mbrosv3.CustomerOrders.GetOrders
 
-import android.provider.MediaStore.Video
 import com.google.gson.reflect.TypeToken
 import com.prasunmondal.postjsontosheets.clients.delete.Delete
 import com.prasunmondal.postjsontosheets.clients.get.Get
@@ -15,16 +14,18 @@ import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import java.util.stream.Collectors
 
 
-data class GetCustomerOrders(var id: String = "",
-                             var timestamp: String = "",
-                             var name: String = "",
-                             var seqNo: String = "",
-                             var orderedPc: String = "",
-                             var orderedKg: String = "",
-                             var calculatedPc: String = "",
-                             var calculatedKg: String = "",
-                             var rate: String = "",
-                             var prevDue: String = ""): java.io.Serializable {
+data class GetCustomerOrders(
+    var id: String = "",
+    var timestamp: String = "",
+    var name: String = "",
+    var seqNo: String = "",
+    var orderedPc: String = "",
+    var orderedKg: String = "",
+    var calculatedPc: String = "",
+    var calculatedKg: String = "",
+    var rate: String = "",
+    var prevDue: String = ""
+) : java.io.Serializable {
 
     companion object {
 
@@ -46,11 +47,11 @@ data class GetCustomerOrders(var id: String = "",
         fun updateObj(passedObj: GetCustomerOrders) {
             var toBeRemoved: GetCustomerOrders? = null
             obj.forEach {
-                if(it.name == passedObj.name) {
+                if (it.name == passedObj.name) {
                     toBeRemoved = it
                 }
             }
-            if(toBeRemoved != null) {
+            if (toBeRemoved != null) {
                 obj.remove(toBeRemoved)
                 obj.add(passedObj)
                 LogMe.log("Updated: $passedObj")
@@ -64,7 +65,7 @@ data class GetCustomerOrders(var id: String = "",
 
             LogMe.log(CustomerKYC.getAllCustomers().toString())
             CustomerKYC.getAllCustomers().forEach {
-                if(it.isActiveCustomer.toBoolean()) {
+                if (it.isActiveCustomer.toBoolean()) {
                     obj.add(nameMappedOrders[it.nameEng]!!)
                 }
             }
@@ -77,12 +78,12 @@ data class GetCustomerOrders(var id: String = "",
             CustomerKYC.getAllCustomers().forEach { masterList ->
                 var isInOrderList = false
                 actualOrders.forEach { orderList ->
-                    if(masterList.nameEng == orderList.name) {
+                    if (masterList.nameEng == orderList.name) {
                         list.add(orderList)
                         isInOrderList = true
                     }
                 }
-                if(!isInOrderList && masterList.isActiveCustomer.toBoolean()) {
+                if (!isInOrderList && masterList.isActiveCustomer.toBoolean()) {
                     list.add(GetCustomerOrders(name = masterList.nameEng))
                 }
             }
@@ -94,7 +95,7 @@ data class GetCustomerOrders(var id: String = "",
             val actualOrders = getServerList()
             CustomerKYC.getAllCustomers().forEach { masterList ->
                 actualOrders.forEach { orderList ->
-                    if(masterList.nameEng == orderList.name) {
+                    if (masterList.nameEng == orderList.name) {
                         list.add(orderList)
                     }
                 }
@@ -108,11 +109,11 @@ data class GetCustomerOrders(var id: String = "",
             CustomerKYC.getAllCustomers().forEach { masterList ->
                 var isInOrderList = false
                 actualOrders.forEach { orderList ->
-                    if(masterList.nameEng == orderList.name) {
+                    if (masterList.nameEng == orderList.name) {
                         isInOrderList = true
                     }
                 }
-                if(!isInOrderList && masterList.isActiveCustomer.toBoolean()) {
+                if (!isInOrderList && masterList.isActiveCustomer.toBoolean()) {
                     list.add(GetCustomerOrders(name = masterList.nameEng))
                 }
             }
@@ -125,7 +126,7 @@ data class GetCustomerOrders(var id: String = "",
 
         fun getByName(inputName: String): GetCustomerOrders? {
             get().forEach {
-                if(it.name == inputName) {
+                if (it.name == inputName) {
                     return it
                 }
             }
@@ -182,7 +183,8 @@ data class GetCustomerOrders(var id: String = "",
                 .build().execute()
 
             // waitDialog!!.dismiss()
-            return result.parseToObject(result.getRawResponse(),
+            return result.parseToObject(
+                result.getRawResponse(),
                 object : TypeToken<ArrayList<GetCustomerOrders>?>() {}.type
             )
         }

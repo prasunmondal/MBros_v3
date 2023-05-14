@@ -4,7 +4,7 @@ import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 
-class KmManagement: java.io.Serializable {
+class KmManagement : java.io.Serializable {
 
     var timestamp: String = ""
     var prevKm = 0L

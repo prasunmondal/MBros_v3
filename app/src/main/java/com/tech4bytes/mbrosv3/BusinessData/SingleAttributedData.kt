@@ -12,38 +12,39 @@ import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ReflectionUtils
-import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
 import kotlin.reflect.KMutableProperty1
 
-data class SingleAttributedData(var recordGeneratorDevice: String = "",
-                                var id: String = "",
-                                var date: String = "",
-                                var openingFarmRate: String = "",
-                                var finalFarmRate: String = "",
-                                var bufferRate: String = "",
-                                var vehicle_prevKm: String = "",
-                                var vehicle_finalKm: String = "",
-                                var estimatedLoadPc: String = "",
-                                var estimatedLoadKg: String = "",
-                                var estimatedLoadAvgWt: String = "",
-                                var actualLoadPc: String = "",
-                                var actualLoadKg: String = "",
-                                var actualLoadAvgWt: String = "",
-                                var load_companyName: String = "",
-                                var load_branch: String = "",
-                                var load_area: String = "",
-                                var extra_cash_given: String = "",
-                                var load_account: String = "",
-                                var did_refueled: String = "",
-                                var refueling_qty: String = "",
-                                var refueling_amount: String = "",
-                                var refueling_isFullTank: String = "",
-                                var refueling_prevKm: String = "",
-                                var refueling_km: String = "",
-                                var labour_expenses: String = "",
-                                var refuel_mileage: String = "",
-                                var extra_expenses: String = "",
-                                var daySale: String = ""): java.io.Serializable {
+data class SingleAttributedData(
+    var recordGeneratorDevice: String = "",
+    var id: String = "",
+    var date: String = "",
+    var openingFarmRate: String = "",
+    var finalFarmRate: String = "",
+    var bufferRate: String = "",
+    var vehicle_prevKm: String = "",
+    var vehicle_finalKm: String = "",
+    var estimatedLoadPc: String = "",
+    var estimatedLoadKg: String = "",
+    var estimatedLoadAvgWt: String = "",
+    var actualLoadPc: String = "",
+    var actualLoadKg: String = "",
+    var actualLoadAvgWt: String = "",
+    var load_companyName: String = "",
+    var load_branch: String = "",
+    var load_area: String = "",
+    var extra_cash_given: String = "",
+    var load_account: String = "",
+    var did_refueled: String = "",
+    var refueling_qty: String = "",
+    var refueling_amount: String = "",
+    var refueling_isFullTank: String = "",
+    var refueling_prevKm: String = "",
+    var refueling_km: String = "",
+    var labour_expenses: String = "",
+    var refuel_mileage: String = "",
+    var extra_expenses: String = "",
+    var daySale: String = ""
+) : java.io.Serializable {
 
     companion object {
 
@@ -53,7 +54,7 @@ data class SingleAttributedData(var recordGeneratorDevice: String = "",
         fun getRecords(useCache: Boolean = true): SingleAttributedData {
             LogMe.log("Getting delivery records")
             val cacheResults = CentralCache.get<SingleAttributedData>(AppContexts.get(), recordsKey, useCache)
-            LogMe.log("Getting delivery records: Cache Hit: " + (cacheResults!=null))
+            LogMe.log("Getting delivery records: Cache Hit: " + (cacheResults != null))
             return if (cacheResults != null) {
                 cacheResults
             } else {
@@ -65,13 +66,13 @@ data class SingleAttributedData(var recordGeneratorDevice: String = "",
         }
 
         fun getBufferRateInt(): Int {
-            if(getRecords().bufferRate.isEmpty())
+            if (getRecords().bufferRate.isEmpty())
                 return 0
             return getRecords().bufferRate.toInt()
         }
 
         fun getFinalRateInt(): Int {
-            if(getRecords().finalFarmRate.isEmpty())
+            if (getRecords().finalFarmRate.isEmpty())
                 return 0
             return getRecords().finalFarmRate.toInt()
         }
@@ -99,7 +100,7 @@ data class SingleAttributedData(var recordGeneratorDevice: String = "",
         }
 
         private fun getCombinedResultsFromList(list: List<SingleAttributedData>): SingleAttributedData {
-            if(list.isEmpty()) return SingleAttributedData()
+            if (list.isEmpty()) return SingleAttributedData()
             return list[0]
         }
 
@@ -110,7 +111,7 @@ data class SingleAttributedData(var recordGeneratorDevice: String = "",
                 .tabName(SHEET_TABNAME)
                 .build().execute()
 
-            val recordsList = result.parseToObject<SingleAttributedData>(result.getRawResponse(), object: TypeToken<ArrayList<SingleAttributedData>?>() {}.type)
+            val recordsList = result.parseToObject<SingleAttributedData>(result.getRawResponse(), object : TypeToken<ArrayList<SingleAttributedData>?>() {}.type)
             recordsList.sortBy { it.id }
             recordsList.reverse()
             return getCombinedResultsFromList(recordsList)
@@ -134,8 +135,10 @@ data class SingleAttributedData(var recordGeneratorDevice: String = "",
 
         @SuppressLint("HardwareIds")
         private fun getPhoneId(): String {
-            return Settings.Secure.getString(AppContexts.get().contentResolver,
-                Settings.Secure.ANDROID_ID);
+            return Settings.Secure.getString(
+                AppContexts.get().contentResolver,
+                Settings.Secure.ANDROID_ID
+            );
         }
     }
 

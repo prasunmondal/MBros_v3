@@ -70,8 +70,8 @@ class DataFetchActivity : AppCompatActivity() {
             @Suppress("UNCHECKED_CAST")
             (key as ((Boolean) -> Unit)).invoke(useCache)
             runOnUiThread {
-                list[key]!!.view.findViewById<ConstraintLayout>(R.id.fragment_data_fetch_container)?.
-                setBackgroundColor(ContextCompat.getColor(this, R.color.verify_delivery_valid))
+                list[key]!!.view.findViewById<TextView>(R.id.fragment_data_fetch_task_name)?.
+                    setTextColor(ContextCompat.getColor(this, R.color.light_blue_A400))
                 list[key]!!.isCompleted = true
 
                 var allCompleted = true

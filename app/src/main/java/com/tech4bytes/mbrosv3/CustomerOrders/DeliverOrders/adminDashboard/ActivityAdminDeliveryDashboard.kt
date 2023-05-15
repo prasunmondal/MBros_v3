@@ -14,6 +14,7 @@ import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
+import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
@@ -113,8 +114,9 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
                 spoolBtn.isClickable = false
                 spoolBtn.text = "Finalizing Data... .. ."
             }
-            CustomerData.spoolDeliveringData()
-            Refueling.spoolRefuelingData()
+//            CustomerData.spoolDeliveringData()
+//            Refueling.spoolRefuelingData()
+            DaySummary.saveToServer()
             runOnUiThread {
                 spoolBtn.isEnabled = true
                 spoolBtn.alpha = 1.0f

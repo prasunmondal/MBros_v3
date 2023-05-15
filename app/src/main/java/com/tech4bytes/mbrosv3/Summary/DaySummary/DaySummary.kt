@@ -3,22 +3,29 @@ package com.tech4bytes.mbrosv3.Summary.DaySummary
 import com.google.gson.reflect.TypeToken
 import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
+import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
+import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Summary.SummaryConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
+import com.tech4bytes.mbrosv3.Utils.WeightUtils.WeightUtils
+import java.util.Date
 
 data class DaySummary(
     var timestamp: String = "",
     var date: String = "",
     var pc: String = "",
     var kg: String = "",
+    var deliveredPc: String = "",
+    var deliveredKg: String = "",
     var avgLoadingWt: String = "",
     var shortage: String = "",
     var sold_amount: String = "",
@@ -39,7 +46,10 @@ data class DaySummary(
     var transport_income: String = "",
     var transport_expenses: String = "",
     var profit: String = "",
-    var trip_end_km: String = ""
+    var trip_end_km: String = "",
+    var other_expenses_note: String = "",
+    var other_expense_amount: String = ""
+
 ) : java.io.Serializable {
 
     companion object {
@@ -51,6 +61,54 @@ data class DaySummary(
                 CentralCache.put(SummaryConfig.TAB_DAY_SUMMARY, cacheResults)
             }
             return cacheResults
+        }
+
+        fun saveToServer() {
+            PostObject.builder()
+                .scriptId(ProjectConfig.dBServerScriptURL)
+                .sheetId(ProjectConfig.DB_FINALIZE_SHEET_ID)
+                .tabName(SummaryConfig.TAB_DAY_SUMMARY)
+                .dataObject(getDaySummaryObjectForCurrentData() as Any)
+                .build().execute()
+        }
+
+        fun getDaySummaryObjectForCurrentData(): DaySummary {
+            val daySummaryObj = DaySummary()
+            val metadata = SingleAttributedData.getRecords()
+
+            val loadAvgWt = NumberUtils.getDoubleOrZero(metadata.actualLoadKg) / NumberUtils.getDoubleOrZero(metadata.actualLoadPc)
+
+            daySummaryObj.timestamp = System.currentTimeMillis().toString()
+            daySummaryObj.date = DateUtils.getCurrentDate("M/dd/yyyy")
+            daySummaryObj.pc = metadata.actualLoadPc
+            daySummaryObj.kg = metadata.actualLoadKg
+            daySummaryObj.deliveredPc = DeliveryCalculations.getTotalDeliveredPc().toString()
+            daySummaryObj.deliveredKg = DeliveryCalculations.getTotalDeliveredKg().toString()
+            daySummaryObj.avgLoadingWt = "${WeightUtils.roundOff3places(loadAvgWt)}"
+            daySummaryObj.shortage = DeliveryCalculations.getShortage(daySummaryObj.kg, daySummaryObj.deliveredKg).toString()
+            daySummaryObj.sold_amount = DeliveryCalculations.getDaySaleAmount().toString()
+            daySummaryObj.paid_amount = DeliveryCalculations.getTotalOfPaidAmounts().toString()
+//                daySummaryObj.prev_due_balance = "TODO"
+//                daySummaryObj.new_due_balance = getTotalDueBalance().toString()
+            daySummaryObj.loadingCompany = metadata.load_companyName
+            daySummaryObj.loadingBranch = metadata.load_branch
+            daySummaryObj.loadingArea = metadata.load_area
+            daySummaryObj.loadingComapnyAccount = metadata.load_account
+            daySummaryObj.loadingCompanyAccountBalance = ""
+            daySummaryObj.car_expense = DeliveryCalculations.getKmCost().toString()
+            daySummaryObj.labour_expense = metadata.labour_expenses
+            daySummaryObj.extra_expenses = metadata.extra_expenses
+            daySummaryObj.total_expenses = DeliveryCalculations.getTotalOtherExpenses().toString()
+            daySummaryObj.farm_rate = metadata.finalFarmRate
+            daySummaryObj.buffer = metadata.bufferRate
+            daySummaryObj.trip_end_km = metadata.vehicle_finalKm
+            daySummaryObj.transport_income = ""
+            daySummaryObj.transport_expenses = ""
+            daySummaryObj.other_expenses_note = ""
+            daySummaryObj.other_expense_amount = ""
+            daySummaryObj.profit = ""
+
+            return daySummaryObj
         }
 
         private fun getFromServer(): List<DaySummary> {
@@ -113,12 +171,12 @@ data class DaySummary(
         }
 
         fun getTotalDueBalance(obj: OneShotDelivery): Int {
-            var currentDueMapAfterDelivery: MutableMap<String, Int> = mutableMapOf()
+            val currentDueMapAfterDelivery: MutableMap<String, Int> = mutableMapOf()
             CustomerData.getAllLatestRecords().forEach {
                 currentDueMapAfterDelivery[it.name] = NumberUtils.getIntOrZero(it.balanceDue)
             }
 
-            var todaysUpdatedBalances = obj.getTodaysUpdatedDueMap()
+            val todaysUpdatedBalances = obj.getTodaysUpdatedDueMap()
             todaysUpdatedBalances.forEach {
                 currentDueMapAfterDelivery[it.key] = NumberUtils.getIntOrZero(it.value.toString())
             }

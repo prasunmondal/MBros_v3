@@ -17,6 +17,7 @@ import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
+import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.ActivityDeliveringDeliver
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
@@ -166,8 +167,8 @@ class OneShotDelivery : AppCompatActivity() {
             return
         }
 
-        val kmDiff = getKmDiff(currentKmOnUI)
-        val kmCost = getKmCost(currentKmOnUI)
+        val kmDiff = DeliveryCalculations.getKmDiff(currentKmOnUI)
+        val kmCost = DeliveryCalculations.getKmCost(currentKmOnUI)
 
         val singleDataObj = SingleAttributedData.getRecords()
         singleDataObj.vehicle_finalKm = currentKm.toString()
@@ -175,16 +176,6 @@ class OneShotDelivery : AppCompatActivity() {
 
         kmDiffElement.text = kmDiff.toString()
         kmCostElement.text = kmCost.toString()
-    }
-
-    private fun getKmDiff(currentKm: String): Int {
-        val currentKm = NumberUtils.getIntOrZero(currentKm)
-        val prevKm = DaySummary.getPrevTripEndKm()
-        return currentKm - prevKm
-    }
-
-    private fun getKmCost(currentKm: String): Int {
-        return 12 * getKmDiff(currentKm)
     }
 
     private fun initiallizeRefuelUI() {

@@ -17,7 +17,6 @@ import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 import com.tech4bytes.mbrosv3.Utils.WeightUtils.WeightUtils
-import java.util.Date
 
 data class DaySummary(
     var timestamp: String = "",

@@ -88,7 +88,7 @@ data class DaySummary(
             daySummaryObj.shortage = DeliveryCalculations.getShortage(daySummaryObj.kg, daySummaryObj.deliveredKg).toString()
             daySummaryObj.sold_amount = DeliveryCalculations.getDaySaleAmount().toString()
             daySummaryObj.paid_amount = DeliveryCalculations.getTotalOfPaidAmounts().toString()
-//                daySummaryObj.prev_due_balance = "TODO"
+            daySummaryObj.prev_due_balance = DeliveryCalculations.getPrevMarketDue().toString()
             daySummaryObj.new_due_balance = DeliveryCalculations.getTotalMarketDue().toString()
             daySummaryObj.loadingCompany = metadata.load_companyName
             daySummaryObj.loadingBranch = metadata.load_branch

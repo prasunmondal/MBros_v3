@@ -92,5 +92,13 @@ class DeliveryCalculations {
             }
             return sum
         }
+
+        fun getPrevMarketDue(): Int {
+            var sum = 0
+            CustomerData.getAllLatestRecords().forEach {
+                sum += NumberUtils.getIntOrZero(it.balanceDue)
+            }
+            return sum
+        }
     }
 }

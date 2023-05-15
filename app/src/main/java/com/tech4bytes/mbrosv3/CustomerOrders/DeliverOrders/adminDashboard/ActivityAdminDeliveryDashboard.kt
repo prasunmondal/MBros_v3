@@ -114,8 +114,8 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
                 spoolBtn.isClickable = false
                 spoolBtn.text = "Finalizing Data... .. ."
             }
-//            CustomerData.spoolDeliveringData()
-//            Refueling.spoolRefuelingData()
+            CustomerData.spoolDeliveringData()
+            Refueling.spoolRefuelingData()
             DaySummary.saveToServer()
             runOnUiThread {
                 spoolBtn.isEnabled = true

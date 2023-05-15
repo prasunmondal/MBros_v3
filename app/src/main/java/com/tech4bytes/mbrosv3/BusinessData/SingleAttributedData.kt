@@ -43,7 +43,8 @@ data class SingleAttributedData(
     var labour_expenses: String = "",
     var refuel_mileage: String = "",
     var extra_expenses: String = "",
-    var daySale: String = ""
+    var daySale: String = "",
+    var totalMarketDue: String = ""
 ) : java.io.Serializable {
 
     companion object {

@@ -2,6 +2,7 @@ package com.tech4bytes.mbrosv3.BusinessLogic
 
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
+import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
@@ -74,6 +75,22 @@ class DeliveryCalculations {
             val labourCost = NumberUtils.getIntOrZero(metadata.labour_expenses)
             val inHandCashExpenses = NumberUtils.getIntOrZero(metadata.extra_expenses)
             return kmCost + labourCost + inHandCashExpenses
+        }
+
+        fun getTotalMarketDue(): Int {
+            val dueMap: MutableMap<String, Int> = mutableMapOf()
+            CustomerData.getAllLatestRecords().forEach {
+                dueMap[it.name] = NumberUtils.getIntOrZero(it.balanceDue)
+            }
+            DeliverCustomerOrders.get().forEach {
+                dueMap[it.name] = NumberUtils.getIntOrZero(it.balanceDue)
+            }
+
+            var sum = 0
+            dueMap.forEach {
+                sum += it.value
+            }
+            return sum
         }
     }
 }

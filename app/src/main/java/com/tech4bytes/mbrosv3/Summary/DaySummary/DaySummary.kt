@@ -89,7 +89,7 @@ data class DaySummary(
             daySummaryObj.sold_amount = DeliveryCalculations.getDaySaleAmount().toString()
             daySummaryObj.paid_amount = DeliveryCalculations.getTotalOfPaidAmounts().toString()
 //                daySummaryObj.prev_due_balance = "TODO"
-//                daySummaryObj.new_due_balance = getTotalDueBalance().toString()
+            daySummaryObj.new_due_balance = DeliveryCalculations.getTotalMarketDue().toString()
             daySummaryObj.loadingCompany = metadata.load_companyName
             daySummaryObj.loadingBranch = metadata.load_branch
             daySummaryObj.loadingArea = metadata.load_area

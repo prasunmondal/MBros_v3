@@ -17,6 +17,7 @@ import kotlin.reflect.KMutableProperty1
 data class SingleAttributedData(
     var recordGeneratorDevice: String = "",
     var id: String = "",
+    var datetime: String = "",
     var date: String = "",
     var openingFarmRate: String = "",
     var finalFarmRate: String = "",
@@ -131,6 +132,7 @@ data class SingleAttributedData(
             obj.id = System.currentTimeMillis().toString()
             obj.recordGeneratorDevice = getPhoneId()
             obj.date = DateUtils.getCurrentTimestamp()
+//            obj.datetime = DateUtils.getCurrentTimestamp()
             CentralCache.put(recordsKey, obj)
         }
 
@@ -139,8 +141,7 @@ data class SingleAttributedData(
             return Settings.Secure.getString(
                 AppContexts.get().contentResolver,
                 Settings.Secure.ANDROID_ID
-            );
+            )
         }
     }
-
 }

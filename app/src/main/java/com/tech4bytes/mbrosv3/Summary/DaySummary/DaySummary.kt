@@ -78,7 +78,7 @@ data class DaySummary(
             val loadAvgWt = NumberUtils.getDoubleOrZero(metadata.actualLoadKg) / NumberUtils.getDoubleOrZero(metadata.actualLoadPc)
 
             daySummaryObj.timestamp = System.currentTimeMillis().toString()
-            daySummaryObj.date = DateUtils.getCurrentDate("M/dd/yyyy")
+            daySummaryObj.date = DateUtils.getCurrentDate("yyyy-MM-dd")
             daySummaryObj.pc = metadata.actualLoadPc
             daySummaryObj.kg = metadata.actualLoadKg
             daySummaryObj.deliveredPc = DeliveryCalculations.getTotalDeliveredPc().toString()

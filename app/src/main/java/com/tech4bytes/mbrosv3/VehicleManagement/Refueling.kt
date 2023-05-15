@@ -105,7 +105,7 @@ class Refueling : java.io.Serializable {
             if (singleAttributedObj.did_refueled.toBoolean()) {
                 val refuelingObj = Refueling("", "", "", false)
                 refuelingObj.id = singleAttributedObj.id
-                refuelingObj.timestamp = singleAttributedObj.date
+                refuelingObj.timestamp = singleAttributedObj.datetime
                 refuelingObj.measure = singleAttributedObj.refueling_qty
                 refuelingObj.amount = singleAttributedObj.refueling_amount
                 refuelingObj.refueling_km = singleAttributedObj.refueling_km

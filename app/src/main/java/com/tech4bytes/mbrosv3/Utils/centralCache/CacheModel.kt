@@ -11,7 +11,7 @@ class CacheModel : java.io.Serializable {
 
     constructor(content: Any?) {
         entryTime = LocalDateTime.now()
-        expiryTime = DateUtils.getNextTimeOccurrenceTimestamp(16)
+        expiryTime = DateUtils.getNextTimeOccurrenceTimestamp(1)
 //        Toast.makeText(AppContexts.get(), "$entryTime - $expiryTime", Toast.LENGTH_SHORT).show()
         LogMe.log("$entryTime - $expiryTime")
         this.content = content

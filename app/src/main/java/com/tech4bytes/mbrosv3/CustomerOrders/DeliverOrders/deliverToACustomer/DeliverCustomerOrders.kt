@@ -95,13 +95,17 @@ data class DeliverCustomerOrders(
             saveObjectsToServer(obj)
         }
 
-        fun deleteAll() {
+        fun deleteAllFromLocal() {
+            CentralCache.put(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, listOf<DeliverCustomerOrders>())
+        }
+
+
+        fun deleteAllFromServer() {
             Delete.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
                 .sheetId(ProjectConfig.DB_SHEET_ID)
                 .tabName(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
                 .build().execute()
-            saveToLocal(listOf())
         }
 
         fun getUiElementFromDeliveringPage(view: View, attribute: KMutableProperty1<DeliverCustomerOrders, *>): View? {

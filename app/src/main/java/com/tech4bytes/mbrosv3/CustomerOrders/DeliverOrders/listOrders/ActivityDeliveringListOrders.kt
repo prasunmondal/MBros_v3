@@ -10,7 +10,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.ActivityDeliveringDeliver
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliveryCalculationUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Loading.ActivityDeliveringLoad
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
@@ -63,7 +63,7 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
     }
 
     fun isDelivered(name: String): Boolean {
-        val obj = DeliverCustomerOrders.getByName(name)
+        val obj = DeliveryCalculationUtils.getByName(name)
         return (obj != null && obj.deliveryStatus == "DELIVERED")
     }
 

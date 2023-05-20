@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliveryCalculationUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
@@ -53,8 +54,8 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         val countersDelivered = DeliverCustomerOrders.get(useCache)
         val numberOfCustomersDelivered = countersDelivered.size
         val totalNumberOfCustomers = GetCustomerOrders.getNumberOfCustomersOrdered(useCache)
-        val deliveredPc = DeliverCustomerOrders.getTotalPcDelivered()
-        val deliveredKg = DeliverCustomerOrders.getTotalKgDelivered()
+        val deliveredPc = DeliveryCalculationUtils.getTotalPcDelivered()
+        val deliveredKg = DeliveryCalculationUtils.getTotalKgDelivered()
         val avgWt = deliveredKg / deliveredPc
 
         val deliveredNumberElement = findViewById<TextView>(R.id.activity_admin_delivery_dashboard_delivered_number)
@@ -92,8 +93,8 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     private fun updateProjectedInfo(useCache: Boolean) {
         val projectedShortageElement = findViewById<TextView>(R.id.activity_admin_delivery_dashboard_projected_shortage)
         try {
-            val deliveredPc = DeliverCustomerOrders.getTotalPcDelivered()
-            val deliveredKg = DeliverCustomerOrders.getTotalKgDelivered()
+            val deliveredPc = DeliveryCalculationUtils.getTotalPcDelivered()
+            val deliveredKg = DeliveryCalculationUtils.getTotalKgDelivered()
             val deliveredAvgWt = deliveredKg / deliveredPc
 
             val metadataObj = SingleAttributedData.getRecords()

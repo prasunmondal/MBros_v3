@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
@@ -52,17 +53,17 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
 
     fun initiallizeUI() {
         // Get UI Elements
-        val nameElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::name)!!
-        val orderedPcElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::orderedPc)!!
-        val orderedKgElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::orderedKg)!!
-        val deliveredPcElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredPc)!!
-        val deliveredKgElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredKg)!!
-        val rate = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::rate)!!
-        val todaysAmountElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::todaysAmount)!!
-        val prevDueElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::prevDue)!!
-        val totalDueElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::totalDue)!!
-        val paidElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::paid)!!
-        val balanceDueElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::balanceDue)!!
+        val nameElement = getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::name)!!
+        val orderedPcElement = getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::orderedPc)!!
+        val orderedKgElement = getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::orderedKg)!!
+        val deliveredPcElement = getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredPc)!!
+        val deliveredKgElement = getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredKg)!!
+        val rate = getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::rate)!!
+        val todaysAmountElement = getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::todaysAmount)!!
+        val prevDueElement = getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::prevDue)!!
+        val totalDueElement = getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::totalDue)!!
+        val paidElement = getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::paid)!!
+        val balanceDueElement = getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::balanceDue)!!
 
         // Set UI Values
         UIUtils.setUIElementValue(nameElement, record.name)
@@ -134,38 +135,38 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         setValidityColors(deliveredPcContainer, isValid)
         setValidityColors(deliveredKgContainer, isValid)
 
-        val nameElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::name)!!
+        val nameElement = getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::name)!!
         if (!AppUsersModel.isEligibleToViewHiddenDue() && !CustomerKYC.showBalance(UIUtils.getUIElementValue(nameElement))) {
             setValidityColors(deliveredRateContainer, true)
         }
     }
 
     private fun getDeliveredRate(): Double {
-        val deliveredRateElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::rate)!!
+        val deliveredRateElement = getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::rate)!!
         val deliveredRateText = NumberUtils.getDoubleOrZero(UIUtils.getUIElementValue(deliveredRateElement))
         return deliveredRateText
     }
 
     private fun getDeliveredKg(): Double {
-        val deliveredKgElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredKg)!!
+        val deliveredKgElement = getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredKg)!!
         val deliveredKgText = NumberUtils.getDoubleOrZero(UIUtils.getUIElementValue(deliveredKgElement))
         return deliveredKgText
     }
 
     private fun getDeliveredPc(): Int {
-        val deliveredPcElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredPc)!!
+        val deliveredPcElement = getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredPc)!!
         val deliveredPcText = NumberUtils.getIntOrZero(UIUtils.getUIElementValue(deliveredPcElement))
         return deliveredPcText
     }
 
     private fun getPaidAmountText(): String {
-        val deliveredPaidElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::paid)!!
+        val deliveredPaidElement = getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::paid)!!
         val deliveredPaidText = UIUtils.getUIElementValue(deliveredPaidElement)
         return deliveredPaidText
     }
 
     private fun validateSellingData(): Boolean {
-        val nameElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::name)!!
+        val nameElement = getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::name)!!
 
         if (!CustomerKYC.showBalance(UIUtils.getUIElementValue(nameElement))) {
             if (getDeliveredKg() == 0.0 && getDeliveredPc() == 0)
@@ -187,7 +188,7 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
     }
 
     private fun validatePaid() {
-        val nameElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::name)!!
+        val nameElement = getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::name)!!
         val deliveredPaidContainer = findViewById<LinearLayout>(R.id.activity_delivering_deliver_delivering_paid_container)
 
         if (!CustomerKYC.showBalance(UIUtils.getUIElementValue(nameElement))) {
@@ -212,11 +213,11 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
     }
 
     private fun reCalculateNUpdateValues() {
-        val name = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::name)!!
+        val name = getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::name)!!
 
-        val todaysAmountElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::todaysAmount)!!
-        val totalDueElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::totalDue)!!
-        val balanceDueElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::balanceDue)!!
+        val todaysAmountElement = getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::todaysAmount)!!
+        val totalDueElement = getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::totalDue)!!
+        val balanceDueElement = getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::balanceDue)!!
 
         // do not update UI if show balances is false
         if (!AppUsersModel.isEligibleToViewHiddenDue() && !CustomerKYC.showBalance(UIUtils.getUIElementValue(name))) {
@@ -232,7 +233,7 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
     }
 
     private fun calculateBalanceDue(): Double {
-        val paidElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::paid)!!
+        val paidElement = getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::paid)!!
         val paidStr = UIUtils.getUIElementValue(paidElement)
         var calcPaid = 0.0
         if (paidStr.isNotEmpty()) {
@@ -250,25 +251,25 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
     }
 
     private fun calculateTodaysAmount(): Int {
-        val deliveredKgElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredKg)!!
+        val deliveredKgElement = getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredKg)!!
         val calcDeliveredKg = UIUtils.getUIElementValue(deliveredKgElement)
         var calcTodaysAmount = 0.0
         if (calcDeliveredKg.isNotEmpty() && calcDeliveredKg.toDouble() > 0) {
-            calcTodaysAmount = calcDeliveredKg.toDouble() * NumberUtils.getIntOrZero(UIUtils.getUIElementValue(DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::rate)!!))
+            calcTodaysAmount = calcDeliveredKg.toDouble() * NumberUtils.getIntOrZero(UIUtils.getUIElementValue(getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::rate)!!))
         }
         return calcTodaysAmount.toInt()
     }
 
     fun onClickSubmitDeliveredRecord(view: View) {
-        val rate = UIUtils.getUIElementValue(DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::rate)!!)
-        val deliveredWeight = UIUtils.getUIElementValue(DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredKg)!!)
+        val rate = UIUtils.getUIElementValue(getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::rate)!!)
+        val deliveredWeight = UIUtils.getUIElementValue(getUiElementFromDeliveringPage(mainView, DeliverCustomerOrders::deliveredKg)!!)
         if (NumberUtils.getDoubleOrZero(rate) == 0.0 && NumberUtils.getDoubleOrZero(deliveredWeight) != 0.0) {
             Toast.makeText(this, "সব গুলো লেখা হয়নি", Toast.LENGTH_LONG).show()
             return
         }
 
         getAllAttributesOfClass<DeliverCustomerOrders>().forEach { kMutableProperty ->
-            val uiElement = DeliverCustomerOrders.getUiElementFromDeliveringPage(mainView, kMutableProperty)
+            val uiElement = getUiElementFromDeliveringPage(mainView, kMutableProperty)
             if (uiElement != null) {
                 ReflectionUtils.setAttribute(record, kMutableProperty, UIUtils.getUIElementValue(uiElement))
             }
@@ -298,9 +299,28 @@ class ActivityDeliveringDeliver : AppCompatActivity() {
         return list
     }
 
+
     companion object {
+
+        fun getUiElementFromDeliveringPage(view: View, attribute: KMutableProperty1<DeliverCustomerOrders, *>): View? {
+            return when (attribute) {
+                DeliverCustomerOrders::name -> view.findViewById<TextView>(R.id.activity_delivering_deliver_name)
+                DeliverCustomerOrders::rate -> view.findViewById<TextView>(R.id.activity_delivering_deliver_rate)
+                DeliverCustomerOrders::orderedPc -> view.findViewById<TextView>(R.id.activity_delivering_deliver_ordered_pc)
+                DeliverCustomerOrders::orderedKg -> view.findViewById<TextView>(R.id.activity_delivering_deliver_ordered_kg)
+                DeliverCustomerOrders::deliveredPc -> view.findViewById<TextView>(R.id.activity_delivering_deliver_delivering_pc)
+                DeliverCustomerOrders::deliveredKg -> view.findViewById<TextView>(R.id.activity_delivering_deliver_delivering_kg)
+                DeliverCustomerOrders::todaysAmount -> view.findViewById<TextView>(R.id.activity_delivering_deliver_todays_amount)
+                DeliverCustomerOrders::prevDue -> view.findViewById<TextView>(R.id.activity_delivering_deliver_prev_due)
+                DeliverCustomerOrders::totalDue -> view.findViewById<TextView>(R.id.activity_delivering_deliver_all_total)
+                DeliverCustomerOrders::paid -> view.findViewById<TextView>(R.id.activity_delivering_deliver_paid)
+                DeliverCustomerOrders::balanceDue -> view.findViewById<TextView>(R.id.activity_delivering_deliver_balance_due)
+                else -> null
+            }
+        }
+
         fun getDeliveryRecord(inputName: String): DeliverCustomerOrders? {
-            var deliveryObj: DeliverCustomerOrders? = DeliverCustomerOrders.getByName(inputName)
+            var deliveryObj: DeliverCustomerOrders? = DeliveryCalculationUtils.getByName(inputName)
             if (deliveryObj != null) {
                 return deliveryObj
             }

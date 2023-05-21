@@ -9,6 +9,7 @@ import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
+import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 
 data class DeliverCustomerOrders(
     var id: String = "",
@@ -32,9 +33,11 @@ data class DeliverCustomerOrders(
 
         // Fetch Op
         fun get(useCache: Boolean = true): List<DeliverCustomerOrders> {
+            LogMe.log("Getting delivery data: tryCache: $useCache")
             var cacheResults = CentralCache.get<List<DeliverCustomerOrders>>(AppContexts.get(), DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, useCache)
 
             if (cacheResults == null) {
+                LogMe.log("Getting delivery data: Cache failed")
                 cacheResults = DeliveryCalculationUtils.filterToOnlyLatest(getFromServer())
                 saveToLocal(cacheResults)
             }
@@ -43,6 +46,7 @@ data class DeliverCustomerOrders(
         }
 
         private fun getFromServer(): List<DeliverCustomerOrders> {
+            LogMe.log("Getting delivery data: Getting from server")
             val result: GetResponse = Get.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
                 .sheetId(ProjectConfig.DB_SHEET_ID)
@@ -57,6 +61,7 @@ data class DeliverCustomerOrders(
 
         // Save Op
         fun save(obj: DeliverCustomerOrders) {
+            LogMe.log("Getting delivery data: Save")
             obj.id = System.currentTimeMillis().toString()
             obj.date = DateUtils.getCurrentTimestamp()
             saveToLocal(obj)
@@ -64,11 +69,13 @@ data class DeliverCustomerOrders(
         }
 
         private fun saveToLocal(obj: DeliverCustomerOrders) {
+            LogMe.log("Getting delivery data: Save To Local")
             val list = get() + obj
             CentralCache.put(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, list)
         }
 
         private fun saveToLocal(list: List<DeliverCustomerOrders>) {
+            LogMe.log("Getting delivery data: Save To Local")
             CentralCache.put(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, list)
         }
 

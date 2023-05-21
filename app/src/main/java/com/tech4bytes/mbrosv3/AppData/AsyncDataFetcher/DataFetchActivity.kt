@@ -70,7 +70,6 @@ class DataFetchActivity : AppCompatActivity() {
                 LogMe.log("==== Checking Completeness ====")
                 list.forEach {
                     if (!it.value.isCompleted) {
-//                        LogMe.log(it.key.name + " : " + it.value.isCompleted)
                         allCompleted = false
                     } else {
                         countCompletedExecutions += 1

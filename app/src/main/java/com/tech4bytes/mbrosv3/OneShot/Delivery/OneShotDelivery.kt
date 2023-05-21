@@ -535,8 +535,7 @@ class OneShotDelivery : AppCompatActivity() {
             gatherSingleAttributedData()
             gatherFuelData()
             saveSingleAttributeData()
-            DeliverCustomerOrders.deleteAllFromLocal()
-            deleteDeliveryDataOnServer()
+            DeliverCustomerOrders.deleteAllData()
             saveDeliveryData()
             runOnUiThread()
             {

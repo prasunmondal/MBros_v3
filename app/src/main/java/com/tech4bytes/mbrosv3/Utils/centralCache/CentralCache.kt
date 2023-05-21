@@ -52,6 +52,7 @@ class CentralCache {
 
         fun <T> get(context: Context, key: String, useCache: Boolean = true): T? {
 
+
             // if user wants to force refresh the values in the cache, pass useCache as false
             if (!useCache) {
                 LogMe.log("UseCache: False (Forced to not use cached data)")

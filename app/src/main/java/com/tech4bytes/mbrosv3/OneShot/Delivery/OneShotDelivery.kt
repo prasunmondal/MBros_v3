@@ -344,7 +344,7 @@ class OneShotDelivery : AppCompatActivity() {
         updateDetailedInfo(order, entry)
     }
 
-    fun updateHiddenData() {
+    private fun updateHiddenData() {
         val profitViewContainer = findViewById<LinearLayout>(R.id.osd_profit_details_container)
         if (profitViewContainer.visibility == View.VISIBLE) {
             val profitElement = findViewById<TextView>(R.id.osd_profit)
@@ -444,8 +444,8 @@ class OneShotDelivery : AppCompatActivity() {
         LogMe.log("Updating single attributed data")
         val loadedPc = findViewById<TextView>(R.id.one_shot_delivery_pc)
         val loadedKg = findViewById<TextView>(R.id.one_shot_delivery_kg)
-        loadedPc.setText(SingleAttributedData.getRecords().actualLoadPc)
-        loadedKg.setText(SingleAttributedData.getRecords().actualLoadKg)
+        loadedPc.text = SingleAttributedData.getRecords().actualLoadPc
+        loadedKg.text = SingleAttributedData.getRecords().actualLoadKg
 
         if (AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_FARM_RATE)) {
             val loadPriceElement = findViewById<EditText>(R.id.one_shot_delivery_price)
@@ -463,7 +463,7 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     fun getTodaysUpdatedDueMap(): MutableMap<String, Int> {
-        var currentDueMapAfterDelivery: MutableMap<String, Int> = mutableMapOf()
+        val currentDueMapAfterDelivery: MutableMap<String, Int> = mutableMapOf()
 
         deliveryMapOrderedCustomers.forEach {
             currentDueMapAfterDelivery[it.key] = NumberUtils.getIntOrZero(it.value.balanceDue)

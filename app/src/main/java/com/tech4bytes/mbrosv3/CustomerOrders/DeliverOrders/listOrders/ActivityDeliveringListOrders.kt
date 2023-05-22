@@ -9,8 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import com.tech4bytes.mbrosv3.AppData.AppUtils
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.ActivityDeliveringDeliver
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliveryCalculationUtils
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerCalculations
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Loading.ActivityDeliveringLoad
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
@@ -63,12 +63,12 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
     }
 
     fun isDelivered(name: String): Boolean {
-        val obj = DeliveryCalculationUtils.getByName(name)
+        val obj = DeliverToCustomerCalculations.getByName(name)
         return (obj != null && obj.deliveryStatus == "DELIVERED")
     }
 
     private fun goTo_ActivityDeliveringDeliver(name: String) {
-        val switchActivityIntent = Intent(this, ActivityDeliveringDeliver::class.java)
+        val switchActivityIntent = Intent(this, DeliverToCustomerActivity::class.java)
         val bundle = Bundle()
         bundle.putString("name", name)
         switchActivityIntent.putExtras(bundle)

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:layout_marginHorizontal="10dp"
     android:layout_marginVertical="10dp"
-    tools:context=".CustomerOrders.DeliverOrders.deliverToACustomer.ActivityDeliveringDeliver">
+    tools:context=".CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout7"

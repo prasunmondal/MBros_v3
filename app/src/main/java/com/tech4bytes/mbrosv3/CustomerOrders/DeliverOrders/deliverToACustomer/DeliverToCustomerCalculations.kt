@@ -3,11 +3,11 @@ package com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 
-class DeliveryCalculationUtils {
+class DeliverToCustomerCalculations {
     companion object {
 
-        fun getByName(inputName: String): DeliverCustomerOrders? {
-            DeliverCustomerOrders.get().forEach {
+        fun getByName(inputName: String): DeliverToCustomerDataModel? {
+            DeliverToCustomerDataModel.get().forEach {
                 if (it.name == inputName) {
                     return it
                 }
@@ -17,7 +17,7 @@ class DeliveryCalculationUtils {
 
         fun getTotalPcDelivered(): Int {
             var sum = 0
-            DeliverCustomerOrders.get().forEach {
+            DeliverToCustomerDataModel.get().forEach {
                 sum += NumberUtils.getIntOrZero(it.deliveredPc)
             }
             return sum
@@ -25,15 +25,15 @@ class DeliveryCalculationUtils {
 
         fun getTotalKgDelivered(): Double {
             var sum = 0.0
-            DeliverCustomerOrders.get().forEach {
+            DeliverToCustomerDataModel.get().forEach {
                 sum += NumberUtils.getDoubleOrZero(it.deliveredKg)
             }
             return sum
         }
 
-        fun filterToOnlyLatest(resultFromServer: List<DeliverCustomerOrders>): List<DeliverCustomerOrders> {
-            val sorted = ListUtils.sortListByAttribute(resultFromServer, DeliverCustomerOrders::id).reversed()
-            val map = mutableMapOf<String, DeliverCustomerOrders>()
+        fun filterToOnlyLatest(resultFromServer: List<DeliverToCustomerDataModel>): List<DeliverToCustomerDataModel> {
+            val sorted = ListUtils.sortListByAttribute(resultFromServer, DeliverToCustomerDataModel::id).reversed()
+            val map = mutableMapOf<String, DeliverToCustomerDataModel>()
 
             sorted.forEach {
                 if (!map.containsKey(it.name)) {

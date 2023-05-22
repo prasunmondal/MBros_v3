@@ -11,7 +11,7 @@ import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 
-data class DeliverCustomerOrders(
+data class DeliverToCustomerDataModel(
     var id: String = "",
     var date: String = "",
     var timestamp: String = "",
@@ -32,35 +32,35 @@ data class DeliverCustomerOrders(
     companion object {
 
         // Fetch Op
-        fun get(useCache: Boolean = true): List<DeliverCustomerOrders> {
+        fun get(useCache: Boolean = true): List<DeliverToCustomerDataModel> {
             LogMe.log("Getting delivery data: tryCache: $useCache")
-            var cacheResults = CentralCache.get<List<DeliverCustomerOrders>>(AppContexts.get(), DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, useCache)
+            var cacheResults = CentralCache.get<List<DeliverToCustomerDataModel>>(AppContexts.get(), DeliverToCustomerConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, useCache)
 
             if (cacheResults == null) {
                 LogMe.log("Getting delivery data: Cache failed")
-                cacheResults = DeliveryCalculationUtils.filterToOnlyLatest(getFromServer())
+                cacheResults = DeliverToCustomerCalculations.filterToOnlyLatest(getFromServer())
                 saveToLocal(cacheResults)
             }
 
             return cacheResults
         }
 
-        private fun getFromServer(): List<DeliverCustomerOrders> {
+        private fun getFromServer(): List<DeliverToCustomerDataModel> {
             LogMe.log("Getting delivery data: Getting from server")
             val result: GetResponse = Get.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
                 .sheetId(ProjectConfig.get_db_sheet_id())
-                .tabName(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
+                .tabName(DeliverToCustomerConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
                 .build().execute()
 
             return result.parseToObject(
                 result.getRawResponse(),
-                object : TypeToken<ArrayList<DeliverCustomerOrders>?>() {}.type
+                object : TypeToken<ArrayList<DeliverToCustomerDataModel>?>() {}.type
             )
         }
 
         // Save Op
-        fun save(obj: DeliverCustomerOrders) {
+        fun save(obj: DeliverToCustomerDataModel) {
             LogMe.log("Getting delivery data: Save")
             obj.id = System.currentTimeMillis().toString()
             obj.date = DateUtils.getCurrentTimestamp()
@@ -68,22 +68,22 @@ data class DeliverCustomerOrders(
             saveToServer(obj)
         }
 
-        private fun saveToLocal(obj: DeliverCustomerOrders) {
+        private fun saveToLocal(obj: DeliverToCustomerDataModel) {
             LogMe.log("Getting delivery data: Save To Local")
             val list = get() + obj
-            CentralCache.put(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, list)
+            CentralCache.put(DeliverToCustomerConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, list)
         }
 
-        private fun saveToLocal(list: List<DeliverCustomerOrders>) {
+        private fun saveToLocal(list: List<DeliverToCustomerDataModel>) {
             LogMe.log("Getting delivery data: Save To Local")
-            CentralCache.put(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, list)
+            CentralCache.put(DeliverToCustomerConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, list)
         }
 
         private fun <T> saveToServer(obj: T) {
             PostObject.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
                 .sheetId(ProjectConfig.get_db_sheet_id())
-                .tabName(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
+                .tabName(DeliverToCustomerConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
                 .dataObject(obj as Any)
                 .build().execute()
         }
@@ -97,14 +97,14 @@ data class DeliverCustomerOrders(
         }
 
         private fun deleteAllFromLocal() {
-            CentralCache.put(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, listOf<DeliverCustomerOrders>())
+            CentralCache.put(DeliverToCustomerConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, listOf<DeliverToCustomerDataModel>())
         }
 
         private fun deleteAllFromServer() {
             Delete.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
                 .sheetId(ProjectConfig.get_db_sheet_id())
-                .tabName(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
+                .tabName(DeliverToCustomerConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
                 .build().execute()
         }
     }

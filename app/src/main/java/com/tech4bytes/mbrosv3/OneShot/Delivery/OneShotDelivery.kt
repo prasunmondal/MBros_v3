@@ -19,9 +19,9 @@ import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.ActivityDeliveringDeliver
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverOrdersConfig
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerConfig
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
@@ -38,8 +38,8 @@ import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
 
 class OneShotDelivery : AppCompatActivity() {
 
-    var deliveryMapOrderedCustomers: MutableMap<String, DeliverCustomerOrders> = mutableMapOf()
-    var deliveryMapUnOrderedCustomers: MutableMap<String, DeliverCustomerOrders> = mutableMapOf()
+    var deliveryMapOrderedCustomers: MutableMap<String, DeliverToCustomerDataModel> = mutableMapOf()
+    var deliveryMapUnOrderedCustomers: MutableMap<String, DeliverToCustomerDataModel> = mutableMapOf()
     var uiMaps: MutableMap<String, View> = mutableMapOf()
     lateinit var saveOneSortDeliveryButton: Button
     lateinit var deleteDeliveryDataButton: Button
@@ -196,7 +196,7 @@ class OneShotDelivery : AppCompatActivity() {
     private fun populateDeliveryMap() {
         deliveryMapOrderedCustomers = mutableMapOf()
         GetCustomerOrders.getListOfOrderedCustomers().forEach {
-            val deliverCustomersOrders = DeliverCustomerOrders(
+            val deliverCustomersOrders = DeliverToCustomerDataModel(
                 id = "${System.currentTimeMillis()}",
                 timestamp = DateUtils.getCurrentTimestamp(),
                 name = it.name,
@@ -212,7 +212,7 @@ class OneShotDelivery : AppCompatActivity() {
 
         deliveryMapUnOrderedCustomers = mutableMapOf()
         GetCustomerOrders.getListOfUnOrderedCustomers().forEach {
-            val deliverCustomersOrders = DeliverCustomerOrders(
+            val deliverCustomersOrders = DeliverToCustomerDataModel(
                 id = "${System.currentTimeMillis()}",
                 timestamp = DateUtils.getCurrentTimestamp(),
                 name = it.name,
@@ -233,7 +233,7 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     var entrynumber = 1
-    fun showOrders(listOfCustomers: MutableMap<String, DeliverCustomerOrders>, container: Int) {
+    fun showOrders(listOfCustomers: MutableMap<String, DeliverToCustomerDataModel>, container: Int) {
         entrynumber = 1
         val listContainer = findViewById<LinearLayout>(container)
         listContainer.removeAllViews()
@@ -256,7 +256,7 @@ class OneShotDelivery : AppCompatActivity() {
 
             nameElement.text = order.value.name
             balanceElement.text = order.value.prevDue
-            val deliveryRecord = ActivityDeliveringDeliver.getDeliveryRecord(order.value.name)
+            val deliveryRecord = DeliverToCustomerActivity.getDeliveryRecord(order.value.name)
             if (deliveryRecord != null) {
                 pcElement.setText(deliveryRecord.deliveredPc)
                 kgElement.text = deliveryRecord.deliveredKg
@@ -310,7 +310,7 @@ class OneShotDelivery : AppCompatActivity() {
         }
     }
 
-    private fun fragmentUpdateCustomerWiseRateView(order: Map.Entry<String, DeliverCustomerOrders>, entry: View) {
+    private fun fragmentUpdateCustomerWiseRateView(order: Map.Entry<String, DeliverToCustomerDataModel>, entry: View) {
         val rateElement = entry.findViewById<TextInputEditText>(R.id.osd_rate_for_customer)
         if (NumberUtils.getIntOrZero(rateElement.text.toString()) != CustomerData.getCustomerDefaultRate(order.value.name)) {
             rateElement.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
@@ -329,7 +329,7 @@ class OneShotDelivery : AppCompatActivity() {
         }
     }
 
-    private fun updateEntry(order: Map.Entry<String, DeliverCustomerOrders>, entry: View) {
+    private fun updateEntry(order: Map.Entry<String, DeliverToCustomerDataModel>, entry: View) {
         order.value.deliveredKg = getKgForEntry(entry).toString()
         order.value.deliveredPc = getPcForEntry(entry).toString()
         order.value.todaysAmount = getTodaysSaleAmountForEntry(entry).toString()
@@ -367,7 +367,7 @@ class OneShotDelivery : AppCompatActivity() {
         totalDueElement.text = DaySummary.getTotalDueBalance(this).toString()
     }
 
-    private fun updateDetailedInfo(order: Map.Entry<String, DeliverCustomerOrders>, entry: View) {
+    private fun updateDetailedInfo(order: Map.Entry<String, DeliverToCustomerDataModel>, entry: View) {
         val container = entry.findViewById<LinearLayout>(R.id.one_shot_delivery_fragment_more_details_container)
 
         if (container.visibility == View.VISIBLE) {
@@ -425,13 +425,13 @@ class OneShotDelivery : AppCompatActivity() {
         return (kg * rate).toInt()
     }
 
-    private fun getDueBalance(order: DeliverCustomerOrders, entry: View): Int {
+    private fun getDueBalance(order: DeliverToCustomerDataModel, entry: View): Int {
         val prevBal = order.prevDue
         val bal = NumberUtils.getIntOrZero(prevBal) + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(entry)
         return bal
     }
 
-    private fun getPrevDueBalance(order: DeliverCustomerOrders): Int {
+    private fun getPrevDueBalance(order: DeliverToCustomerDataModel): Int {
         if (order.prevDue.isEmpty()) {
             return CustomerData.getLastDue(order.name).toInt()
         }
@@ -535,7 +535,7 @@ class OneShotDelivery : AppCompatActivity() {
             gatherSingleAttributedData()
             gatherFuelData()
             saveSingleAttributeData()
-            DeliverCustomerOrders.deleteAllData()
+            DeliverToCustomerDataModel.deleteAllData()
             saveDeliveryData()
             runOnUiThread()
             {
@@ -649,7 +649,7 @@ class OneShotDelivery : AppCompatActivity() {
         Delete.builder()
             .scriptId(ProjectConfig.dBServerScriptURL)
             .sheetId(ProjectConfig.get_db_sheet_id())
-            .tabName(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
+            .tabName(DeliverToCustomerConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
             .build().execute()
     }
 
@@ -660,7 +660,7 @@ class OneShotDelivery : AppCompatActivity() {
             LogMe.log(it.value.name + ":: paid:" + it.value.paid)
             if (NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0.0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
                 it.value.deliveryStatus = "DELIVERED"
-                DeliverCustomerOrders.save(it.value)
+                DeliverToCustomerDataModel.save(it.value)
                 if (eachStep + 10 < 100) {
                     eachStep += 10
                 } else {
@@ -672,7 +672,7 @@ class OneShotDelivery : AppCompatActivity() {
         deliveryMapUnOrderedCustomers.forEach {
             if (NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0.0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
                 it.value.deliveryStatus = "DELIVERED"
-                DeliverCustomerOrders.save(it.value)
+                DeliverToCustomerDataModel.save(it.value)
                 if (eachStep + 10 < 100) {
                     eachStep += 10
                 } else {

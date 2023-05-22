@@ -7,8 +7,8 @@ import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.ActivityDeliveringDeliver
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -63,7 +63,7 @@ class CustomerData : java.io.Serializable {
     companion object {
 
         fun spoolDeliveringData() {
-            val deliveredData = DeliverCustomerOrders.get()
+            val deliveredData = DeliverToCustomerDataModel.get()
             val totalProfit = DaySummary.getDayProfit()
             LogMe.log("Total Profit: $totalProfit")
             var actualDeliveredKg = 0.0
@@ -154,7 +154,7 @@ class CustomerData : java.io.Serializable {
 
         private fun getCustomerDeliveryRateFromSavedDeliveredData(name: String): Int {
             return when {
-                NumberUtils.getIntOrZero(ActivityDeliveringDeliver.getDeliveryRecord(name)!!.rate) > 0 -> NumberUtils.getIntOrZero(ActivityDeliveringDeliver.getDeliveryRecord(name)!!.rate)
+                NumberUtils.getIntOrZero(DeliverToCustomerActivity.getDeliveryRecord(name)!!.rate) > 0 -> NumberUtils.getIntOrZero(DeliverToCustomerActivity.getDeliveryRecord(name)!!.rate)
                 else -> 0
             }
         }

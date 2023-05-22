@@ -3,7 +3,7 @@ package com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverCustomerOrders
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
@@ -21,7 +21,7 @@ class DataFetchingInfo {
                 CustomerKYC::getAllCustomers.toString() -> "Get Customer Profile Data"
                 CustomerData::getRecords.toString() -> "Get Finalized Customer Data"
                 SingleAttributedData::getRecords.toString() -> "Get Singleton Data"
-                DeliverCustomerOrders::get.toString() -> "Get today's delivery records"
+                DeliverToCustomerDataModel::get.toString() -> "Get today's delivery records"
                 DaySummary::get.toString() -> "Get Day-wise Summary"
                 Refueling::get.toString() -> "Get Refueling Data"
                 else -> "Get Data"
@@ -36,21 +36,21 @@ class DataFetchingInfo {
                     executingMethods.add(CustomerKYC::getAllCustomers)
                     executingMethods.add(GetCustomerOrders::get)
                     executingMethods.add(SingleAttributedData::getRecords)
-                    executingMethods.add(DeliverCustomerOrders::get)
+                    executingMethods.add(DeliverToCustomerDataModel::get)
                 }
                 ActivityAuthEnums.ONE_SHOT_DELIVERY -> {
                     executingMethods.add(CustomerKYC::getAllCustomers)
                     executingMethods.add(GetCustomerOrders::get)
                     executingMethods.add(CustomerData::getRecords)
                     executingMethods.add(SingleAttributedData::getRecords)
-                    executingMethods.add(DeliverCustomerOrders::get)
+                    executingMethods.add(DeliverToCustomerDataModel::get)
                     executingMethods.add(DaySummary::get)
                     executingMethods.add(Refueling::get)
                 }
                 ActivityAuthEnums.DELIVERY -> {
                     executingMethods.add(CustomerKYC::getAllCustomers)
                     executingMethods.add(GetCustomerOrders::get)
-                    executingMethods.add(DeliverCustomerOrders::get)
+                    executingMethods.add(DeliverToCustomerDataModel::get)
                 }
                 ActivityAuthEnums.BALANCE_VIEW -> {
 

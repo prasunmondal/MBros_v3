@@ -109,7 +109,7 @@ data class SingleAttributedData(
         private fun getRecordsFromServer(): SingleAttributedData {
             val result: GetResponse = Get.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.DB_SHEET_ID)
+                .sheetId(ProjectConfig.get_db_sheet_id())
                 .tabName(SHEET_TABNAME)
                 .build().execute()
 
@@ -122,7 +122,7 @@ data class SingleAttributedData(
         private fun saveToServer(record: SingleAttributedData) {
             PostObject.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.DB_SHEET_ID)
+                .sheetId(ProjectConfig.get_db_sheet_id())
                 .tabName(SHEET_TABNAME)
                 .dataObject(record as Any)
                 .build().execute()

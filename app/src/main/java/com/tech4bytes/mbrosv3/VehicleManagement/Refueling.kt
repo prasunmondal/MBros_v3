@@ -39,7 +39,7 @@ class Refueling : java.io.Serializable {
         fun addToServer(refuelDetailsObj: Refueling) {
             PostObject.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.DB_SHEET_ID)
+                .sheetId(ProjectConfig.get_db_sheet_id())
                 .tabName(VehicleManagementConfig.SHEET_REFUELING_TAB_NAME)
                 .dataObject(refuelDetailsObj as Any)
                 .build().execute()
@@ -67,7 +67,7 @@ class Refueling : java.io.Serializable {
             // val waitDialog = ProgressDialog.show(AppContexts.get(), "Please Wait", "লোড হচ্ছে", true)
             val result: GetResponse = Get.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.DB_SHEET_ID)
+                .sheetId(ProjectConfig.get_db_sheet_id())
                 .tabName(VehicleManagementConfig.SHEET_REFUELING_TAB_NAME)
                 .build().execute()
 

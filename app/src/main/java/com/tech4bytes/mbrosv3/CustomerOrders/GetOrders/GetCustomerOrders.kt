@@ -144,7 +144,7 @@ data class GetCustomerOrders(
         fun deleteAll() {
             Delete.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.DB_SHEET_ID)
+                .sheetId(ProjectConfig.get_db_sheet_id())
                 .tabName(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
                 .build().execute()
             deleteFromLocal()
@@ -154,7 +154,7 @@ data class GetCustomerOrders(
             getRecordsForOnlyOrderedCustomers().forEach {
                 PostObject.builder()
                     .scriptId(ProjectConfig.dBServerScriptURL)
-                    .sheetId(ProjectConfig.DB_SHEET_ID)
+                    .sheetId(ProjectConfig.get_db_sheet_id())
                     .tabName(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
                     .dataObject(it as Any)
                     .build().execute()
@@ -178,7 +178,7 @@ data class GetCustomerOrders(
             // val waitDialog = ProgressDialog.show(AppContexts.get(), "Please Wait", "লোড হচ্ছে", true)
             val result: GetResponse = Get.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.DB_SHEET_ID)
+                .sheetId(ProjectConfig.get_db_sheet_id())
                 .tabName(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
                 .build().execute()
 

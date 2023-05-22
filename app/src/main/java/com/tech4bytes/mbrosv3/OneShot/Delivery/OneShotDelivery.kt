@@ -648,7 +648,7 @@ class OneShotDelivery : AppCompatActivity() {
     fun deleteDeliveryDataOnServer() {
         Delete.builder()
             .scriptId(ProjectConfig.dBServerScriptURL)
-            .sheetId(ProjectConfig.DB_SHEET_ID)
+            .sheetId(ProjectConfig.get_db_sheet_id())
             .tabName(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
             .build().execute()
     }

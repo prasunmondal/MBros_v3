@@ -68,7 +68,7 @@ class CustomerKYC : java.io.Serializable {
             // val waitDialog = ProgressDialog.show(AppContexts.get(), "Please Wait", "লোড হচ্ছে", true)
             val result: GetResponse = Get.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.DB_SHEET_ID)
+                .sheetId(ProjectConfig.get_db_sheet_id())
                 .tabName(Customer_Config.SHEET_TAB_NAME)
                 .build().execute()
 

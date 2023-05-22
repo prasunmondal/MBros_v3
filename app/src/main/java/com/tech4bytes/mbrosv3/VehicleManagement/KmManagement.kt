@@ -23,7 +23,7 @@ class KmManagement : java.io.Serializable {
         fun addToServer(finalKmObj: KmManagement) {
             PostObject.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.DB_SHEET_ID)
+                .sheetId(ProjectConfig.get_db_sheet_id())
                 .tabName(VehicleManagementConfig.SHEET_FINAL_KM_TAB_NAME)
                 .dataObject(finalKmObj as Any)
                 .build().execute()

@@ -119,7 +119,7 @@ class ActivityLogin : AppCompatActivity() {
         val obj = AppUsersModel(id, time, getPhoneId(), ActivityAuthEnums.UNIDENTIFIED.toString(), AuthorizationEnums.NONE.toString())
         PostObject.builder()
             .scriptId(ProjectConfig.dBServerScriptURL)
-            .sheetId(ProjectConfig.DB_SHEET_ID)
+            .sheetId(ProjectConfig.get_db_sheet_id())
             .tabName(Config.SHEET_TAB_NAME)
             .dataObject(obj as Any)
             .build().execute()

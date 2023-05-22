@@ -49,7 +49,7 @@ data class DeliverCustomerOrders(
             LogMe.log("Getting delivery data: Getting from server")
             val result: GetResponse = Get.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.DB_SHEET_ID)
+                .sheetId(ProjectConfig.get_db_sheet_id())
                 .tabName(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
                 .build().execute()
 
@@ -82,7 +82,7 @@ data class DeliverCustomerOrders(
         private fun <T> saveToServer(obj: T) {
             PostObject.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.DB_SHEET_ID)
+                .sheetId(ProjectConfig.get_db_sheet_id())
                 .tabName(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
                 .dataObject(obj as Any)
                 .build().execute()
@@ -103,7 +103,7 @@ data class DeliverCustomerOrders(
         private fun deleteAllFromServer() {
             Delete.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.DB_SHEET_ID)
+                .sheetId(ProjectConfig.get_db_sheet_id())
                 .tabName(DeliverOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
                 .build().execute()
         }

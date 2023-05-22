@@ -49,7 +49,7 @@ class AppUtils {
                 Toast.makeText(AppContexts.get(), "Error Occurred. Logging to sheet", Toast.LENGTH_SHORT).show()
                 PostSequence.builder()
                     .scriptId(ProjectConfig.dBServerScriptURL)
-                    .sheetId(ProjectConfig.DB_SHEET_ID)
+                    .sheetId(ProjectConfig.get_db_sheet_id())
                     .tabName("errors-logs")
                     .dataObject(str)
                     .build().execute()

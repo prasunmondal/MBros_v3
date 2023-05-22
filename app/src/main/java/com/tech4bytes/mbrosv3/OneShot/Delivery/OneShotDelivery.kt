@@ -87,13 +87,11 @@ class OneShotDelivery : AppCompatActivity() {
             val obj = SingleAttributedData.getRecords()
             obj.did_refueled = isChecked.toString()
             SingleAttributedData.saveToLocal(obj)
-//            initiallizeUI()
             updateRefuelingUIDetails()
         }
 
         didTankFullElement.setOnCheckedChangeListener { _, isChecked ->
             SingleAttributedData.saveAttributeToLocal(SingleAttributedData::refueling_isFullTank, isChecked.toString())
-//            initiallizeUI()
             updateRefuelingUIDetails()
         }
 
@@ -360,12 +358,16 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     fun updateTotalDueBalance() {
-        var sum = 0
-        CustomerData.getAllLatestRecords().forEach {
-            sum += NumberUtils.getIntOrZero(it.balanceDue)
+        Thread {
+            var sum = 0
+            CustomerData.getAllLatestRecords().forEach {
+                sum += NumberUtils.getIntOrZero(it.balanceDue)
+            }
+            val totalDueElement = findViewById<TextView>(R.id.osd_total_due)
+            runOnUiThread {
+                totalDueElement.text = DaySummary.getTotalDueBalance(this).toString()
+            }
         }
-        val totalDueElement = findViewById<TextView>(R.id.osd_total_due)
-        totalDueElement.text = DaySummary.getTotalDueBalance(this).toString()
     }
 
     private fun updateDetailedInfo(order: Map.Entry<String, DeliverToCustomerDataModel>, entry: View) {
@@ -402,7 +404,6 @@ class OneShotDelivery : AppCompatActivity() {
         if (pc.isEmpty())
             return 0
         return pc.toInt()
-
     }
 
     private fun getKgForEntry(entry: View): Double {

@@ -51,7 +51,7 @@ class DeliverToCustomerActivity : AppCompatActivity() {
         initiallizeUI()
     }
 
-    fun initiallizeUI() {
+    private fun initiallizeUI() {
         // Get UI Elements
         val nameElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::name)!!
         val orderedPcElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::orderedPc)!!
@@ -143,26 +143,22 @@ class DeliverToCustomerActivity : AppCompatActivity() {
 
     private fun getDeliveredRate(): Double {
         val deliveredRateElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::rate)!!
-        val deliveredRateText = NumberUtils.getDoubleOrZero(UIUtils.getUIElementValue(deliveredRateElement))
-        return deliveredRateText
+        return NumberUtils.getDoubleOrZero(UIUtils.getUIElementValue(deliveredRateElement))
     }
 
     private fun getDeliveredKg(): Double {
         val deliveredKgElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::deliveredKg)!!
-        val deliveredKgText = NumberUtils.getDoubleOrZero(UIUtils.getUIElementValue(deliveredKgElement))
-        return deliveredKgText
+        return NumberUtils.getDoubleOrZero(UIUtils.getUIElementValue(deliveredKgElement))
     }
 
     private fun getDeliveredPc(): Int {
         val deliveredPcElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::deliveredPc)!!
-        val deliveredPcText = NumberUtils.getIntOrZero(UIUtils.getUIElementValue(deliveredPcElement))
-        return deliveredPcText
+        return NumberUtils.getIntOrZero(UIUtils.getUIElementValue(deliveredPcElement))
     }
 
     private fun getPaidAmountText(): String {
         val deliveredPaidElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::paid)!!
-        val deliveredPaidText = UIUtils.getUIElementValue(deliveredPaidElement)
-        return deliveredPaidText
+        return UIUtils.getUIElementValue(deliveredPaidElement)
     }
 
     private fun validateSellingData(): Boolean {

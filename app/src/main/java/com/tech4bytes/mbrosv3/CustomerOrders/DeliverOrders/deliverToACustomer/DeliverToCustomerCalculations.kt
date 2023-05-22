@@ -37,7 +37,7 @@ class DeliverToCustomerCalculations {
 
             sorted.forEach {
                 if (!map.containsKey(it.name)) {
-                    map.put(it.name, it)
+                    map[it.name] = it
                 }
             }
             return map.values.toList()

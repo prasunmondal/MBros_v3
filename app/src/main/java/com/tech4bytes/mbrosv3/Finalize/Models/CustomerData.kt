@@ -82,7 +82,7 @@ class CustomerData : java.io.Serializable {
         private fun addToFinalizeSheet(record: CustomerData) {
             PostObject.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.DB_FINALIZE_SHEET_ID)
+                .sheetId(ProjectConfig.get_db_finalize_sheet_id())
                 .tabName(FinalizeConfig.SHEET_FINALIZE_DELIVERIES_TAB_NAME)
                 .dataObject(record as Any)
                 .build().execute()
@@ -131,7 +131,7 @@ class CustomerData : java.io.Serializable {
         private fun getRecordsFromServer(): ArrayList<CustomerData> {
             val result: GetResponse = Get.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.DB_FINALIZE_SHEET_ID)
+                .sheetId(ProjectConfig.get_db_finalize_sheet_id())
                 .tabName(FinalizeConfig.SHEET_FINALIZE_DELIVERIES_TAB_NAME)
                 .build().execute()
 

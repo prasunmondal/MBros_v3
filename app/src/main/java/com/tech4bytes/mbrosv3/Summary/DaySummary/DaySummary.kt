@@ -65,7 +65,7 @@ data class DaySummary(
         fun saveToServer() {
             PostObject.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.DB_FINALIZE_SHEET_ID)
+                .sheetId(ProjectConfig.get_db_finalize_sheet_id())
                 .tabName(SummaryConfig.TAB_DAY_SUMMARY)
                 .dataObject(getDaySummaryObjectForCurrentData() as Any)
                 .build().execute()
@@ -114,7 +114,7 @@ data class DaySummary(
             // val waitDialog = ProgressDialog.show(AppContexts.get(), "Please Wait", "লোড হচ্ছে", true)
             val result: GetResponse = Get.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(SummaryConfig.DB_FINALIZE_SHEET_ID)
+                .sheetId(ProjectConfig.get_db_finalize_sheet_id())
                 .tabName(SummaryConfig.TAB_DAY_SUMMARY)
                 .build().execute()
 

@@ -10,6 +10,9 @@ import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
+import java.util.stream.Stream
+import kotlin.streams.toList
 
 class DueShow : AppCompatActivity() {
 
@@ -21,9 +24,26 @@ class DueShow : AppCompatActivity() {
         showDues()
     }
 
+    fun shouldShow(customerData: CustomerData): Boolean {
+        if (NumberUtils.getIntOrZero(customerData.balanceDue) != 0)
+            return true
+        if(CustomerKYC.getCustomerByEngName(customerData.name) == null)
+            return false
+        if(CustomerKYC.getCustomerByEngName(customerData.name)!!.isActiveCustomer.toBoolean())
+            return true
+        return false
+    }
+
+    fun removeInActiveCustomers(list: MutableList<CustomerData>): MutableList<CustomerData> {
+        val filteredList = list.stream().filter { p -> shouldShow(p) }.toList()
+        return filteredList.toMutableList()
+    }
+
     fun showDues() {
         val listContainer = findViewById<LinearLayout>(R.id.activity_due_show_fragment_conntainer)
-        CustomerData.getAllLatestRecords().forEach {
+        var latestRecords = removeInActiveCustomers(CustomerData.getAllLatestRecords())
+        latestRecords = sortByNameList(latestRecords, CustomerKYC.getAllCustomers())
+        latestRecords.forEach {
             val layoutInflater = LayoutInflater.from(AppContexts.get())
             val entry = layoutInflater.inflate(R.layout.activity_due_show_entry, null)
 
@@ -35,6 +55,25 @@ class DueShow : AppCompatActivity() {
 
             listContainer.addView(entry)
         }
+    }
+
+    private fun sortByNameList(list: MutableList<CustomerData>, sortedList: List<CustomerKYCModel>): MutableList<CustomerData> {
+        val map: MutableMap<Int, CustomerData> = mutableMapOf()
+        val listOfEntriesNotPresentInCustomerKYC: MutableList<CustomerData> = mutableListOf()
+        list.forEach { toSortItem ->
+            listOfEntriesNotPresentInCustomerKYC.add(toSortItem)
+            var index = 0
+            sortedList.forEach { sortedItem ->
+                if(sortedItem.nameEng == toSortItem.name) {
+                    map[index] = toSortItem
+                    listOfEntriesNotPresentInCustomerKYC.remove(toSortItem)
+                }
+                index++
+            }
+        }
+        val sorted = ArrayList(map.toSortedMap().values)
+        sorted.addAll(listOfEntriesNotPresentInCustomerKYC)
+        return sorted
     }
 
     override fun onBackPressed() {

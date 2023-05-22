@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginVertical="20dp"
-        android:background="#FFC107"
+        android:background="#093050"
         android:foregroundGravity="center_vertical"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -27,7 +27,7 @@
             android:layout_weight=".5"
             android:gravity="center_vertical"
             android:paddingLeft="5dp"
-            android:textColor="#231602"
+            android:textColor="#A0C2DD"
             android:textSize="20sp" />
 
 

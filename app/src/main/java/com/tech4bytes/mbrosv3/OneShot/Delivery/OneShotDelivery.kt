@@ -20,8 +20,9 @@ import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerConfig
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
@@ -535,7 +536,7 @@ class OneShotDelivery : AppCompatActivity() {
             gatherSingleAttributedData()
             gatherFuelData()
             saveSingleAttributeData()
-            DeliverToCustomerDataModel.deleteAllData()
+            DeliverToCustomerDataHandler.deleteAllData()
             saveDeliveryData()
             runOnUiThread()
             {
@@ -660,7 +661,7 @@ class OneShotDelivery : AppCompatActivity() {
             LogMe.log(it.value.name + ":: paid:" + it.value.paid)
             if (NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0.0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
                 it.value.deliveryStatus = "DELIVERED"
-                DeliverToCustomerDataModel.save(it.value)
+                DeliverToCustomerDataHandler.save(it.value)
                 if (eachStep + 10 < 100) {
                     eachStep += 10
                 } else {
@@ -672,7 +673,7 @@ class OneShotDelivery : AppCompatActivity() {
         deliveryMapUnOrderedCustomers.forEach {
             if (NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0.0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
                 it.value.deliveryStatus = "DELIVERED"
-                DeliverToCustomerDataModel.save(it.value)
+                DeliverToCustomerDataHandler.save(it.value)
                 if (eachStep + 10 < 100) {
                     eachStep += 10
                 } else {

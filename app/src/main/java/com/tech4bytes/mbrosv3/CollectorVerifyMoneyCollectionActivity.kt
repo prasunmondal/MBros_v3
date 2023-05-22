@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.tech4bytes.mbrosv3.AppData.AppUtils
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -34,7 +35,7 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
     var map: MutableMap<String, VerifyElements> = mutableMapOf()
 
     fun showDeliveryData() {
-        var deliveredData = DeliverToCustomerDataModel.get()
+        var deliveredData = DeliverToCustomerDataHandler.get()
         var count = 0
         deliveredData = ListUtils.sortListByAttribute(deliveredData, DeliverToCustomerDataModel::id)
         deliveredData.forEach { deliveryEntry ->

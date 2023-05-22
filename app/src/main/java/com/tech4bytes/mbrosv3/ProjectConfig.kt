@@ -12,14 +12,14 @@ class ProjectConfig {
         private const val TEST_DB_FINALIZE_SHEET_ID = "1devWomGykh2XFB67qs84QVez9VutTodr7LTB6o24JOU"
 
         fun get_db_sheet_id(): String {
-            return if(!isTestEnv)
+            return if (!isTestEnv)
                 DB_SHEET_ID
             else
                 TEST_DB_SHEET_ID
         }
 
         fun get_db_finalize_sheet_id(): String {
-            return if(!isTestEnv)
+            return if (!isTestEnv)
                 DB_FINALIZE_SHEET_ID
             else
                 TEST_DB_FINALIZE_SHEET_ID

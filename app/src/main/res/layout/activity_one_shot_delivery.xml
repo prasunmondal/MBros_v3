@@ -33,6 +33,7 @@
                     android:id="@+id/linearLayout15"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="#130303"
                     android:orientation="horizontal">
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -40,6 +41,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:hint="Load PC"
+                        android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
                         android:maxEms="10"
                         android:minEms="10">
 
@@ -48,8 +50,10 @@
                             android:id="@+id/one_shot_delivery_pc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="#C1F6C940"
-                            android:inputType="number" />
+                            android:background="@color/osd_single_attribute_rates_background_color"
+                            android:inputType="number"
+                            android:textColor="@color/osd_single_attribute_rates_hintText_color"
+                            android:textColorHint="#82B1FF" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -59,6 +63,7 @@
                         android:layout_weight="1"
                         android:hint="Load KG"
                         android:maxEms="10"
+                        android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
                         android:minEms="10">
 
                         <!--this is the actual edit text which takes the input-->
@@ -66,8 +71,9 @@
                             android:id="@+id/one_shot_delivery_kg"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="#C1F6C940"
-                            android:inputType="number|numberDecimal" />
+                            android:background="@color/osd_single_attribute_rates_background_color"
+                            android:inputType="number|numberDecimal"
+                            android:textColor="@color/osd_single_attribute_rates_hintText_color" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -78,6 +84,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:hint="FR"
+                        android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
                         android:maxEms="10"
                         android:minEms="10">
 
@@ -86,7 +93,7 @@
                             android:id="@+id/one_shot_delivery_price"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="#C1F6C940"
+                            android:background="@color/osd_single_attribute_rates_background_color"
                             android:inputType="number" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -97,6 +104,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:hint="Buffer"
+                        android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
                         android:maxEms="10"
                         android:minEms="10">
 
@@ -105,7 +113,8 @@
                             android:id="@+id/one_shot_delivery_buffer"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="#C1F6C940"
+                            android:background="@color/osd_single_attribute_rates_background_color"
+                            android:textColor="@color/osd_single_attribute_rates_hintText_color"
                             android:inputType="number" />
 
                     </com.google.android.material.textfield.TextInputLayout>

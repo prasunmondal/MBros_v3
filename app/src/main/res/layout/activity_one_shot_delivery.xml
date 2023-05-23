@@ -41,9 +41,10 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:hint="Load PC"
-                        android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
                         android:maxEms="10"
-                        android:minEms="10">
+                        android:minEms="10"
+                        android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
+                        app:hintTextColor="@color/osl_data_status_fresh_light">
 
                         <!--this is the actual edit text which takes the input-->
                         <com.google.android.material.textfield.TextInputEditText
@@ -63,8 +64,9 @@
                         android:layout_weight="1"
                         android:hint="Load KG"
                         android:maxEms="10"
+                        android:minEms="10"
                         android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
-                        android:minEms="10">
+                        app:hintTextColor="@color/osl_data_status_fresh_light">
 
                         <!--this is the actual edit text which takes the input-->
                         <com.google.android.material.textfield.TextInputEditText
@@ -84,9 +86,10 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:hint="FR"
-                        android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
                         android:maxEms="10"
-                        android:minEms="10">
+                        android:minEms="10"
+                        android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
+                        app:hintTextColor="@color/osl_data_status_fresh_light">
 
                         <!--this is the actual edit text which takes the input-->
                         <com.google.android.material.textfield.TextInputEditText
@@ -94,7 +97,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/osd_single_attribute_rates_background_color"
-                            android:inputType="number" />
+                            android:inputType="number"
+                            android:textColor="@color/osd_single_attribute_rates_hintText_color" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -107,7 +111,7 @@
                         android:maxEms="10"
                         android:minEms="10"
                         android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
-                        app:hintTextColor="@color/osl_company_details_view_editing">
+                        app:hintTextColor="@color/osl_data_status_fresh_light">
 
                         <!--this is the actual edit text which takes the input-->
                         <com.google.android.material.textfield.TextInputEditText

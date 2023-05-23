@@ -41,9 +41,9 @@
                     android:gravity="center_vertical"
                     android:hint="Name"
                     android:text="Name"
-                    android:textColor="#0521BA"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
+                    android:textColor="#CAD5D5"
+                    android:textSize="16sp"
+                    app:fontFamily="sans-serif-medium"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -70,9 +70,9 @@
                         android:hint="Rate"
                         android:inputType="number"
                         android:nextFocusDown="@+id/one_shot_delivery_fragment_pc"
-                        android:textColor="#777777"
-                        android:textSize="14dp"
-                        android:textStyle="bold" />
+                        android:textColor="#D3D2D2"
+                        android:textColorHint="#9A9797"
+                        android:textSize="14dp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -92,6 +92,8 @@
                     android:hint="pc"
                     android:inputType="number"
                     android:nextFocusDown="@+id/one_shot_delivery_fragment_kg"
+                    android:textColor="#EAE4CF"
+                    android:textColorHint="#9A9797"
                     android:textSize="16sp" />
 
                 <EditText
@@ -102,6 +104,8 @@
                     android:hint="kg"
                     android:inputType="numberDecimal"
                     android:nextFocusDown="@+id/one_shot_delivery_fragment_paid"
+                    android:textColor="#EAE4CF"
+                    android:textColorHint="#9A9797"
                     android:textSize="16sp" />
 
                 <EditText
@@ -113,6 +117,8 @@
                     android:hint="Paid"
                     android:inputType="number"
                     android:nextFocusDown="@+id/one_shot_delivery_fragment_balance_due"
+                    android:textColor="#EAE4CF"
+                    android:textColorHint="#9A9797"
                     android:textSize="16sp" />
 
                 <TextView
@@ -123,7 +129,7 @@
                     android:gravity="right"
                     android:hint="Balance"
                     android:text="Balance"
-                    android:textColor="#A80202"
+                    android:textColor="#FAB7B1"
                     android:textSize="16sp" />
             </LinearLayout>
 

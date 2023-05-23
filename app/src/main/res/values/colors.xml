@@ -26,8 +26,8 @@
     <color name="verify_delivery_not_valid">#F8C52C</color>
     <color name="verify_delivery_valid">#9FE3A2</color>
 
-    <color name="one_shot_delivery_odd_card_color">#16FFFFFF</color>
-    <color name="one_shot_delivery_even_card_color">#0AFFFFFF</color>
+    <color name="one_shot_delivery_odd_card_color">#0C1E25</color>
+    <color name="one_shot_delivery_even_card_color">#17282E</color>
 
     <color name="red">#FF4141</color>
     <color name="transparent_red">#81FF4141</color>

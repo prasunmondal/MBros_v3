@@ -7,6 +7,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
@@ -295,7 +296,7 @@ class OneShotDelivery : AppCompatActivity() {
                 updateDetailedInfo(order, entry)
             }
 
-            val recordContainer = entry.findViewById<ConstraintLayout>(R.id.one_shot_delivery_fragment_record_container)
+            val recordContainer = entry.findViewById<CardView>(R.id.one_shot_delivery_fragment_record_container)
             var cardColor = ContextCompat.getColor(this, R.color.one_shot_delivery_odd_card_color)
             if (entrynumber % 2 == 0) {
                 cardColor = ContextCompat.getColor(this, R.color.one_shot_delivery_even_card_color)

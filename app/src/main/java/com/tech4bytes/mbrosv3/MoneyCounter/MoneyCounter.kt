@@ -8,6 +8,8 @@ import android.widget.LinearLayout
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textview.MaterialTextView
 import com.tech4bytes.mbrosv3.AppData.AppUtils
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerCalculations
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
@@ -27,6 +29,7 @@ class MoneyCounter : AppCompatActivity() {
     }
 
     private fun initializeUI() {
+        setAimingAmount()
         val container = findViewById<LinearLayout>(R.id.mc_entry_containers)
         availableDenominations.forEach {
             mapOfNotesToAmount[it] = 0
@@ -42,6 +45,16 @@ class MoneyCounter : AppCompatActivity() {
             oldNoteField.addTextChangedListener { updateMultipliedAmount(denomination, newNoteField, oldNoteField, multipliedAmountField) }
             container.addView(entry)
         }
+    }
+
+    private fun setAimingAmount() {
+        val aimingAmountField = findViewById<EditText>(R.id.mc_aiming_amount)
+        val totalAmountPaidByCustomer = DeliverToCustomerCalculations.getTotalAmountPaidTodayByCustomers()
+        val extraExpenses = NumberUtils.getIntOrZero(SingleAttributedData.getRecords().extra_expenses)
+        val cashGivenForExtraExpenses = NumberUtils.getIntOrZero(SingleAttributedData.getRecords().extra_cash_given)
+        val labourExpenses = NumberUtils.getIntOrZero(SingleAttributedData.getRecords().labour_expenses) + 300
+        val aimingAmount = totalAmountPaidByCustomer + (cashGivenForExtraExpenses - extraExpenses) - labourExpenses
+        aimingAmountField.setText(aimingAmount.toString())
     }
 
     private fun updateMultipliedAmount(denomination: MaterialTextView, newNoteField: EditText, oldNoteField: EditText, multipliedAmountField: MaterialTextView) {

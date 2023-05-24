@@ -68,7 +68,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:text="TextView"
+            android:paddingRight="30dp"
+            android:text="₹ 0"
             android:textSize="20sp"
             android:textStyle="bold" />
 

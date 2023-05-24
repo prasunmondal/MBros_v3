@@ -53,6 +53,8 @@ class MoneyCounter : AppCompatActivity() {
         val extraExpenses = NumberUtils.getIntOrZero(SingleAttributedData.getRecords().extra_expenses)
         val cashGivenForExtraExpenses = NumberUtils.getIntOrZero(SingleAttributedData.getRecords().extra_cash_given)
         val labourExpenses = NumberUtils.getIntOrZero(SingleAttributedData.getRecords().labour_expenses) + 300
+//        val deductedCash = findViewById<EditText>(R.id.)
+//        val addedCash = NumberUtils.getIntOrZero(SingleAttributedData.getRecords().labour_expenses) + 300
         val aimingAmount = totalAmountPaidByCustomer + (cashGivenForExtraExpenses - extraExpenses) - labourExpenses
         aimingAmountField.setText(aimingAmount.toString())
     }

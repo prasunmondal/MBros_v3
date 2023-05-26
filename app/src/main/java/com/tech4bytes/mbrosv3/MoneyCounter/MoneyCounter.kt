@@ -17,7 +17,8 @@ import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 class MoneyCounter : AppCompatActivity() {
 
     private val availableDenominations: List<Int> = listOf(2000, 500, 200, 100, 50, 20, 10)
-
+    private lateinit var deductedCashField: EditText
+    private lateinit var addedCashField: EditText
     private val mapOfNotesToAmount: MutableMap<Int, Int> = mutableMapOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +30,14 @@ class MoneyCounter : AppCompatActivity() {
     }
 
     private fun initializeUI() {
-        setAimingAmount()
         val container = findViewById<LinearLayout>(R.id.mc_entry_containers)
+        deductedCashField = findViewById(R.id.mc_deducted_amount)
+        addedCashField = findViewById(R.id.mc_added_amount)
+
+        deductedCashField.addTextChangedListener { setAimingAmount() }
+        addedCashField.addTextChangedListener { setAimingAmount() }
+
+        setAimingAmount()
         availableDenominations.forEach {
             mapOfNotesToAmount[it] = 0
             val layoutInflater = LayoutInflater.from(AppContexts.get())
@@ -40,11 +47,13 @@ class MoneyCounter : AppCompatActivity() {
             val oldNoteField = entry.findViewById<EditText>(R.id.mc_oldNote)
             val multipliedAmountField = entry.findViewById<MaterialTextView>(R.id.mc_multipliedAmount)
 
-            denomination.setText(it.toString())
+            denomination.text = it.toString()
             newNoteField.addTextChangedListener { updateMultipliedAmount(denomination, newNoteField, oldNoteField, multipliedAmountField) }
             oldNoteField.addTextChangedListener { updateMultipliedAmount(denomination, newNoteField, oldNoteField, multipliedAmountField) }
             container.addView(entry)
         }
+
+
     }
 
     private fun setAimingAmount() {
@@ -53,9 +62,16 @@ class MoneyCounter : AppCompatActivity() {
         val extraExpenses = NumberUtils.getIntOrZero(SingleAttributedData.getRecords().extra_expenses)
         val cashGivenForExtraExpenses = NumberUtils.getIntOrZero(SingleAttributedData.getRecords().extra_cash_given)
         val labourExpenses = NumberUtils.getIntOrZero(SingleAttributedData.getRecords().labour_expenses) + 300
-//        val deductedCash = findViewById<EditText>(R.id.)
-//        val addedCash = NumberUtils.getIntOrZero(SingleAttributedData.getRecords().labour_expenses) + 300
-        val aimingAmount = totalAmountPaidByCustomer + (cashGivenForExtraExpenses - extraExpenses) - labourExpenses
+        val deductedCash = NumberUtils.getIntOrZero(deductedCashField.text.toString())
+        val addedCash = NumberUtils.getIntOrZero(addedCashField.text.toString())
+
+        val aimingAmount = (
+                totalAmountPaidByCustomer
+                + (cashGivenForExtraExpenses - extraExpenses)
+                - labourExpenses
+                - deductedCash
+                + addedCash
+                )
         aimingAmountField.setText(aimingAmount.toString())
     }
 

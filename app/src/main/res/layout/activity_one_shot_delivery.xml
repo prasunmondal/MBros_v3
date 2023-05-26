@@ -89,15 +89,16 @@
                         android:maxEms="10"
                         android:minEms="10"
                         android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
-                        app:hintTextColor="@color/osl_data_status_fresh_light">
+                        app:hintTextColor="@color/osl_data_status_fresh_light"
+                        >
 
                         <!--this is the actual edit text which takes the input-->
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/one_shot_delivery_price"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/osd_single_attribute_rates_background_color"
                             android:inputType="number"
+                            android:background="@color/osd_single_attribute_rates_background_color"
                             android:textColor="@color/osd_single_attribute_rates_hintText_color" />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -154,7 +155,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
                     android:background="@drawable/rounded"
-                    android:backgroundTint="#5CE3F4"
+                    android:backgroundTint="#022E33"
                     android:orientation="vertical"
                     android:paddingHorizontal="20dp"
                     android:paddingVertical="20dp">
@@ -170,6 +171,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:hint="KM"
+                            android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
+                            app:hintTextColor="@color/osl_data_status_fresh_light"
                             android:maxEms="10"
                             android:minEms="10">
 
@@ -178,8 +181,9 @@
                                 android:id="@+id/one_shot_delivery_trip_end_km"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="#5CE3F4"
-                                android:inputType="number" />
+                                android:inputType="number"
+                                android:background="@color/osd_single_attribute_rates_background_color"
+                                android:textColor="@color/osd_single_attribute_rates_hintText_color"/>
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -188,6 +192,10 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:hint="Lab"
+                            android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
+                            app:hintTextColor="@color/osl_data_status_fresh_light"
+                            android:background="@color/osd_single_attribute_rates_background_color"
+                            android:textColor="@color/osd_single_attribute_rates_hintText_color"
                             android:maxEms="10"
                             android:minEms="10">
 
@@ -196,8 +204,10 @@
                                 android:id="@+id/one_shot_delivery_labour_expenses"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="#5CE3F4"
-                                android:inputType="number" />
+                                android:inputType="number"
+                                android:background="@color/osd_single_attribute_rates_background_color"
+                                android:textColor="@color/osd_single_attribute_rates_hintText_color"
+                                />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -206,6 +216,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:hint="Extra"
+                            android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
+                            app:hintTextColor="@color/osl_data_status_fresh_light"
                             android:maxEms="10"
                             android:minEms="10">
 
@@ -214,8 +226,10 @@
                                 android:id="@+id/one_shot_delivery_extra_expenses"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="#5CE3F4"
-                                android:inputType="number" />
+                                android:inputType="number"
+                                android:background="@color/osd_single_attribute_rates_background_color"
+                                android:textColor="@color/osd_single_attribute_rates_hintText_color"
+                                android:textColorHint="#038697" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -230,39 +244,45 @@
                             android:id="@+id/textView36"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Prev KM: " />
+                            android:text="Prev KM: "
+                            android:textColor="@color/osd_single_attribute_rates_hintText_color" />
 
                         <TextView
                             android:id="@+id/osd_prev_km"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="TextView" />
+                            android:text="TextView"
+                            android:textColor="@color/osd_single_attribute_rates_hintText_color" />
 
                         <TextView
                             android:id="@+id/textView43"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingLeft="20dp"
-                            android:text="Diff: " />
+                            android:text="Diff: "
+                            android:textColor="@color/osd_single_attribute_rates_hintText_color" />
 
                         <TextView
                             android:id="@+id/osd_km_diff"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingRight="20dp"
-                            android:text="TextView" />
+                            android:text="TextView"
+                            android:textColor="@color/osd_single_attribute_rates_hintText_color" />
 
                         <TextView
                             android:id="@+id/textView48"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Cost: " />
+                            android:text="Cost: "
+                            android:textColor="@color/osd_single_attribute_rates_hintText_color" />
 
                         <TextView
                             android:id="@+id/osd_km_cost"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="TextView" />
+                            android:text="TextView"
+                            android:textColor="@color/osd_single_attribute_rates_hintText_color" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -276,7 +296,8 @@
                             android:layout_width="170dp"
                             android:layout_height="wrap_content"
                             android:paddingRight="20dp"
-                            android:text="Refuel?" />
+                            android:text="Refuel?"
+                            android:textColor="@color/osd_single_attribute_rates_hintText_color" />
 
                         <Switch
                             android:id="@+id/one_shot_delivery_did_fuel_upto_tank_full"
@@ -285,7 +306,8 @@
                             android:layout_weight="1"
                             android:checked="true"
                             android:paddingLeft="20dp"
-                            android:text="Full Tank?" />
+                            android:text="Full Tank?"
+                            android:textColor="@color/osd_single_attribute_rates_hintText_color" />
 
                     </LinearLayout>
 
@@ -307,16 +329,20 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:maxEms="10"
-                                android:minEms="10">
+                                android:minEms="10"
+                                android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
+                                app:hintTextColor="@color/osl_data_status_fresh_light">
 
                                 <!--this is the actual edit text which takes the input-->
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/one_shot_delivery_refueling_km"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:background="#5CE3F4"
                                     android:hint="Fuel KM"
-                                    android:inputType="number" />
+                                    android:background="@color/osd_single_attribute_rates_background_color"
+                                    android:textColor="@color/osd_single_attribute_rates_hintText_color"
+                                    android:inputType="number"
+                                    android:textColorHint="#038697" />
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <com.google.android.material.textfield.TextInputLayout
@@ -324,16 +350,20 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:maxEms="10"
-                                android:minEms="10">
+                                android:minEms="10"
+                                android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
+                                app:hintTextColor="@color/osl_data_status_fresh_light">
 
                                 <!--this is the actual edit text which takes the input-->
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/mc_deducted_amount"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:background="#5CE3F4"
+                                    android:background="@color/osd_single_attribute_rates_background_color"
+                                    android:textColor="@color/osd_single_attribute_rates_hintText_color"
                                     android:hint="Rs"
-                                    android:inputType="number" />
+                                    android:inputType="number"
+                                    android:textColorHint="#038697" />
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <com.google.android.material.textfield.TextInputLayout
@@ -341,16 +371,20 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:maxEms="10"
-                                android:minEms="10">
+                                android:minEms="10"
+                                android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
+                                app:hintTextColor="@color/osl_data_status_fresh_light">
 
                                 <!--this is the actual edit text which takes the input-->
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/one_shot_delivery_fuel_quantity"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:background="#5CE3F4"
+                                    android:background="@color/osd_single_attribute_rates_background_color"
+                                    android:textColor="@color/osd_single_attribute_rates_hintText_color"
                                     android:hint="Qty (litres)"
-                                    android:inputType="numberDecimal" />
+                                    android:inputType="numberDecimal"
+                                    android:textColorHint="#038697" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
 
@@ -369,13 +403,15 @@
                                     android:id="@+id/textView38"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Refueling KM: " />
+                                    android:text="Refueling KM: "
+                                    android:textColor="@color/osd_single_attribute_rates_hintText_color" />
 
                                 <TextView
                                     android:id="@+id/one_shot_delivery_refueling_km_diff"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="TextView" />
+                                    android:text="TextView"
+                                    android:textColor="@color/osd_single_attribute_rates_hintText_color" />
 
                             </LinearLayout>
 
@@ -391,14 +427,16 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:paddingLeft="20dp"
-                                    android:text="Mileage: " />
+                                    android:text="Mileage: "
+                                    android:textColor="@color/osd_single_attribute_rates_hintText_color" />
 
                                 <TextView
                                     android:id="@+id/one_shot_delivery_refueling_mileage"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="90" />
+                                    android:text="90"
+                                    android:textColor="@color/osd_single_attribute_rates_hintText_color" />
                             </LinearLayout>
 
                         </LinearLayout>

@@ -14,6 +14,7 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.De
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 
 class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
@@ -34,7 +35,7 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
 
     var map: MutableMap<String, VerifyElements> = mutableMapOf()
 
-    fun showDeliveryData() {
+    private fun showDeliveryData() {
         var deliveredData = DeliverToCustomerDataHandler.get()
         var count = 0
         deliveredData = ListUtils.sortListByAttribute(deliveredData, DeliverToCustomerDataModel::id)
@@ -44,26 +45,27 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
             val listContainer = findViewById<LinearLayout>(R.id.activity_collector_verify_money_collection_container)
             val layoutInflater = LayoutInflater.from(AppContexts.get())
             val entry = layoutInflater.inflate(R.layout.activity_collector_verify_money_collection_entries, null)
-
+            val amountPaidField = entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_paid_amount)
             entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_customer_seq_no).text = "$count."
             entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_customer_name).text = deliveryEntry.name
             entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_order_pc).text = deliveryEntry.deliveredKg
             entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_order_kg).text = deliveryEntry.deliveredPc
-            entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_paid_amount).text = deliveryEntry.paid
+            amountPaidField.text = deliveryEntry.paid
             entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_total_due_amount).text = deliveryEntry.balanceDue
+            updateColors(entry, NumberUtils.getIntOrZero(amountPaidField.text.toString()), map[deliveryEntry.name]!!.kgPc, map[deliveryEntry.name]!!.paidAmount)
 
             entry.findViewById<LinearLayout>(R.id.activity_collector_verify_money_collection_fragment_container).setOnClickListener {
                 map[deliveryEntry.name]!!.kgPc = !map[deliveryEntry.name]!!.kgPc
                 map[deliveryEntry.name]!!.paidAmount = !map[deliveryEntry.name]!!.paidAmount
-                updateColors(entry, map[deliveryEntry.name]!!.kgPc, map[deliveryEntry.name]!!.paidAmount)
+                updateColors(entry, NumberUtils.getIntOrZero(amountPaidField.text.toString()), map[deliveryEntry.name]!!.kgPc, map[deliveryEntry.name]!!.paidAmount)
             }
 
             listContainer.addView(entry)
         }
     }
 
-    fun updateColors(entry: View, isKgPcVerified: Boolean, isPaidAmountVerified: Boolean) {
-        if (isKgPcVerified && isPaidAmountVerified) {
+    private fun updateColors(entry: View, paidAmount: Int, isKgPcVerified: Boolean, isPaidAmountVerified: Boolean) {
+        if (paidAmount == 0 || (isKgPcVerified && isPaidAmountVerified)) {
             entry.findViewById<LinearLayout>(R.id.activity_collector_verify_money_collection_fragment_container)
                 .setBackgroundColor(ContextCompat.getColor(this, R.color.verify_delivery_valid))
         } else {

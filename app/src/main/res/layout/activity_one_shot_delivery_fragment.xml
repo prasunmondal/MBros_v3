@@ -147,7 +147,8 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:padding="10dp"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -160,7 +161,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="Prev Due:" />
+                            android:text="Prev Due:"
+                            android:textColor="#AFACAC" />
 
                         <TextView
                             android:id="@+id/one_shot_delivery_fragment_more_details_container_prev_due"
@@ -168,7 +170,8 @@
                             android:layout_height="wrap_content"
                             android:gravity="right"
                             android:paddingLeft="5dp"
-                            android:text="prev_due_amount" />
+                            android:text="prev_due_amount"
+                            android:textColor="#AFACAC" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -183,28 +186,32 @@
                             android:layout_weight="1"
                             android:gravity="right"
                             android:hint="kg"
-                            android:text="KG" />
+                            android:text="KG"
+                            android:textColor="#AFACAC" />
 
                         <TextView
                             android:id="@+id/textView46"
                             android:layout_width="20dp"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="x" />
+                            android:text="x"
+                            android:textColor="#AFACAC" />
 
                         <TextView
                             android:id="@+id/one_shot_delivery_fragment_more_details_container_rate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="right"
-                            android:text="Rate" />
+                            android:text="Rate"
+                            android:textColor="#AFACAC" />
 
                         <TextView
                             android:id="@+id/textView39"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="right"
-                            android:text=":" />
+                            android:text=":"
+                            android:textColor="#AFACAC" />
 
                         <TextView
                             android:id="@+id/one_shot_delivery_fragment_more_details_container_sale_total"
@@ -212,7 +219,8 @@
                             android:layout_height="wrap_content"
                             android:gravity="right"
                             android:paddingLeft="5dp"
-                            android:text="sale_total" />
+                            android:text="sale_total"
+                            android:textColor="#AFACAC" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -235,7 +243,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="Total Due:" />
+                            android:text="Total Due:"
+                            android:textColor="#AFACAC" />
 
                         <TextView
                             android:id="@+id/one_shot_delivery_fragment_more_details_container_total_due"
@@ -243,7 +252,8 @@
                             android:layout_height="wrap_content"
                             android:gravity="right"
                             android:paddingLeft="5dp"
-                            android:text="total_due" />
+                            android:text="total_due"
+                            android:textColor="#AFACAC" />
 
                     </LinearLayout>
 
@@ -258,7 +268,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="Paid:" />
+                            android:text="Paid:"
+                            android:textColor="#AFACAC" />
 
                         <TextView
                             android:id="@+id/one_shot_delivery_fragment_more_details_container_paid_amount"
@@ -266,7 +277,8 @@
                             android:layout_height="wrap_content"
                             android:gravity="right"
                             android:paddingLeft="5dp"
-                            android:text="paid_amount" />
+                            android:text="paid_amount"
+                            android:textColor="#AFACAC" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -287,7 +299,8 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="Balance Due:" />
+                            android:text="Balance Due:"
+                            android:textColor="#AFACAC" />
 
                         <TextView
                             android:id="@+id/one_shot_delivery_fragment_more_details_container_balance_due"
@@ -296,6 +309,7 @@
                             android:gravity="right"
                             android:paddingLeft="5dp"
                             android:text="balance_due"
+                            android:textColor="#AFACAC"
                             android:textSize="16sp" />
                     </LinearLayout>
 

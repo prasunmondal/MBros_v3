@@ -19,6 +19,7 @@ import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
+import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerConfig
@@ -183,7 +184,7 @@ class OneShotDelivery : AppCompatActivity() {
         val didTankFullElement = findViewById<Switch>(R.id.one_shot_delivery_did_fuel_upto_tank_full)
         val refuelingQtyElement = findViewById<EditText>(R.id.one_shot_delivery_fuel_quantity)
         val refuelingKmElement = findViewById<EditText>(R.id.one_shot_delivery_refueling_km)
-        val refuelingAmountElement = findViewById<EditText>(R.id.one_shot_delivery_fuel_amount)
+        val refuelingAmountElement = findViewById<EditText>(R.id.osd_refuel_amount)
 
         UIUtils.setUIElementValue(didRefuelElement, SingleAttributedData.getRecords().did_refueled)
         UIUtils.setUIElementValue(didTankFullElement, SingleAttributedData.getRecords().did_refueled)
@@ -195,7 +196,8 @@ class OneShotDelivery : AppCompatActivity() {
 
     private fun populateDeliveryMap() {
         deliveryMapOrderedCustomers = mutableMapOf()
-        GetCustomerOrders.getListOfOrderedCustomers().forEach {
+        val listOfOrderedCustomers = GetCustomerOrders.getListOfOrderedCustomers()
+        listOfOrderedCustomers.forEach {
             val deliverCustomersOrders = DeliverToCustomerDataModel(
                 id = "${System.currentTimeMillis()}",
                 timestamp = DateUtils.getCurrentTimestamp(),
@@ -211,7 +213,8 @@ class OneShotDelivery : AppCompatActivity() {
         }
 
         deliveryMapUnOrderedCustomers = mutableMapOf()
-        GetCustomerOrders.getListOfUnOrderedCustomers().forEach {
+        val listOfUnOrderedCustomers = GetCustomerOrders.getListOfUnOrderedCustomers()
+        listOfUnOrderedCustomers.forEach {
             val deliverCustomersOrders = DeliverToCustomerDataModel(
                 id = "${System.currentTimeMillis()}",
                 timestamp = DateUtils.getCurrentTimestamp(),
@@ -227,13 +230,13 @@ class OneShotDelivery : AppCompatActivity() {
         }
     }
 
-    fun showOrders() {
+    private fun showOrders() {
         showOrders(deliveryMapOrderedCustomers, R.id.one_shot_delivery_ordered_customers_entry_container)
         showOrders(deliveryMapUnOrderedCustomers, R.id.one_shot_delivery_unordered_customers_entry_container)
     }
 
     var entrynumber = 1
-    fun showOrders(listOfCustomers: MutableMap<String, DeliverToCustomerDataModel>, container: Int) {
+    private fun showOrders(listOfCustomers: MutableMap<String, DeliverToCustomerDataModel>, container: Int) {
         entrynumber = 1
         val listContainer = findViewById<LinearLayout>(container)
         listContainer.removeAllViews()
@@ -441,7 +444,7 @@ class OneShotDelivery : AppCompatActivity() {
         return order.prevDue.toInt()
     }
 
-    fun updateSingleAttributedDataOnUI() {
+    private fun updateSingleAttributedDataOnUI() {
         LogMe.log("Updating single attributed data")
         val loadedPc = findViewById<TextView>(R.id.one_shot_delivery_pc)
         val loadedKg = findViewById<TextView>(R.id.one_shot_delivery_kg)
@@ -476,7 +479,7 @@ class OneShotDelivery : AppCompatActivity() {
         return currentDueMapAfterDelivery
     }
 
-    fun updateTotals() {
+    private fun updateTotals() {
         val metadataObj = SingleAttributedData.getRecords()
         val totalPcElement = findViewById<TextView>(R.id.one_shot_delivery_total_pc)
         val totalKgElement = findViewById<TextView>(R.id.one_shot_delivery_total_kg)
@@ -549,7 +552,7 @@ class OneShotDelivery : AppCompatActivity() {
         }.start()
     }
 
-    fun setSaveProgressBar(value: Int) {
+    private fun setSaveProgressBar(value: Int) {
         findViewById<ProgressBar>(R.id.osd_save_progress_bar)
             .setProgress(
                 value,
@@ -557,7 +560,7 @@ class OneShotDelivery : AppCompatActivity() {
             )
     }
 
-    fun gatherSingleAttributedData() {
+    private fun gatherSingleAttributedData() {
         val finalKmElement = findViewById<EditText>(R.id.one_shot_delivery_trip_end_km)
         val labourExpensesElement = findViewById<EditText>(R.id.one_shot_delivery_labour_expenses)
         val extraExpensesElement = findViewById<EditText>(R.id.one_shot_delivery_extra_expenses)
@@ -625,7 +628,7 @@ class OneShotDelivery : AppCompatActivity() {
 
         if (didRefuelElement.isChecked) {
             val refuelQtyElement = findViewById<EditText>(R.id.one_shot_delivery_fuel_quantity)
-            val refuelAmountElement = findViewById<EditText>(R.id.one_shot_delivery_fuel_amount)
+            val refuelAmountElement = findViewById<EditText>(R.id.osd_refuel_amount)
             val didTankFullElement = findViewById<Switch>(R.id.one_shot_delivery_did_fuel_upto_tank_full)
             val refuelingKmElement = findViewById<EditText>(R.id.one_shot_delivery_refueling_km)
 
@@ -648,7 +651,7 @@ class OneShotDelivery : AppCompatActivity() {
         SingleAttributedData.saveToLocal(obj)
     }
 
-    fun deleteDeliveryDataOnServer() {
+    private fun deleteDeliveryDataOnServer() {
         Delete.builder()
             .scriptId(ProjectConfig.dBServerScriptURL)
             .sheetId(ProjectConfig.get_db_sheet_id())
@@ -696,6 +699,11 @@ class OneShotDelivery : AppCompatActivity() {
     override fun onBackPressed() {
         val switchActivityIntent = Intent(this, ActivityLogin::class.java)
         switchActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(switchActivityIntent)
+    }
+
+    fun onClickGoToMoneyVerification(view: View) {
+        val switchActivityIntent = Intent(this, CollectorVerifyMoneyCollectionActivity::class.java)
         startActivity(switchActivityIntent)
     }
 

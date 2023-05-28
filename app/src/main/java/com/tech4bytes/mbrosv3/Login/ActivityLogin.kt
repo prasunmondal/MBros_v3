@@ -94,14 +94,20 @@ class ActivityLogin : AppCompatActivity() {
             ActivityAuthEnums.ORDER_COLLECTOR -> ::goToGetOrdersPage
             ActivityAuthEnums.BALANCE_VIEW -> ::goToShowDues
             ActivityAuthEnums.ONE_SHOT_DELIVERY -> ::goToOneShotDelivery
-            ActivityAuthEnums.ONE_SHOT_LOAD_DETAILS -> ::goToOneShotLoadDetailsPage
+            ActivityAuthEnums.LOAD_INFORMATION -> ::goToOneShotLoadDetailsPage
+            ActivityAuthEnums.MONEY_CALCULATOR -> ::goToMoneyCalculatorPage
             ActivityAuthEnums.SHOW_RATES_IN_DELIVERY_PAGE -> null
             else -> null
         }
     }
 
+    private fun goToMoneyCalculatorPage() {
+        goToDataFetchActivity(ActivityAuthEnums.MONEY_CALCULATOR, MoneyCounter::class.java)
+    }
+
+
     private fun goToOneShotLoadDetailsPage() {
-        goToDataFetchActivity(ActivityAuthEnums.ONE_SHOT_LOAD_DETAILS, OneShotLoad::class.java)
+        goToDataFetchActivity(ActivityAuthEnums.LOAD_INFORMATION, OneShotLoad::class.java)
     }
 
     private fun goToHomePageAsPerRole(role: ActivityAuthEnums) {
@@ -174,15 +180,5 @@ class ActivityLogin : AppCompatActivity() {
 
     fun loginPageOnClickRefresh(view: View) {
         AppUtils.invalidateAllDataAndRestartApp()
-    }
-
-    fun goToDataFetch(view: View) {
-        val switchActivityIntent = Intent(this, DataFetchActivity::class.java)
-        startActivity(switchActivityIntent)
-    }
-
-    fun onClickMoneyCounter(view: View) {
-        val switchActivityIntent = Intent(this, MoneyCounter::class.java)
-        startActivity(switchActivityIntent)
     }
 }

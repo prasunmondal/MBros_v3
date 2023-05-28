@@ -157,13 +157,13 @@
                     android:background="@drawable/rounded"
                     android:backgroundTint="#022E33"
                     android:orientation="vertical"
-                    android:paddingHorizontal="20dp"
                     android:paddingVertical="20dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="10dp">
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/filledTextField"
@@ -171,19 +171,19 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:hint="KM"
-                            android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
-                            app:hintTextColor="@color/osl_data_status_fresh_light"
                             android:maxEms="10"
-                            android:minEms="10">
+                            android:minEms="10"
+                            android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
+                            app:hintTextColor="@color/osl_data_status_fresh_light">
 
                             <!--this is the actual edit text which takes the input-->
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/one_shot_delivery_trip_end_km"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="number"
                                 android:background="@color/osd_single_attribute_rates_background_color"
-                                android:textColor="@color/osd_single_attribute_rates_hintText_color"/>
+                                android:inputType="number"
+                                android:textColor="@color/osd_single_attribute_rates_hintText_color" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -191,23 +191,22 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="Lab"
-                            android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
-                            app:hintTextColor="@color/osl_data_status_fresh_light"
                             android:background="@color/osd_single_attribute_rates_background_color"
-                            android:textColor="@color/osd_single_attribute_rates_hintText_color"
+                            android:hint="Lab"
                             android:maxEms="10"
-                            android:minEms="10">
+                            android:minEms="10"
+                            android:textColor="@color/osd_single_attribute_rates_hintText_color"
+                            android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
+                            app:hintTextColor="@color/osl_data_status_fresh_light">
 
                             <!--this is the actual edit text which takes the input-->
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/one_shot_delivery_labour_expenses"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="number"
                                 android:background="@color/osd_single_attribute_rates_background_color"
-                                android:textColor="@color/osd_single_attribute_rates_hintText_color"
-                                />
+                                android:inputType="number"
+                                android:textColor="@color/osd_single_attribute_rates_hintText_color" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -216,18 +215,18 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:hint="Extra"
-                            android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
-                            app:hintTextColor="@color/osl_data_status_fresh_light"
                             android:maxEms="10"
-                            android:minEms="10">
+                            android:minEms="10"
+                            android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
+                            app:hintTextColor="@color/osl_data_status_fresh_light">
 
                             <!--this is the actual edit text which takes the input-->
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/one_shot_delivery_extra_expenses"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="number"
                                 android:background="@color/osd_single_attribute_rates_background_color"
+                                android:inputType="number"
                                 android:textColor="@color/osd_single_attribute_rates_hintText_color"
                                 android:textColorHint="#038697" />
 
@@ -238,7 +237,9 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="10dp"
+                        android:paddingBottom="10dp">
 
                         <TextView
                             android:id="@+id/textView36"
@@ -287,9 +288,16 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="#000A0F"
+                        android:orientation="vertical"></LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:orientation="horizontal">
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="10dp">
 
                         <Switch
                             android:id="@+id/one_shot_delivery_did_refuel"
@@ -315,7 +323,8 @@
                         android:id="@+id/one_shot_delivery_refueling_details_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingHorizontal="10dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -338,10 +347,10 @@
                                     android:id="@+id/one_shot_delivery_refueling_km"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:hint="Fuel KM"
                                     android:background="@color/osd_single_attribute_rates_background_color"
-                                    android:textColor="@color/osd_single_attribute_rates_hintText_color"
+                                    android:hint="Fuel KM"
                                     android:inputType="number"
+                                    android:textColor="@color/osd_single_attribute_rates_hintText_color"
                                     android:textColorHint="#038697" />
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -356,13 +365,13 @@
 
                                 <!--this is the actual edit text which takes the input-->
                                 <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/mc_deducted_amount"
+                                    android:id="@+id/osd_refuel_amount"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:background="@color/osd_single_attribute_rates_background_color"
-                                    android:textColor="@color/osd_single_attribute_rates_hintText_color"
                                     android:hint="Rs"
                                     android:inputType="number"
+                                    android:textColor="@color/osd_single_attribute_rates_hintText_color"
                                     android:textColorHint="#038697" />
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -381,9 +390,9 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:background="@color/osd_single_attribute_rates_background_color"
-                                    android:textColor="@color/osd_single_attribute_rates_hintText_color"
                                     android:hint="Qty (litres)"
                                     android:inputType="numberDecimal"
+                                    android:textColor="@color/osd_single_attribute_rates_hintText_color"
                                     android:textColorHint="#038697" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
@@ -467,6 +476,15 @@
                         android:layout_weight="1"
                         android:onClick="onClickSaveOneShotDeliveryDataBtn"
                         android:text="Save" />
+
+                    <Button
+                        android:id="@+id/osd_goToMoneyVerification"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:onClick="onClickGoToMoneyVerification"
+                        android:text="Money Check" />
 
                 </LinearLayout>
 

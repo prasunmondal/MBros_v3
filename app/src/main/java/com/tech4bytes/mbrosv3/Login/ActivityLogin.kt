@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.provider.Settings.Secure
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -179,6 +180,11 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     fun loginPageOnClickRefresh(view: View) {
+        val refreshBtn = findViewById<Button>(R.id.menu_refreshBtn)
+            refreshBtn.isEnabled = false
+            refreshBtn.alpha = .5f
+            refreshBtn.isClickable = false
+            refreshBtn.text = "Refreshing... .. ."
         AppUtils.invalidateAllDataAndRestartApp()
     }
 }

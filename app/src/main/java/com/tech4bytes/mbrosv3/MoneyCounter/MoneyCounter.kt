@@ -64,6 +64,10 @@ class MoneyCounter : AppCompatActivity() {
         val labourExpenses = NumberUtils.getIntOrZero(SingleAttributedData.getRecords().labour_expenses) + 300
         val deductedCash = NumberUtils.getIntOrZero(deductedCashField.text.toString())
         val addedCash = NumberUtils.getIntOrZero(addedCashField.text.toString())
+        val fuelExpense =
+            if(SingleAttributedData.getRecords().did_refueled.toBoolean())
+                NumberUtils.getIntOrZero(SingleAttributedData.getRecords().refueling_amount)
+            else 0
 
         val aimingAmount = (
                 totalAmountPaidByCustomer
@@ -71,6 +75,7 @@ class MoneyCounter : AppCompatActivity() {
                 - labourExpenses
                 - deductedCash
                 + addedCash
+                - fuelExpense
                 )
         aimingAmountField.setText(aimingAmount.toString())
     }

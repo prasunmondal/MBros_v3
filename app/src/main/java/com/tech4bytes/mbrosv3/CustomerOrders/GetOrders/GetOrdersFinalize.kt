@@ -46,47 +46,50 @@ class GetOrdersFinalize : AppCompatActivity() {
         val listContainer = findViewById<LinearLayout>(R.id.activity_get_orders_finalize_list_container)
         val layoutInflater = LayoutInflater.from(AppContexts.get())
         val entry = layoutInflater.inflate(R.layout.activity_get_orders_finalize_fragments, null)
+        val entryInitialPcAttr = entry.findViewById<TextView>(R.id.fragment_customer_order_pc)
+        val entryInitialKgAttr = entry.findViewById<TextView>(R.id.fragment_customer_order_kg)
+        val entryNameAttr = entry.findViewById<AppCompatTextView>(R.id.fragment_customer_order_name)
+        val entryFinalPcAttr = entry.findViewById<EditText>(R.id.finalize_order_fragment_finalizePc)
+        val entryFinalKgAttr = entry.findViewById<EditText>(R.id.finalize_order_fragment_finalizeKg)
 
-        val orderedPcElement = entry.findViewById<TextView>(R.id.fragment_customer_order_pc)
-        val orderedKgElement = entry.findViewById<TextView>(R.id.fragment_customer_order_kg)
-        UIUtils.setUIElementValue(entry.findViewById<AppCompatTextView>(R.id.fragment_customer_order_name), order.name)
         val finalOrderPc: Int
+        val finalOrderKg: Int
+
         if (order.orderedPc.isNotEmpty()) {
             finalOrderPc = NumberUtils.getIntOrZero(order.orderedPc)
         } else {
-            finalOrderPc = NumberUtils.getIntOrZero((order.orderedKg.toInt() / 2).toString())
-            orderedPcElement.setBackgroundColor(ContextCompat.getColor(this, R.color.delivery_input_not_valid))
+            finalOrderPc = NumberUtils.getIntOrZero(order.orderedKg) / NumberUtils.getIntOrZero(SingleAttributedData.getRecords().estimatedLoadAvgWt) / 1000
+            entryInitialPcAttr.setBackgroundColor(ContextCompat.getColor(this, R.color.delivery_input_not_valid))
         }
-        UIUtils.setUIElementValue(orderedPcElement, finalOrderPc.toString())
-        entry.findViewById<EditText>(R.id.finalize_order_fragment_finalizePc).hint = finalOrderPc.toString()
 
-        val finalOrderKg: Int
         if (order.orderedKg.isNotEmpty()) {
             finalOrderKg = NumberUtils.getIntOrZero(order.orderedKg)
         } else {
             finalOrderKg = NumberUtils.getIntOrZero((order.orderedPc.toInt() * SingleAttributedData.getRecords().estimatedLoadAvgWt.toInt() / 1000).toString())
-            orderedKgElement.setBackgroundColor(ContextCompat.getColor(this, R.color.delivery_input_not_valid))
+            entryInitialKgAttr.setBackgroundColor(ContextCompat.getColor(this, R.color.delivery_input_not_valid))
         }
-        UIUtils.setUIElementValue(orderedKgElement, finalOrderKg.toString())
-        entry.findViewById<EditText>(R.id.finalize_order_fragment_finalizeKg).hint = finalOrderKg.toString()
 
-        val finalizePc = entry.findViewById<TextView>(R.id.finalize_order_fragment_finalizePc)
-        val finalizeKg = entry.findViewById<TextView>(R.id.finalize_order_fragment_finalizeKg)
+        UIUtils.setUIElementValue(entryNameAttr, order.name)
+        UIUtils.setUIElementValue(entryInitialPcAttr, finalOrderPc.toString())
+        UIUtils.setUIElementValue(entryInitialKgAttr, finalOrderKg.toString())
+
+        entryFinalPcAttr.hint = finalOrderPc.toString()
+        entryFinalKgAttr.hint = finalOrderKg.toString()
 
         if (order.calculatedKg.isNotEmpty())
-            finalizeKg.text = order.calculatedKg
+            entryFinalKgAttr.setText(order.calculatedKg)
 
         if (order.calculatedPc.isNotEmpty())
-            finalizePc.text = order.calculatedPc
+            entryFinalPcAttr.setText(order.calculatedPc)
 
-        finalizePc.doOnTextChanged { text, start, before, count ->
-            order.calculatedPc = finalizePc.text.toString().replace(" ", "")
+        entryFinalPcAttr.doOnTextChanged { _, _, _, _ ->
+            order.calculatedPc = entryFinalPcAttr.text.toString().replace(" ", "")
             updatePcs()
             localSave()
         }
 
-        finalizeKg.doOnTextChanged { text, start, before, count ->
-            order.calculatedKg = finalizeKg.text.toString().replace(" ", "")
+        entryFinalKgAttr.doOnTextChanged { _, _, _, _ ->
+            order.calculatedKg = entryFinalKgAttr.text.toString().replace(" ", "")
             updateKgs()
             localSave()
         }

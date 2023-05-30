@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,7 @@ import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
+import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 
 class GetOrdersFinalize : AppCompatActivity() {
 
@@ -48,19 +50,25 @@ class GetOrdersFinalize : AppCompatActivity() {
         val orderedPcElement = entry.findViewById<TextView>(R.id.fragment_customer_order_pc)
         val orderedKgElement = entry.findViewById<TextView>(R.id.fragment_customer_order_kg)
         UIUtils.setUIElementValue(entry.findViewById<AppCompatTextView>(R.id.fragment_customer_order_name), order.name)
+        val finalOrderPc: Int
         if (order.orderedPc.isNotEmpty()) {
-            UIUtils.setUIElementValue(orderedPcElement, order.orderedPc)
+            finalOrderPc = NumberUtils.getIntOrZero(order.orderedPc)
         } else {
-            UIUtils.setUIElementValue(orderedPcElement, (order.orderedKg.toInt() / 2).toString())
+            finalOrderPc = NumberUtils.getIntOrZero((order.orderedKg.toInt() / 2).toString())
             orderedPcElement.setBackgroundColor(ContextCompat.getColor(this, R.color.delivery_input_not_valid))
         }
+        UIUtils.setUIElementValue(orderedPcElement, finalOrderPc.toString())
+        entry.findViewById<EditText>(R.id.finalize_order_fragment_finalizePc).hint = finalOrderPc.toString()
 
+        val finalOrderKg: Int
         if (order.orderedKg.isNotEmpty()) {
-            UIUtils.setUIElementValue(orderedKgElement, order.orderedKg)
+            finalOrderKg = NumberUtils.getIntOrZero(order.orderedKg)
         } else {
-            UIUtils.setUIElementValue(orderedKgElement, (order.orderedPc.toInt() * SingleAttributedData.getRecords().estimatedLoadAvgWt.toInt() / 1000).toString())
+            finalOrderKg = NumberUtils.getIntOrZero((order.orderedPc.toInt() * SingleAttributedData.getRecords().estimatedLoadAvgWt.toInt() / 1000).toString())
             orderedKgElement.setBackgroundColor(ContextCompat.getColor(this, R.color.delivery_input_not_valid))
         }
+        UIUtils.setUIElementValue(orderedKgElement, finalOrderKg.toString())
+        entry.findViewById<EditText>(R.id.finalize_order_fragment_finalizeKg).hint = finalOrderKg.toString()
 
         val finalizePc = entry.findViewById<TextView>(R.id.finalize_order_fragment_finalizePc)
         val finalizeKg = entry.findViewById<TextView>(R.id.finalize_order_fragment_finalizeKg)

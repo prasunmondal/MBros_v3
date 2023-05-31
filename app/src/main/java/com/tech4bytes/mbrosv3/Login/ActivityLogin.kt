@@ -52,10 +52,10 @@ class ActivityLogin : AppCompatActivity() {
         AppUtils.logError()
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
-        runOnUiThread {
             val roles = RolesUtils.getAppUser()
             LogMe.log("Got Role: $roles")
 
+        Thread {
             val container = findViewById<LinearLayout>(R.id.activity_login_roles_container)
             if (UserRoleUtils.getUserRoles().isEmpty()) {
                 logUnIdentifiedDevice()
@@ -75,12 +75,14 @@ class ActivityLogin : AppCompatActivity() {
                             entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).setOnClickListener {
                                 goToHomePageAsPerRole(role)
                             }
-                            container.addView(entry)
+                            runOnUiThread {
+                                container.addView(entry)
+                            }
                         }
                     }
                 }
             }
-        }
+        }.start()
     }
 
     private fun getRoleAndActivityMapping(role: ActivityAuthEnums): (() -> Unit)? {

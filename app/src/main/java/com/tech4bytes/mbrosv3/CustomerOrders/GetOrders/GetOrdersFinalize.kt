@@ -20,7 +20,7 @@ import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 
 class GetOrdersFinalize : AppCompatActivity() {
 
-    lateinit var listOrders: List<GetCustomerOrders>
+    private lateinit var listOrders: List<GetCustomerOrders>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,20 +52,20 @@ class GetOrdersFinalize : AppCompatActivity() {
         val entryFinalPcAttr = entry.findViewById<EditText>(R.id.finalize_order_fragment_finalizePc)
         val entryFinalKgAttr = entry.findViewById<EditText>(R.id.finalize_order_fragment_finalizeKg)
 
-        val finalOrderPc: Int
-        val finalOrderKg: Int
+        val finalOrderPc: Double
+        val finalOrderKg: Double
 
         if (order.orderedPc.isNotEmpty()) {
-            finalOrderPc = NumberUtils.getIntOrZero(order.orderedPc)
+            finalOrderPc = NumberUtils.getDoubleOrZero(order.orderedPc)
         } else {
-            finalOrderPc = NumberUtils.getIntOrZero(order.orderedKg) / NumberUtils.getIntOrZero(SingleAttributedData.getRecords().estimatedLoadAvgWt) / 1000
+            finalOrderPc = NumberUtils.getDoubleOrZero(order.orderedKg) / NumberUtils.getIntOrZero(SingleAttributedData.getRecords().estimatedLoadAvgWt) / 1000
             entryInitialPcAttr.setBackgroundColor(ContextCompat.getColor(this, R.color.delivery_input_not_valid))
         }
 
         if (order.orderedKg.isNotEmpty()) {
-            finalOrderKg = NumberUtils.getIntOrZero(order.orderedKg)
+            finalOrderKg = NumberUtils.getDoubleOrZero(order.orderedKg)
         } else {
-            finalOrderKg = NumberUtils.getIntOrZero((order.orderedPc.toInt() * SingleAttributedData.getRecords().estimatedLoadAvgWt.toInt() / 1000).toString())
+            finalOrderKg = NumberUtils.getDoubleOrZero((order.orderedPc.toInt() * (SingleAttributedData.getRecords().estimatedLoadAvgWt.toInt() / 1000)).toString(), "#.#")
             entryInitialKgAttr.setBackgroundColor(ContextCompat.getColor(this, R.color.delivery_input_not_valid))
         }
 

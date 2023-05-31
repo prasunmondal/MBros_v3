@@ -135,10 +135,7 @@ class CentralCache {
                 LogMe.log("Clearing cache: deleting file - $it")
                 writeObj.WriteObjectToFile(AppContexts.get(), it, null)
             }
-
-            cacheFiles.forEach {
-                CacheFilesList.removeFromCacheFilesList(it)
-            }
+            CacheFilesList.clearCacheFilesList()
         }
 
         fun invalidateClassCache() {

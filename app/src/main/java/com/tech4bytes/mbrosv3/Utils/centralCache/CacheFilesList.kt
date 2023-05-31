@@ -40,5 +40,10 @@ class CacheFilesList : java.io.Serializable {
             val writeObj = IOObjectToFile()
             writeObj.WriteObjectToFile(AppContexts.get(), cacheFilesFileName, list)
         }
+
+        fun clearCacheFilesList() {
+            val writeObj = IOObjectToFile()
+            writeObj.WriteObjectToFile(AppContexts.get(), cacheFilesFileName, null)
+        }
     }
 }

@@ -111,12 +111,14 @@ class OneShotDelivery : AppCompatActivity() {
         loadPcElement.doOnTextChanged { text, start, before, count ->
             record.actualLoadPc = loadPcElement.text.toString()
             SingleAttributedData.saveToLocal(record)
+            updateRelatedFields_LoadPcKg()
             updateTotals()
         }
 
         loadKgElement.doOnTextChanged { text, start, before, count ->
             record.actualLoadKg = loadKgElement.text.toString()
             SingleAttributedData.saveToLocal(record)
+            updateRelatedFields_LoadPcKg()
             updateTotals()
         }
 
@@ -133,8 +135,19 @@ class OneShotDelivery : AppCompatActivity() {
         }
 
         initiallizeOtherExpensesUI()
+        updateRelatedFields_LoadPcKg()
         initiallizeRefuelUI()
         updateKmRelatedCosts()
+    }
+
+    private fun updateRelatedFields_LoadPcKg() {
+        val loadAvgWtElement = findViewById<TextView>(R.id.osd_loading_avg_wt)
+        val totalPcElement = findViewById<TextView>(R.id.one_shot_delivery_pc)
+        val totalKgElement = findViewById<TextView>(R.id.one_shot_delivery_kg)
+
+        val avgWt = NumberUtils.roundOff3places(NumberUtils.getDoubleOrZero(totalKgElement.text.toString()) / NumberUtils.getIntOrZero(totalPcElement.text.toString()))
+        LogMe.log(avgWt.toString())
+        loadAvgWtElement.text = avgWt.toString()
     }
 
     private fun initiallizeOtherExpensesUI() {

@@ -67,7 +67,6 @@ class DataFetchActivity : AppCompatActivity() {
 
                 var allCompleted = true
                 var countCompletedExecutions = 0
-                LogMe.log("==== Checking Completeness ====")
                 list.forEach {
                     if (!it.value.isCompleted) {
                         allCompleted = false
@@ -75,8 +74,6 @@ class DataFetchActivity : AppCompatActivity() {
                         countCompletedExecutions += 1
                     }
                 }
-                LogMe.log("Final Verdict: $allCompleted")
-                LogMe.log("==== ===================== ====")
                 findViewById<TextView>(R.id.osl_fetching_data_progress_count_label).text = "Fetching Data: ${countCompletedExecutions}/${list.size}"
                 if (allCompleted && nextActivity != null) {
                     goToNextActivity(nextActivity)

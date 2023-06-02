@@ -50,7 +50,7 @@ class ActivityLogin : AppCompatActivity() {
         setContentView(R.layout.activity_fullscreen)
         AppContexts.set(this)
         AppUtils.logError()
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
             val roles = RolesUtils.getAppUser()
             LogMe.log("Got Role: $roles")
@@ -174,11 +174,12 @@ class ActivityLogin : AppCompatActivity() {
         CentralCache.invalidateFullCache()
     }
 
+    @SuppressLint("HardwareIds")
     private fun getPhoneId(): String {
         return Secure.getString(
             applicationContext.contentResolver,
             Secure.ANDROID_ID
-        );
+        )
     }
 
     fun loginPageOnClickRefresh(view: View) {

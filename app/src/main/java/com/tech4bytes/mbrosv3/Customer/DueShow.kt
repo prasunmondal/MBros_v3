@@ -11,7 +11,6 @@ import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
-import java.util.stream.Stream
 import kotlin.streams.toList
 
 class DueShow : AppCompatActivity() {
@@ -27,9 +26,9 @@ class DueShow : AppCompatActivity() {
     fun shouldShow(customerData: CustomerData): Boolean {
         if (NumberUtils.getIntOrZero(customerData.balanceDue) != 0)
             return true
-        if(CustomerKYC.getCustomerByEngName(customerData.name) == null)
+        if (CustomerKYC.getCustomerByEngName(customerData.name) == null)
             return false
-        if(CustomerKYC.getCustomerByEngName(customerData.name)!!.isActiveCustomer.toBoolean())
+        if (CustomerKYC.getCustomerByEngName(customerData.name)!!.isActiveCustomer.toBoolean())
             return true
         return false
     }
@@ -64,7 +63,7 @@ class DueShow : AppCompatActivity() {
             listOfEntriesNotPresentInCustomerKYC.add(toSortItem)
             var index = 0
             sortedList.forEach { sortedItem ->
-                if(sortedItem.nameEng == toSortItem.name) {
+                if (sortedItem.nameEng == toSortItem.name) {
                     map[index] = toSortItem
                     listOfEntriesNotPresentInCustomerKYC.remove(toSortItem)
                 }

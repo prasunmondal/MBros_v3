@@ -1,10 +1,10 @@
 package com.tech4bytes.mbrosv3.MoneyCounter
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textview.MaterialTextView
 import com.tech4bytes.mbrosv3.AppData.AppUtils
@@ -65,17 +65,17 @@ class MoneyCounter : AppCompatActivity() {
         val deductedCash = NumberUtils.getIntOrZero(deductedCashField.text.toString())
         val addedCash = NumberUtils.getIntOrZero(addedCashField.text.toString())
         val fuelExpense =
-            if(SingleAttributedData.getRecords().did_refueled.toBoolean())
+            if (SingleAttributedData.getRecords().did_refueled.toBoolean())
                 NumberUtils.getIntOrZero(SingleAttributedData.getRecords().refueling_amount)
             else 0
 
         val aimingAmount = (
                 totalAmountPaidByCustomer
-                + (cashGivenForExtraExpenses - extraExpenses)
-                - labourExpenses
-                - deductedCash
-                + addedCash
-                - fuelExpense
+                        + (cashGivenForExtraExpenses - extraExpenses)
+                        - labourExpenses
+                        - deductedCash
+                        + addedCash
+                        - fuelExpense
                 )
         aimingAmountField.setText(aimingAmount.toString())
     }

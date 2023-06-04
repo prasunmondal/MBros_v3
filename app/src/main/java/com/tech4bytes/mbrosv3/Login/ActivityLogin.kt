@@ -52,8 +52,8 @@ class ActivityLogin : AppCompatActivity() {
         AppUtils.logError()
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
-            val roles = RolesUtils.getAppUser()
-            LogMe.log("Got Role: $roles")
+        val roles = RolesUtils.getAppUser()
+        LogMe.log("Got Role: $roles")
 
         Thread {
             val container = findViewById<LinearLayout>(R.id.activity_login_roles_container)
@@ -184,10 +184,10 @@ class ActivityLogin : AppCompatActivity() {
 
     fun loginPageOnClickRefresh(view: View) {
         val refreshBtn = findViewById<Button>(R.id.menu_refreshBtn)
-            refreshBtn.isEnabled = false
-            refreshBtn.alpha = .5f
-            refreshBtn.isClickable = false
-            refreshBtn.text = "Refreshing... .. ."
+        refreshBtn.isEnabled = false
+        refreshBtn.alpha = .5f
+        refreshBtn.isClickable = false
+        refreshBtn.text = "Refreshing... .. ."
         AppUtils.invalidateAllDataAndRestartApp()
     }
 }

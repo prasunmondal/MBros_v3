@@ -383,7 +383,7 @@ class OneShotDelivery : AppCompatActivity() {
 
             val p = DaySummary.getDayProfit()
             profitElement.text = p.toString()
-            totalDueElement.text = "Something"
+            totalDueElement.text = "---"
         }
         updateTotalDueBalance()
     }
@@ -456,8 +456,7 @@ class OneShotDelivery : AppCompatActivity() {
 
     private fun getDueBalance(order: DeliverToCustomerDataModel, entry: View): Int {
         val prevBal = order.prevDue
-        val bal = NumberUtils.getIntOrZero(prevBal) + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(entry)
-        return bal
+        return NumberUtils.getIntOrZero(prevBal) + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(entry)
     }
 
     private fun getPrevDueBalance(order: DeliverToCustomerDataModel): Int {
@@ -557,6 +556,7 @@ class OneShotDelivery : AppCompatActivity() {
         Thread {
             runOnUiThread()
             {
+                findViewById<ProgressBar>(R.id.osd_save_progress_bar).visibility = View.VISIBLE
                 saveOneSortDeliveryButton.isEnabled = false
                 saveOneSortDeliveryButton.alpha = .5f
                 saveOneSortDeliveryButton.isClickable = false;
@@ -571,6 +571,7 @@ class OneShotDelivery : AppCompatActivity() {
                 saveOneSortDeliveryButton.isEnabled = true
                 saveOneSortDeliveryButton.alpha = 1.0f;
                 saveOneSortDeliveryButton.isClickable = true;
+                findViewById<ProgressBar>(R.id.osd_save_progress_bar).visibility = View.GONE
             }
         }.start()
     }

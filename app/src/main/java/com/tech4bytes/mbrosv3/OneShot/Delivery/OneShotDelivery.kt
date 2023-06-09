@@ -390,9 +390,7 @@ class OneShotDelivery : AppCompatActivity() {
 
     fun updateTotalDueBalance() {
         var sum = 0
-        CustomerDueData.getBalance().forEach { s, i ->
-            sum += i
-        }
+        CustomerDueData.getBalance().forEach { (s, i) -> sum += i }
         val totalDueElement = findViewById<TextView>(R.id.osd_total_due)
         runOnUiThread {
             totalDueElement.text = NumberUtils.getIntOrZero(sum.toString()).toString()

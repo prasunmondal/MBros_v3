@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import android.widget.Switch
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
@@ -54,6 +55,8 @@ class DueShow : AppCompatActivity() {
         listContainer.removeAllViews()
         var latestRecords = removeInActiveCustomers(CustomerData.getAllLatestRecords())
         latestRecords = sortByNameList(latestRecords, CustomerKYC.getAllCustomers())
+
+        val balanceTextColor = if (showAfterDeliveryBalance) R.color.due_show_including_finalized_transactions else R.color.due_show_excluding_finalized_transactions
         val latestBalanceAfterDelivery = CustomerDueData.getBalance(showAfterDeliveryBalance)
 
         latestRecords.forEach {
@@ -65,6 +68,7 @@ class DueShow : AppCompatActivity() {
 
             nameElement.text = it.name
             amountElement.text = latestBalanceAfterDelivery[it.name].toString()
+            amountElement.setTextColor(ContextCompat.getColor(this, balanceTextColor))
 
             listContainer.addView(entry)
         }

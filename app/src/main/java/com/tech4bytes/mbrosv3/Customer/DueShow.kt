@@ -60,8 +60,8 @@ class DueShow : AppCompatActivity() {
             val layoutInflater = LayoutInflater.from(AppContexts.get())
             val entry = layoutInflater.inflate(R.layout.activity_due_show_entry, null)
 
-            var nameElement = entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role)
-            var amountElement = entry.findViewById<TextView>(R.id.activity_due_show_amount)
+            val nameElement = entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role)
+            val amountElement = entry.findViewById<TextView>(R.id.activity_due_show_amount)
 
             nameElement.text = it.name
             amountElement.text = latestBalanceAfterDelivery[it.name].toString()

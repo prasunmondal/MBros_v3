@@ -144,9 +144,15 @@ class OneShotDelivery : AppCompatActivity() {
         val totalPcElement = findViewById<TextView>(R.id.one_shot_delivery_pc)
         val totalKgElement = findViewById<TextView>(R.id.one_shot_delivery_kg)
 
-        val avgWt = NumberUtils.roundOff3places(NumberUtils.getDoubleOrZero(totalKgElement.text.toString()) / NumberUtils.getIntOrZero(totalPcElement.text.toString()))
-        LogMe.log(avgWt.toString())
-        loadAvgWtElement.text = avgWt.toString()
+        var avgWt = "N/A"
+        try {
+            avgWt = NumberUtils.roundOff3places(NumberUtils.getDoubleOrZero(totalKgElement.text.toString()) / NumberUtils.getIntOrZero(totalPcElement.text.toString())).toString()
+        } catch (_: Exception) {
+            LogMe.log("Error while getting avg")
+        } finally {
+            LogMe.log(avgWt)
+            loadAvgWtElement.text = avgWt
+        }
     }
 
     private fun initiallizeOtherExpensesUI() {

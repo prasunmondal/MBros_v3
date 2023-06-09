@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
+import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -33,15 +34,17 @@ class DueShow : AppCompatActivity() {
         return false
     }
 
-    fun removeInActiveCustomers(list: MutableList<CustomerData>): MutableList<CustomerData> {
+    private fun removeInActiveCustomers(list: MutableList<CustomerData>): MutableList<CustomerData> {
         val filteredList = list.stream().filter { p -> shouldShow(p) }.toList()
         return filteredList.toMutableList()
     }
 
-    fun showDues() {
+    private fun showDues() {
         val listContainer = findViewById<LinearLayout>(R.id.activity_due_show_fragment_conntainer)
         var latestRecords = removeInActiveCustomers(CustomerData.getAllLatestRecords())
         latestRecords = sortByNameList(latestRecords, CustomerKYC.getAllCustomers())
+        val latestBalanceAfterDelivery = CustomerDueData.getBalance(true)
+
         latestRecords.forEach {
             val layoutInflater = LayoutInflater.from(AppContexts.get())
             val entry = layoutInflater.inflate(R.layout.activity_due_show_entry, null)
@@ -50,7 +53,7 @@ class DueShow : AppCompatActivity() {
             var amountElement = entry.findViewById<TextView>(R.id.activity_due_show_amount)
 
             nameElement.text = it.name
-            amountElement.text = it.balanceDue
+            amountElement.text = latestBalanceAfterDelivery[it.name].toString()
 
             listContainer.addView(entry)
         }

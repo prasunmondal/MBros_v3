@@ -55,6 +55,7 @@ class DataFetchingInfo {
                 ActivityAuthEnums.BALANCE_VIEW -> {
                     executingMethods.add(CustomerData::getRecords)
                     executingMethods.add(CustomerKYC::getAllCustomers)
+                    executingMethods.add(DeliverToCustomerDataHandler::get)
                 }
                 ActivityAuthEnums.LOAD_INFORMATION -> {
                     executingMethods.add(SingleAttributedData::getRecords, false)

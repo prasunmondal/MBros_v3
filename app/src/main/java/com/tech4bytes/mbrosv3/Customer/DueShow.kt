@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.LinearLayout
+import android.widget.Switch
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
@@ -16,12 +17,21 @@ import kotlin.streams.toList
 
 class DueShow : AppCompatActivity() {
 
+    lateinit var toggleBalanceViewBtn: Switch
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_due_show)
         AppContexts.set(this, this)
 
-        showDues()
+        setUI()
+        showDues(toggleBalanceViewBtn.isChecked)
+    }
+
+    private fun setUI() {
+        toggleBalanceViewBtn = findViewById(R.id.toggleBalanceDueView)
+        toggleBalanceViewBtn.setOnCheckedChangeListener { _, isChecked ->
+            showDues(isChecked)
+        }
     }
 
     fun shouldShow(customerData: CustomerData): Boolean {
@@ -39,11 +49,12 @@ class DueShow : AppCompatActivity() {
         return filteredList.toMutableList()
     }
 
-    private fun showDues() {
+    private fun showDues(showAfterDeliveryBalance: Boolean = true) {
         val listContainer = findViewById<LinearLayout>(R.id.activity_due_show_fragment_conntainer)
+        listContainer.removeAllViews()
         var latestRecords = removeInActiveCustomers(CustomerData.getAllLatestRecords())
         latestRecords = sortByNameList(latestRecords, CustomerKYC.getAllCustomers())
-        val latestBalanceAfterDelivery = CustomerDueData.getBalance(true)
+        val latestBalanceAfterDelivery = CustomerDueData.getBalance(showAfterDeliveryBalance)
 
         latestRecords.forEach {
             val layoutInflater = LayoutInflater.from(AppContexts.get())

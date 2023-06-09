@@ -168,24 +168,5 @@ data class DaySummary(
             LogMe.log(getExtraCost())
             return getDaySale() - getBirdCost() - kmCost() - getLabourCost() - getExtraCost()
         }
-
-        fun getTotalDueBalance(obj: OneShotDelivery): Int {
-            val currentDueMapAfterDelivery: MutableMap<String, Int> = mutableMapOf()
-            CustomerData.getAllLatestRecords().forEach {
-                currentDueMapAfterDelivery[it.name] = NumberUtils.getIntOrZero(it.balanceDue)
-            }
-
-            val todaysUpdatedBalances = obj.getTodaysUpdatedDueMap()
-            todaysUpdatedBalances.forEach {
-                currentDueMapAfterDelivery[it.key] = NumberUtils.getIntOrZero(it.value.toString())
-            }
-
-            var sum = 0
-            currentDueMapAfterDelivery.forEach {
-                sum += it.value
-            }
-
-            return sum
-        }
     }
 }

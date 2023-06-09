@@ -26,6 +26,7 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.De
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
+import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
@@ -317,6 +318,10 @@ class OneShotDelivery : AppCompatActivity() {
                 updateDetailedInfo(order, entry)
             }
 
+//            balanceElement.doOnTextChanged { text, start, before, count ->
+//                updateDueAndTotalMarketDue()
+//            }
+
             val recordContainer = entry.findViewById<CardView>(R.id.one_shot_delivery_fragment_record_container)
             var cardColor = ContextCompat.getColor(this, R.color.one_shot_delivery_odd_card_color)
             if (entrynumber % 2 == 0) {
@@ -329,6 +334,10 @@ class OneShotDelivery : AppCompatActivity() {
             updateEntry(order, entry)
             uiMaps[order.value.name] = entry
         }
+    }
+
+    private fun updateDueAndTotalMarketDue() {
+
     }
 
     private fun fragmentUpdateCustomerWiseRateView(order: Map.Entry<String, DeliverToCustomerDataModel>, entry: View) {
@@ -380,15 +389,13 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     fun updateTotalDueBalance() {
-        Thread {
-            var sum = 0
-            CustomerData.getAllLatestRecords().forEach {
-                sum += NumberUtils.getIntOrZero(it.balanceDue)
-            }
-            val totalDueElement = findViewById<TextView>(R.id.osd_total_due)
-            runOnUiThread {
-                totalDueElement.text = DaySummary.getTotalDueBalance(this).toString()
-            }
+        var sum = 0
+        CustomerDueData.getBalance().forEach { s, i ->
+            sum += i
+        }
+        val totalDueElement = findViewById<TextView>(R.id.osd_total_due)
+        runOnUiThread {
+            totalDueElement.text = NumberUtils.getIntOrZero(sum.toString()).toString()
         }
     }
 
@@ -627,7 +634,6 @@ class OneShotDelivery : AppCompatActivity() {
         LogMe.log("Converting String: " + Refueling.getMileage(refuelingKM, refuelingQty))
         return if (NumberUtils.getDoubleOrZero(refuelingQty) > 0.0)
             Refueling.getMileage(refuelingKM, refuelingQty)
-//            "%.3f".format(Refueling.getMileage(refuelingKM, refuelingQty))
         else
             "N/A"
     }

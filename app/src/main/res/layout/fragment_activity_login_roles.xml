@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -9,12 +10,10 @@
         android:id="@+id/activity_due_show_fragment_conntainer"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginVertical="20dp"
-        android:background="#093050"
+        android:layout_marginVertical="1dp"
         android:foregroundGravity="center_vertical"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingHorizontal="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -23,14 +22,24 @@
             android:id="@+id/fragment_actibity_login_roles_role"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
             android:layout_weight=".5"
             android:gravity="center_vertical"
-            android:paddingLeft="5dp"
-            android:textColor="#A0C2DD"
-            android:textSize="20sp" />
+            android:paddingLeft="10dp"
+            android:text="Sample Text"
+            android:textColor="@color/delivery_pending"
+            android:textSize="20sp"
+            app:fontFamily="monospace" />
 
 
     </LinearLayout>
+
+    <View
+        android:id="@+id/view5"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="#9E9C9C"
+        app:layout_constraintBottom_toBottomOf="@id/activity_due_show_fragment_conntainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

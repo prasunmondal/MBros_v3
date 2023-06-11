@@ -52,6 +52,11 @@ class DataFetchingInfo {
                     executingMethods.add(CustomerData::getRecords)
                     executingMethods.add(DeliverToCustomerDataHandler::get)
                 }
+                ActivityAuthEnums.ORDER_COLLECTOR -> {
+                    executingMethods.add(SingleAttributedData::getRecords)
+                    executingMethods.add(CustomerKYC::getAllCustomers)
+                    executingMethods.add(GetCustomerOrders::get)
+                }
                 ActivityAuthEnums.LOAD_INFORMATION -> {
                     executingMethods.add(SingleAttributedData::getRecords, false)
                     executingMethods.add(DaySummary::get, false)

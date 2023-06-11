@@ -17,6 +17,7 @@ import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
+import kotlin.math.roundToInt
 
 class GetOrdersFinalize : AppCompatActivity() {
 
@@ -58,7 +59,7 @@ class GetOrdersFinalize : AppCompatActivity() {
         if (order.orderedPc.isNotEmpty()) {
             finalOrderPc = NumberUtils.getDoubleOrZero(order.orderedPc)
         } else {
-            finalOrderPc = NumberUtils.getDoubleOrZero(order.orderedKg) / NumberUtils.getIntOrZero(SingleAttributedData.getRecords().estimatedLoadAvgWt) / 1000
+            finalOrderPc = NumberUtils.getDoubleOrZero(order.orderedKg) * 1000 / NumberUtils.getIntOrZero(SingleAttributedData.getRecords().estimatedLoadAvgWt)
             entryInitialPcAttr.setBackgroundColor(ContextCompat.getColor(this, R.color.delivery_input_not_valid))
         }
 
@@ -73,8 +74,8 @@ class GetOrdersFinalize : AppCompatActivity() {
         UIUtils.setUIElementValue(entryInitialPcAttr, finalOrderPc.toString())
         UIUtils.setUIElementValue(entryInitialKgAttr, finalOrderKg.toString())
 
-        entryFinalPcAttr.hint = finalOrderPc.toString()
-        entryFinalKgAttr.hint = finalOrderKg.toString()
+        entryFinalPcAttr.hint = NumberUtils.getIntOrZero(finalOrderPc.roundToInt().toString()).toString()
+        entryFinalKgAttr.hint = NumberUtils.getIntOrZero(finalOrderKg.roundToInt().toString()).toString()
 
         if (order.calculatedKg.isNotEmpty())
             entryFinalKgAttr.setText(order.calculatedKg)

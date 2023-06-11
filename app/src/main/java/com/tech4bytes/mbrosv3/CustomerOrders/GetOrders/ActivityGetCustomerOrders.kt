@@ -133,19 +133,6 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         return namesList
     }
 
-    fun onClickSaveBtn(view: View) {
-        Toast.makeText(this, "Saving Data", Toast.LENGTH_SHORT).show()
-        GetCustomerOrders.deleteAll()
-        GetCustomerOrders.save()
-
-        val metadataObj = SingleAttributedData.getRecords()
-        metadataObj.estimatedLoadPc = UIUtils.getUIElementValue(LoadModel.getUiElementFromOrderingPage(view, LoadModel::requiredPc))
-        metadataObj.estimatedLoadKg = UIUtils.getUIElementValue(LoadModel.getUiElementFromOrderingPage(view, LoadModel::requiredKg))
-
-        SingleAttributedData.save(metadataObj)
-        Toast.makeText(this, "Data save complete!", Toast.LENGTH_LONG).show()
-    }
-
     fun onClickGoToFinalizeOrdersPage(view: View) {
         if (SingleAttributedData.getRecords().estimatedLoadAvgWt.isEmpty()) {
             Toast.makeText(this, "Please enter avg wt.", Toast.LENGTH_LONG).show()

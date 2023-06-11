@@ -30,7 +30,7 @@ data class GetCustomerOrders(
     var prevDue: String = ""
 ) : java.io.Serializable {
 
-    fun getEstimatedPc(allowFraction: Boolean): String? {
+    fun getEstimatedPc(allowFraction: Boolean): String {
         if (orderedPc.isNotEmpty()) {
             return orderedPc
         }
@@ -42,7 +42,7 @@ data class GetCustomerOrders(
         }
     }
 
-    fun getEstimatedKg(allowFraction: Boolean): String? {
+    fun getEstimatedKg(allowFraction: Boolean): String {
         if (orderedKg.isNotEmpty()) {
             return orderedKg
         }

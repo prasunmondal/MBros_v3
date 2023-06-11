@@ -6,11 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
+import com.tech4bytes.mbrosv3.Loading.LoadModel
 import com.tech4bytes.mbrosv3.R
+import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 
@@ -45,12 +49,20 @@ class OrdersMakeList : AppCompatActivity() {
         val elementName = entry.findViewById<AppCompatTextView>(R.id.make_list_fragment_name)
         val elementDue = entry.findViewById<TextView>(R.id.make_list_fragment_due)
 
-        elementPc.text = if(NumberUtils.getIntOrZero(order.calculatedPc) == 0) order.getEstimatedPc(false) else order.calculatedPc
-        elementKg.text = if(NumberUtils.getIntOrZero(order.calculatedKg) == 0) order.getEstimatedKg(false) else order.calculatedKg
+        elementPc.text = getFinalPc(order)
+        elementKg.text = getFinalKg(order)
         elementName.text = order.name
         elementDue.text = CustomerDueData.getBalance(order.name).toString()
 
         listContainer.addView(entry)
+    }
+
+    private fun getFinalPc(order: GetCustomerOrders): String {
+        return if(NumberUtils.getIntOrZero(order.calculatedPc) == 0) order.getEstimatedPc(false) else order.calculatedPc
+    }
+
+    private fun getFinalKg(order: GetCustomerOrders): String {
+        return if(NumberUtils.getIntOrZero(order.calculatedKg) == 0) order.getEstimatedKg(false) else order.calculatedKg
     }
 
     fun onClickGoToOrdersGetPage(view: View) {
@@ -63,5 +75,24 @@ class OrdersMakeList : AppCompatActivity() {
         val switchActivityIntent = Intent(this, GetOrdersFinalize::class.java)
         startActivity(switchActivityIntent)
         finish()
+    }
+
+    fun onClickSaveBtn(view: View) {
+        Toast.makeText(this, "Saving Data", Toast.LENGTH_SHORT).show()
+        GetCustomerOrders.deleteAll()
+        GetCustomerOrders.save()
+
+        val metadataObj = SingleAttributedData.getRecords()
+        var totalPc = 0
+        var totalKg = 0
+        GetCustomerOrders.getListOfOrderedCustomers().forEach {
+            totalPc += NumberUtils.getIntOrZero(getFinalPc(it))
+            totalKg += NumberUtils.getIntOrZero(getFinalKg(it))
+        }
+        metadataObj.estimatedLoadPc = totalPc.toString()
+        metadataObj.estimatedLoadKg = totalKg.toString()
+
+        SingleAttributedData.save(metadataObj)
+        Toast.makeText(this, "Data save complete!", Toast.LENGTH_LONG).show()
     }
 }

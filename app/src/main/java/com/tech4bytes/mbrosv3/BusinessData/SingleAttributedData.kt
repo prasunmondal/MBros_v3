@@ -45,8 +45,7 @@ data class SingleAttributedData(
     var refuel_mileage: String = "",
     var extra_expenses: String = "",
     var daySale: String = "",
-    var totalMarketDue: String = "",
-    var order_data: String = ""
+    var totalMarketDue: String = ""
 ) : java.io.Serializable {
 
     companion object {
@@ -83,11 +82,6 @@ data class SingleAttributedData(
         fun save(obj: SingleAttributedData) {
             saveToLocal(obj)
             saveToServer(obj)
-        }
-
-        fun save() {
-            saveToLocal(getRecords())
-            saveToServer(getRecords())
         }
 
         fun saveAttribute(kMutableProperty: KMutableProperty1<SingleAttributedData, String>, value: String) {
@@ -140,10 +134,6 @@ data class SingleAttributedData(
             obj.date = DateUtils.getCurrentTimestamp()
 //            obj.datetime = DateUtils.getCurrentTimestamp()
             CentralCache.put(recordsKey, obj)
-        }
-
-        fun saveToLocal() {
-            saveToLocal(getRecords())
         }
 
         @SuppressLint("HardwareIds")

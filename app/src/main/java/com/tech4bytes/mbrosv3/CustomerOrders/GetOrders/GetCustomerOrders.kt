@@ -7,7 +7,6 @@ import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
-import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.Processors.OrderManager
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
@@ -30,26 +29,26 @@ data class GetCustomerOrders(
 
     companion object {
 
-        private var obj: MutableMap<String, GetCustomerOrders> = mutableMapOf()
+        private var obj: MutableList<GetCustomerOrders> = mutableListOf()
 
-        fun get(useCache: Boolean = true): MutableMap<String, GetCustomerOrders> {
-            val cacheResults = CentralCache.get<MutableMap<String, GetCustomerOrders>>(AppContexts.get(), CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, useCache)
+        fun get(useCache: Boolean = true): List<GetCustomerOrders> {
+            val cacheResults = CentralCache.get<ArrayList<GetCustomerOrders>>(AppContexts.get(), CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, useCache)
 
             obj = if (cacheResults != null) {
                 cacheResults
             } else {
                 val resultFromServer = getCompleteList()
                 CentralCache.put(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, resultFromServer)
-                resultFromServer
+                resultFromServer as MutableList<GetCustomerOrders>
             }
             return obj
         }
 
         fun updateObj(passedObj: GetCustomerOrders) {
             var toBeRemoved: GetCustomerOrders? = null
-            obj.forEach { key, value ->
-                if (value.name == passedObj.name) {
-                    toBeRemoved = value
+            obj.forEach {
+                if (it.name == passedObj.name) {
+                    toBeRemoved = it
                 }
             }
             if (toBeRemoved != null) {
@@ -73,7 +72,7 @@ data class GetCustomerOrders(
             saveToLocal()
         }
 
-        private fun getCompleteList():  MutableMap<String, GetCustomerOrders> {
+        private fun getCompleteList(): List<GetCustomerOrders> {
             val list: MutableList<GetCustomerOrders> = mutableListOf()
             val actualOrders = getServerList()
             CustomerKYC.getAllCustomers().forEach { masterList ->
@@ -168,7 +167,6 @@ data class GetCustomerOrders(
 
         fun saveToLocal() {
             LogMe.log(obj.toString())
-            OrderManager.saveToLocal(obj)
             CentralCache.put(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, obj)
         }
 
@@ -205,4 +203,10 @@ data class GetCustomerOrders(
             return obj
         }
     }
+
+//    override fun toString(): String {
+//        return "\nGetCustomerOrders(id='$id', timestamp='$timestamp', name='$name', seqNo='$seqNo', orderedPc='$orderedPc', orderedKg='$orderedKg', calculatedPc='$calculatedPc', calculatedKg='$calculatedKg', rate='$rate', prevDue='$prevDue')"
+//    }
+
+
 }

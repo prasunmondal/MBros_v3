@@ -451,13 +451,6 @@ class OneShotDelivery : AppCompatActivity() {
         return NumberUtils.getIntOrZero(prevBal) + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(entry)
     }
 
-    private fun getPrevDueBalance(order: DeliverToCustomerDataModel): Int {
-        if (order.prevDue.isEmpty()) {
-            return CustomerData.getLastDue(order.name).toInt()
-        }
-        return order.prevDue.toInt()
-    }
-
     private fun updateSingleAttributedDataOnUI() {
         LogMe.log("Updating single attributed data")
         val loadedPc = findViewById<TextView>(R.id.one_shot_delivery_pc)

@@ -31,7 +31,7 @@
                 android:paddingTop="40dp"
                 android:text="Fetching Data..."
                 android:textColor="@color/verify_delivery_not_valid"
-                android:textSize="14sp"
+                android:textSize="15sp"
                 android:textStyle="bold|italic" />
 
             <ProgressBar

@@ -11,6 +11,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 
 class OrdersMakeList : AppCompatActivity() {
 
@@ -43,7 +44,8 @@ class OrdersMakeList : AppCompatActivity() {
         val elementName = entry.findViewById<AppCompatTextView>(R.id.make_list_fragment_name)
         val elementDue = entry.findViewById<TextView>(R.id.make_list_fragment_due)
 
-        elementPc.text = order.calculatedPc
+        elementPc.text = if(NumberUtils.getIntOrZero(order.calculatedPc) == 0) order.getEstimatedPc(false) else order.calculatedPc
+//        elementPc.text = if(NumberUtils.getIntOrZero(order.calculatedPc) == 0) order.getEstimatedPc(false) else order.calculatedPc
         elementKg.text = order.calculatedKg
         elementName.text = order.name
         elementDue.text = CustomerData.getLastDue(order.name)

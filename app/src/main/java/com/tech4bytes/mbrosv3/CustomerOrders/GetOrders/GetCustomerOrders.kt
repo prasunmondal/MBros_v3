@@ -42,6 +42,18 @@ data class GetCustomerOrders(
         }
     }
 
+    fun getEstimatedKg(allowFraction: Boolean): String? {
+        if (orderedKg.isNotEmpty()) {
+            return orderedKg
+        }
+        val kg = NumberUtils.getDoubleOrZero((orderedPc.toInt() * (SingleAttributedData.getRecords().estimatedLoadAvgWt.toInt() / 1000)).toString(), "#.#")
+        return if(allowFraction) {
+            NumberUtils.roundOff2places(kg).toString()
+        } else {
+            kg.roundToInt().toString()
+        }
+    }
+
     companion object {
 
         private var obj: MutableList<GetCustomerOrders> = mutableListOf()

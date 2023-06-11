@@ -45,8 +45,7 @@ class OrdersMakeList : AppCompatActivity() {
         val elementDue = entry.findViewById<TextView>(R.id.make_list_fragment_due)
 
         elementPc.text = if(NumberUtils.getIntOrZero(order.calculatedPc) == 0) order.getEstimatedPc(false) else order.calculatedPc
-//        elementPc.text = if(NumberUtils.getIntOrZero(order.calculatedPc) == 0) order.getEstimatedPc(false) else order.calculatedPc
-        elementKg.text = order.calculatedKg
+        elementKg.text = if(NumberUtils.getIntOrZero(order.calculatedKg) == 0) order.getEstimatedKg(false) else order.calculatedKg
         elementName.text = order.name
         elementDue.text = CustomerData.getLastDue(order.name)
 

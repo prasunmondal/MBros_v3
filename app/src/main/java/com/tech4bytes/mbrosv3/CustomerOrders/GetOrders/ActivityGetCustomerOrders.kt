@@ -20,6 +20,7 @@ import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
+import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 
 
 class ActivityGetCustomerOrders : AppCompatActivity() {
@@ -104,7 +105,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         val trimmedStr = str.replace(" ", "").replace("-", "")
         if (trimmedStr.isEmpty())
             return 0
-        return trimmedStr.toInt()
+        return NumberUtils.getIntOrZero(trimmedStr)
     }
 
     private fun updateTotalKg() {

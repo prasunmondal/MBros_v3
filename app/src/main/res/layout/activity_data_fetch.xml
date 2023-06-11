@@ -21,29 +21,29 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp" />
-
             <TextView
                 android:id="@+id/osl_fetching_data_progress_count_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
+                android:fontFamily="serif-monospace"
                 android:gravity="center"
+                android:paddingTop="40dp"
                 android:text="Fetching Data..."
-                android:textColor="@color/light_blue_A400"
-                android:textSize="20sp"
+                android:textColor="@color/verify_delivery_not_valid"
+                android:textSize="14sp"
                 android:textStyle="bold|italic" />
 
-            <View
-                android:id="@+id/view2"
+            <ProgressBar
+                android:id="@+id/osd_save_progress_bar"
+                style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#2196F3" />
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/verify_delivery_not_valid"
+                android:indeterminateTintMode="src_atop"
+                android:paddingHorizontal="20dp"
+                android:visibility="visible" />
         </LinearLayout>
 
         <ScrollView

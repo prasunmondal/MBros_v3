@@ -17,14 +17,14 @@ class DataFetchingInfo {
         fun getDescription(executingMethod: KFunction<Any>): String {
             LogMe.log(executingMethod.toString())
             return when (executingMethod.toString()) {
-                GetCustomerOrders::get.toString() -> "Get Customer Orders"
-                CustomerKYC::getAllCustomers.toString() -> "Get Customer Profile Data"
-                CustomerData::getRecords.toString() -> "Get Finalized Customer Data"
-                SingleAttributedData::getRecords.toString() -> "Get Singleton Data"
-                DeliverToCustomerDataHandler::get.toString() -> "Get today's delivery records"
-                DaySummary::get.toString() -> "Get Day-wise Summary"
-                Refueling::get.toString() -> "Get Refueling Data"
-                else -> "Get Data"
+                GetCustomerOrders::get.toString() -> "Customer orders"
+                CustomerKYC::getAllCustomers.toString() -> "Customer profile"
+                CustomerData::getRecords.toString() -> "Previous delivery reports"
+                SingleAttributedData::getRecords.toString() -> "Metadata"
+                DeliverToCustomerDataHandler::get.toString() -> "Current delivery reports"
+                DaySummary::get.toString() -> "Transaction reports"
+                Refueling::get.toString() -> "Fuel data"
+                else -> "Get data"
             }
         }
 
@@ -32,17 +32,12 @@ class DataFetchingInfo {
             val executingMethods = ExecutingMethods()
 
             when (activity) {
-                ActivityAuthEnums.ADMIN -> {
-                    executingMethods.add(CustomerKYC::getAllCustomers)
-                    executingMethods.add(GetCustomerOrders::get)
-                    executingMethods.add(SingleAttributedData::getRecords)
-                    executingMethods.add(DeliverToCustomerDataHandler::get)
-                }
+                ActivityAuthEnums.ADMIN,
                 ActivityAuthEnums.ONE_SHOT_DELIVERY -> {
+                    executingMethods.add(SingleAttributedData::getRecords)
                     executingMethods.add(CustomerKYC::getAllCustomers)
                     executingMethods.add(GetCustomerOrders::get)
                     executingMethods.add(CustomerData::getRecords)
-                    executingMethods.add(SingleAttributedData::getRecords)
                     executingMethods.add(DeliverToCustomerDataHandler::get)
                     executingMethods.add(DaySummary::get)
                     executingMethods.add(Refueling::get)
@@ -53,8 +48,8 @@ class DataFetchingInfo {
                     executingMethods.add(DeliverToCustomerDataHandler::get)
                 }
                 ActivityAuthEnums.BALANCE_VIEW -> {
-                    executingMethods.add(CustomerData::getRecords)
                     executingMethods.add(CustomerKYC::getAllCustomers)
+                    executingMethods.add(CustomerData::getRecords)
                     executingMethods.add(DeliverToCustomerDataHandler::get)
                 }
                 ActivityAuthEnums.LOAD_INFORMATION -> {

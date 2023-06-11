@@ -206,7 +206,7 @@ class OneShotDelivery : AppCompatActivity() {
         val refuelingAmountElement = findViewById<EditText>(R.id.osd_refuel_amount)
 
         UIUtils.setUIElementValue(didRefuelElement, SingleAttributedData.getRecords().did_refueled)
-        UIUtils.setUIElementValue(didTankFullElement, SingleAttributedData.getRecords().did_refueled)
+        UIUtils.setUIElementValue(didTankFullElement, SingleAttributedData.getRecords().refueling_isFullTank)
         UIUtils.setUIElementValue(refuelingQtyElement, SingleAttributedData.getRecords().refueling_qty)
         UIUtils.setUIElementValue(refuelingKmElement, SingleAttributedData.getRecords().refueling_km)
         UIUtils.setUIElementValue(refuelingAmountElement, SingleAttributedData.getRecords().refueling_amount)
@@ -318,10 +318,6 @@ class OneShotDelivery : AppCompatActivity() {
                 updateDetailedInfo(order, entry)
             }
 
-//            balanceElement.doOnTextChanged { text, start, before, count ->
-//                updateDueAndTotalMarketDue()
-//            }
-
             val recordContainer = entry.findViewById<CardView>(R.id.one_shot_delivery_fragment_record_container)
             var cardColor = ContextCompat.getColor(this, R.color.one_shot_delivery_odd_card_color)
             if (entrynumber % 2 == 0) {
@@ -334,10 +330,6 @@ class OneShotDelivery : AppCompatActivity() {
             updateEntry(order, entry)
             uiMaps[order.value.name] = entry
         }
-    }
-
-    private fun updateDueAndTotalMarketDue() {
-
     }
 
     private fun fragmentUpdateCustomerWiseRateView(order: Map.Entry<String, DeliverToCustomerDataModel>, entry: View) {

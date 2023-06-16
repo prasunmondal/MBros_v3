@@ -193,7 +193,10 @@ data class GetCustomerOrders(
         }
 
         fun saveToLocal() {
-            LogMe.log(obj.toString())
+            saveToLocal(obj)
+        }
+
+        fun saveToLocal(obj: MutableList<GetCustomerOrders>) {
             CentralCache.put(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, obj)
         }
 
@@ -230,10 +233,4 @@ data class GetCustomerOrders(
             return obj
         }
     }
-
-//    override fun toString(): String {
-//        return "\nGetCustomerOrders(id='$id', timestamp='$timestamp', name='$name', seqNo='$seqNo', orderedPc='$orderedPc', orderedKg='$orderedKg', calculatedPc='$calculatedPc', calculatedKg='$calculatedKg', rate='$rate', prevDue='$prevDue')"
-//    }
-
-
 }

@@ -79,12 +79,6 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
         AppUtils.invalidateAllDataAndRestartApp()
     }
 
-    private fun goToLoginPage() {
-        val switchActivityIntent = Intent(this, ActivityLogin::class.java)
-        startActivity(switchActivityIntent)
-        finish()
-    }
-
     fun onClickRefuelButton(view: View) {
         val switchActivityIntent = Intent(this, ActivityRefueling::class.java)
         startActivity(switchActivityIntent)

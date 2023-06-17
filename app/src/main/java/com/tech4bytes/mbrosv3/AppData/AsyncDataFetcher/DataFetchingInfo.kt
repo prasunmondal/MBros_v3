@@ -56,6 +56,7 @@ class DataFetchingInfo {
                     executingMethods.add(SingleAttributedData::getRecords)
                     executingMethods.add(CustomerKYC::getAllCustomers)
                     executingMethods.add(GetCustomerOrders::get)
+                    executingMethods.add(CustomerData::getRecords)
                 }
                 ActivityAuthEnums.LOAD_INFORMATION -> {
                     executingMethods.add(SingleAttributedData::getRecords, false)

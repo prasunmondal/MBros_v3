@@ -443,7 +443,8 @@ class OneShotDelivery : AppCompatActivity() {
     private fun getTodaysSaleAmountForEntry(entry: View): Int {
         val kg = getKgForEntry(entry)
         val rate = getRateForEntry(entry)
-        return (kg * rate).toInt()
+        val roundUpOffset = 0.00000000001
+        return (kg * rate + roundUpOffset).toInt()
     }
 
     private fun getDueBalance(order: DeliverToCustomerDataModel, entry: View): Int {

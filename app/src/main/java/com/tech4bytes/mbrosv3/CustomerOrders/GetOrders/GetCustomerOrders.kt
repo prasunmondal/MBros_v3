@@ -189,7 +189,7 @@ data class GetCustomerOrders(
         }
 
         private fun getRecordsForOnlyOrderedCustomers(): MutableList<GetCustomerOrders> {
-            return obj
+            return obj.stream().filter{ p -> p.id.isNotEmpty() }.collect(Collectors.toList())
         }
 
         fun saveToLocal() {

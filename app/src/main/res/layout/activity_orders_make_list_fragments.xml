@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:layout_marginVertical="7dp"
-        android:background="#FFCE3C"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/linearLayout13"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:orientation="horizontal"
+            android:paddingHorizontal="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -27,30 +29,28 @@
                 android:id="@+id/make_list_fragment_pc"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:gravity="right"
                 android:paddingRight="5dp"
                 android:text="888"
-                android:textColor="#FA2020"
-                android:textSize="18sp" />
+                android:textColor="#F3AFAF"
+                android:textSize="15sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="/"
-                android:textSize="24sp" />
+                android:textColor="#BAB7B7"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/make_list_fragment_kg"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:paddingLeft="5dp"
-                android:shadowColor="#1E0000"
+                android:shadowColor="#B0E7ED"
                 android:text="888"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textColor="#ADE3EA"
+                android:textSize="15sp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/make_list_fragment_name"
@@ -59,9 +59,8 @@
                 android:layout_marginLeft="5dp"
                 android:gravity="center_vertical"
                 android:text="Name"
-                android:textColor="#0521BA"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textColor="#DADDED"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/make_list_fragment_due"
@@ -69,22 +68,17 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Balance"
-                android:textColor="#550000"
-                android:textSize="20sp" />
+                android:textColor="#F4AC96"
+                android:textSize="16sp" />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/linearLayout10"
+        <View
+            android:id="@+id/view2"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </LinearLayout>
+            android:layout_height="1dp"
+            android:background="#8F8E8E"
+            app:layout_constraintBottom_toBottomOf="@+id/linearLayout13" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

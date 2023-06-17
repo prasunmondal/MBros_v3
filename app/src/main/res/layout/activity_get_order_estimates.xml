@@ -33,7 +33,7 @@
                 android:textSize="20sp" />
 
             <EditText
-                android:id="@+id/get_orders_avg_wt"
+                android:id="@+id/get_orders_avg_wt34"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -81,6 +81,14 @@
                 android:layout_height="wrap_content"
                 android:text="Kg"
                 android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="onClickClearButton"
+                android:text="X" />
         </LinearLayout>
 
         <ScrollView

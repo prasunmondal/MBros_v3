@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
@@ -36,11 +37,33 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         AppUtils.logError()
 
         containerView = findViewById<LinearLayout>(R.id.activity_get_order_estimates__parent_view)
+        findViewById<LinearLayout>(R.id.activity_get_order_estimates__order_list_container).removeAllViews()
+        initializeUI(false)
+    }
 
+    private fun initializeUI(reset: Boolean) {
         listOrders = GetCustomerOrders.get()
         LogMe.log(listOrders.toString())
 
+        val avg_wt = findViewById<EditText>(R.id.get_orders_avg_wt34)
+        avg_wt.doOnTextChanged { text, start, before, count ->
+            val metadata = SingleAttributedData.getRecords()
+            metadata.estimatedLoadAvgWt = if (avg_wt.text.toString().isEmpty()) {
+                ""
+            } else {
+                "${avg_wt.text.toString().toInt()}"
+            }
+            SingleAttributedData.saveToLocal(metadata)
+        }
+
         listOrders.forEach {
+            if(reset) {
+                it.orderedKg = ""
+                it.orderedPc = ""
+                it.calculatedKg = ""
+                it.calculatedPc = ""
+                it.prevDue = ""
+            }
             createEstimatesView(it)
         }
 
@@ -51,7 +74,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
     }
 
     private fun setSavedAvgWt() {
-        val avg_wt = findViewById<EditText>(R.id.get_orders_avg_wt)
+        val avg_wt = findViewById<EditText>(R.id.get_orders_avg_wt34)
         avg_wt.setText(SingleAttributedData.getRecords().estimatedLoadAvgWt)
     }
 
@@ -84,17 +107,6 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
             order.orderedKg = kgElement.text.toString()
             GetCustomerOrders.updateObj(order)
             updateTotalKg()
-        }
-
-        val avg_wt = findViewById<EditText>(R.id.get_orders_avg_wt)
-        avg_wt.doOnTextChanged { text, start, before, count ->
-            val metadata = SingleAttributedData.getRecords()
-            metadata.estimatedLoadAvgWt = if (avg_wt.text.toString().isEmpty()) {
-                ""
-            } else {
-                "${avg_wt.text.toString().toInt()}"
-            }
-            SingleAttributedData.saveToLocal(metadata)
         }
 
         uiEntriesList.add(entry)
@@ -157,5 +169,10 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         val switchActivityIntent = Intent(this, ActivityLogin::class.java)
         switchActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(switchActivityIntent)
+    }
+
+    fun onClickClearButton(view: View) {
+//        GetCustomerOrders.saveToLocal(mutableListOf())
+        initializeUI(true)
     }
 }

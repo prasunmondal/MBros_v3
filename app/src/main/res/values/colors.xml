@@ -23,8 +23,8 @@
     <color name="delivery_input_not_valid">#FBDEDE</color>
     <color name="delivery_input_valid">#9FE3A2</color>
 
-    <color name="verify_delivery_not_valid">#F8C52C</color>
-    <color name="verify_delivery_valid">#9FE3A2</color>
+    <color name="verify_delivery_not_valid">#2C1F01</color>
+    <color name="verify_delivery_valid">#000000</color>
 
     <color name="one_shot_delivery_odd_card_color">#0C1E25</color>
     <color name="one_shot_delivery_even_card_color">#17282E</color>

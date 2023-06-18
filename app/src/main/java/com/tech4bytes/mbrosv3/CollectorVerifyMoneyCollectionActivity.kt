@@ -38,6 +38,7 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
     private fun showDeliveryData() {
         var deliveredData = DeliverToCustomerDataHandler.get()
         var count = 0
+        var bundlesCount = 0
         deliveredData = ListUtils.sortListByAttribute(deliveredData, DeliverToCustomerDataModel::id)
         deliveredData.forEach { deliveryEntry ->
             map[deliveryEntry.name] = VerifyElements()
@@ -61,7 +62,18 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
             }
 
             listContainer.addView(entry)
+
+            if(NumberUtils.getIntOrZero(deliveryEntry.paid) > 0) {
+                bundlesCount++
+            }
         }
+
+        updateSummary(bundlesCount)
+    }
+
+    private fun updateSummary(bundlesCount: Int) {
+        val bundles = findViewById<TextView>(R.id.vmc_number_of_money_bundles)
+        bundles.text = bundlesCount.toString()
     }
 
     private fun updateColors(entry: View, paidAmount: Int, isKgPcVerified: Boolean, isPaidAmountVerified: Boolean) {
@@ -72,11 +84,6 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
             entry.findViewById<LinearLayout>(R.id.activity_collector_verify_money_collection_fragment_container)
                 .setBackgroundColor(ContextCompat.getColor(this, R.color.verify_delivery_not_valid))
         }
-    }
-
-    fun activity_collector_verify_money_collection_sync_data_btn(view: View) {
-        AppUtils.invalidateAllDataAndRestartApp()
-        finish()
     }
 
     override fun onBackPressed() {

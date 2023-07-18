@@ -78,21 +78,27 @@ class OrdersMakeList : AppCompatActivity() {
     }
 
     fun onClickSaveBtn(view: View) {
-        Toast.makeText(this, "Saving Data", Toast.LENGTH_SHORT).show()
-        GetCustomerOrders.deleteAll()
-        GetCustomerOrders.save()
+        Thread {
+            runOnUiThread {
+                Toast.makeText(this, "Saving Data", Toast.LENGTH_SHORT).show()
+            }
+            GetCustomerOrders.deleteAll()
+            GetCustomerOrders.save()
 
-        val metadataObj = SingleAttributedData.getRecords()
-        var totalPc = 0
-        var totalKg = 0
-        GetCustomerOrders.getListOfOrderedCustomers().forEach {
-            totalPc += NumberUtils.getIntOrZero(getFinalPc(it))
-            totalKg += NumberUtils.getIntOrZero(getFinalKg(it))
-        }
-        metadataObj.estimatedLoadPc = totalPc.toString()
-        metadataObj.estimatedLoadKg = totalKg.toString()
+            val metadataObj = SingleAttributedData.getRecords()
+            var totalPc = 0
+            var totalKg = 0
+            GetCustomerOrders.getListOfOrderedCustomers().forEach {
+                totalPc += NumberUtils.getIntOrZero(getFinalPc(it))
+                totalKg += NumberUtils.getIntOrZero(getFinalKg(it))
+            }
+            metadataObj.estimatedLoadPc = totalPc.toString()
+            metadataObj.estimatedLoadKg = totalKg.toString()
 
-        SingleAttributedData.save(metadataObj)
-        Toast.makeText(this, "Data save complete!", Toast.LENGTH_LONG).show()
+            SingleAttributedData.save(metadataObj)
+            runOnUiThread {
+                Toast.makeText(this, "Data save complete!", Toast.LENGTH_LONG).show()
+            }
+        }.start()
     }
 }

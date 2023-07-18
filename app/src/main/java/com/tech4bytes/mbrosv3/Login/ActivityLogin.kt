@@ -58,6 +58,9 @@ class ActivityLogin : AppCompatActivity() {
         Thread {
             val container = findViewById<LinearLayout>(R.id.activity_login_roles_container)
             if (UserRoleUtils.getUserRoles().isEmpty()) {
+                runOnUiThread {
+                    Toast.makeText(this, "Registering Device: ${getPhoneId()}", Toast.LENGTH_LONG).show()
+                }
                 logUnIdentifiedDevice()
             } else {
                 AuthorizationUtils.getAllUserAuthorizations()
@@ -125,7 +128,6 @@ class ActivityLogin : AppCompatActivity() {
         val time = DateUtils.getCurrentTimestamp()
         val id = System.currentTimeMillis().toString()
 
-        Toast.makeText(this, "Registering Device: ${getPhoneId()}", Toast.LENGTH_LONG).show()
         val obj = AppUsersModel(id, time, getPhoneId(), ActivityAuthEnums.UNIDENTIFIED.toString(), AuthorizationEnums.NONE.toString())
         PostObject.builder()
             .scriptId(ProjectConfig.dBServerScriptURL)

@@ -46,7 +46,7 @@ data class GetCustomerOrders(
         if (orderedKg.isNotEmpty()) {
             return orderedKg
         }
-        val kg = NumberUtils.getDoubleOrZero((orderedPc.toInt() * (SingleAttributedData.getRecords().estimatedLoadAvgWt.toInt() / 1000)).toString(), "#.#")
+        val kg = NumberUtils.getDoubleOrZero((NumberUtils.getIntOrZero(orderedPc) * (SingleAttributedData.getRecords().estimatedLoadAvgWt.toInt() / 1000)).toString(), "#.#")
         return if(allowFraction) {
             NumberUtils.roundOff2places(kg).toString()
         } else {
@@ -179,12 +179,14 @@ data class GetCustomerOrders(
 
         private fun saveToServer() {
             getRecordsForOnlyOrderedCustomers().forEach {
+                if(NumberUtils.getIntOrZero(it.orderedKg) > 0 || NumberUtils.getIntOrZero(it.orderedPc) > 0) {
                 PostObject.builder()
                     .scriptId(ProjectConfig.dBServerScriptURL)
                     .sheetId(ProjectConfig.get_db_sheet_id())
                     .tabName(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
                     .dataObject(it as Any)
                     .build().execute()
+            }
             }
         }
 

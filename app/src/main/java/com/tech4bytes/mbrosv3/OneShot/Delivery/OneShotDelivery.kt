@@ -552,6 +552,8 @@ class OneShotDelivery : AppCompatActivity() {
             saveSingleAttributeData()
             DeliverToCustomerDataHandler.deleteAllData()
             saveDeliveryData()
+            SingleAttributedData.getRecords(false)
+            DeliverToCustomerDataHandler.get(false)
             runOnUiThread()
             {
                 saveOneSortDeliveryButton.isEnabled = true

@@ -271,6 +271,7 @@ class OneShotLoad : AppCompatActivity() {
                 oslSaveBtn.isClickable = false
             }
             SingleAttributedData.save(SingleAttributedData.getRecords())
+            SingleAttributedData.getRecords(false)
             runOnUiThread {
                 markDataFresh(true)
                 Toast.makeText(this, "Data Saved!", Toast.LENGTH_LONG).show()

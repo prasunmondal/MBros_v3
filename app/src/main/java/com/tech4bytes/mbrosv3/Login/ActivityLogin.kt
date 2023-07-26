@@ -34,6 +34,7 @@ import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotLoad
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
+import com.tech4bytes.mbrosv3.SMSOrdering
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -102,6 +103,7 @@ class ActivityLogin : AppCompatActivity() {
             ActivityAuthEnums.ONE_SHOT_DELIVERY -> ::goToOneShotDelivery
             ActivityAuthEnums.LOAD_INFORMATION -> ::goToOneShotLoadDetailsPage
             ActivityAuthEnums.MONEY_CALCULATOR -> ::goToMoneyCalculatorPage
+            ActivityAuthEnums.SMS_ORDERING -> ::goToSmsOrderingActivity
             ActivityAuthEnums.SHOW_RATES_IN_DELIVERY_PAGE -> null
             else -> null
         }
@@ -111,6 +113,9 @@ class ActivityLogin : AppCompatActivity() {
         goToDataFetchActivity(ActivityAuthEnums.MONEY_CALCULATOR, MoneyCounter::class.java)
     }
 
+    private fun goToSmsOrderingActivity() {
+        goToDataFetchActivity(ActivityAuthEnums.SMS_ORDERING, SMSOrdering::class.java)
+    }
 
     private fun goToOneShotLoadDetailsPage() {
         goToDataFetchActivity(ActivityAuthEnums.LOAD_INFORMATION, OneShotLoad::class.java)

@@ -30,7 +30,6 @@ class MoneyCounter : AppCompatActivity() {
         AppContexts.set(this)
         AppUtils.logError()
         initializeUI()
-        SmsReader.getAllSms(this)
     }
 
     private fun initializeUI() {

@@ -10,5 +10,6 @@ enum class ActivityAuthEnums : java.io.Serializable {
     SHOW_RATES_IN_DELIVERY_PAGE,
     ONE_SHOT_DELIVERY,
     LOAD_INFORMATION,
-    MONEY_CALCULATOR
+    MONEY_CALCULATOR,
+    SMS_ORDERING
 }

@@ -5,13 +5,17 @@ import android.content.Context
 import android.database.Cursor
 import android.provider.Telephony
 import android.widget.Toast
+import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import java.util.Date
+import java.util.stream.Collectors
 
 
 class SmsReader {
 
     companion object {
-        fun getAllSms(context: Context) {
+        fun getAllSms(context: Context): MutableList<SMSModel> {
+            val smsList = mutableListOf<SMSModel>()
+
             val cr: ContentResolver = context.contentResolver
             val c: Cursor? = cr.query(Telephony.Sms.CONTENT_URI, null, null, null, null)
             var totalSMS = 0
@@ -31,13 +35,20 @@ class SmsReader {
                             else -> {}
                         }
                         c.moveToNext()
-                        Toast.makeText(context, body, Toast.LENGTH_SHORT).show()
+                        smsList.add(SMSModel(number, dateFormat.toString(), body))
                     }
                 }
                 c.close()
             } else {
                 Toast.makeText(context, "No message to show!", Toast.LENGTH_SHORT).show()
             }
+            return smsList
+        }
+
+        fun getSMSFromNumber(smsList: MutableList<SMSModel>, number: String): MutableList<SMSModel> {
+            return smsList.stream().filter{ p -> p.number.contains(number) }.collect(Collectors.toList())
         }
     }
+
+
 }

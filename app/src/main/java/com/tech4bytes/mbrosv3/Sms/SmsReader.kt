@@ -22,7 +22,7 @@ class SmsReader {
             if (c != null) {
                 totalSMS = c.count
                 if (c.moveToFirst()) {
-                    for (j in 0 until 10) {
+                    for (j in 0 until totalSMS) {
                         val smsDate: String = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.DATE))
                         val number: String = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.ADDRESS))
                         val body: String = c.getString(c.getColumnIndexOrThrow(Telephony.Sms.BODY))
@@ -47,6 +47,10 @@ class SmsReader {
 
         fun getSMSFromNumber(smsList: MutableList<SMSModel>, number: String): MutableList<SMSModel> {
             return smsList.stream().filter{ p -> p.number.contains(number) }.collect(Collectors.toList())
+        }
+
+        fun getSMSStartingWith(smsList: MutableList<SMSModel>, str: String): MutableList<SMSModel> {
+            return smsList.stream().filter{ p -> p.body.contains(str) }.collect(Collectors.toList())
         }
     }
 

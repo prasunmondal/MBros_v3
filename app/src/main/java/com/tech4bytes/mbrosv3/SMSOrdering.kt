@@ -18,10 +18,11 @@ class SMSOrdering : AppCompatActivity() {
     }
 
     fun showSMS() {
-        val smsList = SmsReader.getSMSFromNumber(SmsReader.getAllSms(this), "9734075801")
+        val allSMS = SmsReader.getAllSms(this)
+        val smsFiltered = SmsReader.getSMSStartingWith(SmsReader.getSMSFromNumber(allSMS, "9734075801"), "")
         val container = findViewById<LinearLayout>(R.id.smsorders_sms_view_container)
 
-        smsList.forEach {
+        smsFiltered.forEach {
             val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_fragments, null)
             entry.findViewById<TextView>(R.id.smsorder_body).text = "${it.number}: ${it.body}\n - ${it.datetime}"
             container.addView(entry)

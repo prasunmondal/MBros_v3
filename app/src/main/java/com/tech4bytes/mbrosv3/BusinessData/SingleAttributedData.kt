@@ -45,7 +45,8 @@ data class SingleAttributedData(
     var refuel_mileage: String = "",
     var extra_expenses: String = "",
     var daySale: String = "",
-    var totalMarketDue: String = ""
+    var totalMarketDue: String = "",
+    var smsOrderSequence: String = "Prabir, Tarun, Sanjoy, Sona, Joydeb, Srikanto, Uttam, Nabin, Ujjal, Shahbuddin, Tapan, Chitto, Rajib, Shyama"
 ) : java.io.Serializable {
 
     companion object {

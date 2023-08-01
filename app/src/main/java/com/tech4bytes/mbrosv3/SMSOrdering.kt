@@ -10,6 +10,8 @@ import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Sms.SmsReader
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 class SMSOrdering : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +51,16 @@ class SMSOrdering : AppCompatActivity() {
                 val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_list_fragments, null)
                 totalKg += NumberUtils.getIntOrZero(valueArray[j].trim())
                 if(getAvgWt1() != 0.0) {
-                    entry.findViewById<EditText>(R.id.smsorder_listEntry_pc).setText((NumberUtils.getIntOrZero(valueArray[j].trim()) / getAvgWt1()).toString())
+                    val calculatedPc = NumberUtils.getIntOrZero(valueArray[j].trim()) / getAvgWt1()
+                    var df = DecimalFormat("#.#")
+                    df.roundingMode = RoundingMode.FLOOR
+                    var result = df.format(calculatedPc).toDouble()
+                    entry.findViewById<TextView>(R.id.smsorder_listEntry_calculated_pc).text = result.toString()
+
+                    df = DecimalFormat("#")
+                    df.roundingMode = RoundingMode.CEILING
+                    result = df.format(calculatedPc).toDouble()
+                    entry.findViewById<EditText>(R.id.smsorder_listEntry_pc).setText(NumberUtils.getIntOrZero(result.toString()))
                 }
                 entry.findViewById<TextView>(R.id.smsorder_listEntry_kg).text = valueArray[j].trim()
                 entry.findViewById<TextView>(R.id.smsorder_listEntry_name).text = namesArray[j]

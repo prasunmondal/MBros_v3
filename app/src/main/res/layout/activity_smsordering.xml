@@ -21,13 +21,24 @@
             android:orientation="vertical" />
     </ScrollView>
 
+    <EditText
+        android:id="@+id/smsorder_avg_wt1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Avg Wt in KG"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/scrollView5"
+        app:layout_constraintStart_toStartOf="@+id/scrollView5"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView5" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView5">
+        app:layout_constraintTop_toBottomOf="@+id/smsorder_avg_wt1">
 
         <LinearLayout
             android:id="@+id/smsorders_order_list_view_container"

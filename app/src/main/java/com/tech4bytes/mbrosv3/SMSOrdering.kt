@@ -2,6 +2,7 @@ package com.tech4bytes.mbrosv3
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
@@ -47,6 +48,9 @@ class SMSOrdering : AppCompatActivity() {
                 val balance = CustomerDueData.getBalance(namesArray[j].trim())
                 val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_list_fragments, null)
                 totalKg += NumberUtils.getIntOrZero(valueArray[j].trim())
+                if(getAvgWt1() != 0.0) {
+                    entry.findViewById<EditText>(R.id.smsorder_listEntry_pc).setText((NumberUtils.getIntOrZero(valueArray[j].trim()) / getAvgWt1()).toString())
+                }
                 entry.findViewById<TextView>(R.id.smsorder_listEntry_kg).text = valueArray[j].trim()
                 entry.findViewById<TextView>(R.id.smsorder_listEntry_name).text = namesArray[j]
                 entry.findViewById<TextView>(R.id.smsorder_listEntry_amount).text = "$balance"
@@ -60,6 +64,9 @@ class SMSOrdering : AppCompatActivity() {
         totalEntry.findViewById<TextView>(R.id.smsorder_listEntry_name).text = "TOTAL"
         totalEntry.findViewById<TextView>(R.id.smsorder_listEntry_amount).text = ""
         orderListContainer.addView(totalEntry)
+    }
 
+    fun getAvgWt1(): Double {
+        return NumberUtils.getDoubleOrZero(findViewById<EditText>(R.id.smsorder_avg_wt1).text.toString())
     }
 }

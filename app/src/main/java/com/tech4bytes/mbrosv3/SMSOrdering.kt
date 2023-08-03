@@ -45,6 +45,7 @@ class SMSOrdering : AppCompatActivity() {
         orderListContainer.removeAllViews()
 
         var totalKg = 0
+        var totalPc = 0
         for (j in 0 until minSize) {
             if(NumberUtils.getIntOrZero(valueArray[j].trim()) != 0) {
                 val balance = CustomerDueData.getBalance(namesArray[j].trim())
@@ -60,7 +61,8 @@ class SMSOrdering : AppCompatActivity() {
                     df = DecimalFormat("#")
                     df.roundingMode = RoundingMode.CEILING
                     result = df.format(calculatedPc).toDouble()
-                    entry.findViewById<EditText>(R.id.smsorder_listEntry_pc).setText(NumberUtils.getIntOrZero(result.toString()))
+                    totalPc += result.toInt()
+                    entry.findViewById<EditText>(R.id.smsorder_listEntry_pc).setText(result.toInt().toString())
                 }
                 entry.findViewById<TextView>(R.id.smsorder_listEntry_kg).text = valueArray[j].trim()
                 entry.findViewById<TextView>(R.id.smsorder_listEntry_name).text = namesArray[j]
@@ -71,7 +73,8 @@ class SMSOrdering : AppCompatActivity() {
 
         // Show Total
         val totalEntry = layoutInflater.inflate(R.layout.activity_sms_ordering_list_fragments, null)
-        totalEntry.findViewById<TextView>(R.id.smsorder_listEntry_kg).text = "${totalKg}"
+        totalEntry.findViewById<EditText>(R.id.smsorder_listEntry_pc).setText(totalPc.toString())
+        totalEntry.findViewById<TextView>(R.id.smsorder_listEntry_kg).text = "$totalKg"
         totalEntry.findViewById<TextView>(R.id.smsorder_listEntry_name).text = "TOTAL"
         totalEntry.findViewById<TextView>(R.id.smsorder_listEntry_amount).text = ""
         orderListContainer.addView(totalEntry)

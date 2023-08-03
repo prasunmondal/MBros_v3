@@ -34,7 +34,7 @@ import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotLoad
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
-import com.tech4bytes.mbrosv3.SMSOrdering
+import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrdering
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe

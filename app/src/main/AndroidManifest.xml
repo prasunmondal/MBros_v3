@@ -16,7 +16,7 @@
         tools:remove="android:appComponentFactory"
         tools:targetApi="31">
         <activity
-            android:name=".SMSOrdering"
+            android:name=".CustomerOrders.SMSOrders.SMSOrdering"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

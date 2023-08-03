@@ -1,4 +1,4 @@
-package com.tech4bytes.mbrosv3
+package com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
+import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.SmsReader
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils

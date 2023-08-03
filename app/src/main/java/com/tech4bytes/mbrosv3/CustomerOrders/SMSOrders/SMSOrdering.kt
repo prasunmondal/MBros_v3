@@ -112,6 +112,7 @@ class SMSOrdering : AppCompatActivity() {
             totalKg += orders[j].orderedKg
         }
 
+        totalEntryView?.findViewById<EditText>(R.id.smsorder_listEntry_calculated_pc)?.setText("")
         totalEntryView?.findViewById<EditText>(R.id.smsorder_listEntry_pc)?.setText(totalPc.toString())
         totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_kg)?.text = "$totalKg"
         totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_name)?.text = "TOTAL"

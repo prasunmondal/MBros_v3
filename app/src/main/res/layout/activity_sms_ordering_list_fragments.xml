@@ -29,7 +29,6 @@
                 android:id="@+id/smsorder_listEntry_calculated_pc"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:text="TextView"
                 android:textSize="12sp" />
 
             <EditText

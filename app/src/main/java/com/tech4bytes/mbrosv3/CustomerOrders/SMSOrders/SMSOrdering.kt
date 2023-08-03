@@ -2,9 +2,11 @@ package com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.R
@@ -15,6 +17,9 @@ import java.math.RoundingMode
 import java.text.DecimalFormat
 
 class SMSOrdering : AppCompatActivity() {
+
+    var orders = mutableListOf<SMSOrderModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_smsordering)
@@ -34,6 +39,8 @@ class SMSOrdering : AppCompatActivity() {
             container.addView(entry)
             entry.setOnClickListener {
                 processSMS(sms.body)
+                showEntries()
+                showTotal()
             }
         }
     }
@@ -42,43 +49,73 @@ class SMSOrdering : AppCompatActivity() {
         val valueArray = valueStr.split("+")
         var namesArray = SingleAttributedData.getRecords().smsOrderSequence.split(",")
         val minSize = Math.min(valueArray.size, namesArray.size)
-        val orderListContainer = findViewById<LinearLayout>(R.id.smsorders_order_list_view_container)
-        orderListContainer.removeAllViews()
 
         var totalKg = 0
         var totalPc = 0
+        orders = mutableListOf()
         for (j in 0 until minSize) {
             if(NumberUtils.getIntOrZero(valueArray[j].trim()) != 0) {
-                val balance = CustomerDueData.getBalance(namesArray[j].trim())
-                val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_list_fragments, null)
                 totalKg += NumberUtils.getIntOrZero(valueArray[j].trim())
                 if(getAvgWt1() != 0.0) {
                     val calculatedPc = NumberUtils.getIntOrZero(valueArray[j].trim()) / getAvgWt1()
                     var df = DecimalFormat("#.#")
-                    df.roundingMode = RoundingMode.FLOOR
-                    var result = df.format(calculatedPc).toDouble()
-                    entry.findViewById<TextView>(R.id.smsorder_listEntry_calculated_pc).text = result.toString()
+                    var calculatedPcDouble = df.format(calculatedPc).toDouble()
+
 
                     df = DecimalFormat("#")
                     df.roundingMode = RoundingMode.CEILING
-                    result = df.format(calculatedPc).toDouble()
-                    totalPc += result.toInt()
-                    entry.findViewById<EditText>(R.id.smsorder_listEntry_pc).setText(result.toInt().toString())
+                    val finalizedPc1Double = df.format(calculatedPcDouble).toDouble()
+                    val finalizedPc1 = finalizedPc1Double.toInt()
+                    totalPc += finalizedPc1
+
+                    orders.add(SMSOrderModel(namesArray[j].trim(), valueArray[j].trim().toInt(), calculatedPcDouble, finalizedPc1))
                 }
-                entry.findViewById<TextView>(R.id.smsorder_listEntry_kg).text = valueArray[j].trim()
-                entry.findViewById<TextView>(R.id.smsorder_listEntry_name).text = namesArray[j]
-                entry.findViewById<TextView>(R.id.smsorder_listEntry_amount).text = "$balance"
-                orderListContainer.addView(entry)
             }
         }
+    }
 
-        // Show Total
-        val totalEntry = layoutInflater.inflate(R.layout.activity_sms_ordering_list_fragments, null)
-        totalEntry.findViewById<EditText>(R.id.smsorder_listEntry_pc).setText(totalPc.toString())
-        totalEntry.findViewById<TextView>(R.id.smsorder_listEntry_kg).text = "$totalKg"
-        totalEntry.findViewById<TextView>(R.id.smsorder_listEntry_name).text = "TOTAL"
-        totalEntry.findViewById<TextView>(R.id.smsorder_listEntry_amount).text = ""
-        orderListContainer.addView(totalEntry)
+    fun showEntries() {
+        val orderListContainer = findViewById<LinearLayout>(R.id.smsorders_order_list_view_container)
+        orderListContainer.removeAllViews()
+        for(j in 0 until orders.size) {
+            val balance = CustomerDueData.getBalance(orders[j].name)
+            val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_list_fragments, null)
+            entry.findViewById<TextView>(R.id.smsorder_listEntry_calculated_pc).text = orders[j].calculatedPc.toString()
+
+            val finalizedPcView = entry.findViewById<EditText>(R.id.smsorder_listEntry_pc)
+            finalizedPcView.setText(orders[j].finalizedPc.toString())
+            finalizedPcView.doOnTextChanged { text, start, before, count ->
+                orders[j].finalizedPc = NumberUtils.getIntOrZero(finalizedPcView.text.toString())
+                updateTotal()
+            }
+
+            entry.findViewById<TextView>(R.id.smsorder_listEntry_kg).text = orders[j].orderedKg.toString()
+            entry.findViewById<TextView>(R.id.smsorder_listEntry_name).text = orders[j].name
+            entry.findViewById<TextView>(R.id.smsorder_listEntry_amount).text = "$balance"
+            orderListContainer.addView(entry)
+        }
+    }
+
+    var totalEntryView: View? = null
+    fun showTotal() {
+        val orderListContainer = findViewById<LinearLayout>(R.id.smsorders_order_list_view_container)
+        totalEntryView = layoutInflater.inflate(R.layout.activity_sms_ordering_list_fragments, null)
+        updateTotal()
+        orderListContainer.addView(totalEntryView)
+    }
+
+    fun updateTotal() {
+        var totalKg = 0
+        var totalPc = 0
+        for(j in 0 until orders.size) {
+            totalPc += orders[j].finalizedPc
+            totalKg += orders[j].orderedKg
+        }
+
+        totalEntryView?.findViewById<EditText>(R.id.smsorder_listEntry_pc)?.setText(totalPc.toString())
+        totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_kg)?.text = "$totalKg"
+        totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_name)?.text = "TOTAL"
+        totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_amount)?.text = ""
     }
 
     fun getAvgWt1(): Double {

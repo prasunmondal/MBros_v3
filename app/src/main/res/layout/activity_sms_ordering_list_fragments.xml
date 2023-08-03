@@ -27,7 +27,7 @@
 
             <TextView
                 android:id="@+id/smsorder_listEntry_calculated_pc"
-                android:layout_width="50dp"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textSize="12sp" />
@@ -52,7 +52,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/smsorder_listEntry_name"
-                android:layout_width="150dp"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:gravity="center_vertical"

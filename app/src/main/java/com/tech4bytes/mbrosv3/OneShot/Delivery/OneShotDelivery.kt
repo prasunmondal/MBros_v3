@@ -14,6 +14,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.prasunmondal.postjsontosheets.clients.delete.Delete
 import com.tech4bytes.mbrosv3.AppData.AppUtils
+import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
@@ -64,12 +65,19 @@ class OneShotDelivery : AppCompatActivity() {
         saveOneSortDeliveryButton = findViewById(R.id.one_shot_delivery_save_data_btn)
         deleteDeliveryDataButton = findViewById(R.id.osd_delete_delivery_data)
 
+        testAppConstants()
+
         runOnUiThread {
             populateDeliveryMap()
             updateSingleAttributedDataOnUI()
             showOrders()
             initiallizeUI()
         }
+    }
+
+    fun testAppConstants() {
+        val t = AppConstants.get(AppConstants.SMS_ORDER_SEQUENCE);
+        LogMe.log(t)
     }
 
     private fun initiallizeUI() {

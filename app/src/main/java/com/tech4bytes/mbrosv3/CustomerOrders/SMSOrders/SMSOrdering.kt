@@ -1,13 +1,13 @@
 package com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
+import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.SmsReader
@@ -19,13 +19,23 @@ import java.text.DecimalFormat
 class SMSOrdering : AppCompatActivity() {
 
     var orders = mutableListOf<SMSOrderModel>()
+    var smsToProcess: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_smsordering)
         AppContexts.set(this)
 
+        setUpListeners()
         showSMS()
+    }
+
+    private fun setUpListeners() {
+        findViewById<EditText>(R.id.smsorder_avg_wt1).doOnTextChanged { text, start, before, count ->
+            processSMS()
+            showEntries()
+            showTotal()
+        }
     }
 
     fun showSMS() {
@@ -38,46 +48,50 @@ class SMSOrdering : AppCompatActivity() {
             entry.findViewById<TextView>(R.id.smsorder_listEntry_name).text = "${sms.number}: ${sms.body}\n - ${sms.datetime}"
             container.addView(entry)
             entry.setOnClickListener {
-                processSMS(sms.body)
+                smsToProcess = sms.body
+                processSMS()
                 showEntries()
                 showTotal()
             }
         }
     }
 
-    private fun processSMS(valueStr: String) {
+    private fun processSMS() {
+        val valueStr = smsToProcess
         val valueArray = valueStr.split("+")
-        var namesArray = SingleAttributedData.getRecords().smsOrderSequence.split(",")
+        val namesArray = AppConstants.get(AppConstants.SMS_ORDER_SEQUENCE)!!.split(",")
         val minSize = Math.min(valueArray.size, namesArray.size)
 
         var totalKg = 0
         var totalPc = 0
         orders = mutableListOf()
         for (j in 0 until minSize) {
-            if(NumberUtils.getIntOrZero(valueArray[j].trim()) != 0) {
+            if (NumberUtils.getIntOrZero(valueArray[j].trim()) != 0) {
                 totalKg += NumberUtils.getIntOrZero(valueArray[j].trim())
-                if(getAvgWt1() != 0.0) {
-                    val calculatedPc = NumberUtils.getIntOrZero(valueArray[j].trim()) / getAvgWt1()
-                    var df = DecimalFormat("#.#")
-                    var calculatedPcDouble = df.format(calculatedPc).toDouble()
-
-
-                    df = DecimalFormat("#")
-                    df.roundingMode = RoundingMode.CEILING
-                    val finalizedPc1Double = df.format(calculatedPcDouble).toDouble()
-                    val finalizedPc1 = finalizedPc1Double.toInt()
-                    totalPc += finalizedPc1
-
-                    orders.add(SMSOrderModel(namesArray[j].trim(), valueArray[j].trim().toInt(), calculatedPcDouble, finalizedPc1))
+                var avgWt1 = getAvgWt1()
+                if (avgWt1 == 0.0) {
+                    avgWt1 = 1.0
                 }
+                val calculatedPc = NumberUtils.getIntOrZero(valueArray[j].trim()) / avgWt1
+                var df = DecimalFormat("#.#")
+                val calculatedPcDouble = df.format(calculatedPc).toDouble()
+
+                df = DecimalFormat("#")
+                df.roundingMode = RoundingMode.CEILING
+                val finalizedPc1Double = df.format(calculatedPcDouble).toDouble()
+                val finalizedPc1 = finalizedPc1Double.toInt()
+                totalPc += finalizedPc1
+
+                orders.add(SMSOrderModel(namesArray[j].trim(), valueArray[j].trim().toInt(), calculatedPcDouble, finalizedPc1))
+
             }
         }
     }
 
-    fun showEntries() {
+    private fun showEntries() {
         val orderListContainer = findViewById<LinearLayout>(R.id.smsorders_order_list_view_container)
         orderListContainer.removeAllViews()
-        for(j in 0 until orders.size) {
+        for (j in 0 until orders.size) {
             val balance = CustomerDueData.getBalance(orders[j].name)
             val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_list_fragments, null)
             entry.findViewById<TextView>(R.id.smsorder_listEntry_calculated_pc).text = orders[j].calculatedPc.toString()
@@ -107,7 +121,7 @@ class SMSOrdering : AppCompatActivity() {
     fun updateTotal() {
         var totalKg = 0
         var totalPc = 0
-        for(j in 0 until orders.size) {
+        for (j in 0 until orders.size) {
             totalPc += orders[j].finalizedPc
             totalKg += orders[j].orderedKg
         }

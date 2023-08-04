@@ -3,6 +3,7 @@ package com.tech4bytes.mbrosv3.MoneyCounter
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.WindowManager
 import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -26,9 +27,11 @@ class MoneyCounter : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_money_counter)
-
         AppContexts.set(this)
         AppUtils.logError()
+
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
         initializeUI()
     }
 

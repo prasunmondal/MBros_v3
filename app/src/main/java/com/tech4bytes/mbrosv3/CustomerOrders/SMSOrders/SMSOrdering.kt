@@ -2,6 +2,7 @@ package com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders
 
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -25,6 +26,8 @@ class SMSOrdering : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_smsordering)
         AppContexts.set(this)
+
+        window.addFlags(WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON)
 
         setUpListeners()
         showSMS()

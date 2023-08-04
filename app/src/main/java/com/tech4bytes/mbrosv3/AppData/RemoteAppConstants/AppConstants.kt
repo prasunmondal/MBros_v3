@@ -4,6 +4,10 @@ enum class AppConstants {
     SMS_ORDER_SEQUENCE;
 
     companion object {
+        fun fetchAll(useCache: Boolean = true) {
+            AppConstantsUtil.getAll(useCache)
+        }
+
         fun get(constant: AppConstants, useCache: Boolean = true): String? {
             val constantList = AppConstantsUtil.getAll(useCache)
             constantList.forEach {

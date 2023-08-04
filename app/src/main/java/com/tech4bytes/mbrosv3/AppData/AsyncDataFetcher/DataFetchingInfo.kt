@@ -1,5 +1,6 @@
 package com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher
 
+import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
@@ -24,6 +25,7 @@ class DataFetchingInfo {
                 DeliverToCustomerDataHandler::get.toString() -> "Current delivery reports"
                 DaySummary::get.toString() -> "Transaction reports"
                 Refueling::get.toString() -> "Fuel data"
+                AppConstants::fetchAll.toString() -> "App Constants Data"
                 else -> "Get data"
             }
         }
@@ -65,6 +67,11 @@ class DataFetchingInfo {
                 ActivityAuthEnums.MONEY_CALCULATOR -> {
                     executingMethods.add(SingleAttributedData::getRecords)
                     executingMethods.add(DeliverToCustomerDataHandler::get)
+                }
+                ActivityAuthEnums.SMS_ORDERING -> {
+                    executingMethods.add(AppConstants::fetchAll)
+                    executingMethods.add(DeliverToCustomerDataHandler::get)
+                    executingMethods.add(CustomerData::getRecords)
                 }
                 else -> {}
             }

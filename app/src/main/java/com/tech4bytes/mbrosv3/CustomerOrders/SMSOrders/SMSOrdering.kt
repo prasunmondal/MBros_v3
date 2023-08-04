@@ -1,5 +1,6 @@
 package com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
+import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.SmsReader
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -45,6 +47,11 @@ class SMSOrdering : AppCompatActivity() {
         val allSMS = SmsReader.getAllSms(this)
         val smsFiltered = SmsReader.getSMSStartingWith(SmsReader.getSMSFromNumber(allSMS, "9734075801"), "")
         val container = findViewById<LinearLayout>(R.id.smsorders_sms_view_container)
+
+//        smsToProcess = "100+50+0+0+40+40+0+30+30+20+40+20+10+120"
+//        processSMS()
+//        showEntries()
+//        showTotal()
 
         smsFiltered.forEach { sms ->
             val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_fragments, null)
@@ -137,5 +144,11 @@ class SMSOrdering : AppCompatActivity() {
 
     fun getAvgWt1(): Double {
         return NumberUtils.getDoubleOrZero(findViewById<EditText>(R.id.smsorder_avg_wt1).text.toString())
+    }
+
+    override fun onBackPressed() {
+        val switchActivityIntent = Intent(this, ActivityLogin::class.java)
+        switchActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(switchActivityIntent)
     }
 }

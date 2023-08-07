@@ -1,6 +1,7 @@
 package com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders
 
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -8,8 +9,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
@@ -20,6 +21,7 @@ import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import java.math.RoundingMode
 import java.text.DecimalFormat
+
 
 class SMSOrdering : AppCompatActivity() {
 
@@ -95,7 +97,6 @@ class SMSOrdering : AppCompatActivity() {
                 totalPc += finalizedPc1
 
                 orders.add(SMSOrderModel(System.currentTimeMillis().toString(), namesArray[j].trim(), valueArray[j].trim().toInt(), calculatedPcDouble, finalizedPc1, CustomerDueData.getBalance(namesArray[j].trim())))
-
             }
         }
     }
@@ -109,9 +110,12 @@ class SMSOrdering : AppCompatActivity() {
             entry.findViewById<TextView>(R.id.smsorder_listEntry_calculated_pc).text = orders[j].calculatedPc.toString()
 
             val finalizedPcView = entry.findViewById<EditText>(R.id.smsorder_listEntry_pc)
-            finalizedPcView.setText(orders[j].orderedPc.toString())
+            finalizedPcView.hint = orders[j].orderedPc.toString()
             finalizedPcView.doOnTextChanged { text, start, before, count ->
                 orders[j].orderedPc = NumberUtils.getIntOrZero(finalizedPcView.text.toString())
+                if(finalizedPcView.text.toString() == "") {
+                    orders[j].orderedPc = NumberUtils.getIntOrZero(finalizedPcView.hint.toString())
+                }
                 updateTotal()
             }
 
@@ -138,7 +142,11 @@ class SMSOrdering : AppCompatActivity() {
             totalKg += orders[j].orderedKg
         }
 
-        totalEntryView?.findViewById<EditText>(R.id.smsorder_listEntry_pc)?.setText(totalPc.toString())
+        val totalPcsField = totalEntryView?.findViewById<EditText>(R.id.smsorder_listEntry_pc)
+        totalPcsField?.setText(totalPc.toString())
+        totalPcsField?.setTextColor(ContextCompat.getColor(this, androidx.appcompat.R.color.material_blue_grey_800))
+        totalPcsField?.setTypeface(null, Typeface.BOLD)
+
         totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_kg)?.text = "$totalKg"
         totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_name)?.text = "TOTAL"
         totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_amount)?.text = ""

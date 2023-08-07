@@ -4,9 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
@@ -29,7 +31,7 @@ class SMSOrdering : AppCompatActivity() {
         setContentView(R.layout.activity_smsordering)
         AppContexts.set(this)
 
-        window.addFlags(WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         setUpListeners()
         showSMS()
@@ -48,10 +50,10 @@ class SMSOrdering : AppCompatActivity() {
         val smsFiltered = SmsReader.getSMSStartingWith(SmsReader.getSMSFromNumber(allSMS, AppConstants.get(AppConstants.SMS_ORDER_GET_ORDER_PH_NUMBER)), "")
         val container = findViewById<LinearLayout>(R.id.smsorders_sms_view_container)
 
-//        smsToProcess = "100+50+0+0+40+40+0+30+30+20+40+20+10+120"
-//        processSMS()
-//        showEntries()
-//        showTotal()
+        smsToProcess = "100+50+0+0+40+40+0+30+30+20+40+20+10+120"
+        processSMS()
+        showEntries()
+        showTotal()
 
         smsFiltered.forEach { sms ->
             val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_fragments, null)
@@ -92,7 +94,7 @@ class SMSOrdering : AppCompatActivity() {
                 val finalizedPc1 = finalizedPc1Double.toInt()
                 totalPc += finalizedPc1
 
-                orders.add(SMSOrderModel(namesArray[j].trim(), valueArray[j].trim().toInt(), calculatedPcDouble, finalizedPc1))
+                orders.add(SMSOrderModel(System.currentTimeMillis().toString(), namesArray[j].trim(), valueArray[j].trim().toInt(), calculatedPcDouble, finalizedPc1, CustomerDueData.getBalance(namesArray[j].trim())))
 
             }
         }
@@ -102,14 +104,14 @@ class SMSOrdering : AppCompatActivity() {
         val orderListContainer = findViewById<LinearLayout>(R.id.smsorders_order_list_view_container)
         orderListContainer.removeAllViews()
         for (j in 0 until orders.size) {
-            val balance = CustomerDueData.getBalance(orders[j].name)
+            val balance = orders[j].prevDue
             val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_list_fragments, null)
             entry.findViewById<TextView>(R.id.smsorder_listEntry_calculated_pc).text = orders[j].calculatedPc.toString()
 
             val finalizedPcView = entry.findViewById<EditText>(R.id.smsorder_listEntry_pc)
-            finalizedPcView.setText(orders[j].finalizedPc.toString())
+            finalizedPcView.setText(orders[j].orderedPc.toString())
             finalizedPcView.doOnTextChanged { text, start, before, count ->
-                orders[j].finalizedPc = NumberUtils.getIntOrZero(finalizedPcView.text.toString())
+                orders[j].orderedPc = NumberUtils.getIntOrZero(finalizedPcView.text.toString())
                 updateTotal()
             }
 
@@ -132,7 +134,7 @@ class SMSOrdering : AppCompatActivity() {
         var totalKg = 0
         var totalPc = 0
         for (j in 0 until orders.size) {
-            totalPc += orders[j].finalizedPc
+            totalPc += orders[j].orderedPc
             totalKg += orders[j].orderedKg
         }
 
@@ -150,5 +152,34 @@ class SMSOrdering : AppCompatActivity() {
         val switchActivityIntent = Intent(this, ActivityLogin::class.java)
         switchActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(switchActivityIntent)
+    }
+
+    fun onClickSaveSMSOrdersBtn(view: View) {
+        val saveBtn = view as Button
+        Thread {
+            runOnUiThread {
+                saveBtn.isEnabled = false
+                saveBtn.alpha = .5f
+                saveBtn.isClickable = false
+                saveBtn.text = "Deleting previous data"
+            }
+
+            SMSOrderModel.deleteAllDataInServer()
+            var count = 1
+            runOnUiThread {
+                saveBtn.text = "Saving ($count/${orders.size})"
+                count++
+            }
+            orders.forEach {
+                SMSOrderModel.save(it)
+            }
+
+            runOnUiThread {
+                saveBtn.isEnabled = true
+                saveBtn.alpha = 1.0f
+                saveBtn.isClickable = true
+                saveBtn.text = "Save"
+            }
+        }.start()
     }
 }

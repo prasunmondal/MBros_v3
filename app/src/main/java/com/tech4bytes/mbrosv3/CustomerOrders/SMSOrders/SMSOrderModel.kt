@@ -2,10 +2,9 @@ package com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders
 
 import com.prasunmondal.postjsontosheets.clients.delete.Delete
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerConfig
 import com.tech4bytes.mbrosv3.ProjectConfig
 
-data class SMSOrderModel(var id: String, var name: String, var orderedKg: Int, var calculatedPc: Double, var orderedPc: Int, var prevDue: Int) {
+data class SMSOrderModel(var id: String, var name: String, var orderedKg: Int, var calculatedPc: Double, var orderedPc: Int) {
 
     companion object {
         val SHEET_SMS_ORDERS = "GetOrders"

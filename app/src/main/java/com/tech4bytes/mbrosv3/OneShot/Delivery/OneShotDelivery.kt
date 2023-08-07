@@ -223,7 +223,7 @@ class OneShotDelivery : AppCompatActivity() {
                 orderedPc = it.orderedPc,
                 orderedKg = it.orderedKg,
                 rate = "${CustomerData.getDeliveryRate(it.name)}",
-                prevDue = it.prevDue,
+                prevDue = CustomerData.getLastDue(it.name),
                 deliveryStatus = "DELIVERING"
             )
 

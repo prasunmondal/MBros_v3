@@ -96,7 +96,7 @@ class SMSOrdering : AppCompatActivity() {
                 val finalizedPc1 = finalizedPc1Double.toInt()
                 totalPc += finalizedPc1
 
-                orders.add(SMSOrderModel(System.currentTimeMillis().toString(), namesArray[j].trim(), valueArray[j].trim().toInt(), calculatedPcDouble, finalizedPc1, CustomerDueData.getBalance(namesArray[j].trim())))
+                orders.add(SMSOrderModel(System.currentTimeMillis().toString(), namesArray[j].trim(), valueArray[j].trim().toInt(), calculatedPcDouble, finalizedPc1))
             }
         }
     }
@@ -105,7 +105,7 @@ class SMSOrdering : AppCompatActivity() {
         val orderListContainer = findViewById<LinearLayout>(R.id.smsorders_order_list_view_container)
         orderListContainer.removeAllViews()
         for (j in 0 until orders.size) {
-            val balance = orders[j].prevDue
+            val balance = CustomerDueData.getBalance(orders[j].name)
             val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_list_fragments, null)
             entry.findViewById<TextView>(R.id.smsorder_listEntry_calculated_pc).text = orders[j].calculatedPc.toString()
 

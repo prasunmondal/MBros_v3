@@ -14,7 +14,6 @@ import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerCalculations
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
-import com.tech4bytes.mbrosv3.Sms.SmsReader
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 

@@ -45,7 +45,7 @@ class SMSOrdering : AppCompatActivity() {
 
     fun showSMS() {
         val allSMS = SmsReader.getAllSms(this)
-        val smsFiltered = SmsReader.getSMSStartingWith(SmsReader.getSMSFromNumber(allSMS, "9734075801"), "")
+        val smsFiltered = SmsReader.getSMSStartingWith(SmsReader.getSMSFromNumber(allSMS, AppConstants.get(AppConstants.SMS_ORDER_GET_ORDER_PH_NUMBER)), "")
         val container = findViewById<LinearLayout>(R.id.smsorders_sms_view_container)
 
 //        smsToProcess = "100+50+0+0+40+40+0+30+30+20+40+20+10+120"
@@ -69,7 +69,7 @@ class SMSOrdering : AppCompatActivity() {
     private fun processSMS() {
         val valueStr = smsToProcess
         val valueArray = valueStr.split("+")
-        val namesArray = AppConstants.get(AppConstants.SMS_ORDER_SEQUENCE)!!.split(",")
+        val namesArray = AppConstants.get(AppConstants.SMS_ORDER_SEQUENCE).split(",")
         val minSize = Math.min(valueArray.size, namesArray.size)
 
         var totalKg = 0

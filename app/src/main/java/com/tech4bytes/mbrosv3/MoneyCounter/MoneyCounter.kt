@@ -7,6 +7,7 @@ import android.view.WindowManager
 import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textview.MaterialTextView
 import com.tech4bytes.mbrosv3.AppData.AppUtils
@@ -15,6 +16,7 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.De
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 
 class MoneyCounter : AppCompatActivity() {
@@ -23,6 +25,8 @@ class MoneyCounter : AppCompatActivity() {
     private lateinit var deductedCashField: EditText
     private lateinit var addedCashField: EditText
     private val mapOfNotesToAmount: MutableMap<Int, Int> = mutableMapOf()
+    private val rupeePrefix = "₹"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_money_counter)
@@ -38,9 +42,11 @@ class MoneyCounter : AppCompatActivity() {
         val container = findViewById<LinearLayout>(R.id.mc_entry_containers)
         deductedCashField = findViewById(R.id.mc_deducted_amount)
         addedCashField = findViewById(R.id.mc_added_amount)
+        val aimingAmountField = findViewById<EditText>(R.id.mc_aiming_amount)
 
         deductedCashField.addTextChangedListener { setAimingAmount() }
         addedCashField.addTextChangedListener { setAimingAmount() }
+        aimingAmountField.addTextChangedListener { updateSuccessColors() }
 
         setAimingAmount()
         availableDenominations.forEach {
@@ -57,8 +63,6 @@ class MoneyCounter : AppCompatActivity() {
             oldNoteField.addTextChangedListener { updateMultipliedAmount(denomination, newNoteField, oldNoteField, multipliedAmountField) }
             container.addView(entry)
         }
-
-
     }
 
     private fun setAimingAmount() {
@@ -85,12 +89,21 @@ class MoneyCounter : AppCompatActivity() {
         aimingAmountField.setText(aimingAmount.toString())
     }
 
+    fun getAimingAmountFromUI(): Int {
+        val aimingAmountField = findViewById<EditText>(R.id.mc_aiming_amount)
+        return NumberUtils.getIntOrZero(aimingAmountField.text.toString())
+    }
+
+    fun getCalculatedTotalAmountFromUI(): Int {
+        return NumberUtils.getIntOrZero(findViewById<MaterialTextView>(R.id.mc_totalAmount).text.toString().replace(rupeePrefix, "").trim())
+    }
+
     private fun updateMultipliedAmount(denomination: MaterialTextView, newNoteField: EditText, oldNoteField: EditText, multipliedAmountField: MaterialTextView) {
         val denominationAmount = NumberUtils.getIntOrZero(denomination.text.toString())
         val numberOfNewNotes = NumberUtils.getIntOrZero(newNoteField.text.toString())
         val numberOfOldNotes = NumberUtils.getIntOrZero(oldNoteField.text.toString())
         val multipliedAmount = denominationAmount * (numberOfNewNotes + numberOfOldNotes)
-        multipliedAmountField.text = "₹ $multipliedAmount"
+        multipliedAmountField.text = "$rupeePrefix $multipliedAmount"
         mapOfNotesToAmount[denominationAmount] = multipliedAmount
         updateTotalAmount()
     }
@@ -100,7 +113,17 @@ class MoneyCounter : AppCompatActivity() {
         mapOfNotesToAmount.forEach { (key, value) ->
             totalAmount += value
         }
-        findViewById<MaterialTextView>(R.id.mc_totalAmount).text = "₹ $totalAmount"
+        findViewById<MaterialTextView>(R.id.mc_totalAmount).text = "$rupeePrefix $totalAmount"
+        updateSuccessColors()
+    }
+
+    private fun updateSuccessColors() {
+        LogMe.log("" + getCalculatedTotalAmountFromUI() + " == " + getAimingAmountFromUI())
+        if(getCalculatedTotalAmountFromUI() == getAimingAmountFromUI()) {
+            findViewById<LinearLayout>(R.id.mc_totalAmount_container).setBackgroundColor(ContextCompat.getColor(this, R.color.mc_counter_success))
+        } else {
+            findViewById<LinearLayout>(R.id.mc_totalAmount_container).setBackgroundColor(ContextCompat.getColor(this, R.color.mc_counter_unsuccessful))
+        }
     }
 
     override fun onBackPressed() {

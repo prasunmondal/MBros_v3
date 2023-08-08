@@ -21,8 +21,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:maxEms="10"
-            android:textColorHint="#035863"
-            android:minEms="10">
+            android:minEms="10"
+            android:textColorHint="#035863">
 
             <!--this is the actual edit text which takes the input-->
             <com.google.android.material.textfield.TextInputEditText
@@ -30,18 +30,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#012023"
-                android:textColor="#09C4DD"
                 android:hint="Aiming Amount"
-                android:inputType="number" />
+                android:inputType="number"
+                android:textColor="#09C4DD" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textColorHint="#035863"
             android:maxEms="10"
-            android:minEms="10">
+            android:minEms="10"
+            android:textColorHint="#035863">
 
             <!--this is the actual edit text which takes the input-->
 
@@ -50,18 +50,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#012023"
-                android:textColor="#09C4DD"
                 android:hint="Deducted"
-                android:inputType="number" />
+                android:inputType="number"
+                android:textColor="#09C4DD" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textColorHint="#035863"
             android:maxEms="10"
-            android:minEms="10">
+            android:minEms="10"
+            android:textColorHint="#035863">
 
             <!--this is the actual edit text which takes the input-->
 
@@ -70,19 +70,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#012023"
-                android:textColor="#09C4DD"
                 android:hint="Added"
-                android:inputType="number" />
+                android:inputType="number"
+                android:textColor="#09C4DD" />
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:id="@+id/mc_totalAmount_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F8D9D9"
         android:orientation="vertical"
-        android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout18">
@@ -96,6 +96,18 @@
             android:text="₹ 0"
             android:textSize="20sp"
             android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout21"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mc_totalAmount_container">
 
         <LinearLayout
             android:id="@+id/mc_entry_containers"

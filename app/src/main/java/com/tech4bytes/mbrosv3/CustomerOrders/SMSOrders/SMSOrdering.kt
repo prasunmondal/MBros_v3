@@ -52,10 +52,10 @@ class SMSOrdering : AppCompatActivity() {
         val smsFiltered = SmsReader.getSMSStartingWith(SmsReader.getSMSFromNumber(allSMS, AppConstants.get(AppConstants.SMS_ORDER_GET_ORDER_PH_NUMBER)), "")
         val container = findViewById<LinearLayout>(R.id.smsorders_sms_view_container)
 
-        smsToProcess = "100+50+0+0+40+40+0+30+30+20+40+20+10+120"
-        processSMS()
-        showEntries()
-        showTotal()
+//        smsToProcess = "100+50+0+0+40+40+0+30+30+20+40+20+10+120"
+//        processSMS()
+//        showEntries()
+//        showTotal()
 
         smsFiltered.forEach { sms ->
             val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_fragments, null)
@@ -175,8 +175,7 @@ class SMSOrdering : AppCompatActivity() {
             SMSOrderModel.deleteAllDataInServer()
             var count = 1
             runOnUiThread {
-                saveBtn.text = "Saving ($count/${orders.size})"
-                count++
+                saveBtn.text = "Saving (${count++}/${orders.size})"
             }
             orders.forEach {
                 SMSOrderModel.save(it)

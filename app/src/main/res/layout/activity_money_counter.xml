@@ -21,6 +21,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:maxEms="10"
+            android:textColorHint="#035863"
             android:minEms="10">
 
             <!--this is the actual edit text which takes the input-->
@@ -28,7 +29,8 @@
                 android:id="@+id/mc_aiming_amount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#5CE3F4"
+                android:background="#012023"
+                android:textColor="#09C4DD"
                 android:hint="Aiming Amount"
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -37,6 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:textColorHint="#035863"
             android:maxEms="10"
             android:minEms="10">
 
@@ -46,7 +49,8 @@
                 android:id="@+id/mc_deducted_amount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#5CE3F4"
+                android:background="#012023"
+                android:textColor="#09C4DD"
                 android:hint="Deducted"
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -55,6 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:textColorHint="#035863"
             android:maxEms="10"
             android:minEms="10">
 
@@ -64,7 +69,8 @@
                 android:id="@+id/mc_added_amount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#5CE3F4"
+                android:background="#012023"
+                android:textColor="#09C4DD"
                 android:hint="Added"
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>

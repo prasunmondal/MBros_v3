@@ -1,5 +1,6 @@
 package com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
@@ -47,6 +48,7 @@ class SMSOrdering : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     fun showSMS() {
         val allSMS = SmsReader.getAllSms(this)
         val smsFiltered = SmsReader.getSMSStartingWith(SmsReader.getSMSFromNumber(allSMS, AppConstants.get(AppConstants.SMS_ORDER_GET_ORDER_PH_NUMBER)), "")
@@ -59,7 +61,10 @@ class SMSOrdering : AppCompatActivity() {
 
         smsFiltered.forEach { sms ->
             val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_fragments, null)
-            entry.findViewById<TextView>(R.id.smsorder_listEntry_name).text = "${sms.number}: ${sms.body}\n - ${sms.datetime}"
+            entry.findViewById<TextView>(R.id.smsorder_listEntry_receive_number).text = sms.number
+            entry.findViewById<TextView>(R.id.smsorder_listEntry_text).text = sms.body
+            entry.findViewById<TextView>(R.id.smsorder_listEntry_date).text = sms.datetime.split(" ")[2]
+            entry.findViewById<TextView>(R.id.smsorder_listEntry_month).text = sms.datetime.split(" ")[1]
             container.addView(entry)
             entry.setOnClickListener {
                 smsToProcess = sms.body
@@ -119,8 +124,8 @@ class SMSOrdering : AppCompatActivity() {
                 updateTotal()
             }
 
-            entry.findViewById<TextView>(R.id.smsorder_listEntry_kg).text = orders[j].orderedKg.toString()
-            entry.findViewById<TextView>(R.id.smsorder_listEntry_name).text = orders[j].name
+            entry.findViewById<TextView>(R.id.smsorder_listEntry_date).text = orders[j].orderedKg.toString()
+            entry.findViewById<TextView>(R.id.smsorder_listEntry_number).text = orders[j].name
             entry.findViewById<TextView>(R.id.smsorder_listEntry_amount).text = "$balance"
             orderListContainer.addView(entry)
         }
@@ -147,8 +152,8 @@ class SMSOrdering : AppCompatActivity() {
         totalPcsField?.setTextColor(ContextCompat.getColor(this, androidx.appcompat.R.color.material_blue_grey_800))
         totalPcsField?.setTypeface(null, Typeface.BOLD)
 
-        totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_kg)?.text = "$totalKg"
-        totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_name)?.text = "TOTAL"
+        totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_date)?.text = "$totalKg"
+        totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_number)?.text = "TOTAL"
         totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_amount)?.text = ""
     }
 

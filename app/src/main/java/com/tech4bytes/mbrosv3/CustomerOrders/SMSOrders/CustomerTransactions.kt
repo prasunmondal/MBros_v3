@@ -59,14 +59,12 @@ class CustomerTransactions : AppCompatActivity() {
     }
 
     private fun showTransactions(name: String) {
-        Thread {
-            val list = CustomerData.getRecords().filter { it.name == name }
-            val listContainer = findViewById<LinearLayout>(R.id.ct_list_container)
-            runOnUiThread {
-                listContainer.removeAllViews()
-                addHeader(listContainer)
-            }
+        val list = CustomerData.getRecords().filter { it.name == name }
+        val listContainer = findViewById<LinearLayout>(R.id.ct_list_container)
+        listContainer.removeAllViews()
+        addHeader(listContainer)
 
+        Thread {
             list.forEach {
                 val layoutInflater = LayoutInflater.from(AppContexts.get())
                 val entry = layoutInflater.inflate(R.layout.activity_customer_transaction_entry, null)

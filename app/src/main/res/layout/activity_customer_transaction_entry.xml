@@ -27,9 +27,10 @@
 
         <TextView
             android:id="@+id/ct_pc"
-            android:layout_width="25dp"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:gravity="right"
+            android:paddingRight="5dp"
             android:text="888" />
 
         <TextView

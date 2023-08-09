@@ -15,13 +15,13 @@
 
         <TextView
             android:id="@+id/ct_date"
-            android:layout_width="80dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:text="88/88/88" />
 
         <TextView
             android:id="@+id/ct_name"
-            android:layout_width="80dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:text="TextView" />
 

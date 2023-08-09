@@ -1,16 +1,21 @@
 package com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.view.View
+import android.widget.*
+import android.widget.AdapterView.OnItemSelectedListener
+import androidx.appcompat.app.AppCompatActivity
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
+import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
+import java.util.stream.Collectors
+
 
 class CustomerTransactions : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,18 +24,55 @@ class CustomerTransactions : AppCompatActivity() {
         AppContexts.set(this)
         AppUtils.logError()
 
-        val name = "Prabir"
-        showTransactions(name)
+//        val name = "Prabir"
+        listCustomerNames()
+//        showTransactions(name)
+    }
+
+    private fun listCustomerNames() {
+        val customerNamesSpinner = findViewById<Spinner>(R.id.ct_customer_names_spinner)
+        val adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item, getCompanyNames()
+        )
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        customerNamesSpinner.setAdapter(adapter)
+
+        customerNamesSpinner.setOnItemSelectedListener(object : OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>, view: View?,
+                position: Int, id: Long
+            ) {
+                showTransactions(customerNamesSpinner.selectedItem.toString())
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                showTransactions("")
+            }
+        })
+    }
+
+    private fun getCompanyNames(): List<String> {
+        return CustomerData.getRecords().stream()
+            .filter { d -> d.name.isNotEmpty() }
+            .map(CustomerData::name)
+            .collect(Collectors.toSet()).toList().sorted()
     }
 
     private fun showTransactions(name: String) {
         var list = CustomerData.getRecords().filter { it.name == name }
         val listContainer = findViewById<LinearLayout>(R.id.ct_list_container)
+        listContainer.removeAllViews()
 
         list.forEach {
             val layoutInflater = LayoutInflater.from(AppContexts.get())
             val entry = layoutInflater.inflate(R.layout.activity_customer_transaction_entry, null)
             entry.findViewById<TextView>(R.id.ct_date).text = it.timestamp.split("T")[0]
+            val t = DateUtils.getDate(it.timestamp)
+            val formattedDate = DateUtils.getDateInFormat(t!!, "dd/MM")
+            LogMe.log(t!!.time.toString())
+            entry.findViewById<TextView>(R.id.ct_date).text = formattedDate
             entry.findViewById<TextView>(R.id.ct_name).text = it.name
             entry.findViewById<TextView>(R.id.ct_pc).text = it.deliveredPc
             entry.findViewById<TextView>(R.id.ct_kg).text = it.deliveredKg

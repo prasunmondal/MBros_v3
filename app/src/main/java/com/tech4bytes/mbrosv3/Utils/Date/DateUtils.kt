@@ -98,6 +98,12 @@ class DateUtils {
             return twoDigitYear
         }
 
+        fun getDateInFormat(date: Date, format: String): String {
+            val format = SimpleDateFormat(format)
+            val formattedDate = format.format(date)
+            return formattedDate
+        }
+
         fun timeZoneConversionRequired(datetime: String): Boolean {
             return datetime.endsWith("Z")
         }

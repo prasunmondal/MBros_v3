@@ -179,10 +179,10 @@ class SMSOrdering : AppCompatActivity() {
 
             SMSOrderModel.deleteAllDataInServer()
             var count = 1
-            runOnUiThread {
-                saveBtn.text = "Saving (${count++}/${orders.size})"
-            }
             orders.forEach {
+                runOnUiThread {
+                    saveBtn.text = "Saving (${count++}/${orders.size})"
+                }
                 SMSOrderModel.save(it)
             }
 

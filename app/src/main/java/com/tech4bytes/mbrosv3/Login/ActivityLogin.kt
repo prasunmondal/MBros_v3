@@ -29,6 +29,7 @@ import com.tech4bytes.mbrosv3.Customer.DueShow
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard.ActivityAdminDeliveryDashboard
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
+import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.CustomerTransactions
 import com.tech4bytes.mbrosv3.MoneyCounter.MoneyCounter
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotLoad
@@ -105,6 +106,7 @@ class ActivityLogin : AppCompatActivity() {
             ActivityAuthEnums.MONEY_CALCULATOR -> ::goToMoneyCalculatorPage
             ActivityAuthEnums.SMS_ORDERING -> ::goToSmsOrderingActivity
             ActivityAuthEnums.SHOW_RATES_IN_DELIVERY_PAGE -> null
+            ActivityAuthEnums.CUSTOMER_TRANSACTIONS -> ::goToCustomerTransactions
             else -> null
         }
     }
@@ -158,6 +160,10 @@ class ActivityLogin : AppCompatActivity() {
 
     private fun goToAdminRole() {
         goToDataFetchActivity(ActivityAuthEnums.ADMIN, ActivityAdminDeliveryDashboard::class.java)
+    }
+
+    private fun goToCustomerTransactions() {
+        goToDataFetchActivity(ActivityAuthEnums.CUSTOMER_TRANSACTIONS, CustomerTransactions::class.java)
     }
 
     private fun goToDataFetchActivity(currentActivity: ActivityAuthEnums, nextActivity: Class<*>) {

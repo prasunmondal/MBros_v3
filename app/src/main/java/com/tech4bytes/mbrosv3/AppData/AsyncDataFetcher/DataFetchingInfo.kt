@@ -73,6 +73,9 @@ class DataFetchingInfo {
                     executingMethods.add(DeliverToCustomerDataHandler::get)
                     executingMethods.add(CustomerData::getRecords)
                 }
+                ActivityAuthEnums.CUSTOMER_TRANSACTIONS -> {
+                    executingMethods.add(CustomerData::getRecords)
+                }
                 else -> {}
             }
             return executingMethods

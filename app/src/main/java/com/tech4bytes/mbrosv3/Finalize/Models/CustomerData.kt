@@ -12,8 +12,10 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.De
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
+import java.util.Date
 
 class CustomerData : java.io.Serializable {
     var orderId = ""
@@ -72,8 +74,10 @@ class CustomerData : java.io.Serializable {
             }
             deliveredData.forEach {
                 val profitByCustomer = totalProfit * NumberUtils.getDoubleOrZero(it.deliveredKg) / actualDeliveredKg
-                LogMe.log("ProfitPerCustomer: Name: ${it.name}: $totalProfit * ${NumberUtils.getDoubleOrZero(it.deliveredKg)} / $actualDeliveredKg = $profitByCustomer")
                 val profitPercentByCustomer = profitByCustomer / totalProfit * 100
+                LogMe.log("ProfitPerCustomer: Name: ${it.name}: $totalProfit * ${NumberUtils.getDoubleOrZero(it.deliveredKg)} / $actualDeliveredKg = $profitByCustomer")
+
+                it.timestamp = DateUtils.getDateInFormat(Date(it.id.toLong()), "M/d/yyyy")
                 val record = CustomerData(it.id, it.timestamp, it.name, it.deliveredPc, it.deliveredKg, it.rate, it.prevDue, it.todaysAmount, it.totalDue, it.paid, it.balanceDue, NumberUtils.roundOff2places(profitByCustomer).toString(), NumberUtils.roundOff2places(profitPercentByCustomer).toString())
                 addToFinalizeSheet(record)
             }

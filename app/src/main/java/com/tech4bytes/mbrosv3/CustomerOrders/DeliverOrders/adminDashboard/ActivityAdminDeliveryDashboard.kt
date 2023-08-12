@@ -1,12 +1,16 @@
 package com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerCalculations
@@ -28,9 +32,18 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         setContentView(R.layout.activity_admin_delivery_dashboard)
         AppContexts.set(this)
         AppUtils.logError()
+        getPermissions()
 
         updateDashboard(true)
         setCompanyAndRateValuesInUI()
+    }
+
+    private fun getPermissions() {
+        val permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
+        val REQUEST_READ_PHONE_STATE = 1
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_PHONE_STATE), REQUEST_READ_PHONE_STATE)
+        }
     }
 
     fun updateLoadInfo(useCache: Boolean) {

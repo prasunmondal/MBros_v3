@@ -1,5 +1,6 @@
 package com.tech4bytes.mbrosv3.BusinessLogic
 
+import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
@@ -55,11 +56,11 @@ class DeliveryCalculations {
 
         fun getKmCost(): Int {
             val currentKm = SingleAttributedData.getRecords().vehicle_finalKm
-            return 12 * getKmDiff(currentKm)
+            return AppConstants.get(AppConstants.SMS_ORDER_GET_ORDER_PH_NUMBER).toInt() * getKmDiff(currentKm)
         }
 
         fun getKmCost(currentKm: String): Int {
-            return 12 * getKmDiff(currentKm)
+            return AppConstants.get(AppConstants.SMS_ORDER_GET_ORDER_PH_NUMBER).toInt() * getKmDiff(currentKm)
         }
 
         fun getKmDiff(currentKm: String): Int {

@@ -43,6 +43,7 @@ class DataFetchingInfo {
                     executingMethods.add(DeliverToCustomerDataHandler::get)
                     executingMethods.add(DaySummary::get)
                     executingMethods.add(Refueling::get)
+                    executingMethods.add(AppConstants::fetchAll)
                 }
                 ActivityAuthEnums.DELIVERY -> {
                     executingMethods.add(CustomerKYC::getAllCustomers)

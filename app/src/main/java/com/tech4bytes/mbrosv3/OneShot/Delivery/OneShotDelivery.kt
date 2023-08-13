@@ -19,7 +19,6 @@ import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
-import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerConfig
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
@@ -63,12 +62,18 @@ class OneShotDelivery : AppCompatActivity() {
         saveOneSortDeliveryButton = findViewById(R.id.one_shot_delivery_save_data_btn)
         deleteDeliveryDataButton = findViewById(R.id.osd_delete_delivery_data)
 
-        runOnUiThread {
+        Thread {
             populateDeliveryMap()
             updateSingleAttributedDataOnUI()
             showOrders()
             initiallizeUI()
-        }
+            runOnUiThread {
+                initiallizeOtherExpensesUI()
+                updateRelatedFields_LoadPcKg()
+                initiallizeRefuelUI()
+                updateKmRelatedCosts()
+            }
+        }.start()
     }
 
     private fun initiallizeUI() {
@@ -76,13 +81,10 @@ class OneShotDelivery : AppCompatActivity() {
         val didTankFullElement = findViewById<Switch>(R.id.one_shot_delivery_did_fuel_upto_tank_full)
         val refuelingQtyElement = findViewById<EditText>(R.id.one_shot_delivery_fuel_quantity)
         val refuelingKmElement = findViewById<EditText>(R.id.one_shot_delivery_refueling_km)
-        val refuelingDetailsContainer = findViewById<LinearLayout>(R.id.one_shot_delivery_refueling_details_container)
-        val refuelingKmContainer = findViewById<TextInputLayout>(R.id.one_shot_delivery_refueling_km_container)
         val loadPcElement = findViewById<EditText>(R.id.one_shot_delivery_pc)
         val loadKgElement = findViewById<EditText>(R.id.one_shot_delivery_kg)
         val loadPriceElement = findViewById<EditText>(R.id.one_shot_delivery_price)
         val loadBufferElement = findViewById<EditText>(R.id.one_shot_delivery_buffer)
-
 
         didRefuelElement.setOnCheckedChangeListener { _, isChecked ->
             val obj = SingleAttributedData.getRecords()
@@ -95,7 +97,6 @@ class OneShotDelivery : AppCompatActivity() {
             SingleAttributedData.saveAttributeToLocal(SingleAttributedData::refueling_isFullTank, isChecked.toString())
             updateRefuelingUIDetails()
         }
-
 
         refuelingKmElement.doOnTextChanged { text, start, before, count ->
             updateRefuelingUIDetails()
@@ -133,10 +134,7 @@ class OneShotDelivery : AppCompatActivity() {
             updateRates()
         }
 
-        initiallizeOtherExpensesUI()
-        updateRelatedFields_LoadPcKg()
-        initiallizeRefuelUI()
-        updateKmRelatedCosts()
+
     }
 
     private fun updateRelatedFields_LoadPcKg() {
@@ -249,19 +247,34 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun showOrders() {
-        showOrders(deliveryMapOrderedCustomers, R.id.one_shot_delivery_ordered_customers_entry_container)
-        showOrders(deliveryMapUnOrderedCustomers, R.id.one_shot_delivery_unordered_customers_entry_container)
+
+        runOnUiThread {
+            var t = showOrders(deliveryMapOrderedCustomers, R.id.one_shot_delivery_ordered_customers_entry_container)
+            var t2 = showOrders(deliveryMapUnOrderedCustomers, R.id.one_shot_delivery_unordered_customers_entry_container)
+
+            findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).removeAllViews()
+            t.forEach { key, value ->
+                updateEntry(key, value)
+                findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).addView(value)
+            }
+
+            findViewById<LinearLayout>(R.id.one_shot_delivery_unordered_customers_entry_container).removeAllViews()
+            t2.forEach { key, value ->
+            updateEntry(key, value)
+            findViewById<LinearLayout>(R.id.one_shot_delivery_unordered_customers_entry_container).addView(value)
+        }
+        }
     }
 
     var entrynumber = 1
-    private fun showOrders(listOfCustomers: MutableMap<String, DeliverToCustomerDataModel>, container: Int) {
+    private fun showOrders(listOfCustomers: MutableMap<String, DeliverToCustomerDataModel>, container: Int): MutableMap<DeliverToCustomerDataModel, View> {
         entrynumber = 1
         val listContainer = findViewById<LinearLayout>(container)
+        val entryMap: MutableMap<DeliverToCustomerDataModel, View> = mutableMapOf()
+
         listContainer.removeAllViews()
 
         listOfCustomers.forEach { order ->
-            LogMe.log(order.toString())
-
             val layoutInflater = LayoutInflater.from(AppContexts.get())
             val entry = layoutInflater.inflate(R.layout.activity_one_shot_delivery_fragment, null)
 
@@ -284,28 +297,24 @@ class OneShotDelivery : AppCompatActivity() {
                 paidElement.text = deliveryRecord.paid
             }
 
-            LogMe.log(SingleAttributedData.getFinalRateInt().toString())
-            LogMe.log(SingleAttributedData.getBufferRateInt().toString())
-            LogMe.log(CustomerKYC.get(order.value.name)!!.rateDifference)
-            LogMe.log("${SingleAttributedData.getFinalRateInt() + SingleAttributedData.getBufferRateInt() + CustomerKYC.get(order.value.name)!!.rateDifference.toInt()}")
             rateElement.setText("${CustomerData.getDeliveryRate(order.value.name)}")
             fragmentUpdateCustomerWiseRateView(order, entry)
 
             rateElement.doOnTextChanged { text, start, before, count ->
-                updateEntry(order, entry)
+                updateEntry(order.value, entry)
                 fragmentUpdateCustomerWiseRateView(order, entry)
             }
 
             pcElement.doOnTextChanged { text, start, before, count ->
-                updateEntry(order, entry)
+                updateEntry(order.value, entry)
             }
 
             kgElement.doOnTextChanged { text, start, before, count ->
-                updateEntry(order, entry)
+                updateEntry(order.value, entry)
             }
 
             paidElement.doOnTextChanged { text, start, before, count ->
-                updateEntry(order, entry)
+                updateEntry(order.value, entry)
             }
 
             balanceElement.setOnClickListener {
@@ -314,7 +323,7 @@ class OneShotDelivery : AppCompatActivity() {
                 } else {
                     moreDetailsContainer.visibility = View.VISIBLE
                 }
-                updateDetailedInfo(order, entry)
+                updateDetailedInfo(order.value, entry)
             }
 
             val recordContainer = entry.findViewById<CardView>(R.id.one_shot_delivery_fragment_record_container)
@@ -325,10 +334,11 @@ class OneShotDelivery : AppCompatActivity() {
             entrynumber++
             recordContainer.setBackgroundColor(cardColor)
 
-            listContainer.addView(entry)
-            updateEntry(order, entry)
+//            listContainer.addView(entry)
+            entryMap.put(order.value, entry)
             uiMaps[order.value.name] = entry
         }
+        return entryMap
     }
 
     private fun fragmentUpdateCustomerWiseRateView(order: Map.Entry<String, DeliverToCustomerDataModel>, entry: View) {
@@ -350,18 +360,18 @@ class OneShotDelivery : AppCompatActivity() {
         }
     }
 
-    private fun updateEntry(order: Map.Entry<String, DeliverToCustomerDataModel>, entry: View) {
-        order.value.deliveredKg = getKgForEntry(entry).toString()
-        order.value.deliveredPc = getPcForEntry(entry).toString()
-        order.value.todaysAmount = getTodaysSaleAmountForEntry(entry).toString()
-        order.value.paid = getPaidAmountForEntry(entry).toString()
-        order.value.rate = getRateForEntry(entry).toString()
-        order.value.totalDue = "${NumberUtils.getIntOrZero(order.value.prevDue) + getTodaysSaleAmountForEntry(entry)}"
-        order.value.balanceDue = "${NumberUtils.getIntOrZero(order.value.prevDue) + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(entry)}"
+    private fun updateEntry(order: DeliverToCustomerDataModel, entry: View) {
+        order.deliveredKg = getKgForEntry(entry).toString()
+        order.deliveredPc = getPcForEntry(entry).toString()
+        order.todaysAmount = getTodaysSaleAmountForEntry(entry).toString()
+        order.paid = getPaidAmountForEntry(entry).toString()
+        order.rate = getRateForEntry(entry).toString()
+        order.totalDue = "${NumberUtils.getIntOrZero(order.prevDue) + getTodaysSaleAmountForEntry(entry)}"
+        order.balanceDue = "${NumberUtils.getIntOrZero(order.prevDue) + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(entry)}"
 
         val balanceElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
 
-        balanceElement.text = getDueBalance(order.value, entry).toString()
+        balanceElement.text = getDueBalance(order, entry).toString()
         updateTotals()
         updateDetailedInfo(order, entry)
     }
@@ -388,7 +398,7 @@ class OneShotDelivery : AppCompatActivity() {
         }
     }
 
-    private fun updateDetailedInfo(order: Map.Entry<String, DeliverToCustomerDataModel>, entry: View) {
+    private fun updateDetailedInfo(order: DeliverToCustomerDataModel, entry: View) {
         val container = entry.findViewById<LinearLayout>(R.id.one_shot_delivery_fragment_more_details_container)
 
         if (container.visibility == View.VISIBLE) {
@@ -400,13 +410,13 @@ class OneShotDelivery : AppCompatActivity() {
             val paid = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_paid_amount)
             val balanceDue = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_balance_due)
 
-            prevDue.text = "₹ ${order.value.prevDue}"
-            kg.text = "${order.value.deliveredKg} kg"
-            rate.text = "₹ ${order.value.rate}"
-            todaysSale.text = "₹ ${order.value.todaysAmount}"
-            total.text = "₹ ${order.value.totalDue}"
-            paid.text = "₹ ${order.value.paid}"
-            balanceDue.text = "₹ ${order.value.balanceDue}"
+            prevDue.text = "₹ ${order.prevDue}"
+            kg.text = "${order.deliveredKg} kg"
+            rate.text = "₹ ${order.rate}"
+            todaysSale.text = "₹ ${order.todaysAmount}"
+            total.text = "₹ ${order.totalDue}"
+            paid.text = "₹ ${order.paid}"
+            balanceDue.text = "₹ ${order.balanceDue}"
         }
     }
 
@@ -452,38 +462,34 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun updateSingleAttributedDataOnUI() {
-        LogMe.log("Updating single attributed data")
         val loadedPc = findViewById<TextView>(R.id.one_shot_delivery_pc)
         val loadedKg = findViewById<TextView>(R.id.one_shot_delivery_kg)
-        loadedPc.text = SingleAttributedData.getRecords().actualLoadPc
-        loadedKg.text = SingleAttributedData.getRecords().actualLoadKg
+        runOnUiThread {
+            loadedPc.text = SingleAttributedData.getRecords().actualLoadPc
+            loadedKg.text = SingleAttributedData.getRecords().actualLoadKg
+        }
 
         if (AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_FARM_RATE)) {
             val loadPriceElement = findViewById<EditText>(R.id.one_shot_delivery_price)
-            loadPriceElement.setText(SingleAttributedData.getRecords().finalFarmRate)
+            runOnUiThread {
+                loadPriceElement.setText(SingleAttributedData.getRecords().finalFarmRate)
+            }
         } else {
-            findViewById<TextInputLayout>(R.id.osd_farm_rate_container).visibility = View.GONE
+            runOnUiThread {
+                findViewById<TextInputLayout>(R.id.osd_farm_rate_container).visibility = View.GONE
+            }
         }
 
         if (AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_BUFFER_RATE)) {
             val loadBufferElement = findViewById<EditText>(R.id.one_shot_delivery_buffer)
-            loadBufferElement.setText(SingleAttributedData.getRecords().bufferRate)
+            runOnUiThread {
+                loadBufferElement.setText(SingleAttributedData.getRecords().bufferRate)
+            }
         } else {
-            findViewById<TextInputLayout>(R.id.osd_buffer_price_container).visibility = View.GONE
+            runOnUiThread {
+                findViewById<TextInputLayout>(R.id.osd_buffer_price_container).visibility = View.GONE
+            }
         }
-    }
-
-    fun getTodaysUpdatedDueMap(): MutableMap<String, Int> {
-        val currentDueMapAfterDelivery: MutableMap<String, Int> = mutableMapOf()
-
-        deliveryMapOrderedCustomers.forEach {
-            currentDueMapAfterDelivery[it.key] = NumberUtils.getIntOrZero(it.value.balanceDue)
-        }
-
-        deliveryMapUnOrderedCustomers.forEach {
-            currentDueMapAfterDelivery[it.key] = NumberUtils.getIntOrZero(it.value.balanceDue)
-        }
-        return currentDueMapAfterDelivery
     }
 
     private fun updateTotals() {

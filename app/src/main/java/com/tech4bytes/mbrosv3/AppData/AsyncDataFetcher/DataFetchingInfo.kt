@@ -68,6 +68,7 @@ class DataFetchingInfo {
                 ActivityAuthEnums.MONEY_CALCULATOR -> {
                     executingMethods.add(SingleAttributedData::getRecords)
                     executingMethods.add(DeliverToCustomerDataHandler::get)
+                    executingMethods.add(AppConstants::fetchAll)
                 }
                 ActivityAuthEnums.SMS_ORDERING -> {
                     executingMethods.add(AppConstants::fetchAll)

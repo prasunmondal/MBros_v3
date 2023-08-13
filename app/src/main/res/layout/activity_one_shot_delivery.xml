@@ -157,6 +157,14 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+                    <TextView
+                        android:id="@+id/textView50"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingVertical="200dp"
+                        android:text="Loading Data..."
+                        android:textColor="#888686" />
                 </LinearLayout>
 
                 <LinearLayout

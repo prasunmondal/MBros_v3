@@ -56,11 +56,11 @@ class DeliveryCalculations {
 
         fun getKmCost(): Int {
             val currentKm = SingleAttributedData.getRecords().vehicle_finalKm
-            return AppConstants.get(AppConstants.SMS_ORDER_GET_ORDER_PH_NUMBER).toInt() * getKmDiff(currentKm)
+            return AppConstants.get(AppConstants.CAR_RATE_PER_KM).toInt() * getKmDiff(currentKm)
         }
 
         fun getKmCost(currentKm: String): Int {
-            return AppConstants.get(AppConstants.SMS_ORDER_GET_ORDER_PH_NUMBER).toInt() * getKmDiff(currentKm)
+            return AppConstants.get(AppConstants.CAR_RATE_PER_KM).toInt() * getKmDiff(currentKm)
         }
 
         fun getKmDiff(currentKm: String): Int {

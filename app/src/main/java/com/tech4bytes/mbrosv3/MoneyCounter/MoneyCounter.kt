@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textview.MaterialTextView
 import com.tech4bytes.mbrosv3.AppData.AppUtils
+import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerCalculations
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
@@ -70,7 +71,7 @@ class MoneyCounter : AppCompatActivity() {
         val totalAmountPaidByCustomer = DeliverToCustomerCalculations.getTotalAmountPaidTodayByCustomers()
         val extraExpenses = NumberUtils.getIntOrZero(SingleAttributedData.getRecords().extra_expenses)
         val cashGivenForExtraExpenses = NumberUtils.getIntOrZero(SingleAttributedData.getRecords().extra_cash_given)
-        val labourExpenses = NumberUtils.getIntOrZero(SingleAttributedData.getRecords().labour_expenses) + 300
+        val labourExpenses = NumberUtils.getIntOrZero(SingleAttributedData.getRecords().labour_expenses) + NumberUtils.getIntOrZero(AppConstants.get(AppConstants.DRIVER_SALARY))
         val deductedCash = NumberUtils.getIntOrZero(deductedCashField.text.toString())
         val addedCash = NumberUtils.getIntOrZero(addedCashField.text.toString())
         val fuelExpense =

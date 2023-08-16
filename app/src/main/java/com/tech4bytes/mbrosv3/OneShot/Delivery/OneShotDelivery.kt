@@ -43,6 +43,7 @@ import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
+import java.util.jar.Manifest
 
 
 class OneShotDelivery : AppCompatActivity() {
@@ -310,10 +311,7 @@ class OneShotDelivery : AppCompatActivity() {
                 sendSMSBtn.visibility = View.VISIBLE
                 sendSMSBtn.setOnClickListener {
                     val smsNumber = CustomerKYC.getCustomerByEngName(order.value.name)!!.smsNumber
-                    val t = DateUtils.getDate(order.value.timestamp)
-                    val formattedDate = DateUtils.getDateInFormat(t!!, "dd/MM/yyyy")
-
-                    sendSMS(formattedDate, pcElement.text.toString(), kgElement.text.toString(), smsNumber)
+                    sendSMS(pcElement.text.toString(), kgElement.text.toString(), smsNumber)
                     Toast.makeText(this, "SMS Sent: $smsNumber", Toast.LENGTH_LONG).show()
                 }
             }
@@ -362,11 +360,12 @@ class OneShotDelivery : AppCompatActivity() {
         return entryMap
     }
 
-    private fun sendSMS(date: String, pc: String, kg: String, smsNumber: String) {
+    private fun sendSMS(pc: String, kg: String, smsNumber: String) {
+        val intent = Intent(applicationContext, this::class.java)
+        val pi = PendingIntent.getActivity(applicationContext, 0, intent, 0)
+
         val sms: SmsManager = SmsManager.getDefault()
-        val smsString = "Date: $date\nDelivery Details: ${pc}pc / ${kg}kg\n- Mondal Bros."
-        LogMe.log(smsString)
-        sms.sendTextMessage(smsNumber, null, smsString, null, null)
+        sms.sendTextMessage(smsNumber, null, "$pc / $kg", pi, null)
     }
 
     fun getSMSPermission() {

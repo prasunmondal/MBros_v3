@@ -1,7 +1,12 @@
 package com.tech4bytes.mbrosv3.OneShot.Delivery
 
+import android.app.PendingIntent
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.telephony.SmsManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
@@ -19,6 +24,8 @@ import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
+import com.tech4bytes.mbrosv3.Customer.CustomerKYC
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.SMSDetails.SendSMSDetailsUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerConfig
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
@@ -62,6 +69,7 @@ class OneShotDelivery : AppCompatActivity() {
         saveOneSortDeliveryButton = findViewById(R.id.one_shot_delivery_save_data_btn)
         deleteDeliveryDataButton = findViewById(R.id.osd_delete_delivery_data)
 
+        getSMSPermission()
         Thread {
             populateDeliveryMap()
             updateSingleAttributedDataOnUI()
@@ -286,6 +294,7 @@ class OneShotDelivery : AppCompatActivity() {
             val paidElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid)
             val balanceElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
             val moreDetailsContainer = entry.findViewById<LinearLayout>(R.id.one_shot_delivery_fragment_more_details_container)
+            val sendSMSBtn = entry.findViewById<TextView>(R.id.osd_fragment_send_details)
             rateElementContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
 
             nameElement.text = order.value.name
@@ -295,6 +304,15 @@ class OneShotDelivery : AppCompatActivity() {
                 pcElement.setText(deliveryRecord.deliveredPc)
                 kgElement.text = deliveryRecord.deliveredKg
                 paidElement.text = deliveryRecord.paid
+            }
+
+            if(SendSMSDetailsUtils.getSendSMSDetailsNumber(order.value.name) != null) {
+                sendSMSBtn.visibility = View.VISIBLE
+                sendSMSBtn.setOnClickListener {
+                    val smsNumber = CustomerKYC.getCustomerByEngName(order.value.name)!!.smsNumber
+                    sendSMS(pcElement.text.toString(), kgElement.text.toString(), smsNumber)
+                    Toast.makeText(this, "SMS Sent: $smsNumber", Toast.LENGTH_LONG).show()
+                }
             }
 
             rateElement.setText("${CustomerData.getDeliveryRate(order.value.name)}")
@@ -339,6 +357,29 @@ class OneShotDelivery : AppCompatActivity() {
             uiMaps[order.value.name] = entry
         }
         return entryMap
+    }
+
+    private fun sendSMS(pc: String, kg: String, smsNumber: String) {
+        val intent = Intent(applicationContext, this::class.java)
+        var pi: PendingIntent? = null
+        pi = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_MUTABLE)
+        } else {
+            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
+        }
+        val sms: SmsManager = SmsManager.getDefault()
+        sms.sendTextMessage(smsNumber, null, "$pc / $kg", null, null)
+    }
+
+    fun getSMSPermission() {
+        val PERMISSION_REQUEST_CODE = 123
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(android.Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_DENIED) {
+                Log.d("permission", "permission denied to SEND_SMS - requesting it")
+                val permissions = arrayOf(android.Manifest.permission.SEND_SMS)
+                requestPermissions(permissions, PERMISSION_REQUEST_CODE)
+            }
+        }
     }
 
     private fun fragmentUpdateCustomerWiseRateView(order: Map.Entry<String, DeliverToCustomerDataModel>, entry: View) {

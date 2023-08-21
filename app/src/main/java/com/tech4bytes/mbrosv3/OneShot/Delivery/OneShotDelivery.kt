@@ -1,7 +1,10 @@
 package com.tech4bytes.mbrosv3.OneShot.Delivery
 
 import android.app.PendingIntent
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -43,7 +46,6 @@ import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
-import java.util.jar.Manifest
 
 
 class OneShotDelivery : AppCompatActivity() {
@@ -311,7 +313,17 @@ class OneShotDelivery : AppCompatActivity() {
                 sendSMSBtn.visibility = View.VISIBLE
                 sendSMSBtn.setOnClickListener {
                     val smsNumber = CustomerKYC.getCustomerByEngName(order.value.name)!!.smsNumber
-                    sendSMS(pcElement.text.toString(), kgElement.text.toString(), smsNumber)
+                    val t = DateUtils.getDate(order.value.timestamp)
+                    val formattedDate = DateUtils.getDateInFormat(t!!, "dd/MM/yyyy")
+                    val smsText = CustomerKYC.getCustomerByEngName(order.value.name)!!.smsText
+                        .replace("<date>", formattedDate)
+                        .replace("<pc>",pcElement.text.toString())
+                        .replace("<kg>", kgElement.text.toString())
+                        .replace("<paidAmount>", paidElement.text.toString())
+                        .replace("<rate>", rateElement.text.toString())
+                        .replace("<balanceAmount>", balanceElement.text.toString())
+
+                    sendSMS(smsText, smsNumber)
                     Toast.makeText(this, "SMS Sent: $smsNumber", Toast.LENGTH_LONG).show()
                 }
             }
@@ -360,12 +372,69 @@ class OneShotDelivery : AppCompatActivity() {
         return entryMap
     }
 
-    private fun sendSMS(pc: String, kg: String, smsNumber: String) {
-        val intent = Intent(applicationContext, this::class.java)
-        val pi = PendingIntent.getActivity(applicationContext, 0, intent, 0)
-
+    private fun sendSMS(smsText: String, smsNumber: String) {
         val sms: SmsManager = SmsManager.getDefault()
-        sms.sendTextMessage(smsNumber, null, "$pc / $kg", pi, null)
+        val SENT = "SMS_SENT"
+        val DELIVERED = "SMS_DELIVERED"
+
+        val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) PendingIntent.FLAG_MUTABLE else PendingIntent.FLAG_ONE_SHOT
+
+        val sentPI = PendingIntent.getBroadcast(
+            AppContexts.get(), 0,
+            Intent(SENT), flag
+        )
+        val deliveredPI = PendingIntent.getBroadcast(
+            AppContexts.get(), 0,
+            Intent(DELIVERED), flag
+        )
+
+        val broadCastReceiver = object : BroadcastReceiver() {
+            override fun onReceive(contxt: Context?, intent: Intent?) {
+                when (resultCode) {
+                    RESULT_OK -> Toast.makeText(
+                        baseContext, "SMS sent",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    SmsManager.RESULT_ERROR_GENERIC_FAILURE -> Toast.makeText(
+                        baseContext, "Generic failure",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    SmsManager.RESULT_ERROR_NO_SERVICE -> Toast.makeText(
+                        baseContext, "No service",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    SmsManager.RESULT_ERROR_NULL_PDU -> Toast.makeText(
+                        baseContext, "Null PDU",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    SmsManager.RESULT_ERROR_RADIO_OFF -> Toast.makeText(
+                        baseContext, "Radio off",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+
+        val broadCastReceiverDelivered = object : BroadcastReceiver() {
+            override fun onReceive(arg0: Context?, arg1: Intent?) {
+                when (resultCode) {
+                    RESULT_OK -> Toast.makeText(
+                        baseContext, "SMS delivered",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    RESULT_CANCELED -> Toast.makeText(
+                        baseContext, "SMS not delivered",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+
+        registerReceiver(broadCastReceiver, IntentFilter(SENT))
+        registerReceiver(broadCastReceiverDelivered, IntentFilter(DELIVERED))
+
+        LogMe.log(smsText)
+        sms.sendTextMessage(smsNumber, null, smsText, sentPI, deliveredPI)
     }
 
     fun getSMSPermission() {

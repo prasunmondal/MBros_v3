@@ -1,14 +1,9 @@
 package com.tech4bytes.mbrosv3.OneShot.Delivery
 
-import android.app.PendingIntent
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.telephony.SmsManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -39,6 +34,7 @@ import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
+import com.tech4bytes.mbrosv3.Sms.SMSUtils
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -323,7 +319,7 @@ class OneShotDelivery : AppCompatActivity() {
                         .replace("<rate>", rateElement.text.toString())
                         .replace("<balanceAmount>", balanceElement.text.toString())
 
-                    sendSMS(smsText, smsNumber)
+                    SMSUtils.sendSMS(baseContext, smsText, smsNumber)
                     Toast.makeText(this, "SMS Sent: $smsNumber", Toast.LENGTH_LONG).show()
                 }
             }
@@ -372,72 +368,7 @@ class OneShotDelivery : AppCompatActivity() {
         return entryMap
     }
 
-    private fun sendSMS(smsText: String, smsNumber: String) {
-        val sms: SmsManager = SmsManager.getDefault()
-        val SENT = "SMS_SENT"
-        val DELIVERED = "SMS_DELIVERED"
-
-        val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) PendingIntent.FLAG_MUTABLE else PendingIntent.FLAG_ONE_SHOT
-
-        val sentPI = PendingIntent.getBroadcast(
-            AppContexts.get(), 0,
-            Intent(SENT), flag
-        )
-        val deliveredPI = PendingIntent.getBroadcast(
-            AppContexts.get(), 0,
-            Intent(DELIVERED), flag
-        )
-
-        val broadCastReceiver = object : BroadcastReceiver() {
-            override fun onReceive(contxt: Context?, intent: Intent?) {
-                when (resultCode) {
-                    RESULT_OK -> Toast.makeText(
-                        baseContext, "SMS sent",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    SmsManager.RESULT_ERROR_GENERIC_FAILURE -> Toast.makeText(
-                        baseContext, "Generic failure",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    SmsManager.RESULT_ERROR_NO_SERVICE -> Toast.makeText(
-                        baseContext, "No service",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    SmsManager.RESULT_ERROR_NULL_PDU -> Toast.makeText(
-                        baseContext, "Null PDU",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    SmsManager.RESULT_ERROR_RADIO_OFF -> Toast.makeText(
-                        baseContext, "Radio off",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        }
-
-        val broadCastReceiverDelivered = object : BroadcastReceiver() {
-            override fun onReceive(arg0: Context?, arg1: Intent?) {
-                when (resultCode) {
-                    RESULT_OK -> Toast.makeText(
-                        baseContext, "SMS delivered",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    RESULT_CANCELED -> Toast.makeText(
-                        baseContext, "SMS not delivered",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        }
-
-        registerReceiver(broadCastReceiver, IntentFilter(SENT))
-        registerReceiver(broadCastReceiverDelivered, IntentFilter(DELIVERED))
-
-        LogMe.log(smsText)
-        sms.sendTextMessage(smsNumber, null, smsText, sentPI, deliveredPI)
-    }
-
-    fun getSMSPermission() {
+    private fun getSMSPermission() {
         val PERMISSION_REQUEST_CODE = 123
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(android.Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_DENIED) {

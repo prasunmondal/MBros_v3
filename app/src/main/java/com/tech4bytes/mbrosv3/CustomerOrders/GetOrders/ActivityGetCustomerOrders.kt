@@ -56,7 +56,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         }
 
         listOrders.forEach {
-            if(reset) {
+            if (reset) {
                 it.orderedKg = ""
                 it.orderedPc = ""
                 it.calculatedKg = ""

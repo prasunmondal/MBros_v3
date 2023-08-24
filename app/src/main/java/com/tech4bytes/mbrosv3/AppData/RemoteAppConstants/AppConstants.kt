@@ -15,7 +15,7 @@ enum class AppConstants {
         fun get(constant: AppConstants, useCache: Boolean = true): String {
             val constantList = AppConstantsUtil.getAll(useCache)
             constantList.forEach {
-                if(it.constantName == constant) {
+                if (it.constantName == constant) {
                     return it.constantValue
                 }
             }

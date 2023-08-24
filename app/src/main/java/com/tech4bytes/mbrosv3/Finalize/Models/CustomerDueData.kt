@@ -11,7 +11,7 @@ class CustomerDueData {
             CustomerData.getAllLatestRecords().forEach {
                 dueMap[it.name] = NumberUtils.getIntOrZero(it.balanceDue)
             }
-            if(shouldIncludePostDeliveryUpdates) {
+            if (shouldIncludePostDeliveryUpdates) {
                 DeliverToCustomerDataHandler.get().forEach {
                     dueMap[it.name] = NumberUtils.getIntOrZero(it.balanceDue)
                 }

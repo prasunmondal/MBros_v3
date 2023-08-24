@@ -267,9 +267,9 @@ class OneShotDelivery : AppCompatActivity() {
 
             findViewById<LinearLayout>(R.id.one_shot_delivery_unordered_customers_entry_container).removeAllViews()
             t2.forEach { key, value ->
-            updateEntry(key, value)
-            findViewById<LinearLayout>(R.id.one_shot_delivery_unordered_customers_entry_container).addView(value)
-        }
+                updateEntry(key, value)
+                findViewById<LinearLayout>(R.id.one_shot_delivery_unordered_customers_entry_container).addView(value)
+            }
         }
     }
 
@@ -305,7 +305,7 @@ class OneShotDelivery : AppCompatActivity() {
                 paidElement.text = deliveryRecord.paid
             }
 
-            if(SendSMSDetailsUtils.getSendSMSDetailsNumber(order.value.name) != null) {
+            if (SendSMSDetailsUtils.getSendSMSDetailsNumber(order.value.name) != null) {
                 sendSMSBtn.visibility = View.VISIBLE
                 sendSMSBtn.setOnClickListener {
                     val smsNumber = CustomerKYC.getCustomerByEngName(order.value.name)!!.smsNumber
@@ -313,7 +313,7 @@ class OneShotDelivery : AppCompatActivity() {
                     val formattedDate = DateUtils.getDateInFormat(t!!, "dd/MM/yyyy")
                     val smsText = CustomerKYC.getCustomerByEngName(order.value.name)!!.smsText
                         .replace("<date>", formattedDate)
-                        .replace("<pc>",pcElement.text.toString())
+                        .replace("<pc>", pcElement.text.toString())
                         .replace("<kg>", kgElement.text.toString())
                         .replace("<paidAmount>", paidElement.text.toString())
                         .replace("<rate>", rateElement.text.toString())

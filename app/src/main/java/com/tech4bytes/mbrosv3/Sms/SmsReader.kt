@@ -45,11 +45,11 @@ class SmsReader {
         }
 
         fun getSMSFromNumber(smsList: MutableList<SMSModel>, number: String): MutableList<SMSModel> {
-            return smsList.stream().filter{ p -> p.number.contains(number) }.collect(Collectors.toList())
+            return smsList.stream().filter { p -> p.number.contains(number) }.collect(Collectors.toList())
         }
 
         fun getSMSStartingWith(smsList: MutableList<SMSModel>, str: String): MutableList<SMSModel> {
-            return smsList.stream().filter{ p -> p.body.contains(str) }.collect(Collectors.toList())
+            return smsList.stream().filter { p -> p.body.contains(str) }.collect(Collectors.toList())
         }
     }
 

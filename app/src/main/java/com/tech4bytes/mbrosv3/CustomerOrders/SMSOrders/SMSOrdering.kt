@@ -118,7 +118,7 @@ class SMSOrdering : AppCompatActivity() {
             finalizedPcView.hint = orders[j].orderedPc.toString()
             finalizedPcView.doOnTextChanged { text, start, before, count ->
                 orders[j].orderedPc = NumberUtils.getIntOrZero(finalizedPcView.text.toString())
-                if(finalizedPcView.text.toString() == "") {
+                if (finalizedPcView.text.toString() == "") {
                     orders[j].orderedPc = NumberUtils.getIntOrZero(finalizedPcView.hint.toString())
                 }
                 updateTotal()

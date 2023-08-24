@@ -55,11 +55,11 @@ class OrdersMakeList : AppCompatActivity() {
     }
 
     private fun getFinalPc(order: GetCustomerOrders): String {
-        return if(NumberUtils.getIntOrZero(order.calculatedPc) == 0) order.getEstimatedPc(false) else order.calculatedPc
+        return if (NumberUtils.getIntOrZero(order.calculatedPc) == 0) order.getEstimatedPc(false) else order.calculatedPc
     }
 
     private fun getFinalKg(order: GetCustomerOrders): String {
-        return if(NumberUtils.getIntOrZero(order.calculatedKg) == 0) order.getEstimatedKg(false) else order.calculatedKg
+        return if (NumberUtils.getIntOrZero(order.calculatedKg) == 0) order.getEstimatedKg(false) else order.calculatedKg
     }
 
     fun onClickGoToOrdersGetPage(view: View) {

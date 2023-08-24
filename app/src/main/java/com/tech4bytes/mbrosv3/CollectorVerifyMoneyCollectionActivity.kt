@@ -82,7 +82,7 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
         share.putExtra(Intent.EXTRA_STREAM, uri)
         share.setPackage("com.whatsapp")
 
-        startActivity(Intent.createChooser(share,""));
+        startActivity(Intent.createChooser(share, ""));
     }
 
     class VerifyElements {
@@ -120,7 +120,7 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
 
             listContainer.addView(entry)
 
-            if(NumberUtils.getIntOrZero(deliveryEntry.paid) > 0) {
+            if (NumberUtils.getIntOrZero(deliveryEntry.paid) > 0) {
                 bundlesCount++
             }
         }

@@ -43,11 +43,11 @@
     <color name="osl_company_details_view">#024149</color>
     <color name="osl_company_details_view_editing">#FB7065</color>
 
-<!--  DUE SHOW VIEW  -->
+    <!--  DUE SHOW VIEW  -->
     <color name="due_show_excluding_finalized_transactions">#F37B71</color>
     <color name="due_show_including_finalized_transactions">#B3E0E6</color>
 
-<!-- MONEY COUNTER-->
+    <!-- MONEY COUNTER-->
     <color name="mc_counter_success">#9FE3A2</color>
     <color name="mc_counter_unsuccessful">#F8D9D9</color>
 </resources>

@@ -235,7 +235,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="30dp"
-                                    android:text="1.123 kg/pc"
+                                    android:text="0.000 kg/pc"
                                     android:textColor="#FDABC7"
                                     android:textSize="14sp"
                                     android:textStyle="bold" />

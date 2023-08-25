@@ -18,7 +18,9 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.tech4bytes.mbrosv3.AppData.AppUtils
+import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
+import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -235,7 +237,7 @@ class OneShotLoad : AppCompatActivity() {
         labelAccount.text = obj.load_account
         labelLoadArea.text = obj.load_area
         inHandCash.setText(obj.extra_cash_given)
-        deliveryBasePrice.setText((NumberUtils.getIntOrZero(obj.finalFarmRate) + NumberUtils.getIntOrZero(obj.bufferRate) + 10).toString())
+        deliveryBasePrice.setText(DeliveryCalculations.getBaseDeliveryPrice(obj.finalFarmRate, obj.bufferRate).toString())
         finalFarmRate.setText(obj.finalFarmRate)
     }
 

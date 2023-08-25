@@ -5,7 +5,8 @@ enum class AppConstants {
     SMS_ORDER_GET_ORDER_PH_NUMBER,
     CAR_RATE_PER_KM,
     DRIVER_SALARY,
-    SEND_DELIVERY_DETAILS_BY_SMS;
+    SEND_DELIVERY_DETAILS_BY_SMS,
+    DELIVERY_BASE_RATE_DIFF;
 
     companion object {
         fun fetchAll(useCache: Boolean = true) {

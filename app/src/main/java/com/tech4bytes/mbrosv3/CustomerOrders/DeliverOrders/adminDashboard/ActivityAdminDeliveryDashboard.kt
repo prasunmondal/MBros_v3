@@ -28,6 +28,26 @@ import com.tech4bytes.mbrosv3.Utils.WeightUtils.WeightUtils
 import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
 
 class ActivityAdminDeliveryDashboard : AppCompatActivity() {
+
+    private lateinit var deliveredNumberElement: TextView
+    private lateinit var totalPcElement: TextView
+    private lateinit var totalKgElement: TextView
+    private lateinit var avgWtElement: TextView
+    private lateinit var deliveredPcKgElement: TextView
+    private lateinit var deliveredAvgWtElement: TextView
+    private lateinit var projectedShortageElement: TextView
+    private lateinit var spoolBtnElement: Button
+    private lateinit var farmRateElement: EditText
+    private lateinit var deliveryRateElement: EditText
+    private lateinit var profitElement: TextView
+    private lateinit var carCostElement: TextView
+    private lateinit var labCostElement: TextView
+    private lateinit var extraCostElement: TextView
+    private lateinit var loadCompanyElement: TextView
+    private lateinit var loadBranchElement: TextView
+    private lateinit var loadAccountElement: TextView
+    private lateinit var loadAreaElement: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_delivery_dashboard)
@@ -35,8 +55,31 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         AppUtils.logError()
         getPermissions()
 
+        initiallizeVariables()
         updateDashboard(true)
         setCompanyAndRateValuesInUI()
+//        setListeners()
+    }
+
+    private fun initiallizeVariables() {
+        deliveredNumberElement = findViewById(R.id.activity_admin_delivery_dashboard_delivered_number)
+        totalPcElement = findViewById(R.id.activity_admin_delivery_dashboard_total_pc)
+        totalKgElement = findViewById(R.id.activity_admin_delivery_dashboard_loaded_kg)
+        avgWtElement = findViewById(R.id.activity_admin_delivery_dashboard_total_loaded_avg_wt)
+        deliveredPcKgElement = findViewById(R.id.activity_admin_delivery_dashboard_delivered_pc_kg)
+        deliveredAvgWtElement = findViewById(R.id.activity_admin_delivery_dashboard_delivered_avg_wt)
+        projectedShortageElement = findViewById(R.id.activity_admin_delivery_dashboard_projected_shortage)
+        spoolBtnElement = findViewById(R.id.admin_dashboard_spool_customer_delivery_data)
+        farmRateElement = findViewById(R.id.activity_admin_delivery_dashboard_farmrate)
+        deliveryRateElement = findViewById(R.id.activity_admin_delivery_dashboard_delivery_base_price)
+        profitElement = findViewById(R.id.admin_dash_profit)
+        carCostElement = findViewById(R.id.admin_dash_car_cost)
+        labCostElement = findViewById(R.id.admin_dash_lab_cost)
+        extraCostElement = findViewById(R.id.admin_dash_extra_cost)
+        loadCompanyElement = findViewById(R.id.activity_admin_delivery_dashboard_load_company_area)
+        loadBranchElement = findViewById(R.id.activity_admin_delivery_dashboard_load_company_branch)
+        loadAccountElement = findViewById(R.id.activity_admin_delivery_dashboard_load_account)
+        loadAreaElement = findViewById(R.id.activity_admin_delivery_dashboard_load_company_area)
     }
 
     private fun getPermissions() {
@@ -48,9 +91,6 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     }
 
     fun updateLoadInfo(useCache: Boolean) {
-        val totalPcElement = findViewById<TextView>(R.id.activity_admin_delivery_dashboard_total_pc)
-        val totalKgElement = findViewById<TextView>(R.id.activity_admin_delivery_dashboard_loaded_kg)
-        val avgWtElement = findViewById<TextView>(R.id.activity_admin_delivery_dashboard_total_loaded_avg_wt)
 
         val loadMetadata = SingleAttributedData.getRecords(useCache)
         UIUtils.setUIElementValue(totalPcElement, loadMetadata.actualLoadPc)
@@ -71,10 +111,6 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         val deliveredPc = DeliverToCustomerCalculations.getTotalPcDelivered()
         val deliveredKg = DeliverToCustomerCalculations.getTotalKgDelivered()
         val avgWt = deliveredKg / deliveredPc
-
-        val deliveredNumberElement = findViewById<TextView>(R.id.activity_admin_delivery_dashboard_delivered_number)
-        val deliveredPcKgElement = findViewById<TextView>(R.id.activity_admin_delivery_dashboard_delivered_pc_kg)
-        val deliveredAvgWtElement = findViewById<TextView>(R.id.activity_admin_delivery_dashboard_delivered_avg_wt)
 
         UIUtils.setUIElementValue(
             deliveredNumberElement,
@@ -105,7 +141,6 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     }
 
     private fun updateProjectedInfo(useCache: Boolean) {
-        val projectedShortageElement = findViewById<TextView>(R.id.activity_admin_delivery_dashboard_projected_shortage)
         try {
             val metadataObj = SingleAttributedData.getRecords(useCache)
             val shortage = DeliveryCalculations.getShortage(NumberUtils.getDoubleOrZero(metadataObj.actualLoadKg), DeliverToCustomerCalculations.getTotalKgDelivered())
@@ -116,46 +151,46 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     }
 
     fun onClickSpoolCustomerData(view: View) {
-        val spoolBtn = findViewById<Button>(R.id.admin_dashboard_spool_customer_delivery_data)
+
         Thread {
             runOnUiThread {
-                spoolBtn.isEnabled = false
-                spoolBtn.alpha = .5f
-                spoolBtn.isClickable = false
-                spoolBtn.text = "Finalizing Data... .. ."
+                spoolBtnElement.isEnabled = false
+                spoolBtnElement.alpha = .5f
+                spoolBtnElement.isClickable = false
+                spoolBtnElement.text = "Finalizing Data... .. ."
             }
             CustomerData.spoolDeliveringData()
             Refueling.spoolRefuelingData()
             DaySummary.saveToServer()
             runOnUiThread {
-                spoolBtn.isEnabled = true
-                spoolBtn.alpha = 1.0f
-                spoolBtn.isClickable = true
-                spoolBtn.text = "Finalize Data"
+                spoolBtnElement.isEnabled = true
+                spoolBtnElement.alpha = 1.0f
+                spoolBtnElement.isClickable = true
+                spoolBtnElement.text = "Finalize Data"
             }
         }.start()
     }
 
     fun onClickSaveRate(view: View) {
         val obj = SingleAttributedData.getRecords()
-        obj.finalFarmRate = UIUtils.getUIElementValue(findViewById<EditText>(R.id.activity_admin_delivery_dashboard_farmrate))
-        val deliveryRate = UIUtils.getUIElementValue(findViewById<EditText>(R.id.activity_admin_delivery_dashboard_delivery_base_price))
+        obj.finalFarmRate = UIUtils.getUIElementValue(farmRateElement)
+        val deliveryRate = UIUtils.getUIElementValue(deliveryRateElement)
         obj.bufferRate = DeliveryCalculations.getBufferPrice(obj.finalFarmRate, deliveryRate).toString()
         SingleAttributedData.save(obj)
     }
 
     fun setCompanyAndRateValuesInUI() {
         val obj = SingleAttributedData.getRecords()
-        UIUtils.setUIElementValue(findViewById<EditText>(R.id.activity_admin_delivery_dashboard_load_company), obj.load_companyName)
-        UIUtils.setUIElementValue(findViewById<EditText>(R.id.activity_admin_delivery_dashboard_load_company_branch), obj.load_branch)
-        UIUtils.setUIElementValue(findViewById<EditText>(R.id.activity_admin_delivery_dashboard_load_account), obj.load_account)
-        UIUtils.setUIElementValue(findViewById<EditText>(R.id.activity_admin_delivery_dashboard_load_company_area), obj.load_area)
-        UIUtils.setUIElementValue(findViewById<EditText>(R.id.activity_admin_delivery_dashboard_farmrate), obj.finalFarmRate)
-        UIUtils.setUIElementValue(findViewById<EditText>(R.id.activity_admin_delivery_dashboard_delivery_base_price), DeliveryCalculations.getBaseDeliveryPrice(obj.finalFarmRate, obj.bufferRate).toString())
-        UIUtils.setUIElementValue(findViewById<EditText>(R.id.admin_dash_profit), DaySummary.getDayProfit().toString())
-        UIUtils.setUIElementValue(findViewById<EditText>(R.id.admin_dash_car_cost), DeliveryCalculations.getKmCost().toString())
-        UIUtils.setUIElementValue(findViewById<EditText>(R.id.admin_dash_lab_cost), obj.labour_expenses)
-        UIUtils.setUIElementValue(findViewById<EditText>(R.id.admin_dash_extra_cost), obj.extra_expenses)
+        UIUtils.setUIElementValue(loadCompanyElement, obj.load_companyName)
+        UIUtils.setUIElementValue(loadBranchElement, obj.load_branch)
+        UIUtils.setUIElementValue(loadAccountElement, obj.load_account)
+        UIUtils.setUIElementValue(loadAreaElement, obj.load_area)
+        UIUtils.setUIElementValue(farmRateElement, obj.finalFarmRate)
+        UIUtils.setUIElementValue(deliveryRateElement, DeliveryCalculations.getBaseDeliveryPrice(obj.finalFarmRate, obj.bufferRate).toString())
+        UIUtils.setUIElementValue(profitElement, DaySummary.getDayProfit().toString())
+        UIUtils.setUIElementValue(carCostElement, DeliveryCalculations.getKmCost().toString())
+        UIUtils.setUIElementValue(labCostElement, obj.labour_expenses)
+        UIUtils.setUIElementValue(extraCostElement, obj.extra_expenses)
     }
 
     override fun onBackPressed() {

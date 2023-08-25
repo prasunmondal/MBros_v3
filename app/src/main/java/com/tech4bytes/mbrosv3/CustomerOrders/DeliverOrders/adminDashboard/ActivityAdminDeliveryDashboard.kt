@@ -139,7 +139,8 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     fun onClickSaveRate(view: View) {
         val obj = SingleAttributedData.getRecords()
         obj.finalFarmRate = UIUtils.getUIElementValue(findViewById<EditText>(R.id.activity_admin_delivery_dashboard_farmrate))
-        obj.bufferRate = UIUtils.getUIElementValue(findViewById<EditText>(R.id.activity_admin_delivery_dashboard_buffer_price))
+        val deliveryRate = UIUtils.getUIElementValue(findViewById<EditText>(R.id.activity_admin_delivery_dashboard_delivery_base_price))
+        obj.bufferRate = DeliveryCalculations.getBufferPrice(obj.finalFarmRate, deliveryRate).toString()
         SingleAttributedData.save(obj)
     }
 
@@ -150,7 +151,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         UIUtils.setUIElementValue(findViewById<EditText>(R.id.activity_admin_delivery_dashboard_load_account), obj.load_account)
         UIUtils.setUIElementValue(findViewById<EditText>(R.id.activity_admin_delivery_dashboard_load_company_area), obj.load_area)
         UIUtils.setUIElementValue(findViewById<EditText>(R.id.activity_admin_delivery_dashboard_farmrate), obj.finalFarmRate)
-        UIUtils.setUIElementValue(findViewById<EditText>(R.id.activity_admin_delivery_dashboard_buffer_price), obj.bufferRate)
+        UIUtils.setUIElementValue(findViewById<EditText>(R.id.activity_admin_delivery_dashboard_delivery_base_price), DeliveryCalculations.getBaseDeliveryPrice(obj.finalFarmRate, obj.bufferRate).toString())
     }
 
     override fun onBackPressed() {

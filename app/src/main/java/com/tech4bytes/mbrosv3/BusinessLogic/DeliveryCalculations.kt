@@ -110,5 +110,14 @@ class DeliveryCalculations {
             return getBaseDeliveryPrice(NumberUtils.getIntOrZero(farmRate), NumberUtils.getIntOrZero(buffer))
         }
 
+
+        fun getBufferPrice(farmRate: Int, deliveryRate: Int): Int {
+            return deliveryRate - farmRate - NumberUtils.getIntOrZero(AppConstants.get(AppConstants.DELIVERY_BASE_RATE_DIFF))
+        }
+
+        fun getBufferPrice(farmRate: String, deliveryRate: String): Int {
+            return getBufferPrice(NumberUtils.getIntOrZero(farmRate), NumberUtils.getIntOrZero(deliveryRate))
+        }
+
     }
 }

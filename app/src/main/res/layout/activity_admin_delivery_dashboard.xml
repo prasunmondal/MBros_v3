@@ -320,11 +320,11 @@
 
                                             <!--this is the actual edit text which takes the input-->
                                             <com.google.android.material.textfield.TextInputEditText
-                                                android:id="@+id/activity_admin_delivery_dashboard_buffer_price"
+                                                android:id="@+id/activity_admin_delivery_dashboard_delivery_base_price"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:background="#00000000"
-                                                android:hint="Buffer"
+                                                android:hint="Delivery Price"
                                                 android:inputType="number"
                                                 android:textColor="#D8EEF8"
                                                 android:textColorHint="#A9E2FB" />

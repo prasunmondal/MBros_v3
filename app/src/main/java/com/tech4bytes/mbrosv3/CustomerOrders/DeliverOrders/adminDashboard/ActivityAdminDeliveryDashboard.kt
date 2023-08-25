@@ -79,9 +79,10 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
             deliveredNumberElement,
             "$numberOfCustomersDelivered / $totalNumberOfCustomers Counters"
         )
+//        ${"%.3f".format(sumKg)}
         UIUtils.setUIElementValue(
             deliveredPcKgElement,
-            "$deliveredPc pc - $deliveredKg kg"
+            "$deliveredPc pc - ${"%.3f".format(WeightUtils.roundOff3places(deliveredKg))} kg"
         )
         UIUtils.setUIElementValue(
             deliveredAvgWtElement,

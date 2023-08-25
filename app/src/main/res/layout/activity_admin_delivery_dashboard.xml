@@ -20,7 +20,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="2dp"
                 android:background="@drawable/rounded"
                 android:backgroundTint="#370215"
                 android:orientation="vertical"
@@ -69,75 +69,66 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
-                            <com.google.android.material.textfield.TextInputLayout
+                            <TextView
+                                android:id="@+id/activity_admin_delivery_dashboard_load_company"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Company"
+                                android:textColor="#9C5D74" />
+
+                            <TextView
+                                android:id="@+id/textView62"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="  /  "
+                                android:textColor="#9C5D74" />
+
+                            <TextView
+                                android:id="@+id/activity_admin_delivery_dashboard_load_company_branch"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Branch"
+                                android:textColor="#9C5D74" />
+
+                            <TextView
+                                android:id="@+id/textView63"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="  /  "
+                                android:textColor="#9C5D74" />
+
+                            <TextView
+                                android:id="@+id/activity_admin_delivery_dashboard_load_company_area"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:maxEms="10"
-                                android:minEms="10"
-                                android:textColorHint="#F6CBD9">
+                                android:text="Area"
+                                android:textColor="#9C5D74" />
 
-                                <!--this is the actual edit text which takes the input-->
-                                <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/activity_admin_delivery_dashboard_load_company"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:background="#00000000"
-                                    android:hint="Company"
-                                    android:inputType="textPersonName"
-                                    android:textColor="#D8EEF8"
-                                    android:textColorHint="#A9E2FB" />
-
-                            </com.google.android.material.textfield.TextInputLayout>
-
-                            <com.google.android.material.textfield.TextInputLayout
+                            <TextView
+                                android:id="@+id/textView64"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:maxEms="10"
-                                android:minEms="10"
-                                android:textColorHint="#F6CBD9">
+                                android:gravity="right"
+                                android:text="- "
+                                android:textColor="#9C5D74" />
 
-                                <!--this is the actual edit text which takes the input-->
-                                <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/activity_admin_delivery_dashboard_load_company_branch"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:background="#00000000"
-                                    android:hint="Branch"
-                                    android:inputType="textPersonName"
-                                    android:textColor="#D8EEF8"
-                                    android:textColorHint="#A9E2FB" />
-
-                            </com.google.android.material.textfield.TextInputLayout>
-
-                            <com.google.android.material.textfield.TextInputLayout
+                            <TextView
+                                android:id="@+id/activity_admin_delivery_dashboard_load_account"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:maxEms="10"
-                                android:minEms="10"
-                                android:textColorHint="#F6CBD9">
-
-                                <!--this is the actual edit text which takes the input-->
-                                <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/activity_admin_delivery_dashboard_load_account"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:background="#00000000"
-                                    android:hint="Account"
-                                    android:inputType="textPersonName"
-                                    android:textColor="#D8EEF8"
-                                    android:textColorHint="#A9E2FB" />
-
-                            </com.google.android.material.textfield.TextInputLayout>
+                                android:text="Account"
+                                android:textColor="#9C5D74" />
 
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:paddingTop="15dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"

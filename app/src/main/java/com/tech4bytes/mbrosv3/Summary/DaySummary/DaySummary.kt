@@ -103,21 +103,18 @@ data class DaySummary(
             daySummaryObj.transport_expenses = ""
             daySummaryObj.other_expenses_note = ""
             daySummaryObj.other_expense_amount = ""
-            daySummaryObj.profit = ""
+            daySummaryObj.profit = getDayProfit().toString()
 
             return daySummaryObj
         }
 
         private fun getFromServer(): List<DaySummary> {
-            // val waitDialog = ProgressDialog.show(AppContexts.get(), "Please Wait", "লোড হচ্ছে", true)
             val result: GetResponse = Get.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
                 .sheetId(ProjectConfig.get_db_finalize_sheet_id())
                 .tabName(SummaryConfig.TAB_DAY_SUMMARY)
                 .build().execute()
 
-
-            // waitDialog!!.dismiss()
             val parsedResult = result.parseToObject<DaySummary>(
                 result.getRawResponse(),
                 object : TypeToken<ArrayList<DaySummary>?>() {}.type

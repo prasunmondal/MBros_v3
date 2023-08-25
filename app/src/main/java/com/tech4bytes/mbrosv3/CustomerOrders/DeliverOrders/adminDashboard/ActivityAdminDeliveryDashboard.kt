@@ -152,6 +152,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         UIUtils.setUIElementValue(findViewById<EditText>(R.id.activity_admin_delivery_dashboard_load_company_area), obj.load_area)
         UIUtils.setUIElementValue(findViewById<EditText>(R.id.activity_admin_delivery_dashboard_farmrate), obj.finalFarmRate)
         UIUtils.setUIElementValue(findViewById<EditText>(R.id.activity_admin_delivery_dashboard_delivery_base_price), DeliveryCalculations.getBaseDeliveryPrice(obj.finalFarmRate, obj.bufferRate).toString())
+        UIUtils.setUIElementValue(findViewById<EditText>(R.id.admin_dash_profit), DaySummary.getDayProfit().toString())
     }
 
     override fun onBackPressed() {

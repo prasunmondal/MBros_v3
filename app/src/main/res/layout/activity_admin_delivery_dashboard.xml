@@ -8,7 +8,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#57EAC4A2">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -147,7 +148,7 @@
                                     android:layout_width="150dp"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="right"
-                                    android:gravity="right"
+                                    android:gravity="left"
                                     android:orientation="horizontal"
                                     android:paddingBottom="5dp">
 
@@ -155,7 +156,7 @@
                                         android:id="@+id/activity_admin_delivery_dashboard_total_pc"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="0"
+                                        android:text="000"
                                         android:textColor="#D8EEF8"
                                         android:textSize="14sp" />
 
@@ -180,7 +181,7 @@
                                         android:id="@+id/activity_admin_delivery_dashboard_loaded_kg"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="0.00"
+                                        android:text="000.000"
                                         android:textColor="#D8EEF8"
                                         android:textSize="14sp" />
 
@@ -207,7 +208,7 @@
                                         android:id="@+id/activity_admin_delivery_dashboard_total_loaded_avg_wt"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="0.00"
+                                        android:text="0.000"
                                         android:textColor="#FDABC7"
                                         android:textSize="14sp"
                                         android:textStyle="bold" />
@@ -216,7 +217,7 @@
                                         android:id="@+id/textView20"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginStart="10dp"
+                                        android:layout_marginStart="5dp"
                                         android:text="kg/pc"
                                         android:textColor="#FDABC7"
                                         android:textSize="14sp"
@@ -234,8 +235,7 @@
                                     android:id="@+id/activity_admin_delivery_dashboard_delivered_pc_kg"
                                     android:layout_width="150dp"
                                     android:layout_height="wrap_content"
-                                    android:gravity="right"
-                                    android:text="1 pc - 10 kg"
+                                    android:text="000 pc - 000.000 kg"
                                     android:textColor="#D8EEF8"
                                     android:textSize="14sp" />
 
@@ -263,7 +263,7 @@
                                         android:gravity="right"
                                         android:paddingRight="2dp"
                                         android:text="▼"
-                                        android:textColor="#F40F0F"
+                                        android:textColor="#F85858"
                                         android:textSize="14sp" />
 
                                     <TextView
@@ -272,7 +272,7 @@
                                         android:layout_height="wrap_content"
                                         android:gravity="right"
                                         android:text="N/A"
-                                        android:textColor="#F40F0F"
+                                        android:textColor="#F85858"
                                         android:textSize="14sp"
                                         android:textStyle="bold" />
                                 </LinearLayout>

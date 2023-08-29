@@ -136,9 +136,12 @@ data class DaySummary(
         }
 
         fun getBirdCost(): Int {
-            return (NumberUtils.getDoubleOrZero(SingleAttributedData.getRecords().actualLoadKg)
-                    * NumberUtils.getIntOrZero(SingleAttributedData.getRecords().finalFarmRate))
-                .toInt()
+            return getBirdCost(NumberUtils.getDoubleOrZero(SingleAttributedData.getRecords().actualLoadKg),
+                NumberUtils.getIntOrZero(SingleAttributedData.getRecords().finalFarmRate))
+        }
+
+        fun getBirdCost(loadedKg: Double, farmRate: Int): Int {
+            return (loadedKg * farmRate).toInt()
         }
 
         fun kmCost(): Int {
@@ -167,10 +170,30 @@ data class DaySummary(
             return getDaySale() - getBirdCost() - kmCost() - getLabourCost() - getExtraCost()
         }
 
+        fun getDayProfit(loadedKg: Double, farmRate: Int): Int {
+            // Sale - birdCost - kmCost - labCost - extraCost
+            LogMe.log(getDaySale())
+            LogMe.log(getBirdCost())
+            LogMe.log(kmCost())
+            LogMe.log(getLabourCost())
+            LogMe.log(getExtraCost())
+            return getDaySale() - getBirdCost(loadedKg, farmRate) - kmCost() - getLabourCost() - getExtraCost()
+        }
+
         fun showDayProfit(): String {
             return if(AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_PROFITS)) {
                 LogMe.log("Showing Profit: " + getDayProfit())
                 getDayProfit().toString()
+            } else {
+                LogMe.log("Showing Profit: Expected Permission: SHOW_PROFITS <PERMISSION DENIED>")
+                "Sunshine"
+            }
+        }
+
+        fun showDayProfit(loadedKg: Double, farmRate: Int): String {
+            return if(AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_PROFITS)) {
+                LogMe.log("Showing Profit: " + getDayProfit(loadedKg, farmRate))
+                getDayProfit(loadedKg, farmRate).toString()
             } else {
                 LogMe.log("Showing Profit: Expected Permission: SHOW_PROFITS <PERMISSION DENIED>")
                 "Sunshine"

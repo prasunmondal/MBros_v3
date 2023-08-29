@@ -420,8 +420,7 @@ class OneShotDelivery : AppCompatActivity() {
             val profitElement = findViewById<TextView>(R.id.osd_profit)
             val totalDueElement = findViewById<TextView>(R.id.osd_total_due)
 
-            val p = DaySummary.getDayProfit()
-            profitElement.text = p.toString()
+            profitElement.text = DaySummary.showDayProfit()
             totalDueElement.text = "---"
         }
         updateTotalDueBalance()

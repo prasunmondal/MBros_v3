@@ -5,10 +5,13 @@ import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
+import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
+import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Summary.SummaryConfig
+import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -162,6 +165,16 @@ data class DaySummary(
             LogMe.log(getLabourCost())
             LogMe.log(getExtraCost())
             return getDaySale() - getBirdCost() - kmCost() - getLabourCost() - getExtraCost()
+        }
+
+        fun showDayProfit(): String {
+            return if(AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_PROFITS)) {
+                LogMe.log("Showing Profit: " + getDayProfit())
+                getDayProfit().toString()
+            } else {
+                LogMe.log("Showing Profit: Expected Permission: SHOW_PROFITS <PERMISSION DENIED>")
+                "Sunshine"
+            }
         }
     }
 }

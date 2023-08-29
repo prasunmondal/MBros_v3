@@ -215,10 +215,8 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     }
 
     fun setRuntimeUIValues() {
-        val obj = SingleAttributedData.getRecords()
-        LogMe.log("Setting profit element to: ${DaySummary.getDayProfit()}")
-        if(AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_FARM_RATE))
-        UIUtils.setUIElementValue(profitElement, DaySummary.getDayProfit().toString())
+        LogMe.log("Setting profit element to: ${DaySummary.showDayProfit()}")
+        UIUtils.setUIElementValue(profitElement, DaySummary.showDayProfit())
     }
 
     override fun onBackPressed() {

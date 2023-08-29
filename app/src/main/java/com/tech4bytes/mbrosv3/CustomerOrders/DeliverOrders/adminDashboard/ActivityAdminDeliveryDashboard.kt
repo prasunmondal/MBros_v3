@@ -215,10 +215,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     }
 
     fun setRuntimeUIValues() {
-        LogMe.log("Setting profit element to: ${DaySummary.showDayProfit(
-            NumberUtils.getDoubleOrZero(UIUtils.getUIElementValue(totalKgElement)),
-            NumberUtils.getIntOrZero(UIUtils.getUIElementValue(farmRateElement))
-        )}")
+        LogMe.log("Setting profit element to: ${DaySummary.showDayProfit()}")
         UIUtils.setUIElementValue(profitElement, DaySummary.showDayProfit())
     }
 

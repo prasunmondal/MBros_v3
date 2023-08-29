@@ -11,7 +11,11 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import com.tech4bytes.mbrosv3.AppData.AppUtils
+import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
+import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
+import com.tech4bytes.mbrosv3.AppUsers.RolesUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerCalculations
@@ -23,6 +27,7 @@ import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.WeightUtils.WeightUtils
 import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
@@ -58,7 +63,24 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         initiallizeVariables()
         updateDashboard(true)
         setCompanyAndRateValuesInUI()
-//        setListeners()
+        setRuntimeUIValues()
+        setListeners()
+    }
+
+    private fun setListeners() {
+        farmRateElement.addTextChangedListener {
+            val obj = SingleAttributedData.getRecords()
+            obj.finalFarmRate = it.toString()
+            SingleAttributedData.saveToLocal(obj)
+            setRuntimeUIValues()
+        }
+        deliveryRateElement.addTextChangedListener {
+            val obj = SingleAttributedData.getRecords()
+            obj.bufferRate = DeliveryCalculations.getBufferPrice(obj.finalFarmRate, it.toString()).toString()
+            SingleAttributedData.saveToLocal(obj)
+            setRuntimeUIValues()
+        }
+
     }
 
     private fun initiallizeVariables() {
@@ -76,7 +98,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         carCostElement = findViewById(R.id.admin_dash_car_cost)
         labCostElement = findViewById(R.id.admin_dash_lab_cost)
         extraCostElement = findViewById(R.id.admin_dash_extra_cost)
-        loadCompanyElement = findViewById(R.id.activity_admin_delivery_dashboard_load_company_area)
+        loadCompanyElement = findViewById(R.id.activity_admin_delivery_dashboard_load_company)
         loadBranchElement = findViewById(R.id.activity_admin_delivery_dashboard_load_company_branch)
         loadAccountElement = findViewById(R.id.activity_admin_delivery_dashboard_load_account)
         loadAreaElement = findViewById(R.id.activity_admin_delivery_dashboard_load_company_area)
@@ -187,10 +209,16 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         UIUtils.setUIElementValue(loadAreaElement, obj.load_area)
         UIUtils.setUIElementValue(farmRateElement, obj.finalFarmRate)
         UIUtils.setUIElementValue(deliveryRateElement, DeliveryCalculations.getBaseDeliveryPrice(obj.finalFarmRate, obj.bufferRate).toString())
-        UIUtils.setUIElementValue(profitElement, DaySummary.getDayProfit().toString())
         UIUtils.setUIElementValue(carCostElement, DeliveryCalculations.getKmCost().toString())
         UIUtils.setUIElementValue(labCostElement, obj.labour_expenses)
         UIUtils.setUIElementValue(extraCostElement, obj.extra_expenses)
+    }
+
+    fun setRuntimeUIValues() {
+        val obj = SingleAttributedData.getRecords()
+        LogMe.log("Setting profit element to: ${DaySummary.getDayProfit()}")
+        if(AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_FARM_RATE))
+        UIUtils.setUIElementValue(profitElement, DaySummary.getDayProfit().toString())
     }
 
     override fun onBackPressed() {

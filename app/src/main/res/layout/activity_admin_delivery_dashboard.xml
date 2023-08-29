@@ -351,6 +351,7 @@
                                                     android:layout_weight=".33"
                                                     android:backgroundTint="#C12359"
                                                     android:onClick="onClickSaveRate"
+                                                    android:textSize="14dp"
                                                     android:text="Save"
                                                     app:rippleColor="#FFFFFF" />
 

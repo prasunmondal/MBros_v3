@@ -129,11 +129,13 @@ data class SingleAttributedData(
                 .build().execute()
         }
 
-        fun saveToLocal(obj: SingleAttributedData) {
-            obj.id = System.currentTimeMillis().toString()
-            obj.recordGeneratorDevice = getPhoneId()
-            obj.date = DateUtils.getCurrentTimestamp()
+        fun saveToLocal(obj: SingleAttributedData?) {
+            if(obj != null) {
+                obj.id = System.currentTimeMillis().toString()
+                obj.recordGeneratorDevice = getPhoneId()
+                obj.date = DateUtils.getCurrentTimestamp()
 //            obj.datetime = DateUtils.getCurrentTimestamp()
+            }
             CentralCache.put(recordsKey, obj)
         }
 
@@ -143,6 +145,11 @@ data class SingleAttributedData(
                 AppContexts.get().contentResolver,
                 Settings.Secure.ANDROID_ID
             )
+        }
+
+        fun invalidateCache()
+        {
+            saveToLocal(null)
         }
     }
 }

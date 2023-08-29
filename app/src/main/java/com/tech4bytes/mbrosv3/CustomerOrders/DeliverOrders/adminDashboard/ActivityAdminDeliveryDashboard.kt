@@ -188,6 +188,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
             CustomerData.spoolDeliveringData()
             Refueling.spoolRefuelingData()
             DaySummary.saveToServer()
+            SingleAttributedData.invalidateCache()
             runOnUiThread {
                 spoolBtnElement.isEnabled = true
                 spoolBtnElement.alpha = 1.0f
@@ -195,14 +196,6 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
                 spoolBtnElement.text = "Finalize Data"
             }
         }.start()
-    }
-
-    fun onClickSaveRate(view: View) {
-        val obj = SingleAttributedData.getRecords()
-        obj.finalFarmRate = UIUtils.getUIElementValue(farmRateElement)
-        val deliveryRate = UIUtils.getUIElementValue(deliveryRateElement)
-        obj.bufferRate = DeliveryCalculations.getBufferPrice(obj.finalFarmRate, deliveryRate).toString()
-        SingleAttributedData.save(obj)
     }
 
     fun setCompanyAndRateValuesInUI() {

@@ -344,17 +344,6 @@
 
                                                 </com.google.android.material.textfield.TextInputLayout>
 
-                                                <Button
-                                                    android:id="@+id/activity_admin_delivery_dashboard_save_prices"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_weight=".33"
-                                                    android:backgroundTint="#C12359"
-                                                    android:onClick="onClickSaveRate"
-                                                    android:textSize="14dp"
-                                                    android:text="Save"
-                                                    app:rippleColor="#FFFFFF" />
-
                                             </LinearLayout>
 
                                         </LinearLayout>

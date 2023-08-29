@@ -80,7 +80,6 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
             SingleAttributedData.saveToLocal(obj)
             setRuntimeUIValues()
         }
-
     }
 
     private fun initiallizeVariables() {
@@ -181,6 +180,11 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
                 spoolBtnElement.isClickable = false
                 spoolBtnElement.text = "Finalizing Data... .. ."
             }
+            val obj = SingleAttributedData.getRecords()
+            obj.finalFarmRate = UIUtils.getUIElementValue(farmRateElement)
+            val deliveryRate = UIUtils.getUIElementValue(deliveryRateElement)
+            obj.bufferRate = DeliveryCalculations.getBufferPrice(obj.finalFarmRate, deliveryRate).toString()
+            SingleAttributedData.save(obj)
             CustomerData.spoolDeliveringData()
             Refueling.spoolRefuelingData()
             DaySummary.saveToServer()

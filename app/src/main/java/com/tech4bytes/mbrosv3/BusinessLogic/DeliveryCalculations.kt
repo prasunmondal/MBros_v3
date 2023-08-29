@@ -118,6 +118,5 @@ class DeliveryCalculations {
         fun getBufferPrice(farmRate: String, deliveryRate: String): Int {
             return getBufferPrice(NumberUtils.getIntOrZero(farmRate), NumberUtils.getIntOrZero(deliveryRate))
         }
-
     }
 }

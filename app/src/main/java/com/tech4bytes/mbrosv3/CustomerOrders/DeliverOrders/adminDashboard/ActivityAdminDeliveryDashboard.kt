@@ -147,10 +147,6 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         )
     }
 
-    fun onClickUpdateDashboard(view: View) {
-        updateDashboard(false)
-    }
-
     fun updateDashboard(useCache: Boolean) {
         SingleAttributedData.getRecords(useCache)
         DeliverToCustomerDataHandler.get(useCache)

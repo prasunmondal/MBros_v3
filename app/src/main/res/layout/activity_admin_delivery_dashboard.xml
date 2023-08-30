@@ -512,15 +512,6 @@
                 android:onClick="onClickSpoolCustomerData"
                 android:text="Finalize Data" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/floatingActionButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:onClick="onClickUpdateDashboard"
-                app:srcCompat="@android:drawable/ic_popup_sync" />
-
         </LinearLayout>
     </ScrollView>
 

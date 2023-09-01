@@ -6,10 +6,7 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -18,7 +15,6 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.tech4bytes.mbrosv3.AppData.AppUtils
-import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
@@ -42,6 +38,9 @@ class OneShotLoad : AppCompatActivity() {
     private lateinit var dropdownContainer: LinearLayout
     private lateinit var freeTextView: TextView
     private lateinit var freeTextOkBtn: Button
+    private lateinit var companyLabel2: AutoCompleteTextView
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +63,7 @@ class OneShotLoad : AppCompatActivity() {
         dropdownContainer = findViewById(R.id.osl_dropdown_container)
         freeTextView = findViewById(R.id.osl_editText_freeText)
         freeTextOkBtn = findViewById(R.id.osl_btn_saveFreeText)
+        companyLabel2 = findViewById(R.id.osl_label_company_name_2)
     }
 
     private fun initializeUI() {
@@ -79,9 +79,20 @@ class OneShotLoad : AppCompatActivity() {
         labelCompanyBranch.text = SingleAttributedData.getRecords().load_branch
         labelLoadArea.text = SingleAttributedData.getRecords().load_area
         labelAccount.text = SingleAttributedData.getRecords().load_account
+
+
+        val COUNTRIES = arrayOf("Belgium", "France", "Italy", "Germany", "Spain")
+        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, COUNTRIES)
+        companyLabel2.setAdapter(adapter)
+        companyLabel2.setOnTouchListener { _, _ ->
+            companyLabel2.showDropDown()
+            companyLabel2.requestFocus()
+            false
+        }
+        companyLabel2.threshold = 0
     }
 
-    private fun showOptions(list: List<String>, uiView: TextView, selectedValue: String = "") {
+    private fun showOptions(list: List<String>, uiView: TextView, selectedValue: String = "", filter: String = "") {
         val container = findViewById<LinearLayout>(R.id.osl_options_picker_container)
         container.removeAllViews()
         hideAllDropdowns()
@@ -99,7 +110,8 @@ class OneShotLoad : AppCompatActivity() {
             }
             hideDropdown(uiView)
         }
-        list.forEach { list_entry ->
+        var filteredList = list.filter { p -> p.startsWith(filter) || p == selectedValue }
+        filteredList.forEach { list_entry ->
             val entry = layoutInflater.inflate(R.layout.activity_one_shot_load_fragment, null)
             entry.findViewById<TextView>(R.id.osl_list_entry).text = list_entry
             if (selectedValue.isNotEmpty() && list_entry == selectedValue) {

@@ -71,6 +71,10 @@
                             android:id="@+id/osl_label_company_name_2"
                             android:layout_width="match_parent"
                             android:layout_height="200dp"
+                            android:completionThreshold="0"
+                            android:imeOptions="actionNext"
+                            android:inputType="textNoSuggestions"
+                            tools:ignore="TouchTargetSizeCheck"
                             android:layout_weight="1" />
 
                         <LinearLayout

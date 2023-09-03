@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doOnTextChanged
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -28,7 +29,6 @@ class OneShotLoad : AppCompatActivity() {
 
     private var isDataFresh: Boolean = true
     private lateinit var oslSaveBtn: MaterialButton
-    private lateinit var labelCompanyName: TextView
     private lateinit var labelCompanyBranch: TextView
     private lateinit var labelLoadArea: TextView
     private lateinit var labelAccount: TextView
@@ -53,7 +53,7 @@ class OneShotLoad : AppCompatActivity() {
 
     private fun initializeVariables() {
         oslSaveBtn = findViewById(R.id.osl_save_btn)
-        labelCompanyName = findViewById(R.id.osl_label_company_name)
+//        labelCompanyName = findViewById(R.id.osl_label_company_name)
         labelCompanyBranch = findViewById(R.id.osl_label_company_branch)
         labelLoadArea = findViewById(R.id.osl_label_load_area)
         labelAccount = findViewById(R.id.osl_label_account)
@@ -75,21 +75,30 @@ class OneShotLoad : AppCompatActivity() {
     }
 
     private fun setUIValues() {
-        labelCompanyName.text = SingleAttributedData.getRecords().load_companyName
         labelCompanyBranch.text = SingleAttributedData.getRecords().load_branch
         labelLoadArea.text = SingleAttributedData.getRecords().load_area
         labelAccount.text = SingleAttributedData.getRecords().load_account
 
+        showOptions(getCompanyNames(), companyLabel2, SingleAttributedData.getRecords().load_companyName)
 
-        val COUNTRIES = arrayOf("Belgium", "France", "Italy", "Germany", "Spain")
-        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, COUNTRIES)
-        companyLabel2.setAdapter(adapter)
-        companyLabel2.setOnTouchListener { _, _ ->
-            companyLabel2.showDropDown()
-            companyLabel2.requestFocus()
+    }
+
+    private fun showOptions(list: List<String>, uiView: AutoCompleteTextView, selectedValue: String = "", filter: String = "") {
+        val optionSet = list.toMutableSet()
+        if(selectedValue.isNotEmpty()) { optionSet.add(selectedValue) }
+        val sortedList = optionSet.sorted()
+        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, sortedList)
+        uiView.setAdapter(adapter)
+        uiView.setOnTouchListener { _, _ ->
+            uiView.showDropDown()
+            uiView.requestFocus()
             false
         }
-        companyLabel2.threshold = 0
+        uiView.doOnTextChanged { text, start, before, count ->
+            markDataFresh(false)
+        }
+        uiView.setText(selectedValue, false)
+        uiView.threshold = 0
     }
 
     private fun showOptions(list: List<String>, uiView: TextView, selectedValue: String = "", filter: String = "") {
@@ -105,7 +114,7 @@ class OneShotLoad : AppCompatActivity() {
             val textEntered = freeTextView.text.toString()
             if (textEntered.isNotEmpty()) {
                 uiView.text = textEntered
-                markDataFresh(false)
+
                 freeTextView.text = ""
             }
             hideDropdown(uiView)
@@ -128,7 +137,6 @@ class OneShotLoad : AppCompatActivity() {
     }
 
     private fun hideAllDropdowns() {
-        hideDropdown(labelCompanyName)
         hideDropdown(labelCompanyBranch)
         hideDropdown(labelLoadArea)
         hideDropdown(labelAccount)
@@ -159,7 +167,6 @@ class OneShotLoad : AppCompatActivity() {
         if (dropdownContainer.visibility != View.GONE) {
             hideAllDropdowns()
         }
-        showOptions(getCompanyNames(), labelCompanyName, labelCompanyName.text.toString())
     }
 
     fun showCompanyBranchNames(view: View) {
@@ -167,7 +174,7 @@ class OneShotLoad : AppCompatActivity() {
             hideAllDropdowns()
         }
         showOptions(
-            getBranchNames(labelCompanyName.text.toString()),
+            getBranchNames(companyLabel2.text.toString()),
             labelCompanyBranch,
             labelCompanyBranch.text.toString()
         )
@@ -179,7 +186,7 @@ class OneShotLoad : AppCompatActivity() {
         }
         showOptions(
             getLoadAreas(
-                labelCompanyName.text.toString(),
+                companyLabel2.text.toString(),
                 labelCompanyBranch.text.toString()
             ),
             labelLoadArea,
@@ -192,7 +199,7 @@ class OneShotLoad : AppCompatActivity() {
             hideAllDropdowns()
         }
         showOptions(
-            getAccountName(labelCompanyName.text.toString()),
+            getAccountName(companyLabel2.text.toString()),
             labelAccount,
             labelAccount.text.toString()
         )
@@ -244,7 +251,6 @@ class OneShotLoad : AppCompatActivity() {
         val obj = SingleAttributedData.getRecords(useCache)
         val deliveryBasePrice = initialFarmRate
 
-        labelCompanyName.text = obj.load_companyName
         labelCompanyBranch.text = obj.load_branch
         labelAccount.text = obj.load_account
         labelLoadArea.text = obj.load_area
@@ -255,7 +261,7 @@ class OneShotLoad : AppCompatActivity() {
 
     private fun updateObjFromUI() {
         val obj = SingleAttributedData.getRecords()
-        val companyName = labelCompanyName.text.toString()
+        val companyName = companyLabel2.text.toString()
         val branch = labelCompanyBranch.text.toString()
         val account = labelAccount.text.toString()
         val loadingArea = labelLoadArea.text.toString()

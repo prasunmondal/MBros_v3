@@ -84,17 +84,18 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="Company" />
+                                    android:text="Company"
+                                    android:textSize="12sp" />
 
                                 <AutoCompleteTextView
                                     android:id="@+id/osl_label_company_name_2"
                                     android:layout_width="match_parent"
-                                    android:layout_height="40dp"
+                                    android:layout_height="38dp"
                                     android:layout_weight="1"
                                     android:completionThreshold="0"
                                     android:imeOptions="actionNext"
                                     android:inputType="textNoSuggestions"
-                                    android:textSize="16sp"
+                                    android:textSize="15dp"
                                     tools:ignore="TouchTargetSizeCheck" />
                             </LinearLayout>
 
@@ -109,17 +110,18 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="Branch" />
+                                    android:text="Branch"
+                                    android:textSize="12sp" />
 
                                 <AutoCompleteTextView
                                     android:id="@+id/osl_label_branch_name_2"
                                     android:layout_width="match_parent"
-                                    android:layout_height="40dp"
+                                    android:layout_height="38dp"
                                     android:layout_weight="1"
                                     android:completionThreshold="0"
                                     android:imeOptions="actionNext"
                                     android:inputType="textNoSuggestions"
-                                    android:textSize="16sp"
+                                    android:textSize="15dp"
                                     tools:ignore="TouchTargetSizeCheck" />
                             </LinearLayout>
 
@@ -143,17 +145,18 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="Area" />
+                                    android:text="Area"
+                                    android:textSize="12sp" />
 
                                 <AutoCompleteTextView
                                     android:id="@+id/osl_label_area_name_2"
                                     android:layout_width="match_parent"
-                                    android:layout_height="40dp"
+                                    android:layout_height="38dp"
                                     android:layout_weight="1"
                                     android:completionThreshold="0"
                                     android:imeOptions="actionNext"
                                     android:inputType="textNoSuggestions"
-                                    android:textSize="16sp"
+                                    android:textSize="15dp"
                                     tools:ignore="TouchTargetSizeCheck" />
                             </LinearLayout>
 
@@ -168,17 +171,18 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="Account" />
+                                    android:text="Account"
+                                    android:textSize="12sp" />
 
                                 <AutoCompleteTextView
                                     android:id="@+id/osl_label_money_account_name_2"
                                     android:layout_width="match_parent"
-                                    android:layout_height="40dp"
+                                    android:layout_height="38dp"
                                     android:layout_weight="1"
                                     android:completionThreshold="0"
                                     android:imeOptions="actionNext"
                                     android:inputType="textNoSuggestions"
-                                    android:textSize="16sp"
+                                    android:textSize="15dp"
                                     tools:ignore="TouchTargetSizeCheck" />
                             </LinearLayout>
 

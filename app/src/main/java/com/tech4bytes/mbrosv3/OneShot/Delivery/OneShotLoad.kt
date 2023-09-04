@@ -87,7 +87,7 @@ class OneShotLoad : AppCompatActivity() {
         val optionSet = list.filter { p -> p.isNotEmpty() }.toMutableSet()
         val sortedList = optionSet.sorted()
         LogMe.log(sortedList.toString())
-        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, sortedList)
+        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.template_dropdown_entry, sortedList)
         uiView.setAdapter(adapter)
         uiView.setOnTouchListener { _, _ ->
             uiView.showDropDown()

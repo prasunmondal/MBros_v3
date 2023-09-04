@@ -18,6 +18,7 @@ import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Language.English.EnglishUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import java.util.stream.Collectors
@@ -189,7 +190,19 @@ class OneShotLoad : AppCompatActivity() {
         SingleAttributedData.saveToLocal(obj)
     }
 
+    fun convertToWordCase(str: String): String {
+        return EnglishUtils.toWordCase(str)
+    }
+
+    private fun updateCase() {
+        companyLabel2.setText(convertToWordCase(companyLabel2.text.toString()))
+        companyBranch2.setText(convertToWordCase(companyBranch2.text.toString()))
+        companyArea2.setText(convertToWordCase(companyArea2.text.toString()))
+        companyAccount2.setText(convertToWordCase(companyAccount2.text.toString()))
+    }
+
     fun onClickOneShotLoadSaveBtn(view: View) {
+        updateCase()
         hideKeyboard()
         updateObjFromUI()
         SingleAttributedData.saveToLocal(SingleAttributedData.getRecords())

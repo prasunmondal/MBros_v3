@@ -63,62 +63,125 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:orientation="horizontal">
 
-                            <AutoCompleteTextView
-                                android:id="@+id/osl_label_company_name_2"
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="50dp"
+                                android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:completionThreshold="0"
-                                android:imeOptions="actionNext"
-                                android:inputType="textNoSuggestions"
-                                tools:ignore="TouchTargetSizeCheck" />
+                                android:orientation="vertical">
 
-                            <AutoCompleteTextView
-                                android:id="@+id/osl_label_branch_name_2"
+                                <TextView
+                                    android:id="@+id/textView26"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Company" />
+
+                                <AutoCompleteTextView
+                                    android:id="@+id/osl_label_company_name_2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:layout_weight="1"
+                                    android:completionThreshold="0"
+                                    android:imeOptions="actionNext"
+                                    android:inputType="textNoSuggestions"
+                                    android:textSize="16sp"
+                                    tools:ignore="TouchTargetSizeCheck" />
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="50dp"
+                                android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:completionThreshold="0"
-                                android:imeOptions="actionNext"
-                                android:inputType="textNoSuggestions"
-                                tools:ignore="TouchTargetSizeCheck" />
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/textView54"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Branch" />
+
+                                <AutoCompleteTextView
+                                    android:id="@+id/osl_label_branch_name_2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:layout_weight="1"
+                                    android:completionThreshold="0"
+                                    android:imeOptions="actionNext"
+                                    android:inputType="textNoSuggestions"
+                                    android:textSize="16sp"
+                                    tools:ignore="TouchTargetSizeCheck" />
+                            </LinearLayout>
+
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:paddingTop="20dp">
 
-                            <AutoCompleteTextView
-                                android:id="@+id/osl_label_area_name_2"
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="50dp"
+                                android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:completionThreshold="0"
-                                android:imeOptions="actionNext"
-                                android:inputType="textNoSuggestions"
-                                tools:ignore="TouchTargetSizeCheck" />
+                                android:orientation="vertical">
 
-                            <AutoCompleteTextView
-                                android:id="@+id/osl_label_money_account_name_2"
+                                <TextView
+                                    android:id="@+id/textView55"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Area" />
+
+                                <AutoCompleteTextView
+                                    android:id="@+id/osl_label_area_name_2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:layout_weight="1"
+                                    android:completionThreshold="0"
+                                    android:imeOptions="actionNext"
+                                    android:inputType="textNoSuggestions"
+                                    android:textSize="16sp"
+                                    tools:ignore="TouchTargetSizeCheck" />
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="50dp"
+                                android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:completionThreshold="0"
-                                android:imeOptions="actionNext"
-                                android:inputType="textNoSuggestions"
-                                tools:ignore="TouchTargetSizeCheck" />
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/textView57"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="Account" />
+
+                                <AutoCompleteTextView
+                                    android:id="@+id/osl_label_money_account_name_2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:layout_weight="1"
+                                    android:completionThreshold="0"
+                                    android:imeOptions="actionNext"
+                                    android:inputType="textNoSuggestions"
+                                    android:textSize="16sp"
+                                    tools:ignore="TouchTargetSizeCheck" />
+                            </LinearLayout>
+
                         </LinearLayout>
 
                     </LinearLayout>

@@ -131,7 +131,7 @@ class OneShotLoad : AppCompatActivity() {
 
     private fun getCompanyNames(): List<String> {
         return CompanyLoadMap.get().stream()
-            .filter { d -> d.companyName.isNotEmpty() }
+            .filter { d -> d.companyName.trim().isNotEmpty() }
             .map(CompanyLoadMap::companyName)
             .collect(Collectors.toSet()).toList()
     }
@@ -139,7 +139,7 @@ class OneShotLoad : AppCompatActivity() {
     private fun getBranchNames(companyName: String): List<String> {
         return CompanyLoadMap.get().stream()
             .filter { c -> companyName == c.companyName }
-            .filter { d -> d.branch.isNotEmpty() }
+            .filter { d -> d.branch.trim().isNotEmpty() }
             .map(CompanyLoadMap::branch)
             .collect(Collectors.toSet()).sorted().toList()
     }
@@ -148,7 +148,7 @@ class OneShotLoad : AppCompatActivity() {
         return CompanyLoadMap.get().stream()
             .filter { c -> companyName == c.companyName }
             .filter { d -> branchName == d.branch }
-            .filter { d -> d.area.isNotEmpty() }
+            .filter { d -> d.area.trim().isNotEmpty() }
             .map(CompanyLoadMap::area)
             .collect(Collectors.toSet()).sorted().toList()
     }
@@ -156,7 +156,7 @@ class OneShotLoad : AppCompatActivity() {
     private fun getAccountName(companyName: String): List<String> {
         return CompanyLoadMap.get().stream()
             .filter { c -> companyName == c.companyName }
-            .filter { d -> d.moneyAccount.isNotEmpty() }
+            .filter { d -> d.moneyAccount.trim().isNotEmpty() }
             .map(CompanyLoadMap::moneyAccount)
             .collect(Collectors.toSet()).toList()
     }

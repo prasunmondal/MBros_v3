@@ -70,123 +70,43 @@
                         <AutoCompleteTextView
                             android:id="@+id/osl_label_company_name_2"
                             android:layout_width="match_parent"
-                            android:layout_height="200dp"
+                            android:layout_height="50dp"
+                            android:layout_weight="1"
                             android:completionThreshold="0"
                             android:imeOptions="actionNext"
                             android:inputType="textNoSuggestions"
-                            tools:ignore="TouchTargetSizeCheck"
-                            android:layout_weight="1" />
+                            tools:ignore="TouchTargetSizeCheck" />
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:onClick="showCompanyNames"
-                            android:orientation="horizontal"
-                            android:paddingVertical="5dp">
-
-                            <TextView
-                                android:id="@+id/textView57"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Company: "
-                                android:textColor="@color/osl_company_details_view"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:id="@+id/osl_label_company_name"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Company"
-                                android:textColor="@color/osl_company_details_view"
-                                android:textSize="14sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
+                        <AutoCompleteTextView
+                            android:id="@+id/osl_label_branch_name_2"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="50dp"
                             android:layout_weight="1"
-                            android:onClick="showAreaNames"
-                            android:orientation="horizontal"
-                            android:paddingVertical="5dp">
+                            android:completionThreshold="0"
+                            android:imeOptions="actionNext"
+                            android:inputType="textNoSuggestions"
+                            tools:ignore="TouchTargetSizeCheck" />
 
-                            <TextView
-                                android:id="@+id/textView59"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Area: "
-                                android:textColor="@color/osl_company_details_view"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:id="@+id/osl_label_load_area"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Area"
-                                android:textColor="@color/osl_company_details_view"
-                                android:textSize="14sp" />
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:onClick="showCompanyBranchNames"
-                            android:orientation="horizontal"
-                            android:paddingVertical="5dp">
-
-                            <TextView
-                                android:id="@+id/textView58"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Branch: "
-                                android:textColor="@color/osl_company_details_view"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:id="@+id/osl_label_company_branch"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Branch"
-                                android:textColor="@color/osl_company_details_view"
-                                android:textSize="14sp" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
+                        <AutoCompleteTextView
+                            android:id="@+id/osl_label_area_name_2"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="50dp"
                             android:layout_weight="1"
-                            android:onClick="showAccountNames"
-                            android:orientation="horizontal"
-                            android:paddingVertical="5dp">
+                            android:completionThreshold="0"
+                            android:imeOptions="actionNext"
+                            android:inputType="textNoSuggestions"
+                            tools:ignore="TouchTargetSizeCheck" />
 
-                            <TextView
-                                android:id="@+id/textView60"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Account: "
-                                android:textColor="@color/osl_company_details_view"
-                                android:textSize="14sp" />
+                        <AutoCompleteTextView
+                            android:id="@+id/osl_label_money_account_name_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_weight="1"
+                            android:completionThreshold="0"
+                            android:imeOptions="actionNext"
+                            android:inputType="textNoSuggestions"
+                            tools:ignore="TouchTargetSizeCheck" />
 
-                            <TextView
-                                android:id="@+id/osl_label_account"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Account"
-                                android:textColor="@color/osl_company_details_view"
-                                android:textSize="14sp" />
-                        </LinearLayout>
                     </LinearLayout>
 
                 </LinearLayout>

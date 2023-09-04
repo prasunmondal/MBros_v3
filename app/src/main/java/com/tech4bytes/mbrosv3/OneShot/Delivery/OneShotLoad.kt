@@ -2,14 +2,11 @@ package com.tech4bytes.mbrosv3.OneShot.Delivery
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
 import com.google.android.material.button.MaterialButton
@@ -21,6 +18,7 @@ import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import java.util.stream.Collectors
 
@@ -29,9 +27,6 @@ class OneShotLoad : AppCompatActivity() {
 
     private var isDataFresh: Boolean = true
     private lateinit var oslSaveBtn: MaterialButton
-    private lateinit var labelCompanyBranch: TextView
-    private lateinit var labelLoadArea: TextView
-    private lateinit var labelAccount: TextView
     private lateinit var initialFarmRate: TextInputEditText
     private lateinit var finalFarmRate: TextInputEditText
     private lateinit var inHandCash: TextInputEditText
@@ -39,8 +34,9 @@ class OneShotLoad : AppCompatActivity() {
     private lateinit var freeTextView: TextView
     private lateinit var freeTextOkBtn: Button
     private lateinit var companyLabel2: AutoCompleteTextView
-
-
+    private lateinit var companyBranch2: AutoCompleteTextView
+    private lateinit var companyArea2: AutoCompleteTextView
+    private lateinit var companyAccount2: AutoCompleteTextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,10 +49,6 @@ class OneShotLoad : AppCompatActivity() {
 
     private fun initializeVariables() {
         oslSaveBtn = findViewById(R.id.osl_save_btn)
-//        labelCompanyName = findViewById(R.id.osl_label_company_name)
-        labelCompanyBranch = findViewById(R.id.osl_label_company_branch)
-        labelLoadArea = findViewById(R.id.osl_label_load_area)
-        labelAccount = findViewById(R.id.osl_label_account)
         initialFarmRate = findViewById(R.id.one_shot_load_farm_rate)
         finalFarmRate = findViewById(R.id.osl_final_farm_rate)
         inHandCash = findViewById(R.id.one_shot_load_extra_expense_provided)
@@ -64,29 +56,36 @@ class OneShotLoad : AppCompatActivity() {
         freeTextView = findViewById(R.id.osl_editText_freeText)
         freeTextOkBtn = findViewById(R.id.osl_btn_saveFreeText)
         companyLabel2 = findViewById(R.id.osl_label_company_name_2)
+        companyBranch2 = findViewById(R.id.osl_label_branch_name_2)
+        companyArea2 = findViewById(R.id.osl_label_area_name_2)
+        companyAccount2 = findViewById(R.id.osl_label_money_account_name_2)
     }
 
     private fun initializeUI() {
         setDecors()
-        setUIValues()
+        setUIValues(false)
         setListeners()
         updateUIFromObj()
         markDataFresh(true, true)
     }
 
-    private fun setUIValues() {
-        labelCompanyBranch.text = SingleAttributedData.getRecords().load_branch
-        labelLoadArea.text = SingleAttributedData.getRecords().load_area
-        labelAccount.text = SingleAttributedData.getRecords().load_account
+    private fun setUIValues(fromUI: Boolean = true) {
+        val data = SingleAttributedData.getRecords()
+        val companyName = if (fromUI) companyLabel2.text.toString() else data.load_companyName
+        val branchName = if (fromUI) companyBranch2.text.toString() else data.load_branch
+        val areaName = if (fromUI) companyArea2.text.toString() else data.load_area
+        val account = if (fromUI) companyAccount2.text.toString() else data.load_account
 
-        showOptions(getCompanyNames(), companyLabel2, SingleAttributedData.getRecords().load_companyName)
-
+        showOptions(getCompanyNames(), companyLabel2, companyName)
+        showOptions(getBranchNames(companyName), companyBranch2, branchName)
+        showOptions(getLoadAreas(companyName, branchName), companyArea2, areaName)
+        showOptions(getAccountName(companyName), companyAccount2, account)
     }
 
     private fun showOptions(list: List<String>, uiView: AutoCompleteTextView, selectedValue: String = "", filter: String = "") {
-        val optionSet = list.toMutableSet()
-        if(selectedValue.isNotEmpty()) { optionSet.add(selectedValue) }
+        val optionSet = list.filter { p -> p.isNotEmpty() }.toMutableSet()
         val sortedList = optionSet.sorted()
+        LogMe.log(sortedList.toString())
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, sortedList)
         uiView.setAdapter(adapter)
         uiView.setOnTouchListener { _, _ ->
@@ -97,59 +96,15 @@ class OneShotLoad : AppCompatActivity() {
         uiView.doOnTextChanged { text, start, before, count ->
             markDataFresh(false)
         }
+        uiView.setOnItemClickListener { adapterView, view, i, l ->
+            LogMe.log("Updating dropdowns")
+            setUIValues(true)
+        }
         uiView.setText(selectedValue, false)
         uiView.threshold = 0
     }
 
-    private fun showOptions(list: List<String>, uiView: TextView, selectedValue: String = "", filter: String = "") {
-        val container = findViewById<LinearLayout>(R.id.osl_options_picker_container)
-        container.removeAllViews()
-        hideAllDropdowns()
-        dropdownContainer.visibility = View.VISIBLE
-        uiView.setTextColor(ContextCompat.getColor(this, R.color.osl_company_details_view_editing))
-        uiView.setTypeface(null, Typeface.BOLD_ITALIC)
-
-        var doesHaveMatchingOption = false
-        freeTextOkBtn.setOnClickListener {
-            val textEntered = freeTextView.text.toString()
-            if (textEntered.isNotEmpty()) {
-                uiView.text = textEntered
-
-                freeTextView.text = ""
-            }
-            hideDropdown(uiView)
-        }
-        var filteredList = list.filter { p -> p.startsWith(filter) || p == selectedValue }
-        filteredList.forEach { list_entry ->
-            val entry = layoutInflater.inflate(R.layout.activity_one_shot_load_fragment, null)
-            entry.findViewById<TextView>(R.id.osl_list_entry).text = list_entry
-            if (selectedValue.isNotEmpty() && list_entry == selectedValue) {
-                doesHaveMatchingOption = true
-                entry.findViewById<ConstraintLayout>(R.id.osl_fragment_record_container).setBackgroundColor(ContextCompat.getColor(this, R.color.osl_option_seleted))
-            }
-            entry.setOnClickListener {
-                uiView.text = list_entry
-                markDataFresh(false)
-                hideDropdown(uiView)
-            }
-            container.addView(entry)
-        }
-    }
-
-    private fun hideAllDropdowns() {
-        hideDropdown(labelCompanyBranch)
-        hideDropdown(labelLoadArea)
-        hideDropdown(labelAccount)
-    }
-
-    private fun hideDropdown(uiView: TextView) {
-        dropdownContainer.visibility = View.GONE
-        uiView.setTextColor(ContextCompat.getColor(this, R.color.osl_company_details_view))
-        uiView.setTypeface(null, Typeface.NORMAL)
-        hideKeyboard()
-    }
-
-    fun hideKeyboard() {
+    private fun hideKeyboard() {
         val imm: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(oslSaveBtn.windowToken, 0)
     }
@@ -161,48 +116,6 @@ class OneShotLoad : AppCompatActivity() {
         }
         finalFarmRate.addTextChangedListener { markDataFresh(false) }
         inHandCash.addTextChangedListener { markDataFresh(false) }
-    }
-
-    fun showCompanyNames(view: View) {
-        if (dropdownContainer.visibility != View.GONE) {
-            hideAllDropdowns()
-        }
-    }
-
-    fun showCompanyBranchNames(view: View) {
-        if (dropdownContainer.visibility != View.GONE) {
-            hideAllDropdowns()
-        }
-        showOptions(
-            getBranchNames(companyLabel2.text.toString()),
-            labelCompanyBranch,
-            labelCompanyBranch.text.toString()
-        )
-    }
-
-    fun showAreaNames(view: View) {
-        if (dropdownContainer.visibility != View.GONE) {
-            hideAllDropdowns()
-        }
-        showOptions(
-            getLoadAreas(
-                companyLabel2.text.toString(),
-                labelCompanyBranch.text.toString()
-            ),
-            labelLoadArea,
-            labelLoadArea.text.toString()
-        )
-    }
-
-    fun showAccountNames(view: View) {
-        if (dropdownContainer.visibility != View.GONE) {
-            hideAllDropdowns()
-        }
-        showOptions(
-            getAccountName(companyLabel2.text.toString()),
-            labelAccount,
-            labelAccount.text.toString()
-        )
     }
 
     private fun setDecors() {
@@ -250,10 +163,6 @@ class OneShotLoad : AppCompatActivity() {
     private fun updateUIFromObj(useCache: Boolean = true) {
         val obj = SingleAttributedData.getRecords(useCache)
         val deliveryBasePrice = initialFarmRate
-
-        labelCompanyBranch.text = obj.load_branch
-        labelAccount.text = obj.load_account
-        labelLoadArea.text = obj.load_area
         inHandCash.setText(obj.extra_cash_given)
         deliveryBasePrice.setText(DeliveryCalculations.getBaseDeliveryPrice(obj.finalFarmRate, obj.bufferRate).toString())
         finalFarmRate.setText(obj.finalFarmRate)
@@ -262,9 +171,9 @@ class OneShotLoad : AppCompatActivity() {
     private fun updateObjFromUI() {
         val obj = SingleAttributedData.getRecords()
         val companyName = companyLabel2.text.toString()
-        val branch = labelCompanyBranch.text.toString()
-        val account = labelAccount.text.toString()
-        val loadingArea = labelLoadArea.text.toString()
+        val branch = companyBranch2.text.toString()
+        val account = companyAccount2.text.toString()
+        val loadingArea = companyArea2.text.toString()
         val extraCashProvider = inHandCash.text.toString()
         val farmRate = initialFarmRate.text.toString()
         val finalFarmRate = finalFarmRate.text.toString()

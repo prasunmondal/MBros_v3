@@ -56,6 +56,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_delivery_dashboard)
+        supportActionBar!!.hide()
         AppContexts.set(this)
         AppUtils.logError()
         getPermissions()

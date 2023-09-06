@@ -81,32 +81,39 @@
     <LinearLayout
         android:id="@+id/mc_totalAmount_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#F8D9D9"
+        android:layout_height="2dp"
+        android:background="#FA4545"
         android:gravity="right|center_vertical"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout18">
 
-        <TextView
-            android:id="@+id/mc_totalAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingVertical="5dp"
-            android:paddingRight="30dp"
-            android:text="₹ 0"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/mc_amount_diff"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingRight="15dp"
-            android:text="▲"
-            android:textSize="14sp" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/mc_totalAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingVertical="5dp"
+        android:paddingRight="30dp"
+        android:text="₹ 0"
+        android:textColor="#C8CED3"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mc_totalAmount_container" />
+
+    <TextView
+        android:id="@+id/mc_amount_diff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="25dp"
+        android:text="▲"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/mc_totalAmount"
+        app:layout_constraintEnd_toStartOf="@+id/mc_totalAmount"
+        app:layout_constraintTop_toTopOf="@+id/mc_totalAmount" />
 
     <LinearLayout
         android:id="@+id/linearLayout21"
@@ -117,7 +124,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mc_totalAmount_container">
+        app:layout_constraintTop_toBottomOf="@+id/mc_totalAmount">
 
         <LinearLayout
             android:id="@+id/mc_entry_containers"

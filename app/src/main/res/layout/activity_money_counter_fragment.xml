@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:paddingVertical="15dp"
-                android:textColor="#D39E70"
+                android:textColor="#D6B597"
                 android:textSize="16sp"
                 android:textStyle="italic" />
 

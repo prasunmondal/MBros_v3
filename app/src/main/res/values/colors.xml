@@ -48,8 +48,8 @@
     <color name="due_show_including_finalized_transactions">#B3E0E6</color>
 
     <!-- MONEY COUNTER-->
-    <color name="mc_counter_success">#56AFB3</color>
-    <color name="mc_counter_unsuccessful">#F5B4B4</color>
-    <color name="mc_counter_aiming_amount_zero">#004D40</color>
-    <color name="mc_counter_aiming_amount_non_zero">#BF0B0B</color>
+    <color name="mc_counter_success">#03AAB1</color>
+    <color name="mc_counter_unsuccessful">#FA4545</color>
+    <color name="mc_counter_aiming_amount_zero">#03AAB1</color>
+    <color name="mc_counter_aiming_amount_non_zero">#FA4545</color>
 </resources>

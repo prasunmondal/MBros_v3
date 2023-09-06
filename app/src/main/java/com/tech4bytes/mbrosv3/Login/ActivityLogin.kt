@@ -56,7 +56,7 @@ class ActivityLogin : AppCompatActivity() {
 
         val roles = RolesUtils.getAppUser()
         LogMe.log("Got Role: $roles")
-
+        updateWelcomeDetails()
         Thread {
             val container = findViewById<LinearLayout>(R.id.activity_login_roles_container)
             if (UserRoleUtils.getUserRoles().isEmpty()) {
@@ -88,6 +88,12 @@ class ActivityLogin : AppCompatActivity() {
                 }
             }
         }.start()
+    }
+
+    private fun updateWelcomeDetails() {
+        findViewById<TextView>(R.id.welcome_date).text = DateUtils.getCurrentDate("dd")
+        findViewById<TextView>(R.id.welcome_month).text = DateUtils.getCurrentDate("MMMM")
+        findViewById<TextView>(R.id.welcome_year).text = DateUtils.getCurrentDate("yyyy")
     }
 
     private fun getRoleAndActivityMapping(role: ActivityAuthEnums): (() -> Unit)? {

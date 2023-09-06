@@ -8,44 +8,65 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#003D6E"
         android:orientation="horizontal"
-        android:paddingHorizontal="10dp"
+        android:paddingVertical="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/mc_denomination"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:background="#000E19"
+            android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/mc_newNote"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="New"
-            android:inputType="number" />
+            <TextView
+                android:id="@+id/mc_denomination"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:paddingVertical="15dp"
+                android:textColor="#D39E70"
+                android:textSize="16sp"
+                android:textStyle="italic" />
 
-        <EditText
-            android:id="@+id/mc_oldNote"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Old"
-            android:inputType="number" />
+            <EditText
+                android:id="@+id/mc_newNote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_weight="1"
+                android:hint="New"
+                android:inputType="number"
+                android:textColor="#F69D4F"
+                android:textColorHint="#094473"
+                android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/mc_multipliedAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingLeft="20dp"
-            android:text="Rs. 0"
-            android:textSize="16sp" />
+            <EditText
+                android:id="@+id/mc_oldNote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Old"
+                android:inputType="number"
+                android:textColor="#F69D4F"
+                android:textColorHint="#094473"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/mc_multipliedAmount"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:paddingRight="15dp"
+                android:text="₹ 0"
+                android:textColor="#D39E70"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

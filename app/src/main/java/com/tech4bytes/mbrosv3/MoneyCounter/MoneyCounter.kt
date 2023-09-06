@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.WindowManager
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
@@ -19,6 +20,7 @@ import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
+import kotlin.math.abs
 
 class MoneyCounter : AppCompatActivity() {
 
@@ -64,6 +66,7 @@ class MoneyCounter : AppCompatActivity() {
             oldNoteField.addTextChangedListener { updateMultipliedAmount(denomination, newNoteField, oldNoteField, multipliedAmountField) }
             container.addView(entry)
         }
+        updateTotalAmount()
     }
 
     private fun setAimingAmount() {
@@ -109,21 +112,38 @@ class MoneyCounter : AppCompatActivity() {
         updateTotalAmount()
     }
 
-    private fun updateTotalAmount() {
+    private fun getDenominatedAmount(): Int {
         var totalAmount = 0
         mapOfNotesToAmount.forEach { (key, value) ->
             totalAmount += value
         }
+        return totalAmount
+    }
+
+    private fun updateTotalAmount() {
+        val totalAmount = getDenominatedAmount()
+        val diff = totalAmount - getAimingAmountFromUI()
+        val diffSymbol = if(diff == 0) "✓" else if(diff > 0) "▲" else "▼"
+        val tooltipText = if(diff == 0) "Cash Matched" else if(diff > 0) "Have ₹${abs(diff)} more in cash" else "Need ₹${abs(diff)} more in cash"
         findViewById<MaterialTextView>(R.id.mc_totalAmount).text = "$rupeePrefix $totalAmount"
+        findViewById<TextView>(R.id.mc_amount_diff).text = "$diffSymbol ${Math.abs(diff)}"
+        findViewById<TextView>(R.id.mc_amount_diff).tooltipText = tooltipText
         updateSuccessColors()
     }
 
     private fun updateSuccessColors() {
+        val amountDifference = getDenominatedAmount() - getAimingAmountFromUI()
         LogMe.log("" + getCalculatedTotalAmountFromUI() + " == " + getAimingAmountFromUI())
         if (getCalculatedTotalAmountFromUI() == getAimingAmountFromUI()) {
             findViewById<LinearLayout>(R.id.mc_totalAmount_container).setBackgroundColor(ContextCompat.getColor(this, R.color.mc_counter_success))
         } else {
             findViewById<LinearLayout>(R.id.mc_totalAmount_container).setBackgroundColor(ContextCompat.getColor(this, R.color.mc_counter_unsuccessful))
+        }
+
+        if(amountDifference == 0) {
+            findViewById<TextView>(R.id.mc_amount_diff).setTextColor(ContextCompat.getColor(this, R.color.mc_counter_aiming_amount_zero))
+        } else {
+            findViewById<TextView>(R.id.mc_amount_diff).setTextColor(ContextCompat.getColor(this, R.color.mc_counter_aiming_amount_non_zero))
         }
     }
 

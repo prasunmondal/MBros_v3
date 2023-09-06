@@ -26,7 +26,7 @@
             android:paddingLeft="10dp"
             android:text="Sample Text"
             android:textColor="@color/delivery_pending"
-            android:textSize="20sp"
+            android:textSize="16sp"
             app:fontFamily="monospace" />
 
 
@@ -36,7 +36,7 @@
         android:id="@+id/view5"
         android:layout_width="wrap_content"
         android:layout_height="1dp"
-        android:background="#9E9C9C"
+        android:background="#454545"
         app:layout_constraintBottom_toBottomOf="@id/activity_due_show_fragment_conntainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

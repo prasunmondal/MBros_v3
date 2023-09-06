@@ -15,7 +15,6 @@ class AppUtils {
     companion object {
 
         fun invalidateAllDataAndRestartApp() {
-            Toast.makeText(AppContexts.get(), "Refreshing data", Toast.LENGTH_SHORT).show()
             CentralCache.invalidateFullCache()
             goToLoginPage()
         }

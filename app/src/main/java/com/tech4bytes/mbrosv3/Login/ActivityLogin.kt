@@ -204,7 +204,7 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     fun loginPageOnClickRefresh(view: View) {
-        val refreshBtn = findViewById<Button>(R.id.menu_refreshBtn)
+        val refreshBtn = findViewById<TextView>(R.id.menu_refreshBtn)
         refreshBtn.isEnabled = false
         refreshBtn.alpha = .5f
         refreshBtn.isClickable = false

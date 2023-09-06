@@ -39,7 +39,7 @@
         android:background="@drawable/background2"
         android:orientation="horizontal"
         android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/menu_refreshBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout23">
@@ -117,18 +117,41 @@
 
                     </LinearLayout>
 
-                    <Button
-                        android:id="@+id/menu_refreshBtn"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="40dp"
-                        android:onClick="loginPageOnClickRefresh"
-                        android:text="Refresh" />
                 </LinearLayout>
             </ScrollView>
 
         </LinearLayout>
 
+    </LinearLayout>
+
+<!--    <Button-->
+<!--        android:id="@+id/menu_refreshBtn"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:onClick="loginPageOnClickRefresh"-->
+<!--        android:text="Refresh"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#000000"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/menu_refreshBtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:onClick="loginPageOnClickRefresh"
+            android:text="REFRESH"
+            android:textColor="#D3D1D1"
+            android:textSize="14sp" />
     </LinearLayout>
 
     <!-- This FrameLayout insets its children based on system windows using

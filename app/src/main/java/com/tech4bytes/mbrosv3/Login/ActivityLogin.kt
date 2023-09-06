@@ -75,7 +75,8 @@ class ActivityLogin : AppCompatActivity() {
                             val layoutInflater = LayoutInflater.from(AppContexts.get())
                             val entry = layoutInflater.inflate(R.layout.fragment_activity_login_roles, null)
 
-                            entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).text = role.name
+                            val displayText = if(ActivityAuthEnums.getString(role) == null) role.name else ActivityAuthEnums.getString(role)
+                            entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).text = displayText
 
                             entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).setOnClickListener {
                                 goToHomePageAsPerRole(role)

@@ -92,7 +92,6 @@ class OneShotLoad : AppCompatActivity() {
         uiView.setOnTouchListener { _, _ ->
             uiView.showDropDown()
             uiView.requestFocus()
-            uiView.setSelection(0, uiView.text.length)
             false
         }
         uiView.doOnTextChanged { text, start, before, count ->

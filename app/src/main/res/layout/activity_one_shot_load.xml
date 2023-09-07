@@ -39,6 +39,7 @@
                         android:layout_height="30dp"
                         android:background="#F4EDDA"
                         android:gravity="center"
+                        android:onClick="clickDecreasePay"
                         android:text="-"
                         android:textSize="24sp" />
                 </LinearLayout>
@@ -238,6 +239,7 @@
                         android:layout_height="30dp"
                         android:background="#F4EDDA"
                         android:gravity="center"
+                        android:onClick="clickIncreasePay"
                         android:text="+"
                         android:textSize="24sp" />
                 </LinearLayout>

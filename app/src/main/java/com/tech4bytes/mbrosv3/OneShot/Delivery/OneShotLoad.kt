@@ -19,7 +19,6 @@ import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
-import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Language.English.EnglishUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -75,6 +74,7 @@ class OneShotLoad : AppCompatActivity() {
         setListeners()
         updateUIFromObj()
         processLabour2PayElements()
+        updateAllPays()
         markDataFresh(true, true)
     }
 
@@ -272,6 +272,28 @@ class OneShotLoad : AppCompatActivity() {
         processLabour2PayElements()
     }
 
+    fun clickIncreasePay(view: View) {
+        incrementPay(50)
+    }
+
+    fun clickDecreasePay(view: View) {
+        incrementPay(-50)
+    }
+
+    private fun incrementPay(i: Int) {
+        val extraPay = i + NumberUtils.getIntOrZero(findViewById<TextView>(R.id.osl_driver_extra_pay).text.toString().replace("+", ""))
+        findViewById<TextView>(R.id.osl_driver_extra_pay).text = "+$extraPay"
+        findViewById<TextView>(R.id.osl_labour1_extra_pay).text = "+$extraPay"
+        findViewById<TextView>(R.id.osl_labour2_extra_pay).text = "+$extraPay"
+        updateAllPays()
+    }
+
+    private fun updateAllPays() {
+        updateTotalPay(R.id.osl_driver_base_pay, R.id.osl_driver_extra_pay, R.id.osl_driver_total_pay)
+        updateTotalPay(R.id.osl_labour1_base_pay, R.id.osl_labour1_extra_pay, R.id.osl_labour1_total_pay)
+        updateTotalPay(R.id.osl_labour2_base_pay, R.id.osl_labour2_extra_pay, R.id.osl_labour2_total_pay)
+    }
+
     private fun processLabour2PayElements() {
         val labour2PayContainer = findViewById<LinearLayout>(R.id.osl_labour2_pay_container)
 
@@ -285,5 +307,13 @@ class OneShotLoad : AppCompatActivity() {
             labour2.clearColorFilter()
             labour2.setBackgroundDrawable(null)
         }
+    }
+
+    fun updateTotalPay(basePayUI: Int, extraPayUI: Int, totalPayUI: Int) {
+        val basePay = NumberUtils.getIntOrZero(findViewById<TextView>(basePayUI).text.toString())
+        val extraPay = NumberUtils.getIntOrZero(findViewById<TextView>(extraPayUI).text.toString().replace("+", ""))
+        val totalPay = basePay + extraPay
+        val totalPayUI = findViewById<TextView>(totalPayUI)
+        totalPayUI.text = totalPay.toString()
     }
 }

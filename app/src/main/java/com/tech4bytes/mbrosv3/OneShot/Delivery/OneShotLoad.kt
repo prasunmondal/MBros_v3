@@ -292,6 +292,17 @@ class OneShotLoad : AppCompatActivity() {
         updateTotalPay(R.id.osl_driver_base_pay, R.id.osl_driver_extra_pay, R.id.osl_driver_total_pay)
         updateTotalPay(R.id.osl_labour1_base_pay, R.id.osl_labour1_extra_pay, R.id.osl_labour1_total_pay)
         updateTotalPay(R.id.osl_labour2_base_pay, R.id.osl_labour2_extra_pay, R.id.osl_labour2_total_pay)
+
+        val extraPay = NumberUtils.getIntOrZero(findViewById<TextView>(R.id.osl_driver_extra_pay).text.toString().replace("+", ""))
+        if(extraPay == 0) {
+            findViewById<LinearLayout>(R.id.osl_driver_extra_pay_container).visibility = View.GONE
+            findViewById<LinearLayout>(R.id.osl_labour1_extra_pay_container).visibility = View.GONE
+            findViewById<LinearLayout>(R.id.osl_labour2_extra_pay_container).visibility = View.GONE
+        } else {
+            findViewById<LinearLayout>(R.id.osl_driver_extra_pay_container).visibility = View.VISIBLE
+            findViewById<LinearLayout>(R.id.osl_labour1_extra_pay_container).visibility = View.VISIBLE
+            findViewById<LinearLayout>(R.id.osl_labour2_extra_pay_container).visibility = View.VISIBLE
+        }
     }
 
     private fun processLabour2PayElements() {

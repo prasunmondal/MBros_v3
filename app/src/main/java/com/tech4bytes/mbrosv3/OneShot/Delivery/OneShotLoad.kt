@@ -7,6 +7,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
 import com.google.android.material.button.MaterialButton
@@ -17,6 +19,7 @@ import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
+import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Language.English.EnglishUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -31,13 +34,16 @@ class OneShotLoad : AppCompatActivity() {
     private lateinit var initialFarmRate: TextInputEditText
     private lateinit var finalFarmRate: TextInputEditText
     private lateinit var inHandCash: TextInputEditText
-    private lateinit var dropdownContainer: LinearLayout
-    private lateinit var freeTextView: TextView
-    private lateinit var freeTextOkBtn: Button
+//    private lateinit var dropdownContainer: LinearLayout
+//    private lateinit var freeTextView: TextView
+//    private lateinit var freeTextOkBtn: Button
     private lateinit var companyLabel2: AutoCompleteTextView
     private lateinit var companyBranch2: AutoCompleteTextView
     private lateinit var companyArea2: AutoCompleteTextView
     private lateinit var companyAccount2: AutoCompleteTextView
+    private lateinit var labour2: AppCompatImageView
+
+    private var labour2Enabled = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,13 +59,14 @@ class OneShotLoad : AppCompatActivity() {
         initialFarmRate = findViewById(R.id.one_shot_load_farm_rate)
         finalFarmRate = findViewById(R.id.osl_final_farm_rate)
         inHandCash = findViewById(R.id.one_shot_load_extra_expense_provided)
-        dropdownContainer = findViewById(R.id.osl_dropdown_container)
-        freeTextView = findViewById(R.id.osl_editText_freeText)
-        freeTextOkBtn = findViewById(R.id.osl_btn_saveFreeText)
+//        dropdownContainer = findViewById(R.id.osl_dropdown_container)
+//        freeTextView = findViewById(R.id.osl_editText_freeText)
+//        freeTextOkBtn = findViewById(R.id.osl_btn_saveFreeText)
         companyLabel2 = findViewById(R.id.osl_label_company_name_2)
         companyBranch2 = findViewById(R.id.osl_label_branch_name_2)
         companyArea2 = findViewById(R.id.osl_label_area_name_2)
         companyAccount2 = findViewById(R.id.osl_label_money_account_name_2)
+        labour2 = findViewById(R.id.addLabour2)
     }
 
     private fun initializeUI() {
@@ -126,7 +133,7 @@ class OneShotLoad : AppCompatActivity() {
         deliveryBasePriceContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
         val inHandContainer = findViewById<TextInputLayout>(R.id.osl_in_hand_cash_container)
         inHandContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
-        dropdownContainer.visibility = View.GONE
+//        dropdownContainer.visibility = View.GONE
     }
 
     private fun getCompanyNames(): List<String> {
@@ -257,5 +264,21 @@ class OneShotLoad : AppCompatActivity() {
 
     fun onClickExitButton(view: View) {
         this.finishAffinity()
+    }
+
+    fun onClickAddLabour2(view: View) {
+        labour2Enabled = !labour2Enabled
+        LogMe.log("Labour 2 enabled? $labour2Enabled")
+        if(labour2Enabled) {
+            labour2.setColorFilter(ContextCompat.getColor(AppContexts.get(), R.color.osl_person_avatar_active))
+//            labour2.setBackgroundColor(ContextCompat.getDrawable(AppContexts.get(), R.drawable.round_outline_for_avatar))
+//            UIUtils.setUIElementValue(labour2, "true")
+//            labour2.backgroundTintList = this.resources.getColorStateList(R.color.osl_person_avatar_active)
+//            labour2.background = ContextCompat.getDrawable(this, R.drawable.round_outline_for_avatar)
+        } else {
+            labour2.clearColorFilter()
+//            labour2.setImageResource(android.R.color.transparent)
+//            imageView.setBackgroundResource(android.R.color.transparent);
+        }
     }
 }

@@ -62,8 +62,8 @@ class DataFetchingInfo {
                     executingMethods.add(CustomerData::getRecords)
                 }
                 ActivityAuthEnums.LOAD_INFORMATION -> {
-                    executingMethods.add(SingleAttributedData::getRecords, false)
-                    executingMethods.add(DaySummary::get, false)
+                    executingMethods.add(SingleAttributedData::getRecords, true)
+                    executingMethods.add(DaySummary::get, true)
                 }
                 ActivityAuthEnums.MONEY_CALCULATOR -> {
                     executingMethods.add(SingleAttributedData::getRecords)

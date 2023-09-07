@@ -35,6 +35,7 @@
     <color name="transparent_red">#81FF4141</color>
     <color name="transparent_violet">#999A65F8</color>
 
+    <!-- One Shot Load -->
     <color name="osl_data_status_fresh_light">#C8E8A3</color>
     <color name="osl_data_status_fresh_dark">#AFD682</color>
     <color name="osl_data_status_stale_light">#F8F4D5</color>
@@ -42,6 +43,8 @@
     <color name="osl_option_seleted">#024149</color>
     <color name="osl_company_details_view">#024149</color>
     <color name="osl_company_details_view_editing">#FB7065</color>
+    <color name="osl_person_avatar_active">#013E37</color>
+    <color name="osl_person_avatar_inactive">#FF98999A</color>
 
     <!--  DUE SHOW VIEW  -->
     <color name="due_show_excluding_finalized_transactions">#F37B71</color>
@@ -52,4 +55,5 @@
     <color name="mc_counter_unsuccessful">#FA4545</color>
     <color name="mc_counter_aiming_amount_zero">#03AAB1</color>
     <color name="mc_counter_aiming_amount_non_zero">#FA4545</color>
+
 </resources>

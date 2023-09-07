@@ -74,6 +74,7 @@ class OneShotLoad : AppCompatActivity() {
         setUIValues(false)
         setListeners()
         updateUIFromObj()
+        processLabour2PayElements()
         markDataFresh(true, true)
     }
 
@@ -268,17 +269,21 @@ class OneShotLoad : AppCompatActivity() {
 
     fun onClickAddLabour2(view: View) {
         labour2Enabled = !labour2Enabled
+        processLabour2PayElements()
+    }
+
+    private fun processLabour2PayElements() {
+        val labour2PayContainer = findViewById<LinearLayout>(R.id.osl_labour2_pay_container)
+
         LogMe.log("Labour 2 enabled? $labour2Enabled")
         if(labour2Enabled) {
+            labour2PayContainer.visibility = View.VISIBLE
             labour2.setColorFilter(ContextCompat.getColor(AppContexts.get(), R.color.osl_person_avatar_active))
-//            labour2.setBackgroundColor(ContextCompat.getDrawable(AppContexts.get(), R.drawable.round_outline_for_avatar))
-//            UIUtils.setUIElementValue(labour2, "true")
-//            labour2.backgroundTintList = this.resources.getColorStateList(R.color.osl_person_avatar_active)
-//            labour2.background = ContextCompat.getDrawable(this, R.drawable.round_outline_for_avatar)
+            labour2.setBackgroundDrawable(getResources().getDrawable(R.drawable.round_outline_for_avatar))
         } else {
+            labour2PayContainer.visibility = View.INVISIBLE
             labour2.clearColorFilter()
-//            labour2.setImageResource(android.R.color.transparent)
-//            imageView.setBackgroundResource(android.R.color.transparent);
+            labour2.setBackgroundDrawable(null)
         }
     }
 }

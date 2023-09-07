@@ -60,36 +60,47 @@
                         app:srcCompat="@drawable/profile_avatar"
                         app:tint="@color/osl_person_avatar_active" />
 
-                    <TextView
-                        android:id="@+id/textView58"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="350" />
-
                     <LinearLayout
+                        android:id="@+id/osl_driver_pay_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/textView65"
+                            android:id="@+id/osl_driver_base_pay"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="350" />
+
+                        <TextView
+                            android:id="@+id/osl_driver_extra_pay"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="bottom|center"
                             android:text="+50" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginHorizontal="3dp"
+                            android:layout_weight="1"
+                            android:background="#9A9797"
+                            android:orientation="vertical"></LinearLayout>
+
+                        <TextView
+                            android:id="@+id/osl_driver_total_pay"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="total" />
+
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/textView69"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="---------------" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -111,29 +122,48 @@
                         app:srcCompat="@drawable/profile_avatar"
                         app:tint="@color/osl_person_avatar_active" />
 
-                    <TextView
-                        android:id="@+id/textView59"
+                    <LinearLayout
+                        android:id="@+id/osl_labour1_pay_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="300" />
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/textView67"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="bottom|center_horizontal"
-                        android:text="+100" />
+                        <TextView
+                            android:id="@+id/osl_labour1_base_pay"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="300" />
 
-                    <TextView
-                        android:id="@+id/textView70"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="---------------" />
+                        <TextView
+                            android:id="@+id/osl_labour1_extra_pay"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="bottom|center_horizontal"
+                            android:text="+100" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginHorizontal="3dp"
+                            android:layout_weight="1"
+                            android:background="#9A9797"
+                            android:orientation="vertical">
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/osl_labour1_total_pay"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="total" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -146,36 +176,54 @@
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/addLabour2"
-                        android:layout_width="54dp"
+                        android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_weight="1"
                         android:onClick="onClickAddLabour2"
                         android:padding="2dp"
                         app:srcCompat="@drawable/profile_avatar" />
 
-                    <TextView
-                        android:id="@+id/textView60"
+                    <LinearLayout
+                        android:id="@+id/osl_labour2_pay_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="bottom|center_horizontal"
-                        android:text="300" />
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/textView68"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="bottom|center_horizontal"
-                        android:text="+150" />
+                        <TextView
+                            android:id="@+id/osl_labour2_base_pay"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="bottom|center_horizontal"
+                            android:text="300" />
 
-                    <TextView
-                        android:id="@+id/textView71"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="---------------" />
+                        <TextView
+                            android:id="@+id/osl_labour2_extra_pay"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="bottom|center_horizontal"
+                            android:text="+150" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginHorizontal="3dp"
+                            android:background="#9A9797"
+                            android:orientation="vertical">
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/osl_labour2_total_pay"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="total" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout

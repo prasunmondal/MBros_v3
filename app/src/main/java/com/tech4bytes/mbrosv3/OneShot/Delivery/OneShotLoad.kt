@@ -194,8 +194,12 @@ class OneShotLoad : AppCompatActivity() {
         obj.load_area = loadingArea
         obj.finalFarmRate = finalFarmRate
         obj.bufferRate = (NumberUtils.getIntOrZero(farmRate) - 10 - NumberUtils.getIntOrZero(finalFarmRate)).toString()
-
         obj.extra_cash_given = extraCashProvider
+        obj.numberOfPeopleTakingSalary = if(labour2Enabled) "3" else "2"
+        obj.salaryDivision = findViewById<TextView>(R.id.osl_driver_total_pay).text.toString() +
+                "," + findViewById<TextView>(R.id.osl_labour1_total_pay).text.toString() +
+                if(labour2Enabled) "," + findViewById<TextView>(R.id.osl_labour2_total_pay).text.toString() else ""
+
         SingleAttributedData.saveToLocal(obj)
     }
 

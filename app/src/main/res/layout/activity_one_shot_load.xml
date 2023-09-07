@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="#F43131"
-    android:padding="20dp"
+    android:padding="10dp"
     tools:context=".OneShot.Delivery.OneShotLoad">
 
     <LinearLayout
@@ -91,12 +90,12 @@
                                 <AutoCompleteTextView
                                     android:id="@+id/osl_label_company_name_2"
                                     android:layout_width="match_parent"
-                                    android:layout_height="38dp"
+                                    android:layout_height="35dp"
                                     android:layout_weight="1"
                                     android:completionThreshold="0"
                                     android:imeOptions="actionNext"
                                     android:inputType="textNoSuggestions"
-                                    android:textSize="15dp"
+                                    android:textSize="14sp"
                                     tools:ignore="TouchTargetSizeCheck" />
                             </LinearLayout>
 
@@ -117,12 +116,12 @@
                                 <AutoCompleteTextView
                                     android:id="@+id/osl_label_branch_name_2"
                                     android:layout_width="match_parent"
-                                    android:layout_height="38dp"
+                                    android:layout_height="35dp"
                                     android:layout_weight="1"
                                     android:completionThreshold="0"
                                     android:imeOptions="actionNext"
                                     android:inputType="textNoSuggestions"
-                                    android:textSize="15dp"
+                                    android:textSize="14sp"
                                     tools:ignore="TouchTargetSizeCheck" />
                             </LinearLayout>
 
@@ -133,7 +132,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:orientation="horizontal"
-                            android:paddingTop="20dp">
+                            android:paddingTop="15dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -152,12 +151,12 @@
                                 <AutoCompleteTextView
                                     android:id="@+id/osl_label_area_name_2"
                                     android:layout_width="match_parent"
-                                    android:layout_height="38dp"
+                                    android:layout_height="35dp"
                                     android:layout_weight="1"
                                     android:completionThreshold="0"
                                     android:imeOptions="actionNext"
                                     android:inputType="textNoSuggestions"
-                                    android:textSize="15dp"
+                                    android:textSize="14sp"
                                     tools:ignore="TouchTargetSizeCheck" />
                             </LinearLayout>
 
@@ -178,12 +177,12 @@
                                 <AutoCompleteTextView
                                     android:id="@+id/osl_label_money_account_name_2"
                                     android:layout_width="match_parent"
-                                    android:layout_height="38dp"
+                                    android:layout_height="35dp"
                                     android:layout_weight="1"
                                     android:completionThreshold="0"
                                     android:imeOptions="actionNext"
                                     android:inputType="textNoSuggestions"
-                                    android:textSize="15dp"
+                                    android:textSize="14sp"
                                     tools:ignore="TouchTargetSizeCheck" />
                             </LinearLayout>
 
@@ -294,7 +293,7 @@
                                 android:hint="₹ 0"
                                 android:inputType="number"
                                 android:textColor="#656464"
-                                android:textSize="20sp"
+                                android:textSize="18sp"
                                 android:textStyle="bold" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -334,7 +333,7 @@
                                 android:background="#00FFFFFF"
                                 android:hint="₹ 0"
                                 android:inputType="numberSigned|number"
-                                android:textSize="34sp"
+                                android:textSize="24sp"
                                 android:textStyle="bold" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -361,8 +360,6 @@
                     android:id="@+id/osl_in_hand_cash_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:maxEms="10"
-                    android:minEms="10"
                     android:paddingHorizontal="5dp"
                     app:hintAnimationEnabled="false"
                     app:hintEnabled="false">
@@ -408,6 +405,19 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/textView78"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Load: " />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="15dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -422,12 +432,14 @@
                         <TextView
                             android:id="@+id/textView72"
                             android:layout_width="30dp"
-                            android:layout_height="match_parent"
-                            android:background="#F4EDDA"
+                            android:layout_height="50dp"
+                            android:background="@drawable/rounded"
+                            android:backgroundTint="@color/black_overlay"
                             android:gravity="center"
                             android:onClick="clickDecreasePay"
                             android:text="-"
-                            android:textSize="24sp" />
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -648,8 +660,10 @@
                         <TextView
                             android:id="@+id/textView73"
                             android:layout_width="30dp"
-                            android:layout_height="match_parent"
-                            android:background="#F4EDDA"
+                            android:layout_height="50dp"
+                            android:background="@drawable/rounded"
+                            android:backgroundTint="@color/black_overlay"
+                            android:backgroundTintMode="src_in"
                             android:gravity="center"
                             android:onClick="clickIncreasePay"
                             android:text="+"
@@ -667,7 +681,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="TextView"
+                        android:padding="10dp"
+                        android:text="Total Salary"
                         android:textSize="20sp"
                         android:textStyle="bold" />
                 </LinearLayout>

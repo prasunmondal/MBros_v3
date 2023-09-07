@@ -46,7 +46,9 @@ data class SingleAttributedData(
     var extra_expenses: String = "",
     var daySale: String = "",
     var totalMarketDue: String = "",
-    var smsOrderSequence: String = ""
+    var smsOrderSequence: String = "",
+    var numberOfPeopleTakingSalary: String = "",
+    var salaryDivision: String = ""
 ) : java.io.Serializable {
 
     companion object {

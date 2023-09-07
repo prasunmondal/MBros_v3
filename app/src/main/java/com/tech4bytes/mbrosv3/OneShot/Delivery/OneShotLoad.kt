@@ -9,6 +9,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
 import com.google.android.material.button.MaterialButton
@@ -270,6 +271,7 @@ class OneShotLoad : AppCompatActivity() {
     fun onClickAddLabour2(view: View) {
         labour2Enabled = !labour2Enabled
         processLabour2PayElements()
+        updateAllPays()
     }
 
     fun clickIncreasePay(view: View) {
@@ -289,9 +291,9 @@ class OneShotLoad : AppCompatActivity() {
     }
 
     private fun updateAllPays() {
-        updateTotalPay(R.id.osl_driver_base_pay, R.id.osl_driver_extra_pay, R.id.osl_driver_total_pay)
-        updateTotalPay(R.id.osl_labour1_base_pay, R.id.osl_labour1_extra_pay, R.id.osl_labour1_total_pay)
-        updateTotalPay(R.id.osl_labour2_base_pay, R.id.osl_labour2_extra_pay, R.id.osl_labour2_total_pay)
+        val driverPay = updateTotalPay(R.id.osl_driver_base_pay, R.id.osl_driver_extra_pay, R.id.osl_driver_total_pay, R.id.osl_driver_pay_container)
+        val labour1Pay = updateTotalPay(R.id.osl_labour1_base_pay, R.id.osl_labour1_extra_pay, R.id.osl_labour1_total_pay, R.id.osl_labour1_pay_container)
+        val labour2Pay = updateTotalPay(R.id.osl_labour2_base_pay, R.id.osl_labour2_extra_pay, R.id.osl_labour2_total_pay, R.id.osl_labour2_pay_container)
 
         val extraPay = NumberUtils.getIntOrZero(findViewById<TextView>(R.id.osl_driver_extra_pay).text.toString().replace("+", ""))
         if(extraPay == 0) {
@@ -303,6 +305,7 @@ class OneShotLoad : AppCompatActivity() {
             findViewById<LinearLayout>(R.id.osl_labour1_extra_pay_container).visibility = View.VISIBLE
             findViewById<LinearLayout>(R.id.osl_labour2_extra_pay_container).visibility = View.VISIBLE
         }
+        findViewById<TextView>(R.id.osl_total_salary).text = "₹ " + (driverPay + labour1Pay + labour2Pay).toString()
     }
 
     private fun processLabour2PayElements() {
@@ -320,11 +323,14 @@ class OneShotLoad : AppCompatActivity() {
         }
     }
 
-    fun updateTotalPay(basePayUI: Int, extraPayUI: Int, totalPayUI: Int) {
+    fun updateTotalPay(basePayUI: Int, extraPayUI: Int, totalPayUI: Int, payView: Int): Int {
+        val isPaid = findViewById<LinearLayout>(payView).isVisible
         val basePay = NumberUtils.getIntOrZero(findViewById<TextView>(basePayUI).text.toString())
         val extraPay = NumberUtils.getIntOrZero(findViewById<TextView>(extraPayUI).text.toString().replace("+", ""))
         val totalPay = basePay + extraPay
         val totalPayUI = findViewById<TextView>(totalPayUI)
         totalPayUI.text = totalPay.toString()
+
+        return if(isPaid) totalPay else 0
     }
 }

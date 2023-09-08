@@ -74,9 +74,29 @@ class OneShotLoad : AppCompatActivity() {
         setUIValues(false)
         setListeners()
         updateUIFromObj()
+        initializePays()
         processLabour2PayElements()
         updateAllPays()
         markDataFresh(true, true)
+    }
+
+    private fun initializePays() {
+        val dataObj = SingleAttributedData.getRecords()
+        labour2Enabled = NumberUtils.getIntOrZero(dataObj.numberOfPeopleTakingSalary)>2
+        val salaries = dataObj.salaryDivision.split("#")
+        if(salaries.isEmpty()) {
+            LogMe.log("Salaries not found. Setting default values.")
+            LogMe.log(dataObj.salaryDivision)
+            salaries.forEach {
+                LogMe.log(it)
+            }
+            val driverSalary = salaries[0]
+            val extraAmount = NumberUtils.getIntOrZero(driverSalary) - NumberUtils.getIntOrZero(findViewById<TextView>(R.id.osl_driver_base_pay).text.toString())
+            findViewById<TextView>(R.id.osl_driver_extra_pay).text = extraAmount.toString()
+            findViewById<TextView>(R.id.osl_labour1_extra_pay).text = extraAmount.toString()
+            findViewById<TextView>(R.id.osl_labour2_extra_pay).text = extraAmount.toString()
+        }
+        updateAllPays()
     }
 
     private fun setUIValues(fromUI: Boolean = true) {
@@ -197,8 +217,8 @@ class OneShotLoad : AppCompatActivity() {
         obj.extra_cash_given = extraCashProvider
         obj.numberOfPeopleTakingSalary = if(labour2Enabled) "3" else "2"
         obj.salaryDivision = findViewById<TextView>(R.id.osl_driver_total_pay).text.toString() +
-                "," + findViewById<TextView>(R.id.osl_labour1_total_pay).text.toString() +
-                if(labour2Enabled) "," + findViewById<TextView>(R.id.osl_labour2_total_pay).text.toString() else ""
+                "#" + findViewById<TextView>(R.id.osl_labour1_total_pay).text.toString() +
+                if(labour2Enabled) "#" + findViewById<TextView>(R.id.osl_labour2_total_pay).text.toString() else ""
 
         SingleAttributedData.saveToLocal(obj)
     }
@@ -328,7 +348,7 @@ class OneShotLoad : AppCompatActivity() {
     }
 
     fun updateTotalPay(basePayUI: Int, extraPayUI: Int, totalPayUI: Int, payView: Int): Int {
-        val isPaid = findViewById<LinearLayout>(payView).isVisible
+        val isPaid = findViewById<LinearLayout>(payView).visibility == View.VISIBLE
         val basePay = NumberUtils.getIntOrZero(findViewById<TextView>(basePayUI).text.toString())
         val extraPay = NumberUtils.getIntOrZero(findViewById<TextView>(extraPayUI).text.toString().replace("+", ""))
         val totalPay = basePay + extraPay

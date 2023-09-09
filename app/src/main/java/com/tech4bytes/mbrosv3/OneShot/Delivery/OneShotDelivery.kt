@@ -17,6 +17,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.prasunmondal.postjsontosheets.clients.delete.Delete
 import com.tech4bytes.mbrosv3.AppData.AppUtils
+import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
@@ -34,6 +35,7 @@ import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
+import com.tech4bytes.mbrosv3.SendInfoTexts.Whatsapp.Whatsapp
 import com.tech4bytes.mbrosv3.Sms.SMSUtils
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
@@ -42,6 +44,7 @@ import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
+import java.util.*
 
 
 class OneShotDelivery : AppCompatActivity() {
@@ -502,8 +505,13 @@ class OneShotDelivery : AppCompatActivity() {
         val loadedPc = findViewById<TextView>(R.id.one_shot_delivery_pc)
         val loadedKg = findViewById<TextView>(R.id.one_shot_delivery_kg)
         runOnUiThread {
+            if(!isSendLoadInfoEnabled()) {
+                findViewById<TextView>(R.id.osd_btn_send_load_info_to_account_payee).visibility = View.GONE
+            }
+
             loadedPc.text = SingleAttributedData.getRecords().actualLoadPc
             loadedKg.text = SingleAttributedData.getRecords().actualLoadKg
+            findViewById<TextView>(R.id.osd_company_name).text = SingleAttributedData.getRecords().load_account
         }
 
         if (AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_FARM_RATE)) {
@@ -776,5 +784,40 @@ class OneShotDelivery : AppCompatActivity() {
                 deleteDeliveryDataButton.isClickable = true
             }
         }.start()
+    }
+
+    fun onClickSendLoadInfoToCompany(view: View) {
+        val metadata = SingleAttributedData.getRecords()
+        val keyFromAppConstantWhatsappNumber = ("WHATSAPP_NUMBER_" + metadata.load_account).uppercase(Locale.ROOT)
+        val keyFromAppConstantTextTemplate = ("SEND_LOAD_INFO_TEMPLATE_" + metadata.load_account).uppercase(Locale.ROOT)
+        val numberToSendInfo = AppConstants.get(keyFromAppConstantWhatsappNumber)
+        val templateToSendInfo = AppConstants.get(keyFromAppConstantTextTemplate)
+
+        val formattedDate = DateUtils.getDateInFormat("dd/MM/yyyy")
+        val loadedPc = findViewById<TextView>(R.id.one_shot_delivery_pc)
+        val loadedKg = findViewById<TextView>(R.id.one_shot_delivery_kg)
+        val text = templateToSendInfo
+            .replace("<date>", formattedDate)
+            .replace("<loadPc>", loadedPc.text.toString())
+            .replace("<loadKg>", loadedKg.text.toString())
+            .replace("<loadCompanyName>", metadata.load_companyName)
+        Whatsapp.sendMessage(this, numberToSendInfo, text)
+    }
+
+    fun isSendLoadInfoEnabled(): Boolean {
+        val metadata = SingleAttributedData.getRecords()
+        val keyFromAppConstantWhatsappNumber = ("WHATSAPP_NUMBER_" + metadata.load_account).uppercase(Locale.ROOT)
+        val keyFromAppConstantTextTemplate = ("SEND_LOAD_INFO_TEMPLATE_" + metadata.load_account).uppercase(Locale.ROOT)
+        val numberToSendInfo = AppConstants.get(keyFromAppConstantWhatsappNumber)
+        val templateToSendInfo = AppConstants.get(keyFromAppConstantTextTemplate)
+        val isSendLoadInfoEnabled = numberToSendInfo.isNotEmpty() && templateToSendInfo.isNotEmpty()
+
+        if(!isSendLoadInfoEnabled) {
+            LogMe.log("Send load info disabled. Either '$keyFromAppConstantWhatsappNumber' or '$keyFromAppConstantTextTemplate' is not configured")
+        }else {
+            LogMe.log("Send load info enabled.")
+        }
+
+        return isSendLoadInfoEnabled
     }
 }

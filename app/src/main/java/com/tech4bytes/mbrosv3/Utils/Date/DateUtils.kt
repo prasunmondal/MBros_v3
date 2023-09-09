@@ -104,6 +104,11 @@ class DateUtils {
             return formattedDate
         }
 
+        fun getDateInFormat(format: String): String {
+            val format = SimpleDateFormat(format)
+            return format.format(Date())
+        }
+
         fun timeZoneConversionRequired(datetime: String): Boolean {
             return datetime.endsWith("Z")
         }

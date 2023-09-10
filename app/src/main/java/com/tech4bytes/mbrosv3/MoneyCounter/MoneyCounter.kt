@@ -136,8 +136,10 @@ class MoneyCounter : AppCompatActivity() {
         LogMe.log("" + getCalculatedTotalAmountFromUI() + " == " + getAimingAmountFromUI())
         if (getCalculatedTotalAmountFromUI() == getAimingAmountFromUI()) {
             findViewById<LinearLayout>(R.id.mc_totalAmount_container).setBackgroundColor(ContextCompat.getColor(this, R.color.mc_counter_success))
+            findViewById<LinearLayout>(R.id.mc_totalAmount_container2).setBackgroundColor(ContextCompat.getColor(this, R.color.mc_counter_success))
         } else {
             findViewById<LinearLayout>(R.id.mc_totalAmount_container).setBackgroundColor(ContextCompat.getColor(this, R.color.mc_counter_unsuccessful))
+            findViewById<LinearLayout>(R.id.mc_totalAmount_container2).setBackgroundColor(ContextCompat.getColor(this, R.color.mc_counter_unsuccessful))
         }
 
         if(amountDifference == 0) {

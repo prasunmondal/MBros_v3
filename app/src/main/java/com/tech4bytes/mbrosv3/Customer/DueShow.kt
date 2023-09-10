@@ -36,20 +36,35 @@ class DueShow : AppCompatActivity() {
         val startingTime = currentTimestamp.minusDays((daysBack + daysToAvg/2).toLong())
         val endingTime = currentTimestamp.minusDays((daysBack - daysToAvg/2).toLong())
 
-        val list = CustomerData.getRecords().filter { it.name == name }
+
+        // <--------------------|------------------------------|-------------------->
+        // 2000            startingTime                    endingTime              Now
+        //                                                        <------- list starts
+
+
+        var list = CustomerData.getRecords().filter { it.name == name }
         var sum = 0
         var count = 0
         LogMe.log("Name: $name")
-        list.forEach {
-            val t = LocalDateTime.parse(it.timestamp.replace("Z",""))
+        list = list.sortedBy { p -> LocalDateTime.parse(p.timestamp.replace("Z","")) }.reversed()
+        list.forEach { data ->
+            val t = LocalDateTime.parse(data.timestamp.replace("Z",""))
             if (t!!.isAfter(startingTime) && t.isBefore(endingTime)) {
-                LogMe.log("$count. Date: ${it.timestamp}, Amount Due ${it.balanceDue}")
-                sum += it.balanceDue.toInt()
+                LogMe.log("$count. Date: ${data.timestamp}, Amount Due ${data.balanceDue}")
+                sum += data.balanceDue.toInt()
                 count++
             }
+            else if(t.isBefore(startingTime)) {
+                return if(count == 0) {
+                    LogMe.log("Returning outOfTime Record")
+                    LogMe.log("Name: ${data.name}, Date: ${data.timestamp}, Amount Due: ${data.balanceDue}")
+                    data.balanceDue.toInt()
+                } else
+                    sum / count
+            }
         }
-        LogMe.log(" --- TOTAL: $sum ---")
-        LogMe.log(" --- AVG  : ${if(count == 0) 0 else sum / count} ---")
+        LogMe.log(" --- TOTAL: $sum")
+        LogMe.log(" --- AVG: ${if(count == 0) 0 else sum / count}")
         return if(count == 0) 0 else sum / count
     }
 

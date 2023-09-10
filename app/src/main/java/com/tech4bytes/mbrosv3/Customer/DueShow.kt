@@ -31,41 +31,65 @@ class DueShow : AppCompatActivity() {
         showDues(toggleBalanceViewBtn.isChecked)
     }
 
+    private fun isRecordInTimeRange(data: CustomerData, startingTime: LocalDateTime, endingTime: LocalDateTime): Boolean {
+        val t = LocalDateTime.parse(data.timestamp.replace("Z",""))
+        return t!!.isAfter(startingTime) && t.isBefore(endingTime)
+    }
+
     fun getAvgDue(name: String, daysBack: Int, daysToAvg: Int): Int {
         val currentTimestamp = LocalDateTime.now()
         val startingTime = currentTimestamp.minusDays((daysBack + daysToAvg/2).toLong())
         val endingTime = currentTimestamp.minusDays((daysBack - daysToAvg/2).toLong())
-
-
+        
         // <--------------------|------------------------------|-------------------->
         // 2000            startingTime                    endingTime              Now
         //                                                        <------- list starts
 
-
-        var list = CustomerData.getRecords().filter { it.name == name }
-        var sum = 0
-        var count = 0
-        LogMe.log("Name: $name")
-        list = list.sortedBy { p -> LocalDateTime.parse(p.timestamp.replace("Z","")) }.reversed()
-        list.forEach { data ->
-            val t = LocalDateTime.parse(data.timestamp.replace("Z",""))
-            if (t!!.isAfter(startingTime) && t.isBefore(endingTime)) {
-                LogMe.log("$count. Date: ${data.timestamp}, Amount Due ${data.balanceDue}")
-                sum += data.balanceDue.toInt()
-                count++
-            }
-            else if(t.isBefore(startingTime)) {
-                return if(count == 0) {
-                    LogMe.log("Returning outOfTime Record")
-                    LogMe.log("Name: ${data.name}, Date: ${data.timestamp}, Amount Due: ${data.balanceDue}")
-                    data.balanceDue.toInt()
-                } else
-                    sum / count
+        LogMe.log("Name :$name")
+        val listSorted = CustomerData.getRecords()
+            .filter { it.name == name }
+            .sortedBy { t -> t.timestamp }.reversed()
+        try {
+            // return the avg of the records found within the time range
+            return listSorted
+                .filter { t -> isRecordInTimeRange(t, startingTime, endingTime) }
+                .stream().mapToInt { i -> i.balanceDue.toInt() }
+                .average().asDouble.toInt()
+        } catch (e: NoSuchElementException) {
+            return try {
+                // No records found within the time range. Returning last data found earlier to the time range
+                listSorted
+                    .filter { t -> LocalDateTime.parse(t.timestamp.replace("Z", "")).isBefore(startingTime) }
+                    .stream().findFirst().get().balanceDue.toInt()
+            } catch (e: NoSuchElementException) {
+                // No records found within the time range and earlier to it. Returning zero
+                0
             }
         }
-        LogMe.log(" --- TOTAL: $sum")
-        LogMe.log(" --- AVG: ${if(count == 0) 0 else sum / count}")
-        return if(count == 0) 0 else sum / count
+
+//        var sum = 0
+//        var count = 0
+//        LogMe.log("Name: $name")
+//        list = list.sortedBy { p -> LocalDateTime.parse(p.timestamp.replace("Z","")) }.reversed()
+//        list.forEach { data ->
+//            val t = LocalDateTime.parse(data.timestamp.replace("Z",""))
+//            if (t!!.isAfter(startingTime) && t.isBefore(endingTime)) {
+//                LogMe.log("$count. Date: ${data.timestamp}, Amount Due ${data.balanceDue}")
+//                sum += data.balanceDue.toInt()
+//                count++
+//            }
+//            else if(t.isBefore(startingTime)) {
+//                return if(count == 0) {
+//                    LogMe.log("Returning outOfTime Record")
+//                    LogMe.log("Name: ${data.name}, Date: ${data.timestamp}, Amount Due: ${data.balanceDue}")
+//                    data.balanceDue.toInt()
+//                } else
+//                    sum / count
+//            }
+//        }
+//        LogMe.log(" --- TOTAL: $sum")
+//        LogMe.log(" --- AVG: ${if(count == 0) 0 else sum / count}")
+//        return if(count == 0) 0 else sum / count
     }
 
     private fun setUI() {

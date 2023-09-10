@@ -113,7 +113,9 @@ class DueShow : AppCompatActivity() {
             nameElement.text = it.name
             amountElement.text = currentBalance.toString()
             dueChangeElement.text = changeInDuration1.toString()
+            val balanceDiffTextColor = if (changeInDuration1 > 0) R.color.due_show_balance_increased else R.color.due_show_balance_decreased
             amountElement.setTextColor(ContextCompat.getColor(this, balanceTextColor))
+            dueChangeElement.setTextColor(ContextCompat.getColor(this, balanceDiffTextColor))
 
             listContainer.addView(entry)
         }

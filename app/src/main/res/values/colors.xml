@@ -49,6 +49,8 @@
     <!--  DUE SHOW VIEW  -->
     <color name="due_show_excluding_finalized_transactions">#F37B71</color>
     <color name="due_show_including_finalized_transactions">#B3E0E6</color>
+    <color name="due_show_balance_decreased">#B3E0E6</color>
+    <color name="due_show_balance_increased">#F37B71</color>
 
     <!-- MONEY COUNTER-->
     <color name="mc_counter_success">#03AAB1</color>

@@ -17,13 +17,14 @@ import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
-import org.w3c.dom.Text
 import java.time.LocalDateTime
 import kotlin.streams.toList
 
 class DueShow : AppCompatActivity() {
 
     lateinit var toggleBalanceViewBtn: Switch
+    var balanceMap: MutableMap<String, Int>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_due_show)
@@ -31,6 +32,12 @@ class DueShow : AppCompatActivity() {
 
         setUI()
         showDues(toggleBalanceViewBtn.isChecked)
+    }
+
+    private fun getBalanceMap(showAfterDeliveryBalance: Boolean): MutableMap<String, Int> {
+        if(balanceMap == null)
+            balanceMap = CustomerDueData.getBalance(showAfterDeliveryBalance)
+        return balanceMap as MutableMap<String, Int>
     }
 
     private fun isRecordInTimeRange(data: CustomerData, startingTime: LocalDateTime, endingTime: LocalDateTime): Boolean {
@@ -68,30 +75,6 @@ class DueShow : AppCompatActivity() {
                 0
             }
         }
-
-//        var sum = 0
-//        var count = 0
-//        LogMe.log("Name: $name")
-//        list = list.sortedBy { p -> LocalDateTime.parse(p.timestamp.replace("Z","")) }.reversed()
-//        list.forEach { data ->
-//            val t = LocalDateTime.parse(data.timestamp.replace("Z",""))
-//            if (t!!.isAfter(startingTime) && t.isBefore(endingTime)) {
-//                LogMe.log("$count. Date: ${data.timestamp}, Amount Due ${data.balanceDue}")
-//                sum += data.balanceDue.toInt()
-//                count++
-//            }
-//            else if(t.isBefore(startingTime)) {
-//                return if(count == 0) {
-//                    LogMe.log("Returning outOfTime Record")
-//                    LogMe.log("Name: ${data.name}, Date: ${data.timestamp}, Amount Due: ${data.balanceDue}")
-//                    data.balanceDue.toInt()
-//                } else
-//                    sum / count
-//            }
-//        }
-//        LogMe.log(" --- TOTAL: $sum")
-//        LogMe.log(" --- AVG: ${if(count == 0) 0 else sum / count}")
-//        return if(count == 0) 0 else sum / count
     }
 
     private fun setUI() {
@@ -116,16 +99,11 @@ class DueShow : AppCompatActivity() {
         return filteredList.toMutableList()
     }
 
-    private fun showBalances() {
-        Thread {
-
-        }.start()
-    }
-
     private fun showDeltas(name: String, currentBalance: Int, view: TextView) {
+        val noOfDaysBack = NumberUtils.getIntOrZero(findViewById<TextView>(R.id.noOfDaysBack).text.toString())
         Thread {
-            val balanceB4X1Days = getAvgDue(name, 30, AppConstants.get(AppConstants.DUE_SHOW_BALANCE_AVG_DAYS).toInt())
-            val changeInDuration1 = currentBalance!! - balanceB4X1Days
+            val balanceB4X1Days = getAvgDue(name, noOfDaysBack, AppConstants.get(AppConstants.DUE_SHOW_BALANCE_AVG_DAYS).toInt())
+            val changeInDuration1 = currentBalance - balanceB4X1Days
             val balanceDiffTextColor = if (changeInDuration1 > 0) R.color.due_show_balance_increased else R.color.due_show_balance_decreased
             runOnUiThread {
                 view.text = changeInDuration1.toString()
@@ -133,6 +111,7 @@ class DueShow : AppCompatActivity() {
             }
         }.start()
     }
+
     private fun showDues(showAfterDeliveryBalance: Boolean = true) {
         val listContainer = findViewById<LinearLayout>(R.id.activity_due_show_fragment_conntainer)
         listContainer.removeAllViews()
@@ -140,7 +119,6 @@ class DueShow : AppCompatActivity() {
         latestRecords = sortByNameList(latestRecords, CustomerKYC.getAllCustomers())
 
         val balanceTextColor = if (showAfterDeliveryBalance) R.color.due_show_including_finalized_transactions else R.color.due_show_excluding_finalized_transactions
-        val latestBalanceAfterDelivery = CustomerDueData.getBalance(showAfterDeliveryBalance)
 
         latestRecords.forEach {
             val layoutInflater = LayoutInflater.from(AppContexts.get())
@@ -149,7 +127,7 @@ class DueShow : AppCompatActivity() {
             val amountElement = entry.findViewById<TextView>(R.id.activity_due_show_amount)
             val dueChangeElement = entry.findViewById<TextView>(R.id.activity_due_show_change_in_duration1)
 
-            val currentBalance = latestBalanceAfterDelivery[it.name]
+            val currentBalance = getBalanceMap(showAfterDeliveryBalance)[it.name]
             nameElement.text = it.name
             amountElement.text = currentBalance.toString()
             amountElement.setTextColor(ContextCompat.getColor(this, balanceTextColor))
@@ -182,5 +160,9 @@ class DueShow : AppCompatActivity() {
         val switchActivityIntent = Intent(this, ActivityLogin::class.java)
         switchActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(switchActivityIntent)
+    }
+
+    fun onChangeDaysOffsetToCompareBalance(view: View) {
+        showDues()
     }
 }

@@ -3,6 +3,7 @@ package com.tech4bytes.mbrosv3.Customer
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.Switch
 import android.widget.TextView
@@ -16,6 +17,7 @@ import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
+import org.w3c.dom.Text
 import java.time.LocalDateTime
 import kotlin.streams.toList
 
@@ -40,7 +42,7 @@ class DueShow : AppCompatActivity() {
         val currentTimestamp = LocalDateTime.now()
         val startingTime = currentTimestamp.minusDays((daysBack + daysToAvg/2).toLong())
         val endingTime = currentTimestamp.minusDays((daysBack - daysToAvg/2).toLong())
-        
+
         // <--------------------|------------------------------|-------------------->
         // 2000            startingTime                    endingTime              Now
         //                                                        <------- list starts
@@ -114,6 +116,23 @@ class DueShow : AppCompatActivity() {
         return filteredList.toMutableList()
     }
 
+    private fun showBalances() {
+        Thread {
+
+        }.start()
+    }
+
+    private fun showDeltas(name: String, currentBalance: Int, view: TextView) {
+        Thread {
+            val balanceB4X1Days = getAvgDue(name, 30, AppConstants.get(AppConstants.DUE_SHOW_BALANCE_AVG_DAYS).toInt())
+            val changeInDuration1 = currentBalance!! - balanceB4X1Days
+            val balanceDiffTextColor = if (changeInDuration1 > 0) R.color.due_show_balance_increased else R.color.due_show_balance_decreased
+            runOnUiThread {
+                view.text = changeInDuration1.toString()
+                view.setTextColor(ContextCompat.getColor(this, balanceDiffTextColor))
+            }
+        }.start()
+    }
     private fun showDues(showAfterDeliveryBalance: Boolean = true) {
         val listContainer = findViewById<LinearLayout>(R.id.activity_due_show_fragment_conntainer)
         listContainer.removeAllViews()
@@ -131,15 +150,10 @@ class DueShow : AppCompatActivity() {
             val dueChangeElement = entry.findViewById<TextView>(R.id.activity_due_show_change_in_duration1)
 
             val currentBalance = latestBalanceAfterDelivery[it.name]
-            val balanceB4X1Days = getAvgDue(it.name, 30, AppConstants.get(AppConstants.DUE_SHOW_BALANCE_AVG_DAYS).toInt())
-            val changeInDuration1 = currentBalance!! - balanceB4X1Days
-            LogMe.log("Name: ${it.name}, currentDue: $currentBalance, balanceB4XDays: $balanceB4X1Days, Change: $changeInDuration1")
             nameElement.text = it.name
             amountElement.text = currentBalance.toString()
-            dueChangeElement.text = changeInDuration1.toString()
-            val balanceDiffTextColor = if (changeInDuration1 > 0) R.color.due_show_balance_increased else R.color.due_show_balance_decreased
             amountElement.setTextColor(ContextCompat.getColor(this, balanceTextColor))
-            dueChangeElement.setTextColor(ContextCompat.getColor(this, balanceDiffTextColor))
+            showDeltas(it.name, currentBalance!!, dueChangeElement)
 
             listContainer.addView(entry)
         }

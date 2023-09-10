@@ -8,7 +8,8 @@ enum class AppConstants {
     CAR_RATE_PER_KM,
     DRIVER_SALARY,
     SEND_DELIVERY_DETAILS_BY_SMS,
-    DELIVERY_BASE_RATE_DIFF;
+    DELIVERY_BASE_RATE_DIFF,
+    DUE_SHOW_BALANCE_AVG_DAYS;
 
     companion object {
         fun fetchAll(useCache: Boolean = true) {

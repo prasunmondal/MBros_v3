@@ -8,12 +8,15 @@ import android.widget.Switch
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
+import java.time.LocalDateTime
 import kotlin.streams.toList
 
 class DueShow : AppCompatActivity() {
@@ -26,6 +29,28 @@ class DueShow : AppCompatActivity() {
 
         setUI()
         showDues(toggleBalanceViewBtn.isChecked)
+    }
+
+    fun getAvgDue(name: String, daysBack: Int, daysToAvg: Int): Int {
+        val currentTimestamp = LocalDateTime.now()
+        val startingTime = currentTimestamp.minusDays((daysBack + daysToAvg/2).toLong())
+        val endingTime = currentTimestamp.minusDays((daysBack - daysToAvg/2).toLong())
+
+        val list = CustomerData.getRecords().filter { it.name == name }
+        var sum = 0
+        var count = 0
+        LogMe.log("Name: $name")
+        list.forEach {
+            val t = LocalDateTime.parse(it.timestamp.replace("Z",""))
+            if (t!!.isAfter(startingTime) && t.isBefore(endingTime)) {
+                LogMe.log("$count. Date: ${it.timestamp}, Amount Due ${it.balanceDue}")
+                sum += it.balanceDue.toInt()
+                count++
+            }
+        }
+        LogMe.log(" --- TOTAL: $sum ---")
+        LogMe.log(" --- AVG  : ${if(count == 0) 0 else sum / count} ---")
+        return if(count == 0) 0 else sum / count
     }
 
     private fun setUI() {
@@ -62,12 +87,17 @@ class DueShow : AppCompatActivity() {
         latestRecords.forEach {
             val layoutInflater = LayoutInflater.from(AppContexts.get())
             val entry = layoutInflater.inflate(R.layout.activity_due_show_entry, null)
-
             val nameElement = entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role)
             val amountElement = entry.findViewById<TextView>(R.id.activity_due_show_amount)
+            val dueChangeElement = entry.findViewById<TextView>(R.id.activity_due_show_change_in_duration1)
 
+            val currentBalance = latestBalanceAfterDelivery[it.name]
+            val balanceB4X1Days = getAvgDue(it.name, 30, AppConstants.get(AppConstants.DUE_SHOW_BALANCE_AVG_DAYS).toInt())
+            val changeInDuration1 = currentBalance!! - balanceB4X1Days
+            LogMe.log("Name: ${it.name}, currentDue: $currentBalance, balanceB4XDays: $balanceB4X1Days, Change: $changeInDuration1")
             nameElement.text = it.name
-            amountElement.text = latestBalanceAfterDelivery[it.name].toString()
+            amountElement.text = currentBalance.toString()
+            dueChangeElement.text = changeInDuration1.toString()
             amountElement.setTextColor(ContextCompat.getColor(this, balanceTextColor))
 
             listContainer.addView(entry)

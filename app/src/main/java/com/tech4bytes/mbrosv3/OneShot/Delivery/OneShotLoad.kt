@@ -149,7 +149,6 @@ class OneShotLoad : AppCompatActivity() {
         deliveryBasePriceContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
         val inHandContainer = findViewById<TextInputLayout>(R.id.osl_in_hand_cash_container)
         inHandContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
-//        dropdownContainer.visibility = View.GONE
     }
 
     private fun getCompanyNames(): List<String> {
@@ -262,9 +261,9 @@ class OneShotLoad : AppCompatActivity() {
         val oslRateOuterContainerElement = findViewById<LinearLayout>(R.id.osl_rate_outer_container)
         val oslCompanyDetailsOuterContainerElement = findViewById<LinearLayout>(R.id.osl_company_details_outer_container)
 
-        oslRateOuterContainerElement.backgroundTintList = if (isDataFresh) this.resources.getColorStateList(R.color.osl_data_status_fresh_light) else this.resources.getColorStateList(R.color.osl_data_status_stale_light)
-        oslCompanyDetailsOuterContainerElement.backgroundTintList = if (isDataFresh) this.resources.getColorStateList(R.color.osl_data_status_fresh_light) else this.resources.getColorStateList(R.color.osl_data_status_stale_light)
-        oslRateInnerContainerElement.backgroundTintList = if (isDataFresh) this.resources.getColorStateList(R.color.osl_data_status_fresh_dark) else this.resources.getColorStateList(R.color.osl_data_status_stale_dark)
+//        oslRateOuterContainerElement.backgroundTintList = if (isDataFresh) this.resources.getColorStateList(R.color.osl_data_status_fresh_light) else this.resources.getColorStateList(R.color.osl_data_status_stale_light)
+//        oslCompanyDetailsOuterContainerElement.backgroundTintList = if (isDataFresh) this.resources.getColorStateList(R.color.osl_data_status_fresh_light) else this.resources.getColorStateList(R.color.osl_data_status_stale_light)
+//        oslRateInnerContainerElement.backgroundTintList = if (isDataFresh) this.resources.getColorStateList(R.color.osl_data_status_fresh_dark) else this.resources.getColorStateList(R.color.osl_data_status_stale_dark)
     }
 
     fun onClickClearAmountsDetails(view: View) {

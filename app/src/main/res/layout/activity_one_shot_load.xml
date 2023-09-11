@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background2"
     android:padding="10dp"
     tools:context=".OneShot.Delivery.OneShotLoad">
 
@@ -21,11 +22,10 @@
             android:layout_height="match_parent"
             android:layout_marginTop="5dp"
             android:background="@drawable/rounded"
-            android:backgroundTint="#C8E8A3"
+            android:backgroundTint="#9E232323"
             android:orientation="vertical"
             android:paddingHorizontal="15dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="15dp">
+            android:paddingTop="5dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -37,9 +37,10 @@
                     android:id="@+id/textView45"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/bai_jamjuree_medium"
                     android:text="Company Details"
-                    android:textColor="#7A7013"
-                    android:textSize="20sp"
+                    android:textColor="#5BFBFBFB"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <View
@@ -84,8 +85,10 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
+                                    android:fontFamily="@font/bai_jamjuree_medium"
                                     android:text="Company"
-                                    android:textSize="12sp" />
+                                    android:textColor="@color/osl_ui_attribute_label_text_color"
+                                    android:textSize="13sp" />
 
                                 <AutoCompleteTextView
                                     android:id="@+id/osl_label_company_name_2"
@@ -95,6 +98,7 @@
                                     android:completionThreshold="0"
                                     android:imeOptions="actionNext"
                                     android:inputType="textNoSuggestions"
+                                    android:textColor="#F4CF73"
                                     android:textSize="14sp"
                                     tools:ignore="TouchTargetSizeCheck" />
                             </LinearLayout>
@@ -110,8 +114,10 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
+                                    android:fontFamily="@font/bai_jamjuree_medium"
                                     android:text="Branch"
-                                    android:textSize="12sp" />
+                                    android:textColor="@color/osl_ui_attribute_label_text_color"
+                                    android:textSize="13sp" />
 
                                 <AutoCompleteTextView
                                     android:id="@+id/osl_label_branch_name_2"
@@ -121,6 +127,7 @@
                                     android:completionThreshold="0"
                                     android:imeOptions="actionNext"
                                     android:inputType="textNoSuggestions"
+                                    android:textColor="#F4CF73"
                                     android:textSize="14sp"
                                     tools:ignore="TouchTargetSizeCheck" />
                             </LinearLayout>
@@ -132,7 +139,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:orientation="horizontal"
-                            android:paddingTop="15dp">
+                            android:paddingTop="10dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -145,8 +152,10 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
+                                    android:fontFamily="@font/bai_jamjuree_medium"
                                     android:text="Area"
-                                    android:textSize="12sp" />
+                                    android:textColor="@color/osl_ui_attribute_label_text_color"
+                                    android:textSize="13sp" />
 
                                 <AutoCompleteTextView
                                     android:id="@+id/osl_label_area_name_2"
@@ -156,6 +165,7 @@
                                     android:completionThreshold="0"
                                     android:imeOptions="actionNext"
                                     android:inputType="textNoSuggestions"
+                                    android:textColor="#F4CF73"
                                     android:textSize="14sp"
                                     tools:ignore="TouchTargetSizeCheck" />
                             </LinearLayout>
@@ -171,8 +181,10 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
+                                    android:fontFamily="@font/bai_jamjuree_medium"
                                     android:text="Account"
-                                    android:textSize="12sp" />
+                                    android:textColor="@color/osl_ui_attribute_label_text_color"
+                                    android:textSize="13sp" />
 
                                 <AutoCompleteTextView
                                     android:id="@+id/osl_label_money_account_name_2"
@@ -182,6 +194,7 @@
                                     android:completionThreshold="0"
                                     android:imeOptions="actionNext"
                                     android:inputType="textNoSuggestions"
+                                    android:textColor="#F4CF73"
                                     android:textSize="14sp"
                                     tools:ignore="TouchTargetSizeCheck" />
                             </LinearLayout>
@@ -200,11 +213,12 @@
             android:id="@+id/osl_rate_outer_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="15dp"
             android:background="@drawable/rounded"
-            android:backgroundTint="#C8E8A3"
+            android:backgroundTint="#9E232323"
             android:orientation="vertical"
             android:padding="5dp"
+            android:paddingHorizontal="15dp"
             android:paddingTop="10dp">
 
             <LinearLayout
@@ -212,7 +226,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/rounded"
-                android:backgroundTint="#AFD682"
+                android:backgroundTint="#9E232323"
                 android:gravity="right"
                 android:orientation="vertical"
                 android:paddingLeft="20dp">
@@ -227,9 +241,10 @@
                         android:id="@+id/textView49"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/bai_jamjuree_medium"
                         android:text="Rate"
-                        android:textColor="#7A7013"
-                        android:textSize="20sp"
+                        android:textColor="#5BFBFBFB"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <View
@@ -266,10 +281,11 @@
                             android:id="@+id/textView35"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/bai_jamjuree_medium"
                             android:gravity="top"
                             android:text="Delivery"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textColor="@color/osl_ui_attribute_label_text_color"
+                            android:textSize="15sp" />
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/one_shot_load_farm_rate_container"
@@ -292,8 +308,9 @@
                                 android:background="#00FFFFFF"
                                 android:hint="₹ 0"
                                 android:inputType="number"
-                                android:textColor="#656464"
-                                android:textSize="18sp"
+                                android:textColor="#F4CF73"
+                                android:textColorHint="#3A3939"
+                                android:textSize="17sp"
                                 android:textStyle="bold" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -310,10 +327,11 @@
                             android:id="@+id/textView52"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/bai_jamjuree_medium"
                             android:gravity="bottom"
                             android:text="Farm"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textColor="@color/osl_ui_attribute_label_text_color"
+                            android:textSize="15sp" />
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/osl_final_farm_rate_container"
@@ -333,7 +351,9 @@
                                 android:background="#00FFFFFF"
                                 android:hint="₹ 0"
                                 android:inputType="numberSigned|number"
-                                android:textSize="24sp"
+                                android:textColor="#F4CF73"
+                                android:textColorHint="#3A3939"
+                                android:textSize="20sp"
                                 android:textStyle="bold" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -345,16 +365,19 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/paddin"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center_horizontal"
+                android:gravity="left"
                 android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="20dp"
                     android:text="InHand Cash"
-                    android:textSize="16sp" />
+                    android:textColor="@color/osl_ui_attribute_label_text_color"
+                    android:textSize="14sp" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/osl_in_hand_cash_container"
@@ -374,6 +397,7 @@
                         android:gravity="center"
                         android:hint="₹ 0"
                         android:inputType="number"
+                        android:textColor="#BD7805"
                         android:textSize="14sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -384,9 +408,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="15dp"
             android:background="@drawable/rounded"
-            android:backgroundTint="#C8E8A3"
+            android:backgroundTint="#9E232323"
             android:orientation="vertical"
             android:paddingHorizontal="15dp"
             android:paddingTop="5dp">
@@ -395,9 +419,10 @@
                 android:id="@+id/textView76"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/bai_jamjuree_medium"
                 android:text="Salary"
-                android:textColor="#7A7013"
-                android:textSize="20sp"
+                android:textColor="#5BFBFBFB"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -434,10 +459,11 @@
                             android:layout_width="30dp"
                             android:layout_height="50dp"
                             android:background="@drawable/rounded"
-                            android:backgroundTint="@color/black_overlay"
+                            android:backgroundTint="#54000000"
                             android:gravity="center"
                             android:onClick="clickDecreasePay"
                             android:text="-"
+                            android:textColor="#555252"
                             android:textSize="24sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -472,7 +498,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="350" />
+                                android:text="350"
+                                android:textColor="#C8C5C5"
+                                android:textSize="12sp" />
 
                             <LinearLayout
                                 android:id="@+id/osl_driver_extra_pay_container"
@@ -487,7 +515,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:gravity="bottom|center"
-                                    android:text="+0" />
+                                    android:text="+0"
+                                    android:textColor="@color/osl_ui_attribute_label_text_color" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -504,8 +533,10 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
+                                    android:fontFamily="@font/biorhyme"
                                     android:gravity="center"
-                                    android:text="total" />
+                                    android:text="total"
+                                    android:textColor="#FFA000" />
 
                             </LinearLayout>
 
@@ -544,7 +575,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="300" />
+                                android:text="300"
+                                android:textColor="#C8C5C5"
+                                android:textSize="12sp" />
 
                             <LinearLayout
                                 android:id="@+id/osl_labour1_extra_pay_container"
@@ -559,7 +592,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:gravity="bottom|center_horizontal"
-                                    android:text="+0" />
+                                    android:text="+0"
+                                    android:textColor="@color/osl_ui_attribute_label_text_color" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -576,8 +610,10 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
+                                    android:fontFamily="@font/biorhyme"
                                     android:gravity="center"
-                                    android:text="total" />
+                                    android:text="total"
+                                    android:textColor="#FFA000" />
 
                             </LinearLayout>
 
@@ -613,7 +649,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="bottom|center_horizontal"
-                                android:text="300" />
+                                android:text="300"
+                                android:textColor="#C8C5C5"
+                                android:textSize="12sp" />
 
                             <LinearLayout
                                 android:id="@+id/osl_labour2_extra_pay_container"
@@ -627,7 +665,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:gravity="bottom|center_horizontal"
-                                    android:text="+0" />
+                                    android:text="+0"
+                                    android:textColor="@color/osl_ui_attribute_label_text_color" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -643,8 +682,10 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
+                                    android:fontFamily="@font/biorhyme"
                                     android:gravity="center"
-                                    android:text="total" />
+                                    android:text="total"
+                                    android:textColor="#FFA000" />
                             </LinearLayout>
 
                         </LinearLayout>
@@ -662,11 +703,12 @@
                             android:layout_width="30dp"
                             android:layout_height="50dp"
                             android:background="@drawable/rounded"
-                            android:backgroundTint="@color/black_overlay"
+                            android:backgroundTint="#54000000"
                             android:backgroundTintMode="src_in"
                             android:gravity="center"
                             android:onClick="clickIncreasePay"
                             android:text="+"
+                            android:textColor="#555252"
                             android:textSize="24sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -680,10 +722,12 @@
                         android:id="@+id/osl_total_salary"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/biorhyme"
                         android:gravity="center"
                         android:padding="10dp"
                         android:text="Total Salary"
-                        android:textSize="20sp"
+                        android:textColor="#C88005"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>

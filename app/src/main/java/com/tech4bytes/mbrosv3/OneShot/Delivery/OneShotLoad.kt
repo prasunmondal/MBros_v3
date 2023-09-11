@@ -143,10 +143,10 @@ class OneShotLoad : AppCompatActivity() {
     }
 
     private fun setDecors() {
-        val finalFarmRateContainer = findViewById<TextInputLayout>(R.id.osl_final_farm_rate_container)
-        finalFarmRateContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
-        val deliveryBasePriceContainer = findViewById<TextInputLayout>(R.id.one_shot_load_farm_rate_container)
-        deliveryBasePriceContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
+//        val finalFarmRateContainer = findViewById<TextInputLayout>(R.id.osl_final_farm_rate_container)
+//        finalFarmRateContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
+//        val deliveryBasePriceContainer = findViewById<TextInputLayout>(R.id.one_shot_load_farm_rate_container)
+//        deliveryBasePriceContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
         val inHandContainer = findViewById<TextInputLayout>(R.id.osl_in_hand_cash_container)
         inHandContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
     }

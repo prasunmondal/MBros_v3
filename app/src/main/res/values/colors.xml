@@ -43,9 +43,10 @@
     <color name="osl_option_seleted">#024149</color>
     <color name="osl_company_details_view">#024149</color>
     <color name="osl_company_details_view_editing">#FB7065</color>
-    <color name="osl_person_avatar_active">#013E37</color>
-    <color name="osl_person_avatar_inactive">#FF98999A</color>
+    <color name="osl_person_avatar_active">#AFD682</color>
+    <color name="osl_person_avatar_inactive">#9C514D4D</color>
     <color name="osl_ui_attribute_label_text_color">#FF98999A</color>
+    <color name="osl_ui_attribute_value_text_color">#C88005</color>
 
     <!--  DUE SHOW VIEW  -->
     <color name="due_show_excluding_finalized_transactions">#F37B71</color>

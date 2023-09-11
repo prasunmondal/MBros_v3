@@ -98,7 +98,7 @@
                                     android:completionThreshold="0"
                                     android:imeOptions="actionNext"
                                     android:inputType="textNoSuggestions"
-                                    android:textColor="#F4CF73"
+                                    android:textColor="@color/osl_ui_attribute_value_text_color"
                                     android:textSize="14sp"
                                     tools:ignore="TouchTargetSizeCheck" />
                             </LinearLayout>
@@ -127,7 +127,7 @@
                                     android:completionThreshold="0"
                                     android:imeOptions="actionNext"
                                     android:inputType="textNoSuggestions"
-                                    android:textColor="#F4CF73"
+                                    android:textColor="@color/osl_ui_attribute_value_text_color"
                                     android:textSize="14sp"
                                     tools:ignore="TouchTargetSizeCheck" />
                             </LinearLayout>
@@ -165,7 +165,7 @@
                                     android:completionThreshold="0"
                                     android:imeOptions="actionNext"
                                     android:inputType="textNoSuggestions"
-                                    android:textColor="#F4CF73"
+                                    android:textColor="@color/osl_ui_attribute_value_text_color"
                                     android:textSize="14sp"
                                     tools:ignore="TouchTargetSizeCheck" />
                             </LinearLayout>
@@ -194,7 +194,7 @@
                                     android:completionThreshold="0"
                                     android:imeOptions="actionNext"
                                     android:inputType="textNoSuggestions"
-                                    android:textColor="#F4CF73"
+                                    android:textColor="@color/osl_ui_attribute_value_text_color"
                                     android:textSize="14sp"
                                     tools:ignore="TouchTargetSizeCheck" />
                             </LinearLayout>
@@ -229,7 +229,8 @@
                 android:backgroundTint="#9E232323"
                 android:gravity="right"
                 android:orientation="vertical"
-                android:paddingLeft="20dp">
+                android:paddingLeft="20dp"
+                android:paddingBottom="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -287,20 +288,12 @@
                             android:textColor="@color/osl_ui_attribute_label_text_color"
                             android:textSize="15sp" />
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/one_shot_load_farm_rate_container"
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="1"
+                            android:layout_height="match_parent"
                             android:gravity="bottom"
-                            android:hint="₹ 0"
-                            android:maxEms="10"
-                            android:minEms="10"
-                            app:hintAnimationEnabled="false"
-                            app:hintEnabled="false">
+                            android:orientation="vertical">
 
-                            <!--this is the actual edit text which takes the input-->
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/one_shot_load_farm_rate"
                                 android:layout_width="match_parent"
@@ -308,12 +301,13 @@
                                 android:background="#00FFFFFF"
                                 android:hint="₹ 0"
                                 android:inputType="number"
-                                android:textColor="#F4CF73"
+                                android:paddingLeft="10dp"
+                                android:paddingTop="10dp"
+                                android:textColor="@color/osl_ui_attribute_value_text_color"
                                 android:textColorHint="#3A3939"
                                 android:textSize="17sp"
                                 android:textStyle="bold" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -333,30 +327,19 @@
                             android:textColor="@color/osl_ui_attribute_label_text_color"
                             android:textSize="15sp" />
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/osl_final_farm_rate_container"
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/osl_final_farm_rate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:maxEms="10"
-                            android:minEms="10"
-                            app:hintAnimationEnabled="false"
-                            app:hintEnabled="false">
-
-                            <!--this is the actual edit text which takes the input-->
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/osl_final_farm_rate"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="#00FFFFFF"
-                                android:hint="₹ 0"
-                                android:inputType="numberSigned|number"
-                                android:textColor="#F4CF73"
-                                android:textColorHint="#3A3939"
-                                android:textSize="20sp"
-                                android:textStyle="bold" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
+                            android:background="#00FFFFFF"
+                            android:hint="₹ 0"
+                            android:inputType="numberSigned|number"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="10dp"
+                            android:textColor="@color/osl_ui_attribute_value_text_color"
+                            android:textColorHint="#3A3939"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
@@ -635,7 +618,8 @@
                             android:layout_height="40dp"
                             android:onClick="onClickAddLabour2"
                             android:padding="2dp"
-                            app:srcCompat="@drawable/profile_avatar" />
+                            app:srcCompat="@drawable/profile_avatar"
+                            app:tint="#9C514D4D" />
 
                         <LinearLayout
                             android:id="@+id/osl_labour2_pay_container"

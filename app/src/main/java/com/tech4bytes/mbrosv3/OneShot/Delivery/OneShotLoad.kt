@@ -1,5 +1,6 @@
 package com.tech4bytes.mbrosv3.OneShot.Delivery
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -9,7 +10,6 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
 import com.google.android.material.button.MaterialButton
@@ -34,9 +34,6 @@ class OneShotLoad : AppCompatActivity() {
     private lateinit var initialFarmRate: TextInputEditText
     private lateinit var finalFarmRate: TextInputEditText
     private lateinit var inHandCash: TextInputEditText
-//    private lateinit var dropdownContainer: LinearLayout
-//    private lateinit var freeTextView: TextView
-//    private lateinit var freeTextOkBtn: Button
     private lateinit var companyLabel2: AutoCompleteTextView
     private lateinit var companyBranch2: AutoCompleteTextView
     private lateinit var companyArea2: AutoCompleteTextView
@@ -59,9 +56,6 @@ class OneShotLoad : AppCompatActivity() {
         initialFarmRate = findViewById(R.id.one_shot_load_farm_rate)
         finalFarmRate = findViewById(R.id.osl_final_farm_rate)
         inHandCash = findViewById(R.id.one_shot_load_extra_expense_provided)
-//        dropdownContainer = findViewById(R.id.osl_dropdown_container)
-//        freeTextView = findViewById(R.id.osl_editText_freeText)
-//        freeTextOkBtn = findViewById(R.id.osl_btn_saveFreeText)
         companyLabel2 = findViewById(R.id.osl_label_company_name_2)
         companyBranch2 = findViewById(R.id.osl_label_branch_name_2)
         companyArea2 = findViewById(R.id.osl_label_area_name_2)
@@ -223,15 +217,11 @@ class OneShotLoad : AppCompatActivity() {
         SingleAttributedData.saveToLocal(obj)
     }
 
-    fun convertToWordCase(str: String): String {
-        return EnglishUtils.toWordCase(str)
-    }
-
     private fun updateCase() {
-        companyLabel2.setText(convertToWordCase(companyLabel2.text.toString()))
-        companyBranch2.setText(convertToWordCase(companyBranch2.text.toString()))
-        companyArea2.setText(convertToWordCase(companyArea2.text.toString()))
-        companyAccount2.setText(convertToWordCase(companyAccount2.text.toString()))
+        companyLabel2.setText(EnglishUtils.toWordCase(companyLabel2.text.toString()))
+        companyBranch2.setText(EnglishUtils.toWordCase(companyBranch2.text.toString()))
+        companyArea2.setText(EnglishUtils.toWordCase(companyArea2.text.toString()))
+        companyAccount2.setText(EnglishUtils.toWordCase(companyAccount2.text.toString()))
     }
 
     fun onClickOneShotLoadSaveBtn(view: View) {
@@ -261,6 +251,7 @@ class OneShotLoad : AppCompatActivity() {
         AppUtils.invalidateAllDataAndRestartApp()
     }
 
+    @SuppressLint("UseCompatLoadingForColorStateLists")
     private fun markDataFresh(isDataFresh: Boolean, forceUpdate: Boolean = false) {
         if (!forceUpdate && this.isDataFresh == isDataFresh) {
             return
@@ -329,7 +320,7 @@ class OneShotLoad : AppCompatActivity() {
             findViewById<LinearLayout>(R.id.osl_labour1_extra_pay_container).visibility = View.VISIBLE
             findViewById<LinearLayout>(R.id.osl_labour2_extra_pay_container).visibility = View.VISIBLE
         }
-        findViewById<TextView>(R.id.osl_total_salary).text = "₹ " + (driverPay + labour1Pay + labour2Pay).toString()
+        findViewById<TextView>(R.id.osl_total_salary).text = "₹ ${(driverPay + labour1Pay + labour2Pay)}"
     }
 
     private fun processLabour2PayElements() {

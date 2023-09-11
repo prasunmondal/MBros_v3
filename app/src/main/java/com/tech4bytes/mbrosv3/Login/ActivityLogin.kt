@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.provider.Settings.Secure
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -76,7 +75,7 @@ class ActivityLogin : AppCompatActivity() {
                             val layoutInflater = LayoutInflater.from(AppContexts.get())
                             val entry = layoutInflater.inflate(R.layout.fragment_activity_login_roles, null)
 
-                            val displayText = if(ActivityAuthEnums.getString(role) == null) role.name else ActivityAuthEnums.getString(role)
+                            val displayText = if (ActivityAuthEnums.getString(role) == null) role.name else ActivityAuthEnums.getString(role)
                             entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).text = displayText
 
                             entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).setOnClickListener {

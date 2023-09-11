@@ -8,5 +8,5 @@ data class FetchData(
     var label: String,
     var executingMethod: KFunction<Any>,
     var useCache: Boolean,
-    var isCompleted: Boolean
+    var isCompleted: Boolean,
 ) {}

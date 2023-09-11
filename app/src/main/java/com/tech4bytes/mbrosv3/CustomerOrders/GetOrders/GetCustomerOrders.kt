@@ -27,7 +27,7 @@ data class GetCustomerOrders(
     var calculatedPc: String = "",
     var calculatedKg: String = "",
     var rate: String = "",
-    var prevDue: String = ""
+    var prevDue: String = "",
 ) : java.io.Serializable {
 
     fun getEstimatedPc(allowFraction: Boolean): String {

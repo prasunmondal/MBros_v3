@@ -14,7 +14,7 @@ data class LoadModel(
     var actualKg: String = "",
     var loadingStatus: String = "",
     var farmRate: String = "",
-    var bufferPrice: String = ""
+    var bufferPrice: String = "",
 ) : java.io.Serializable {
 
     fun isDone(): Boolean {

@@ -123,8 +123,8 @@ class MoneyCounter : AppCompatActivity() {
     private fun updateTotalAmount() {
         val totalAmount = getDenominatedAmount()
         val diff = totalAmount - getAimingAmountFromUI()
-        val diffSymbol = if(diff == 0) "✓" else if(diff > 0) "▲" else "▼"
-        val tooltipText = if(diff == 0) "Cash Matched" else if(diff > 0) "Have ₹${abs(diff)} more in cash" else "Need ₹${abs(diff)} more in cash"
+        val diffSymbol = if (diff == 0) "✓" else if (diff > 0) "▲" else "▼"
+        val tooltipText = if (diff == 0) "Cash Matched" else if (diff > 0) "Have ₹${abs(diff)} more in cash" else "Need ₹${abs(diff)} more in cash"
         findViewById<MaterialTextView>(R.id.mc_totalAmount).text = "$rupeePrefix $totalAmount"
         findViewById<TextView>(R.id.mc_amount_diff).text = "$diffSymbol ${Math.abs(diff)}"
         findViewById<TextView>(R.id.mc_amount_diff).tooltipText = tooltipText
@@ -142,7 +142,7 @@ class MoneyCounter : AppCompatActivity() {
             findViewById<LinearLayout>(R.id.mc_totalAmount_container2).setBackgroundColor(ContextCompat.getColor(this, R.color.mc_counter_unsuccessful))
         }
 
-        if(amountDifference == 0) {
+        if (amountDifference == 0) {
             findViewById<TextView>(R.id.mc_amount_diff).setTextColor(ContextCompat.getColor(this, R.color.mc_counter_aiming_amount_zero))
         } else {
             findViewById<TextView>(R.id.mc_amount_diff).setTextColor(ContextCompat.getColor(this, R.color.mc_counter_aiming_amount_non_zero))

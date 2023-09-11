@@ -35,7 +35,8 @@ class DataFetchingInfo {
 
             when (activity) {
                 ActivityAuthEnums.ADMIN,
-                ActivityAuthEnums.ONE_SHOT_DELIVERY -> {
+                ActivityAuthEnums.ONE_SHOT_DELIVERY,
+                -> {
                     executingMethods.add(SingleAttributedData::getRecords)
                     executingMethods.add(CustomerKYC::getAllCustomers)
                     executingMethods.add(GetCustomerOrders::get)

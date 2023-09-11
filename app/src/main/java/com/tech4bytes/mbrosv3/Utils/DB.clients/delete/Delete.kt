@@ -42,7 +42,7 @@ class Delete private constructor() : APICalls, DeleteFlow, DeleteFlow.ScriptIdBu
 
     override fun conditionAnd(
         conditionColumn: String,
-        conditionValue: String
+        conditionValue: String,
     ): DeleteFlow.FinalRequestBuilder {
         if (conditionColumn.isEmpty() || conditionValue.isEmpty())
             return this
@@ -59,7 +59,7 @@ class Delete private constructor() : APICalls, DeleteFlow, DeleteFlow.ScriptIdBu
 
     override fun conditionOr(
         conditionColumn: String,
-        conditionValue: String
+        conditionValue: String,
     ): DeleteFlow.FinalRequestBuilder {
         if (conditionColumn.isEmpty() || conditionValue.isEmpty())
             return this

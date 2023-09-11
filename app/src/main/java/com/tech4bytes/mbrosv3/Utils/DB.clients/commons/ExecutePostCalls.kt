@@ -17,7 +17,7 @@ import javax.net.ssl.HttpsURLConnection
 class ExecutePostCalls(
     private val scriptUrl: URL,
     private val postDataParams: JSONObject,
-    private val onCompletion: Consumer<String>?
+    private val onCompletion: Consumer<String>?,
 ) : AsyncTask<String?, Void?, String>() {
     override fun onPreExecute() {}
     override fun doInBackground(vararg p0: String?): String {

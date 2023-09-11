@@ -41,7 +41,7 @@ class Get() : APICalls, GetFlow, GetFlow.ScriptIdBuilder,
 
     override fun conditionAnd(
         conditionColumn: String,
-        conditionValue: String
+        conditionValue: String,
     ): GetFlow.FinalRequestBuilder {
         if (conditionColumn.isEmpty() || conditionValue.isEmpty())
             return this
@@ -58,7 +58,7 @@ class Get() : APICalls, GetFlow, GetFlow.ScriptIdBuilder,
 
     override fun conditionOr(
         conditionColumn: String,
-        conditionValue: String
+        conditionValue: String,
     ): GetFlow.FinalRequestBuilder {
         if (conditionColumn.isEmpty() || conditionValue.isEmpty())
             return this

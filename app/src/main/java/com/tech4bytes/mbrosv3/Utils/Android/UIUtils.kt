@@ -25,7 +25,8 @@ class UIUtils : AppCompatActivity() {
             when (view.javaClass.simpleName) {
                 MaterialAutoCompleteTextView::class.simpleName -> return "" + (view as EditText).text
                 MaterialTextView::class.simpleName,
-                AppCompatTextView::class.simpleName -> return "" + (view as TextView).text.toString()
+                AppCompatTextView::class.simpleName,
+                -> return "" + (view as TextView).text.toString()
                 AppCompatEditText::class.simpleName -> return "" + (view as AppCompatEditText).text
                 TextInputEditText::class.simpleName -> return "" + (view as TextInputEditText).text
                 Switch::class.simpleName -> return "" + (view as Switch).isChecked.toString()
@@ -43,7 +44,8 @@ class UIUtils : AppCompatActivity() {
             when (uIElement.javaClass.simpleName) {
                 MaterialAutoCompleteTextView::class.simpleName,
                 AppCompatTextView::class.simpleName,
-                MaterialTextView::class.simpleName -> (uIElement as TextView).text = value
+                MaterialTextView::class.simpleName,
+                -> (uIElement as TextView).text = value
 
                 AppCompatEditText::class.simpleName -> (uIElement as EditText).setText(value)
                 TextInputEditText::class.simpleName -> (uIElement as TextInputEditText).setText(value)

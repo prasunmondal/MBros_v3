@@ -47,9 +47,9 @@ data class DaySummary(
     var profit: String = "",
     var trip_end_km: String = "",
     var other_expenses_note: String = "",
-    var other_expense_amount: String = ""
+    var other_expense_amount: String = "",
 
-) : java.io.Serializable {
+    ) : java.io.Serializable {
 
     companion object {
         fun get(useCache: Boolean = true): List<DaySummary> {
@@ -167,7 +167,7 @@ data class DaySummary(
         }
 
         fun showDayProfit(): String {
-            return if(AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_PROFITS)) {
+            return if (AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_PROFITS)) {
                 LogMe.log("Showing Profit: " + getDayProfit())
                 getDayProfit().toString()
             } else {

@@ -505,7 +505,7 @@ class OneShotDelivery : AppCompatActivity() {
         val loadedPc = findViewById<TextView>(R.id.one_shot_delivery_pc)
         val loadedKg = findViewById<TextView>(R.id.one_shot_delivery_kg)
         runOnUiThread {
-            if(!isSendLoadInfoEnabled()) {
+            if (!isSendLoadInfoEnabled()) {
                 findViewById<TextView>(R.id.osd_btn_send_load_info_to_account_payee).visibility = View.GONE
             }
 
@@ -812,9 +812,9 @@ class OneShotDelivery : AppCompatActivity() {
         val templateToSendInfo = AppConstants.get(keyFromAppConstantTextTemplate)
         val isSendLoadInfoEnabled = numberToSendInfo.isNotEmpty() && templateToSendInfo.isNotEmpty()
 
-        if(!isSendLoadInfoEnabled) {
+        if (!isSendLoadInfoEnabled) {
             LogMe.log("Send load info disabled. Either '$keyFromAppConstantWhatsappNumber' or '$keyFromAppConstantTextTemplate' is not configured")
-        }else {
+        } else {
             LogMe.log("Send load info enabled.")
         }
 

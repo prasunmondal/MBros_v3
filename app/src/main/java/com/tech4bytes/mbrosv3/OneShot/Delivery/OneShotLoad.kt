@@ -76,9 +76,9 @@ class OneShotLoad : AppCompatActivity() {
 
     private fun initializePays() {
         val dataObj = SingleAttributedData.getRecords()
-        labour2Enabled = NumberUtils.getIntOrZero(dataObj.numberOfPeopleTakingSalary)>2
+        labour2Enabled = NumberUtils.getIntOrZero(dataObj.numberOfPeopleTakingSalary) > 2
         val salaries = dataObj.salaryDivision.split("#")
-        if(salaries.isEmpty()) {
+        if (salaries.isEmpty()) {
             LogMe.log("Salaries not found. Setting default values.")
             LogMe.log(dataObj.salaryDivision)
             salaries.forEach {
@@ -209,10 +209,10 @@ class OneShotLoad : AppCompatActivity() {
         obj.finalFarmRate = finalFarmRate
         obj.bufferRate = (NumberUtils.getIntOrZero(farmRate) - 10 - NumberUtils.getIntOrZero(finalFarmRate)).toString()
         obj.extra_cash_given = extraCashProvider
-        obj.numberOfPeopleTakingSalary = if(labour2Enabled) "3" else "2"
+        obj.numberOfPeopleTakingSalary = if (labour2Enabled) "3" else "2"
         obj.salaryDivision = findViewById<TextView>(R.id.osl_driver_total_pay).text.toString() +
                 "#" + findViewById<TextView>(R.id.osl_labour1_total_pay).text.toString() +
-                if(labour2Enabled) "#" + findViewById<TextView>(R.id.osl_labour2_total_pay).text.toString() else ""
+                if (labour2Enabled) "#" + findViewById<TextView>(R.id.osl_labour2_total_pay).text.toString() else ""
 
         SingleAttributedData.saveToLocal(obj)
     }
@@ -311,7 +311,7 @@ class OneShotLoad : AppCompatActivity() {
         val labour2Pay = updateTotalPay(R.id.osl_labour2_base_pay, R.id.osl_labour2_extra_pay, R.id.osl_labour2_total_pay, R.id.osl_labour2_pay_container)
 
         val extraPay = NumberUtils.getIntOrZero(findViewById<TextView>(R.id.osl_driver_extra_pay).text.toString().replace("+", ""))
-        if(extraPay == 0) {
+        if (extraPay == 0) {
             findViewById<LinearLayout>(R.id.osl_driver_extra_pay_container).visibility = View.GONE
             findViewById<LinearLayout>(R.id.osl_labour1_extra_pay_container).visibility = View.GONE
             findViewById<LinearLayout>(R.id.osl_labour2_extra_pay_container).visibility = View.GONE
@@ -327,7 +327,7 @@ class OneShotLoad : AppCompatActivity() {
         val labour2PayContainer = findViewById<LinearLayout>(R.id.osl_labour2_pay_container)
 
         LogMe.log("Labour 2 enabled? $labour2Enabled")
-        if(labour2Enabled) {
+        if (labour2Enabled) {
             labour2PayContainer.visibility = View.VISIBLE
             labour2.setColorFilter(ContextCompat.getColor(AppContexts.get(), R.color.osl_person_avatar_active))
             labour2.setBackgroundDrawable(getResources().getDrawable(R.drawable.round_outline_for_avatar))
@@ -346,6 +346,6 @@ class OneShotLoad : AppCompatActivity() {
         val totalPayUI = findViewById<TextView>(totalPayUI)
         totalPayUI.text = totalPay.toString()
 
-        return if(isPaid) totalPay else 0
+        return if (isPaid) totalPay else 0
     }
 }

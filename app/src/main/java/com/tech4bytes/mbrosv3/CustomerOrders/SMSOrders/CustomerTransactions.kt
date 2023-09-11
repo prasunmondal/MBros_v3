@@ -40,7 +40,7 @@ class CustomerTransactions : AppCompatActivity() {
         customerNamesSpinner.setOnItemSelectedListener(object : OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>, view: View?,
-                position: Int, id: Long
+                position: Int, id: Long,
             ) {
                 showTransactions(customerNamesSpinner.selectedItem.toString())
             }

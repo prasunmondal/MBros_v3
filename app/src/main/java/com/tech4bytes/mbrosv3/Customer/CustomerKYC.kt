@@ -19,7 +19,7 @@ data class CustomerKYCModel(
     var isActiveCustomer: String = "",
     var showBalanceView: Boolean,
     var smsNumber: String = "",
-    var smsText: String = ""
+    var smsText: String = "",
 ) : java.io.Serializable {
 
     fun getDisplayName(): String {

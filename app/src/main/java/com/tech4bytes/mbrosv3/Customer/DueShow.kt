@@ -35,20 +35,20 @@ class DueShow : AppCompatActivity() {
     }
 
     private fun getBalanceMap(showAfterDeliveryBalance: Boolean): MutableMap<String, Int> {
-        if(balanceMap == null)
+        if (balanceMap == null)
             balanceMap = CustomerDueData.getBalance(showAfterDeliveryBalance)
         return balanceMap as MutableMap<String, Int>
     }
 
     private fun isRecordInTimeRange(data: CustomerData, startingTime: LocalDateTime, endingTime: LocalDateTime): Boolean {
-        val t = LocalDateTime.parse(data.timestamp.replace("Z",""))
+        val t = LocalDateTime.parse(data.timestamp.replace("Z", ""))
         return t!!.isAfter(startingTime) && t.isBefore(endingTime)
     }
 
     fun getAvgDue(name: String, daysBack: Int, daysToAvg: Int): Int {
         val currentTimestamp = LocalDateTime.now()
-        val startingTime = currentTimestamp.minusDays((daysBack + daysToAvg/2).toLong())
-        val endingTime = currentTimestamp.minusDays((daysBack - daysToAvg/2).toLong())
+        val startingTime = currentTimestamp.minusDays((daysBack + daysToAvg / 2).toLong())
+        val endingTime = currentTimestamp.minusDays((daysBack - daysToAvg / 2).toLong())
 
         // <--------------------|------------------------------|-------------------->
         // 2000            startingTime                    endingTime              Now

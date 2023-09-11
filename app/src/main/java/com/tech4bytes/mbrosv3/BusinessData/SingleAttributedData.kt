@@ -48,7 +48,7 @@ data class SingleAttributedData(
     var totalMarketDue: String = "",
     var smsOrderSequence: String = "",
     var numberOfPeopleTakingSalary: String = "",
-    var salaryDivision: String = ""
+    var salaryDivision: String = "",
 ) : java.io.Serializable {
 
     companion object {
@@ -132,7 +132,7 @@ data class SingleAttributedData(
         }
 
         fun saveToLocal(obj: SingleAttributedData?) {
-            if(obj != null) {
+            if (obj != null) {
                 obj.id = System.currentTimeMillis().toString()
                 obj.recordGeneratorDevice = getPhoneId()
                 obj.date = DateUtils.getCurrentTimestamp()
@@ -149,8 +149,7 @@ data class SingleAttributedData(
             )
         }
 
-        fun invalidateCache()
-        {
+        fun invalidateCache() {
             saveToLocal(null)
         }
     }

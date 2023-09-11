@@ -45,7 +45,7 @@
     <color name="osl_company_details_view_editing">#FB7065</color>
     <color name="osl_person_avatar_active">#AFD682</color>
     <color name="osl_person_avatar_inactive">#9C514D4D</color>
-    <color name="osl_ui_attribute_label_text_color">#FF98999A</color>
+    <color name="osl_ui_attribute_label_text_color">#808181</color>
     <color name="osl_ui_attribute_value_text_color">#C88005</color>
 
     <!--  DUE SHOW VIEW  -->

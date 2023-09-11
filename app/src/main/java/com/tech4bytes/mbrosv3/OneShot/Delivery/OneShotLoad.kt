@@ -64,7 +64,6 @@ class OneShotLoad : AppCompatActivity() {
     }
 
     private fun initializeUI() {
-        setDecors()
         setUIValues(false)
         setListeners()
         updateUIFromObj()
@@ -142,15 +141,6 @@ class OneShotLoad : AppCompatActivity() {
         inHandCash.addTextChangedListener { markDataFresh(false) }
     }
 
-    private fun setDecors() {
-//        val finalFarmRateContainer = findViewById<TextInputLayout>(R.id.osl_final_farm_rate_container)
-//        finalFarmRateContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
-//        val deliveryBasePriceContainer = findViewById<TextInputLayout>(R.id.one_shot_load_farm_rate_container)
-//        deliveryBasePriceContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
-        val inHandContainer = findViewById<TextInputLayout>(R.id.osl_in_hand_cash_container)
-        inHandContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
-    }
-
     private fun getCompanyNames(): List<String> {
         return CompanyLoadMap.get().stream()
             .filter { d -> d.companyName.trim().isNotEmpty() }
@@ -189,6 +179,7 @@ class OneShotLoad : AppCompatActivity() {
         inHandCash.setText(obj.extra_cash_given)
         deliveryBasePrice.setText(DeliveryCalculations.getBaseDeliveryPrice(obj.finalFarmRate, obj.bufferRate).toString())
         finalFarmRate.setText(obj.finalFarmRate)
+        findViewById<TextView>(R.id.osl_estimated_load_kg).text = "Coming soon..."
     }
 
     private fun updateObjFromUI() {

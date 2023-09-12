@@ -14,7 +14,6 @@ import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
@@ -45,10 +44,37 @@ class OneShotLoad : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_one_shot_load)
+        supportActionBar!!.hide()
         AppContexts.set(this)
         AppUtils.logError()
         initializeVariables()
         initializeUI()
+    }
+
+    private fun getServerChecksumString(): String {
+        val metadata = SingleAttributedData.getRecords()
+        return "companyName:${metadata.load_companyName} " +
+                "- companyBranch: ${metadata.load_branch} " +
+                "- companyArea: ${metadata.load_area}" +
+                "- loadAccount: ${metadata.load_account}" +
+                "- farmRate: ${metadata.finalFarmRate}" +
+                "- deliveryRate: ${DeliveryCalculations.getBaseDeliveryPrice(metadata.finalFarmRate, metadata.bufferRate)}" +
+                "- handExpense: ${metadata.extra_cash_given}" +
+                "- salary: ${metadata.salaryDivision}" +
+                "- totalNoOfPeople: ${metadata.numberOfPeopleTakingSalary}"
+    }
+
+    private fun getUIChecksumString(): String {
+        val metadata = SingleAttributedData.getRecords()
+        return "companyName:${companyLabel2.text} " +
+                "- companyBranch: ${companyBranch2.text} " +
+                "- companyArea: ${companyArea2.text}" +
+                "- loadAccount: ${companyAccount2.text}" +
+                "- farmRate: ${finalFarmRate.text}" +
+                "- deliveryRate: ${initialFarmRate.text}" +
+                "- handExpense: ${inHandCash.text}" +
+                "- salary: ${getSalaryDivisionFromUI()}" +
+                "- totalNoOfPeople: ${getTotalNoOfLaboursFromUI()}"
     }
 
     private fun initializeVariables() {
@@ -199,12 +225,20 @@ class OneShotLoad : AppCompatActivity() {
         obj.finalFarmRate = finalFarmRate
         obj.bufferRate = (NumberUtils.getIntOrZero(farmRate) - 10 - NumberUtils.getIntOrZero(finalFarmRate)).toString()
         obj.extra_cash_given = extraCashProvider
-        obj.numberOfPeopleTakingSalary = if (labour2Enabled) "3" else "2"
-        obj.salaryDivision = findViewById<TextView>(R.id.osl_driver_total_pay).text.toString() +
-                "#" + findViewById<TextView>(R.id.osl_labour1_total_pay).text.toString() +
-                if (labour2Enabled) "#" + findViewById<TextView>(R.id.osl_labour2_total_pay).text.toString() else ""
+        obj.numberOfPeopleTakingSalary = getTotalNoOfLaboursFromUI()
+        obj.salaryDivision = getSalaryDivisionFromUI()
 
         SingleAttributedData.saveToLocal(obj)
+    }
+
+    private fun getTotalNoOfLaboursFromUI(): String {
+        return if (labour2Enabled) "3" else "2"
+    }
+
+    private fun getSalaryDivisionFromUI(): String {
+        return findViewById<TextView>(R.id.osl_driver_total_pay).text.toString() +
+                "#" + findViewById<TextView>(R.id.osl_labour1_total_pay).text.toString() +
+                if (labour2Enabled) "#" + findViewById<TextView>(R.id.osl_labour2_total_pay).text.toString() else ""
     }
 
     private fun updateCase() {

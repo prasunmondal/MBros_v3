@@ -18,6 +18,7 @@ class DataFetchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_data_fetch)
+        supportActionBar!!.hide()
         AppContexts.set(this)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         val container = findViewById<LinearLayout>(R.id.data_fetch_entries_container)

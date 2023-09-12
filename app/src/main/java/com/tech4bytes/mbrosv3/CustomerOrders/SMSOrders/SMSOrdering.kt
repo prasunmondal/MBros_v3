@@ -9,6 +9,7 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -193,5 +194,12 @@ class SMSOrdering : AppCompatActivity() {
                 saveBtn.text = "Save"
             }
         }.start()
+    }
+
+    fun onClickToggleSMSView(view: View) {
+        val c = findViewById<ScrollView>(R.id.smsorders_sms_view_scroll_container)
+        val b = findViewById<TextView>(R.id.smsordering_toggle_sms_text)
+        c.visibility = if(c.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        b.text = if (c.visibility == View.VISIBLE) "HIDE SMS" else "SHOW SMS"
     }
 }

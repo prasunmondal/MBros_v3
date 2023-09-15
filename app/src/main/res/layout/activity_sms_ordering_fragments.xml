@@ -37,7 +37,7 @@
                     android:gravity="right"
                     android:paddingRight="5dp"
                     android:text="88"
-                    android:textColor="#FA3E83"
+                    android:textColor="#F6B6CE"
                     android:textSize="15sp" />
 
                 <TextView
@@ -47,7 +47,7 @@
                     android:gravity="right"
                     android:paddingRight="5dp"
                     android:text="July"
-                    android:textColor="#FA3E83"
+                    android:textColor="#F6B6CE"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -63,14 +63,15 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:text="Number"
-                    android:textColor="#4BBDF6"
+                    android:textColor="#8D9193"
                     android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/smsorder_listEntry_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Text" />
+                    android:text="Text"
+                    android:textColor="#CDCBCB" />
 
             </LinearLayout>
 

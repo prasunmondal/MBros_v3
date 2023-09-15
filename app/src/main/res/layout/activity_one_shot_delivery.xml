@@ -525,6 +525,29 @@
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="10dp"
+                        android:paddingTop="5dp">
+
+                        <TextView
+                            android:id="@+id/textView60"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Salary: "
+                            android:textColor="#045660" />
+
+                        <TextView
+                            android:id="@+id/osd_salary_division"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingStart="10dp"
+                            android:text="Salary Division"
+                            android:textColor="#045660" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout

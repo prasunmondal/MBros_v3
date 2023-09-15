@@ -167,14 +167,18 @@ class OneShotDelivery : AppCompatActivity() {
         val tripEndKmElement = findViewById<EditText>(R.id.one_shot_delivery_trip_end_km)
         val labourExpenseElement = findViewById<EditText>(R.id.one_shot_delivery_labour_expenses)
         val extraExpensesElement = findViewById<EditText>(R.id.one_shot_delivery_extra_expenses)
+        val salaryDivisionElement = findViewById<TextView>(R.id.osd_salary_division)
+
 
         UIUtils.setUIElementValue(tripEndKmElement, SingleAttributedData.getRecords().vehicle_finalKm)
         UIUtils.setUIElementValue(labourExpenseElement, SingleAttributedData.getRecords().labour_expenses)
         UIUtils.setUIElementValue(extraExpensesElement, SingleAttributedData.getRecords().extra_expenses)
+        UIUtils.setUIElementValue(salaryDivisionElement, SingleAttributedData.getRecords().salaryDivision.replace("#", "  #  "))
 
         tripEndKmElement.doOnTextChanged { text, start, before, count ->
             updateKmRelatedCosts()
         }
+
     }
 
     private fun updateKmRelatedCosts() {

@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
+import com.tech4bytes.mbrosv3.BusinessLogic.Sorter
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
@@ -127,7 +128,7 @@ class DueShow : AppCompatActivity() {
         val listContainer = findViewById<LinearLayout>(R.id.activity_due_show_fragment_conntainer)
         listContainer.removeAllViews()
         var latestRecords = removeInActiveCustomers(CustomerData.getAllLatestRecords())
-        latestRecords = sortByNameList(latestRecords, CustomerData::name) as MutableList<CustomerData>
+        latestRecords = Sorter.sortByNameList(latestRecords, CustomerData::name) as MutableList<CustomerData>
 
         val balanceTextColor = if (showAfterDeliveryBalance) R.color.due_show_including_finalized_transactions else R.color.due_show_excluding_finalized_transactions
 
@@ -146,20 +147,6 @@ class DueShow : AppCompatActivity() {
 
             listContainer.addView(entry)
         }
-    }
-
-    private fun sortByNameList(list: List<Any>, nameAttribute: KMutableProperty1<*, *>): List<Any> {
-        val sortedList = CustomerKYC.getAllCustomers()
-        Collections.sort(list,
-            Comparator.comparing {item -> getCustomerIndex(sortedList, item, nameAttribute) })
-        return list
-    }
-
-    private fun getCustomerIndex(sortedList: List<CustomerKYCModel>, item: Any, nameAttribute: KMutableProperty1<*, *>): Int {
-        return IntStream.range(0, sortedList.size)
-            .filter { i -> sortedList[i].nameEng == ReflectionUtils.readInstanceProperty<String>(item, nameAttribute.name) }
-            .findFirst()
-            .orElse(-1)
     }
 
     override fun onBackPressed() {

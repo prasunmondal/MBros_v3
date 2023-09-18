@@ -17,9 +17,11 @@ import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
+import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ReflectionUtils
 import java.time.LocalDateTime
 import java.util.*
 import java.util.stream.IntStream
+import kotlin.reflect.KMutableProperty1
 import kotlin.streams.toList
 
 class DueShow : AppCompatActivity() {
@@ -125,7 +127,7 @@ class DueShow : AppCompatActivity() {
         val listContainer = findViewById<LinearLayout>(R.id.activity_due_show_fragment_conntainer)
         listContainer.removeAllViews()
         var latestRecords = removeInActiveCustomers(CustomerData.getAllLatestRecords())
-        latestRecords = sortByNameList(latestRecords) as MutableList<CustomerData>
+        latestRecords = sortByNameList(latestRecords, CustomerData::name) as MutableList<CustomerData>
 
         val balanceTextColor = if (showAfterDeliveryBalance) R.color.due_show_including_finalized_transactions else R.color.due_show_excluding_finalized_transactions
 
@@ -146,16 +148,16 @@ class DueShow : AppCompatActivity() {
         }
     }
 
-    private fun sortByNameList(list: List<CustomerData>): List<CustomerData> {
+    private fun sortByNameList(list: List<Any>, nameAttribute: KMutableProperty1<*, *>): List<Any> {
         val sortedList = CustomerKYC.getAllCustomers()
         Collections.sort(list,
-            Comparator.comparing {item -> getCustomerIndex(sortedList, item) })
+            Comparator.comparing {item -> getCustomerIndex(sortedList, item, nameAttribute) })
         return list
     }
 
-    private fun getCustomerIndex(sortedList: List<CustomerKYCModel>, item: CustomerData): Int {
+    private fun getCustomerIndex(sortedList: List<CustomerKYCModel>, item: Any, nameAttribute: KMutableProperty1<*, *>): Int {
         return IntStream.range(0, sortedList.size)
-            .filter { i -> sortedList[i].nameEng == item.name }
+            .filter { i -> sortedList[i].nameEng == ReflectionUtils.readInstanceProperty<String>(item, nameAttribute.name) }
             .findFirst()
             .orElse(-1)
     }

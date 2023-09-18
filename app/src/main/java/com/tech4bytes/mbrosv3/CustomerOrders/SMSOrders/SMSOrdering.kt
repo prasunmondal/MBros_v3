@@ -18,6 +18,7 @@ import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.SmsReader
+import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
@@ -160,10 +161,7 @@ class SMSOrdering : AppCompatActivity() {
             val finalizedPcView = entry.findViewById<EditText>(R.id.smsorder_listEntry_pc)
             finalizedPcView.hint = orders[j].orderedPc.toString()
             finalizedPcView.doOnTextChanged { text, start, before, count ->
-                orders[j].orderedPc = NumberUtils.getIntOrZero(finalizedPcView.text.toString())
-                if (finalizedPcView.text.toString() == "") {
-                    orders[j].orderedPc = NumberUtils.getIntOrZero(finalizedPcView.hint.toString())
-                }
+                orders[j].orderedPc = NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedPcView))
                 updateTotal()
             }
 

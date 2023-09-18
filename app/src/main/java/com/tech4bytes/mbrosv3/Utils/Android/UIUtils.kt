@@ -15,6 +15,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textview.MaterialTextView
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 
 
 class UIUtils : AppCompatActivity() {
@@ -33,6 +34,14 @@ class UIUtils : AppCompatActivity() {
                 AppCompatImageView::class.simpleName -> return (view.tag as String)
             }
             return ""
+        }
+
+        fun getTextOrHint(view: TextView): String {
+            return if (view.text.toString() == "") {
+                view.hint.toString()
+            } else {
+                view.text.toString()
+            }
         }
 //
 //        fun setUIElementValue(view: View, value: String) {

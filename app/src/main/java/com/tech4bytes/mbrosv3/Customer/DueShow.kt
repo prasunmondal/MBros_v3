@@ -23,7 +23,8 @@ import kotlin.streams.toList
 class DueShow : AppCompatActivity() {
 
     lateinit var toggleBalanceViewBtn: Switch
-    var balanceMap: MutableMap<String, Int>? = null
+    var balanceMapAfterDelivery: MutableMap<String, Int>? = null
+    var balanceMapBeforeDelivery: MutableMap<String, Int>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,9 +36,15 @@ class DueShow : AppCompatActivity() {
     }
 
     private fun getBalanceMap(showAfterDeliveryBalance: Boolean): MutableMap<String, Int> {
-        if (balanceMap == null)
-            balanceMap = CustomerDueData.getBalance(showAfterDeliveryBalance)
-        return balanceMap as MutableMap<String, Int>
+        return if(showAfterDeliveryBalance) {
+            if (balanceMapAfterDelivery == null)
+                balanceMapAfterDelivery = CustomerDueData.getBalance(true)
+            balanceMapAfterDelivery as MutableMap<String, Int>
+        } else {
+            if (balanceMapBeforeDelivery == null)
+                balanceMapBeforeDelivery = CustomerDueData.getBalance(false)
+            balanceMapBeforeDelivery as MutableMap<String, Int>
+        }
     }
 
     private fun isRecordInTimeRange(data: CustomerData, startingTime: LocalDateTime, endingTime: LocalDateTime): Boolean {

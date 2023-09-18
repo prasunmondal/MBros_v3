@@ -18,6 +18,8 @@ import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import java.time.LocalDateTime
+import java.util.*
+import java.util.stream.IntStream
 import kotlin.streams.toList
 
 class DueShow : AppCompatActivity() {
@@ -145,22 +147,16 @@ class DueShow : AppCompatActivity() {
     }
 
     private fun sortByNameList(list: MutableList<CustomerData>, sortedList: List<CustomerKYCModel>): MutableList<CustomerData> {
-        val map: MutableMap<Int, CustomerData> = mutableMapOf()
-        val listOfEntriesNotPresentInCustomerKYC: MutableList<CustomerData> = mutableListOf()
-        list.forEach { toSortItem ->
-            listOfEntriesNotPresentInCustomerKYC.add(toSortItem)
-            var index = 0
-            sortedList.forEach { sortedItem ->
-                if (sortedItem.nameEng == toSortItem.name) {
-                    map[index] = toSortItem
-                    listOfEntriesNotPresentInCustomerKYC.remove(toSortItem)
-                }
-                index++
-            }
-        }
-        val sorted = ArrayList(map.toSortedMap().values)
-        sorted.addAll(listOfEntriesNotPresentInCustomerKYC)
-        return sorted
+        Collections.sort(list,
+            Comparator.comparing {item -> getCustomerIndex(sortedList, item) })
+        return list
+    }
+
+    private fun getCustomerIndex(sortedList: List<CustomerKYCModel>, item: CustomerData): Int {
+        return IntStream.range(0, sortedList.size)
+            .filter { i -> sortedList[i].nameEng == item.name }
+            .findFirst()
+            .orElse(-1)
     }
 
     override fun onBackPressed() {

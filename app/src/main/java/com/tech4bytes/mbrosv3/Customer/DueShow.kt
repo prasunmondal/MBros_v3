@@ -125,7 +125,7 @@ class DueShow : AppCompatActivity() {
         val listContainer = findViewById<LinearLayout>(R.id.activity_due_show_fragment_conntainer)
         listContainer.removeAllViews()
         var latestRecords = removeInActiveCustomers(CustomerData.getAllLatestRecords())
-        latestRecords = sortByNameList(latestRecords, CustomerKYC.getAllCustomers())
+        latestRecords = sortByNameList(latestRecords) as MutableList<CustomerData>
 
         val balanceTextColor = if (showAfterDeliveryBalance) R.color.due_show_including_finalized_transactions else R.color.due_show_excluding_finalized_transactions
 
@@ -146,7 +146,8 @@ class DueShow : AppCompatActivity() {
         }
     }
 
-    private fun sortByNameList(list: MutableList<CustomerData>, sortedList: List<CustomerKYCModel>): MutableList<CustomerData> {
+    private fun sortByNameList(list: List<CustomerData>): List<CustomerData> {
+        val sortedList = CustomerKYC.getAllCustomers()
         Collections.sort(list,
             Comparator.comparing {item -> getCustomerIndex(sortedList, item) })
         return list

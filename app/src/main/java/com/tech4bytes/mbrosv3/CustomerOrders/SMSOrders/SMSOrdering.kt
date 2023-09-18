@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
+import com.tech4bytes.mbrosv3.BusinessLogic.Sorter
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
@@ -18,11 +19,12 @@ import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.SmsReader
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
-import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 import java.math.RoundingMode
 import java.text.DecimalFormat
+import java.util.stream.Collectors
+import org.apache.commons.collections4.CollectionUtils
 
 
 class SMSOrdering : AppCompatActivity() {
@@ -73,7 +75,6 @@ class SMSOrdering : AppCompatActivity() {
                 smsToProcess = sms.body
                 processSMS()
                 showEntries()
-                showTotal()
                 onClickToggleSMSView(entry)
             }
         }
@@ -108,6 +109,7 @@ class SMSOrdering : AppCompatActivity() {
                 orders.add(SMSOrderModel(System.currentTimeMillis().toString(), namesArray[j].trim(), valueArray[j].trim().toInt(), calculatedPcDouble, finalizedPc1))
             }
         }
+        populateCustomerListDropdown()
     }
 
     private fun addCustomer(name: String) {
@@ -119,11 +121,19 @@ class SMSOrdering : AppCompatActivity() {
     }
 
     private fun populateCustomerListDropdown() {
-        val sortedList = ListUtils.getAllPossibleValuesList(CustomerKYC.getAllCustomers(), CustomerKYCModel::nameEng)
-        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.template_dropdown_entry, sortedList)
+        val sortedList = ListUtils.getAllPossibleValuesList(CustomerKYC.getAllCustomers(), CustomerKYCModel::nameEng).toList()
+
+        // remove already showing names from dropdown
+        val alreadyInUI: List<String> = orders.stream()
+            .map(SMSOrderModel::name)
+            .collect(Collectors.toList())
+        val listToShow = CollectionUtils.subtract(sortedList, alreadyInUI).toList()
+
         val uiView = findViewById<AutoCompleteTextView>(R.id.smsorder_customer_picker)
+        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.template_dropdown_entry, listToShow)
         uiView.setAdapter(adapter)
         uiView.threshold = 0
+        uiView.setText("")
         uiView.setOnTouchListener { _, _ ->
             uiView.showDropDown()
             uiView.requestFocus()
@@ -132,12 +142,16 @@ class SMSOrdering : AppCompatActivity() {
         uiView.setOnItemClickListener { adapterView, view, i, l ->
             addCustomer(uiView.text.toString())
             showEntries()
+            populateCustomerListDropdown()
+            uiView.setText("")
+            uiView.hint = "+Customer"
         }
     }
 
     private fun showEntries() {
         val orderListContainer = findViewById<LinearLayout>(R.id.smsorders_order_list_view_container)
         orderListContainer.removeAllViews()
+        orders = Sorter.sortByNameList(orders, SMSOrderModel::name) as MutableList<SMSOrderModel>
         for (j in 0 until orders.size) {
             val balance = CustomerDueData.getBalance(orders[j].name)
             val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_list_fragments, null)
@@ -158,6 +172,7 @@ class SMSOrdering : AppCompatActivity() {
             entry.findViewById<TextView>(R.id.smsorder_listEntry_amount).text = "$balance"
             orderListContainer.addView(entry)
         }
+        showTotal()
     }
 
     var totalEntryView: View? = null

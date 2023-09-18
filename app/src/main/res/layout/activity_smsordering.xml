@@ -75,7 +75,7 @@
                 android:id="@+id/smsorder_avg_wt1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
+                android:layout_weight="1"
                 android:hint="Avg Wt in KG"
                 android:inputType="numberDecimal"
                 android:textColor="#C6C4C4"
@@ -86,11 +86,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:ems="10"
                 android:hint="Divider / Multiplier"
                 android:inputType="numberDecimal"
                 android:textColor="#C6C4C4"
                 android:textColorHint="#494848" />
+
+            <AutoCompleteTextView
+                android:id="@+id/smsorder_customer_picker"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="AutoCompleteTextView" />
         </LinearLayout>
 
     </LinearLayout>

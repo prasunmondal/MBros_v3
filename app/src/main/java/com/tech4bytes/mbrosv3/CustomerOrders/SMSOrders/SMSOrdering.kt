@@ -6,21 +6,21 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.ScrollView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
+import com.tech4bytes.mbrosv3.Customer.CustomerKYC
+import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.SmsReader
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
+import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
@@ -38,6 +38,7 @@ class SMSOrdering : AppCompatActivity() {
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
+        populateCustomerListDropdown()
         setUpListeners()
         showSMS()
     }
@@ -106,6 +107,31 @@ class SMSOrdering : AppCompatActivity() {
 
                 orders.add(SMSOrderModel(System.currentTimeMillis().toString(), namesArray[j].trim(), valueArray[j].trim().toInt(), calculatedPcDouble, finalizedPc1))
             }
+        }
+    }
+
+    private fun addCustomer(name: String) {
+        if(orders.none { it.name == name }) {
+            // if the name is not already present in the list
+            orders.add(SMSOrderModel(System.currentTimeMillis().toString(), name, NumberUtils.getIntOrZero("0"), NumberUtils.getDoubleOrZero("0"), NumberUtils.getIntOrZero("0")))
+            showEntries()
+        }
+    }
+
+    private fun populateCustomerListDropdown() {
+        val sortedList = ListUtils.getAllPossibleValuesList(CustomerKYC.getAllCustomers(), CustomerKYCModel::nameEng)
+        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.template_dropdown_entry, sortedList)
+        val uiView = findViewById<AutoCompleteTextView>(R.id.smsorder_customer_picker)
+        uiView.setAdapter(adapter)
+        uiView.threshold = 0
+        uiView.setOnTouchListener { _, _ ->
+            uiView.showDropDown()
+            uiView.requestFocus()
+            false
+        }
+        uiView.setOnItemClickListener { adapterView, view, i, l ->
+            addCustomer(uiView.text.toString())
+            showEntries()
         }
     }
 

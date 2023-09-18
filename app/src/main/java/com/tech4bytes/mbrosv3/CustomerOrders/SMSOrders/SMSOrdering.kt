@@ -73,6 +73,7 @@ class SMSOrdering : AppCompatActivity() {
                 processSMS()
                 showEntries()
                 showTotal()
+                onClickToggleSMSView(entry)
             }
         }
     }

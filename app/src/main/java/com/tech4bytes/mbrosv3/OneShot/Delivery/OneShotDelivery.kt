@@ -691,7 +691,6 @@ class OneShotDelivery : AppCompatActivity() {
         obj.refueling_km = ""
         obj.refueling_prevKm = ""
         obj.refuel_mileage = ""
-        obj.refueling_isFullTank = ""
         obj.refueling_amount = ""
         obj.refueling_qty = ""
         obj.refueling_amount = ""

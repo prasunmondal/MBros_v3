@@ -2,6 +2,7 @@ package com.tech4bytes.mbrosv3.OneShot.Delivery
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -54,6 +55,11 @@ class OneShotDelivery : AppCompatActivity() {
     var uiMaps: MutableMap<String, View> = mutableMapOf()
     lateinit var saveOneSortDeliveryButton: Button
     lateinit var deleteDeliveryDataButton: Button
+    lateinit var sidebarIconLoadDetails: ImageView
+    lateinit var sidebarIconDelivery: ImageView
+    lateinit var sidebarIconRefuel: ImageView
+    lateinit var sidebarIconOtherExpenses: ImageView
+    lateinit var refuelContainer: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,6 +92,22 @@ class OneShotDelivery : AppCompatActivity() {
         }.start()
     }
 
+    fun onClickSidebarIconRefuel(view: View) {
+        val scrollview = findViewById<ScrollView>(R.id.osd_scrollview)
+        scrollToRow(scrollview, refuelContainer, findViewById<Switch>(R.id.one_shot_delivery_did_refuel))
+//        refuelContainer = findViewById(R.id.osd_refuel_container)
+//        scrollview.scrollTo(0, refuelContainer.y.toInt())
+    }
+
+    private fun scrollToRow(scrollView: ScrollView, linearLayout: LinearLayout, textViewToShow: View) {
+        val delay: Long = 100 //delay to let finish with possible modifications to ScrollView
+        scrollView.postDelayed({
+            val textRect = Rect() //coordinates to scroll to
+            textViewToShow.getHitRect(textRect) //fills textRect with coordinates of TextView relative to its parent (LinearLayout)
+            scrollView.requestChildRectangleOnScreen(linearLayout, textRect, false) //ScrollView will make sure, the given textRect is visible
+        }, delay)
+    }
+
     private fun initiallizeUI() {
         val didRefuelElement = findViewById<Switch>(R.id.one_shot_delivery_did_refuel)
         val didTankFullElement = findViewById<Switch>(R.id.one_shot_delivery_did_fuel_upto_tank_full)
@@ -95,6 +117,11 @@ class OneShotDelivery : AppCompatActivity() {
         val loadKgElement = findViewById<EditText>(R.id.one_shot_delivery_kg)
         val loadPriceElement = findViewById<EditText>(R.id.one_shot_delivery_price)
         val loadBufferElement = findViewById<EditText>(R.id.one_shot_delivery_buffer)
+        sidebarIconDelivery = findViewById(R.id.osd_sidebar_icon_delivery)
+        sidebarIconLoadDetails = findViewById(R.id.osd_sidebar_icon_load_details)
+        sidebarIconRefuel = findViewById(R.id.osd_sidebar_icon_refuel)
+        sidebarIconOtherExpenses = findViewById(R.id.osd_sidebar_icon_other_expenses)
+        refuelContainer = findViewById(R.id.osd_refuel_container)
 
         didRefuelElement.setOnCheckedChangeListener { _, isChecked ->
             val obj = SingleAttributedData.getRecords()

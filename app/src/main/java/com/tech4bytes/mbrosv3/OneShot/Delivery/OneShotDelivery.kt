@@ -60,6 +60,7 @@ class OneShotDelivery : AppCompatActivity() {
     lateinit var sidebarIconRefuel: ImageView
     lateinit var sidebarIconOtherExpenses: ImageView
     lateinit var refuelContainer: LinearLayout
+    lateinit var scrollview: ScrollView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,8 +75,7 @@ class OneShotDelivery : AppCompatActivity() {
         );
         getSupportActionBar()?.hide()
 
-        saveOneSortDeliveryButton = findViewById(R.id.one_shot_delivery_save_data_btn)
-        deleteDeliveryDataButton = findViewById(R.id.osd_delete_delivery_data)
+        initializeVariables()
 
         getSMSPermission()
         Thread {
@@ -84,7 +84,7 @@ class OneShotDelivery : AppCompatActivity() {
             showOrders()
             initiallizeUI()
             runOnUiThread {
-                initiallizeOtherExpensesUI()
+                initializeOtherExpensesUI()
                 updateRelatedFields_LoadPcKg()
                 initiallizeRefuelUI()
                 updateKmRelatedCosts()
@@ -92,11 +92,23 @@ class OneShotDelivery : AppCompatActivity() {
         }.start()
     }
 
+    private fun initializeVariables() {
+        saveOneSortDeliveryButton = findViewById(R.id.one_shot_delivery_save_data_btn)
+        deleteDeliveryDataButton = findViewById(R.id.osd_delete_delivery_data)
+        scrollview = findViewById(R.id.osd_scrollview)
+        sidebarIconDelivery = findViewById(R.id.osd_sidebar_icon_delivery)
+        sidebarIconLoadDetails = findViewById(R.id.osd_sidebar_icon_load_details)
+        sidebarIconRefuel = findViewById(R.id.osd_sidebar_icon_refuel)
+        sidebarIconOtherExpenses = findViewById(R.id.osd_sidebar_icon_other_expenses)
+        refuelContainer = findViewById(R.id.osd_refuel_container)
+    }
+
     fun onClickSidebarIconRefuel(view: View) {
-        val scrollview = findViewById<ScrollView>(R.id.osd_scrollview)
-        scrollToRow(scrollview, refuelContainer, findViewById<Switch>(R.id.one_shot_delivery_did_refuel))
-//        refuelContainer = findViewById(R.id.osd_refuel_container)
-//        scrollview.scrollTo(0, refuelContainer.y.toInt())
+        scrollToRow(scrollview, findViewById(R.id.osd_scrollview_child), findViewById<LinearLayout>(R.id.osd_other_expenses_details))
+    }
+
+    fun onClickSidebarIconDeliveryEntries(view: View) {
+        scrollToRow(scrollview, findViewById(R.id.osd_scrollview_child), findViewById<LinearLayout>(R.id.osd_scroll_label_deliveries))
     }
 
     private fun scrollToRow(scrollView: ScrollView, linearLayout: LinearLayout, textViewToShow: View) {
@@ -117,11 +129,6 @@ class OneShotDelivery : AppCompatActivity() {
         val loadKgElement = findViewById<EditText>(R.id.one_shot_delivery_kg)
         val loadPriceElement = findViewById<EditText>(R.id.one_shot_delivery_price)
         val loadBufferElement = findViewById<EditText>(R.id.one_shot_delivery_buffer)
-        sidebarIconDelivery = findViewById(R.id.osd_sidebar_icon_delivery)
-        sidebarIconLoadDetails = findViewById(R.id.osd_sidebar_icon_load_details)
-        sidebarIconRefuel = findViewById(R.id.osd_sidebar_icon_refuel)
-        sidebarIconOtherExpenses = findViewById(R.id.osd_sidebar_icon_other_expenses)
-        refuelContainer = findViewById(R.id.osd_refuel_container)
 
         didRefuelElement.setOnCheckedChangeListener { _, isChecked ->
             val obj = SingleAttributedData.getRecords()
@@ -170,8 +177,6 @@ class OneShotDelivery : AppCompatActivity() {
             SingleAttributedData.saveToLocal(record)
             updateRates()
         }
-
-
     }
 
     private fun updateRelatedFields_LoadPcKg() {
@@ -190,7 +195,7 @@ class OneShotDelivery : AppCompatActivity() {
         }
     }
 
-    private fun initiallizeOtherExpensesUI() {
+    private fun initializeOtherExpensesUI() {
         val tripEndKmElement = findViewById<EditText>(R.id.one_shot_delivery_trip_end_km)
         val labourExpenseElement = findViewById<EditText>(R.id.one_shot_delivery_labour_expenses)
         val extraExpensesElement = findViewById<EditText>(R.id.one_shot_delivery_extra_expenses)

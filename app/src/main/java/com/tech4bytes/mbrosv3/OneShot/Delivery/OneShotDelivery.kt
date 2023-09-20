@@ -104,11 +104,19 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     fun onClickSidebarIconRefuel(view: View) {
-        scrollToRow(scrollview, findViewById(R.id.osd_scrollview_child), findViewById<LinearLayout>(R.id.osd_other_expenses_details))
+        scrollToRow(scrollview, findViewById(R.id.osd_scrollview_child), findViewById<LinearLayout>(R.id.osd_scroll_to_element_refuel))
     }
 
     fun onClickSidebarIconDeliveryEntries(view: View) {
         scrollToRow(scrollview, findViewById(R.id.osd_scrollview_child), findViewById<LinearLayout>(R.id.osd_scroll_label_deliveries))
+    }
+
+    fun onClickSidebarIconLoadInfo(view: View) {
+        scrollToRow(scrollview, findViewById(R.id.osd_scrollview_child), findViewById<LinearLayout>(R.id.osd_scroll_label_load_info))
+    }
+
+    fun onClickSidebarIconOtherExpenses(view: View) {
+        scrollToRow(scrollview, findViewById(R.id.osd_scrollview_child), findViewById<LinearLayout>(R.id.osd_scroll_to_element_other_expenses))
     }
 
     private fun scrollToRow(scrollView: ScrollView, linearLayout: LinearLayout, textViewToShow: View) {

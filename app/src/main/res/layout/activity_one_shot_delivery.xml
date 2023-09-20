@@ -35,6 +35,7 @@
                     android:id="@+id/osd_sidebar_icon_load_details"
                     android:layout_width="50dp"
                     android:layout_height="100dp"
+                    android:onClick="onClickSidebarIconLoadInfo"
                     android:padding="5dp"
                     app:srcCompat="@drawable/ic_baseline_add_shopping_cart_24" />
 
@@ -58,6 +59,7 @@
                     android:id="@+id/osd_sidebar_icon_other_expenses"
                     android:layout_width="50dp"
                     android:layout_height="100dp"
+                    android:onClick="onClickSidebarIconOtherExpenses"
                     android:padding="5dp"
                     app:srcCompat="@drawable/ic_baseline_moving_24" />
 
@@ -79,6 +81,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/osd_scroll_label_load_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="#050000"
+                    android:fontFamily="monospace"
+                    android:padding="10dp"
+                    android:text="Load Information"
+                    android:textColor="#FBC02D" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -294,149 +307,21 @@
                     </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/osd_other_expenses_details"
+                    android:id="@+id/osd_scroll_to_element_refuel"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
-                    android:background="@drawable/rounded"
-                    android:backgroundTint="#022E33"
-                    android:orientation="vertical"
-                    android:paddingVertical="20dp">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/osd_scroll_label_refuel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="10dp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/filledTextField"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:hint="KM"
-                            android:maxEms="10"
-                            android:minEms="10"
-                            android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
-                            app:hintTextColor="@color/osl_data_status_fresh_light">
-
-                            <!--this is the actual edit text which takes the input-->
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/one_shot_delivery_trip_end_km"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@color/osd_single_attribute_rates_background_color"
-                                android:inputType="number"
-                                android:textColor="@color/osd_single_attribute_rates_hintText_color" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@color/osd_single_attribute_rates_background_color"
-                            android:hint="Lab"
-                            android:maxEms="10"
-                            android:minEms="10"
-                            android:textColor="@color/osd_single_attribute_rates_hintText_color"
-                            android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
-                            app:hintTextColor="@color/osl_data_status_fresh_light">
-
-                            <!--this is the actual edit text which takes the input-->
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/one_shot_delivery_labour_expenses"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@color/osd_single_attribute_rates_background_color"
-                                android:inputType="number"
-                                android:textColor="@color/osd_single_attribute_rates_hintText_color" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:hint="Extra"
-                            android:maxEms="10"
-                            android:minEms="10"
-                            android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
-                            app:hintTextColor="@color/osl_data_status_fresh_light">
-
-                            <!--this is the actual edit text which takes the input-->
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/one_shot_delivery_extra_expenses"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@color/osd_single_attribute_rates_background_color"
-                                android:inputType="number"
-                                android:textColor="@color/osd_single_attribute_rates_hintText_color"
-                                android:textColorHint="#038697" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="10dp"
-                        android:paddingBottom="10dp">
-
-                        <TextView
-                            android:id="@+id/textView36"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Prev KM: "
-                            android:textColor="@color/osd_single_attribute_rates_hintText_color" />
-
-                        <TextView
-                            android:id="@+id/osd_prev_km"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="TextView"
-                            android:textColor="@color/osd_single_attribute_rates_hintText_color" />
-
-                        <TextView
-                            android:id="@+id/textView43"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="20dp"
-                            android:text="Diff: "
-                            android:textColor="@color/osd_single_attribute_rates_hintText_color" />
-
-                        <TextView
-                            android:id="@+id/osd_km_diff"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingRight="20dp"
-                            android:text="TextView"
-                            android:textColor="@color/osd_single_attribute_rates_hintText_color" />
-
-                        <TextView
-                            android:id="@+id/textView48"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Cost: "
-                            android:textColor="@color/osd_single_attribute_rates_hintText_color" />
-
-                        <TextView
-                            android:id="@+id/osd_km_cost"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="TextView"
-                            android:textColor="@color/osd_single_attribute_rates_hintText_color" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:background="#000A0F"
-                        android:orientation="vertical">
-
-                    </LinearLayout>
+                        android:layout_marginTop="20dp"
+                        android:background="#050000"
+                        android:fontFamily="monospace"
+                        android:padding="10dp"
+                        android:text="Refuel"
+                        android:textColor="#FBC02D" />
 
                     <LinearLayout
                         android:id="@+id/osd_refuel_container"
@@ -605,65 +490,229 @@
                         </LinearLayout>
 
                     </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/osd_scroll_label_other_expenses"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="#050000"
+                        android:fontFamily="monospace"
+                        android:padding="10dp"
+                        android:text="Other Expenses"
+                        android:textColor="#FBC02D" />
 
                     <LinearLayout
+                        android:id="@+id/osd_other_expenses_details"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="10dp"
-                        android:paddingTop="5dp">
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:background="@drawable/rounded"
+                        android:backgroundTint="#022E33"
+                        android:orientation="vertical"
+                        android:paddingVertical="20dp">
 
-                        <TextView
-                            android:id="@+id/textView60"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Salary: "
-                            android:textColor="#045660" />
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="10dp">
 
-                        <TextView
-                            android:id="@+id/osd_salary_division"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:paddingStart="10dp"
-                            android:text="Salary Division"
-                            android:textColor="#045660" />
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/filledTextField"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="KM"
+                                android:maxEms="10"
+                                android:minEms="10"
+                                android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
+                                app:hintTextColor="@color/osl_data_status_fresh_light">
+
+                                <!--this is the actual edit text which takes the input-->
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/one_shot_delivery_trip_end_km"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/osd_single_attribute_rates_background_color"
+                                    android:inputType="number"
+                                    android:textColor="@color/osd_single_attribute_rates_hintText_color" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@color/osd_single_attribute_rates_background_color"
+                                android:hint="Lab"
+                                android:maxEms="10"
+                                android:minEms="10"
+                                android:textColor="@color/osd_single_attribute_rates_hintText_color"
+                                android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
+                                app:hintTextColor="@color/osl_data_status_fresh_light">
+
+                                <!--this is the actual edit text which takes the input-->
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/one_shot_delivery_labour_expenses"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/osd_single_attribute_rates_background_color"
+                                    android:inputType="number"
+                                    android:textColor="@color/osd_single_attribute_rates_hintText_color" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="Extra"
+                                android:maxEms="10"
+                                android:minEms="10"
+                                android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
+                                app:hintTextColor="@color/osl_data_status_fresh_light">
+
+                                <!--this is the actual edit text which takes the input-->
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/one_shot_delivery_extra_expenses"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/osd_single_attribute_rates_background_color"
+                                    android:inputType="number"
+                                    android:textColor="@color/osd_single_attribute_rates_hintText_color"
+                                    android:textColorHint="#038697" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="10dp"
+                            android:paddingBottom="10dp">
+
+                            <TextView
+                                android:id="@+id/textView36"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Prev KM: "
+                                android:textColor="@color/osd_single_attribute_rates_hintText_color" />
+
+                            <TextView
+                                android:id="@+id/osd_prev_km"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="TextView"
+                                android:textColor="@color/osd_single_attribute_rates_hintText_color" />
+
+                            <TextView
+                                android:id="@+id/textView43"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="20dp"
+                                android:text="Diff: "
+                                android:textColor="@color/osd_single_attribute_rates_hintText_color" />
+
+                            <TextView
+                                android:id="@+id/osd_km_diff"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingRight="20dp"
+                                android:text="TextView"
+                                android:textColor="@color/osd_single_attribute_rates_hintText_color" />
+
+                            <TextView
+                                android:id="@+id/textView48"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Cost: "
+                                android:textColor="@color/osd_single_attribute_rates_hintText_color" />
+
+                            <TextView
+                                android:id="@+id/osd_km_cost"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="TextView"
+                                android:textColor="@color/osd_single_attribute_rates_hintText_color" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="#000A0F"
+                            android:orientation="vertical">
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="10dp"
+                            android:paddingTop="5dp">
+
+                            <TextView
+                                android:id="@+id/textView60"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Salary: "
+                                android:textColor="#045660" />
+
+                            <TextView
+                                android:id="@+id/osd_salary_division"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:paddingStart="10dp"
+                                android:text="Salary Division"
+                                android:textColor="#045660" />
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
 
-                    <LinearLayout
+                <LinearLayout
+                    android:id="@+id/osd_scroll_to_element_other_expenses"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/osd_delete_delivery_data"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:onClick="onClickDeleteDeliveryDataBtn"
+                        android:text="Delete" />
 
-                        <Button
-                            android:id="@+id/osd_delete_delivery_data"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:layout_weight="1"
-                            android:onClick="onClickDeleteDeliveryDataBtn"
-                            android:text="Delete" />
+                    <Button
+                        android:id="@+id/one_shot_delivery_save_data_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:onClick="onClickSaveOneShotDeliveryDataBtn"
+                        android:text="Save" />
 
-                        <Button
-                            android:id="@+id/one_shot_delivery_save_data_btn"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:layout_weight="1"
-                            android:onClick="onClickSaveOneShotDeliveryDataBtn"
-                            android:text="Save" />
+                    <Button
+                        android:id="@+id/osd_goToMoneyVerification"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:onClick="onClickGoToMoneyVerification"
+                        android:text="Money Check" />
 
-                        <Button
-                            android:id="@+id/osd_goToMoneyVerification"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
-                            android:layout_weight="1"
-                            android:onClick="onClickGoToMoneyVerification"
-                            android:text="Money Check" />
-
-                    </LinearLayout>
+                </LinearLayout>
 
                 </LinearLayout>
         </ScrollView>

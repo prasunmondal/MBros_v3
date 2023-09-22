@@ -61,9 +61,9 @@ class OneShotDelivery : AppCompatActivity() {
     lateinit var sidebarIconOtherExpenses: ImageView
     lateinit var refuelContainer: LinearLayout
     lateinit var scrollview: ScrollView
-    lateinit var finalKmElement: EditText
-    lateinit var labourExpensesElement: EditText
-    lateinit var extraExpensesElement: EditText
+    private lateinit var finalKmElement: EditText
+    private lateinit var labourExpensesElement: EditText
+    private lateinit var extraExpensesElement: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,7 +76,7 @@ class OneShotDelivery : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         );
-        getSupportActionBar()?.hide()
+        supportActionBar?.hide()
 
         initializeVariables()
 
@@ -854,7 +854,7 @@ class OneShotDelivery : AppCompatActivity() {
         Whatsapp.sendMessage(this, numberToSendInfo, text)
     }
 
-    fun isSendLoadInfoEnabled(): Boolean {
+    private fun isSendLoadInfoEnabled(): Boolean {
         val metadata = SingleAttributedData.getRecords()
         val keyFromAppConstantWhatsappNumber = ("WHATSAPP_NUMBER_" + metadata.load_account).uppercase(Locale.ROOT)
         val keyFromAppConstantTextTemplate = ("SEND_LOAD_INFO_TEMPLATE_" + metadata.load_account).uppercase(Locale.ROOT)

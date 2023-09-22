@@ -61,6 +61,9 @@ class OneShotDelivery : AppCompatActivity() {
     lateinit var sidebarIconOtherExpenses: ImageView
     lateinit var refuelContainer: LinearLayout
     lateinit var scrollview: ScrollView
+    lateinit var finalKmElement: EditText
+    lateinit var labourExpensesElement: EditText
+    lateinit var extraExpensesElement: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,7 +84,6 @@ class OneShotDelivery : AppCompatActivity() {
         Thread {
             populateDeliveryMap()
             updateSingleAttributedDataOnUI()
-
             initiallizeUI()
             runOnUiThread {
                 showOrders()
@@ -102,6 +104,9 @@ class OneShotDelivery : AppCompatActivity() {
         sidebarIconRefuel = findViewById(R.id.osd_sidebar_icon_refuel)
         sidebarIconOtherExpenses = findViewById(R.id.osd_sidebar_icon_other_expenses)
         refuelContainer = findViewById(R.id.osd_refuel_container)
+        finalKmElement = findViewById(R.id.one_shot_delivery_trip_end_km)
+        labourExpensesElement = findViewById(R.id.one_shot_delivery_labour_expenses)
+        extraExpensesElement = findViewById(R.id.one_shot_delivery_extra_expenses)
     }
 
     fun onClickSidebarIconRefuel(view: View) {
@@ -205,25 +210,21 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun initializeOtherExpensesUI() {
-        val tripEndKmElement = findViewById<EditText>(R.id.one_shot_delivery_trip_end_km)
-        val labourExpenseElement = findViewById<EditText>(R.id.one_shot_delivery_labour_expenses)
-        val extraExpensesElement = findViewById<EditText>(R.id.one_shot_delivery_extra_expenses)
         val salaryDivisionElement = findViewById<TextView>(R.id.osd_salary_division)
 
-        UIUtils.setUIElementValue(tripEndKmElement, SingleAttributedData.getRecords().vehicle_finalKm)
-        UIUtils.setUIElementValue(labourExpenseElement, SingleAttributedData.getRecords().labour_expenses)
+        UIUtils.setUIElementValue(finalKmElement, SingleAttributedData.getRecords().vehicle_finalKm)
+        UIUtils.setUIElementValue(labourExpensesElement, SingleAttributedData.getRecords().labour_expenses)
         UIUtils.setUIElementValue(extraExpensesElement, SingleAttributedData.getRecords().extra_expenses)
         UIUtils.setUIElementValue(salaryDivisionElement, SingleAttributedData.getRecords().salaryDivision.replace("#", "  #  "))
 
-        tripEndKmElement.doOnTextChanged { text, start, before, count ->
+        finalKmElement.doOnTextChanged { text, start, before, count ->
             updateKmRelatedCosts()
         }
 
     }
 
     private fun updateKmRelatedCosts() {
-        val tripEndKmElement = findViewById<EditText>(R.id.one_shot_delivery_trip_end_km)
-        val currentKmOnUI = tripEndKmElement.text.toString()
+        val currentKmOnUI = finalKmElement.text.toString()
         val prevKmElement = findViewById<TextView>(R.id.osd_prev_km)
         val kmDiffElement = findViewById<TextView>(R.id.osd_km_diff)
         val kmCostElement = findViewById<TextView>(R.id.osd_km_cost)
@@ -255,7 +256,6 @@ class OneShotDelivery : AppCompatActivity() {
         val refuelingQtyElement = findViewById<EditText>(R.id.one_shot_delivery_fuel_quantity)
         val refuelingKmElement = findViewById<EditText>(R.id.one_shot_delivery_refueling_km)
         val refuelingAmountElement = findViewById<EditText>(R.id.osd_refuel_amount)
-        val tripEndKmElement = findViewById<EditText>(R.id.one_shot_delivery_trip_end_km)
 
         UIUtils.setUIElementValue(didRefuelElement, SingleAttributedData.getRecords().did_refueled)
         UIUtils.setUIElementValue(didTankFullElement, SingleAttributedData.getRecords().refueling_isFullTank)
@@ -265,7 +265,7 @@ class OneShotDelivery : AppCompatActivity() {
 
         refuelingKmElement.doOnTextChanged { text, start, before, count ->
             val refuelingKm = NumberUtils.getIntOrZero(refuelingKmElement.text.toString())
-            tripEndKmElement.setText((refuelingKm + 7).toString())
+            finalKmElement.setText((refuelingKm + 7).toString())
         }
 
         updateRefuelingUIDetails()
@@ -678,10 +678,6 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun gatherSingleAttributedData() {
-        val finalKmElement = findViewById<EditText>(R.id.one_shot_delivery_trip_end_km)
-        val labourExpensesElement = findViewById<EditText>(R.id.one_shot_delivery_labour_expenses)
-        val extraExpensesElement = findViewById<EditText>(R.id.one_shot_delivery_extra_expenses)
-
         val obj = SingleAttributedData.getRecords()
         obj.vehicle_finalKm = NumberUtils.getIntOrZero(finalKmElement.text.toString()).toString()
         obj.labour_expenses = NumberUtils.getIntOrZero(labourExpensesElement.text.toString()).toString()

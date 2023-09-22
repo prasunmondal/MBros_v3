@@ -1,5 +1,6 @@
 package com.tech4bytes.mbrosv3.OneShot.Delivery
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Rect
@@ -18,7 +19,6 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.prasunmondal.postjsontosheets.clients.delete.Delete
 import com.tech4bytes.mbrosv3.AppData.AppUtils
-import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
@@ -36,7 +36,6 @@ import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
-import com.tech4bytes.mbrosv3.SendInfoTexts.Whatsapp.Whatsapp
 import com.tech4bytes.mbrosv3.Sms.SMSUtils
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
@@ -64,6 +63,10 @@ class OneShotDelivery : AppCompatActivity() {
     private lateinit var finalKmElement: EditText
     private lateinit var labourExpensesElement: EditText
     private lateinit var extraExpensesElement: EditText
+    private lateinit var loadPcElement: EditText
+    private lateinit var loadKgElement: EditText
+    private lateinit var loadAvgWtElement: TextView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,7 +91,7 @@ class OneShotDelivery : AppCompatActivity() {
             runOnUiThread {
                 showOrders()
                 initializeOtherExpensesUI()
-                updateRelatedFields_LoadPcKg()
+                OSD.LoadInfo.updateRelatedFields_LoadPcKg(loadPcElement, loadKgElement, loadAvgWtElement)
                 initiallizeRefuelUI()
                 updateKmRelatedCosts()
             }
@@ -107,6 +110,10 @@ class OneShotDelivery : AppCompatActivity() {
         finalKmElement = findViewById(R.id.one_shot_delivery_trip_end_km)
         labourExpensesElement = findViewById(R.id.one_shot_delivery_labour_expenses)
         extraExpensesElement = findViewById(R.id.one_shot_delivery_extra_expenses)
+        loadPcElement = findViewById(R.id.one_shot_delivery_pc)
+        loadKgElement = findViewById(R.id.one_shot_delivery_kg)
+        loadAvgWtElement = findViewById(R.id.osd_loading_avg_wt)
+
     }
 
     fun onClickSidebarIconRefuel(view: View) {
@@ -139,11 +146,10 @@ class OneShotDelivery : AppCompatActivity() {
         val didTankFullElement = findViewById<Switch>(R.id.one_shot_delivery_did_fuel_upto_tank_full)
         val refuelingQtyElement = findViewById<EditText>(R.id.one_shot_delivery_fuel_quantity)
         val refuelingKmElement = findViewById<EditText>(R.id.one_shot_delivery_refueling_km)
-        val loadPcElement = findViewById<EditText>(R.id.one_shot_delivery_pc)
-        val loadKgElement = findViewById<EditText>(R.id.one_shot_delivery_kg)
         val loadPriceElement = findViewById<EditText>(R.id.one_shot_delivery_price)
         val loadBufferElement = findViewById<EditText>(R.id.one_shot_delivery_buffer)
 
+        OSD.LoadInfo.initializeUI(this, loadPcElement, loadKgElement, loadAvgWtElement)
         didRefuelElement.setOnCheckedChangeListener { _, isChecked ->
             val obj = SingleAttributedData.getRecords()
             obj.did_refueled = isChecked.toString()
@@ -166,20 +172,6 @@ class OneShotDelivery : AppCompatActivity() {
 
         val record = SingleAttributedData.getRecords()
 
-        loadPcElement.doOnTextChanged { text, start, before, count ->
-            record.actualLoadPc = loadPcElement.text.toString()
-            SingleAttributedData.saveToLocal(record)
-            updateRelatedFields_LoadPcKg()
-            updateTotals()
-        }
-
-        loadKgElement.doOnTextChanged { text, start, before, count ->
-            record.actualLoadKg = loadKgElement.text.toString()
-            SingleAttributedData.saveToLocal(record)
-            updateRelatedFields_LoadPcKg()
-            updateTotals()
-        }
-
         loadPriceElement.doOnTextChanged { text, start, before, count ->
             record.finalFarmRate = loadPriceElement.text.toString()
             SingleAttributedData.saveToLocal(record)
@@ -193,21 +185,6 @@ class OneShotDelivery : AppCompatActivity() {
         }
     }
 
-    private fun updateRelatedFields_LoadPcKg() {
-        val loadAvgWtElement = findViewById<TextView>(R.id.osd_loading_avg_wt)
-        val totalPcElement = findViewById<TextView>(R.id.one_shot_delivery_pc)
-        val totalKgElement = findViewById<TextView>(R.id.one_shot_delivery_kg)
-
-        var avgWt = "N/A"
-        try {
-            avgWt = NumberUtils.roundOff3places(NumberUtils.getDoubleOrZero(totalKgElement.text.toString()) / NumberUtils.getIntOrZero(totalPcElement.text.toString())).toString()
-        } catch (_: Exception) {
-            LogMe.log("Error while getting avg")
-        } finally {
-            LogMe.log(avgWt)
-            loadAvgWtElement.text = avgWt
-        }
-    }
 
     private fun initializeOtherExpensesUI() {
         val salaryDivisionElement = findViewById<TextView>(R.id.osd_salary_division)
@@ -468,7 +445,7 @@ class OneShotDelivery : AppCompatActivity() {
         val balanceElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
 
         balanceElement.text = getDueBalance(order, entry).toString()
-        updateTotals()
+        updateTotals(this)
         updateDetailedInfo(order, entry)
     }
 
@@ -557,15 +534,13 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun updateSingleAttributedDataOnUI() {
-        val loadedPc = findViewById<TextView>(R.id.one_shot_delivery_pc)
-        val loadedKg = findViewById<TextView>(R.id.one_shot_delivery_kg)
         runOnUiThread {
-            if (!isSendLoadInfoEnabled()) {
+            if (!OSD.LoadInfo.isSendLoadInfoEnabled()) {
                 findViewById<TextView>(R.id.osd_btn_send_load_info_to_account_payee).visibility = View.GONE
             }
 
-            loadedPc.text = SingleAttributedData.getRecords().actualLoadPc
-            loadedKg.text = SingleAttributedData.getRecords().actualLoadKg
+            loadPcElement.setText(SingleAttributedData.getRecords().actualLoadPc)
+            loadKgElement.setText(SingleAttributedData.getRecords().actualLoadKg)
             findViewById<TextView>(R.id.osd_company_name).text = SingleAttributedData.getRecords().load_account
         }
 
@@ -592,14 +567,15 @@ class OneShotDelivery : AppCompatActivity() {
         }
     }
 
-    private fun updateTotals() {
+    companion object {
+    fun updateTotals(context: OneShotDelivery) {
         val metadataObj = SingleAttributedData.getRecords()
-        val totalPcElement = findViewById<TextView>(R.id.one_shot_delivery_total_pc)
-        val totalKgElement = findViewById<TextView>(R.id.one_shot_delivery_total_kg)
-        val totalSaleElement = findViewById<TextView>(R.id.one_shot_delivery_total_sale)
-        val totalShortageElement = findViewById<TextView>(R.id.one_shot_delivery_total_shortage)
-        val totalCollectedElement = findViewById<TextView>(R.id.one_shot_delivery_total_collected_amount)
-        val totalBalanceDueElement = findViewById<TextView>(R.id.one_shot_delivery_total_balance_due)
+        val totalPcElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_pc)
+        val totalKgElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_kg)
+        val totalSaleElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_sale)
+        val totalShortageElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_shortage)
+        val totalCollectedElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_collected_amount)
+        val totalBalanceDueElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_balance_due)
 
         var sumPc = 0
         var sumKg = 0.0
@@ -607,7 +583,7 @@ class OneShotDelivery : AppCompatActivity() {
         var sumAmountCollected = 0
         var sumBalanceDue = 0
 
-        deliveryMapOrderedCustomers.forEach {
+        context.deliveryMapOrderedCustomers.forEach {
             sumPc += NumberUtils.getIntOrZero(it.value.deliveredPc)
             sumKg += NumberUtils.getDoubleOrZero(it.value.deliveredKg)
             sumSale += NumberUtils.getIntOrZero(it.value.todaysAmount)
@@ -617,7 +593,7 @@ class OneShotDelivery : AppCompatActivity() {
             }
         }
 
-        deliveryMapUnOrderedCustomers.forEach {
+        context.deliveryMapUnOrderedCustomers.forEach {
             sumPc += NumberUtils.getIntOrZero(it.value.deliveredPc)
             sumKg += NumberUtils.getDoubleOrZero(it.value.deliveredKg)
             sumSale += NumberUtils.getIntOrZero(it.value.todaysAmount)
@@ -640,7 +616,8 @@ class OneShotDelivery : AppCompatActivity() {
         totalBalanceDueElement.text = "$sumBalanceDue"
         SingleAttributedData.saveToLocal(metadataObj)
 
-        updateHiddenData()
+        context.updateHiddenData()
+    }
     }
 
     fun onClickSaveOneShotDeliveryDataBtn(view: View) {
@@ -837,33 +814,6 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     fun onClickSendLoadInfoToCompany(view: View) {
-        val metadata = SingleAttributedData.getRecords()
-        val numberToSendInfo = AppConstants.GeneratedKeys.getWhatsappNumber(metadata.load_account)
-        val templateToSendInfo = AppConstants.GeneratedKeys.getTemplateToSendInfo(metadata.load_account)
-
-        val formattedDate = DateUtils.getDateInFormat("dd/MM/yyyy")
-        val loadedPc = findViewById<TextView>(R.id.one_shot_delivery_pc)
-        val loadedKg = findViewById<TextView>(R.id.one_shot_delivery_kg)
-        val text = templateToSendInfo
-            .replace("<date>", formattedDate)
-            .replace("<loadPc>", loadedPc.text.toString())
-            .replace("<loadKg>", loadedKg.text.toString())
-            .replace("<loadCompanyName>", metadata.load_companyName)
-        Whatsapp.sendMessage(this, numberToSendInfo, text)
-    }
-
-    private fun isSendLoadInfoEnabled(): Boolean {
-        val metadata = SingleAttributedData.getRecords()
-        val numberToSendInfo = AppConstants.GeneratedKeys.getWhatsappNumber(metadata.load_account)
-        val templateToSendInfo = AppConstants.GeneratedKeys.getTemplateToSendInfo(metadata.load_account)
-        val isSendLoadInfoEnabled = numberToSendInfo.isNotEmpty() && templateToSendInfo.isNotEmpty()
-
-        if (!isSendLoadInfoEnabled) {
-            LogMe.log("Send load info disabled. Either '$numberToSendInfo' or '$templateToSendInfo' is not configured")
-        } else {
-            LogMe.log("Send load info enabled.")
-        }
-
-        return isSendLoadInfoEnabled
+        OSD.LoadInfo.sendLoadInfoToCompany(loadPcElement.text.toString(), loadKgElement.text.toString())
     }
 }

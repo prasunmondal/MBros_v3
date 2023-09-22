@@ -86,7 +86,7 @@ class OneShotDelivery : AppCompatActivity() {
         getSMSPermission()
         Thread {
             populateDeliveryMap()
-            updateSingleAttributedDataOnUI()
+            OSD.LoadInfo.updateSingleAttributedDataOnUI(this, loadPcElement, loadKgElement)
             initiallizeUI()
             runOnUiThread {
                 showOrders()
@@ -531,40 +531,6 @@ class OneShotDelivery : AppCompatActivity() {
     private fun getDueBalance(order: DeliverToCustomerDataModel, entry: View): Int {
         val prevBal = order.prevDue
         return NumberUtils.getIntOrZero(prevBal) + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(entry)
-    }
-
-    private fun updateSingleAttributedDataOnUI() {
-        runOnUiThread {
-            if (!OSD.LoadInfo.isSendLoadInfoEnabled()) {
-                findViewById<TextView>(R.id.osd_btn_send_load_info_to_account_payee).visibility = View.GONE
-            }
-
-            loadPcElement.setText(SingleAttributedData.getRecords().actualLoadPc)
-            loadKgElement.setText(SingleAttributedData.getRecords().actualLoadKg)
-            findViewById<TextView>(R.id.osd_company_name).text = SingleAttributedData.getRecords().load_account
-        }
-
-        if (AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_FARM_RATE)) {
-            val loadPriceElement = findViewById<EditText>(R.id.one_shot_delivery_price)
-            runOnUiThread {
-                loadPriceElement.setText(SingleAttributedData.getRecords().finalFarmRate)
-            }
-        } else {
-            runOnUiThread {
-                findViewById<TextInputLayout>(R.id.osd_farm_rate_container).visibility = View.GONE
-            }
-        }
-
-        if (AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_BUFFER_RATE)) {
-            val loadBufferElement = findViewById<EditText>(R.id.one_shot_delivery_buffer)
-            runOnUiThread {
-                loadBufferElement.setText(SingleAttributedData.getRecords().bufferRate)
-            }
-        } else {
-            runOnUiThread {
-                findViewById<TextInputLayout>(R.id.osd_buffer_price_container).visibility = View.GONE
-            }
-        }
     }
 
     companion object {

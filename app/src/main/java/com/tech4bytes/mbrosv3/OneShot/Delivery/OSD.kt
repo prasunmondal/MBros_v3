@@ -1,10 +1,15 @@
 package com.tech4bytes.mbrosv3.OneShot.Delivery
 
+import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.widget.doOnTextChanged
+import com.google.android.material.textfield.TextInputLayout
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
+import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
+import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
+import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.SendInfoTexts.Whatsapp.Whatsapp
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
@@ -72,6 +77,40 @@ class OSD {
                     .replace("<loadKg>", loadedKg)
                     .replace("<loadCompanyName>", metadata.load_companyName)
                 Whatsapp.sendMessage(AppContexts.get(), numberToSendInfo, text)
+            }
+
+            fun updateSingleAttributedDataOnUI(context: OneShotDelivery, loadPcElement: EditText, loadKgElement: EditText) {
+                context.runOnUiThread {
+                    if (!isSendLoadInfoEnabled()) {
+                        context.findViewById<TextView>(R.id.osd_btn_send_load_info_to_account_payee).visibility = View.GONE
+                    }
+
+                    loadPcElement.setText(SingleAttributedData.getRecords().actualLoadPc)
+                    loadKgElement.setText(SingleAttributedData.getRecords().actualLoadKg)
+                    context.findViewById<TextView>(R.id.osd_company_name).text = SingleAttributedData.getRecords().load_account
+                }
+
+                if (AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_FARM_RATE)) {
+                    val loadPriceElement = context.findViewById<EditText>(R.id.one_shot_delivery_price)
+                    context.runOnUiThread {
+                        loadPriceElement.setText(SingleAttributedData.getRecords().finalFarmRate)
+                    }
+                } else {
+                    context.runOnUiThread {
+                        context.findViewById<TextInputLayout>(R.id.osd_farm_rate_container).visibility = View.GONE
+                    }
+                }
+
+                if (AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_BUFFER_RATE)) {
+                    val loadBufferElement = context.findViewById<EditText>(R.id.one_shot_delivery_buffer)
+                    context.runOnUiThread {
+                        loadBufferElement.setText(SingleAttributedData.getRecords().bufferRate)
+                    }
+                } else {
+                    context.runOnUiThread {
+                        context.findViewById<TextInputLayout>(R.id.osd_buffer_price_container).visibility = View.GONE
+                    }
+                }
             }
         }
     }

@@ -838,10 +838,8 @@ class OneShotDelivery : AppCompatActivity() {
 
     fun onClickSendLoadInfoToCompany(view: View) {
         val metadata = SingleAttributedData.getRecords()
-        val keyFromAppConstantWhatsappNumber = ("WHATSAPP_NUMBER_" + metadata.load_account).uppercase(Locale.ROOT)
-        val keyFromAppConstantTextTemplate = ("SEND_LOAD_INFO_TEMPLATE_" + metadata.load_account).uppercase(Locale.ROOT)
-        val numberToSendInfo = AppConstants.get(keyFromAppConstantWhatsappNumber)
-        val templateToSendInfo = AppConstants.get(keyFromAppConstantTextTemplate)
+        val numberToSendInfo = AppConstants.GeneratedKeys.getWhatsappNumber(metadata.load_account)
+        val templateToSendInfo = AppConstants.GeneratedKeys.getTemplateToSendInfo(metadata.load_account)
 
         val formattedDate = DateUtils.getDateInFormat("dd/MM/yyyy")
         val loadedPc = findViewById<TextView>(R.id.one_shot_delivery_pc)
@@ -856,14 +854,12 @@ class OneShotDelivery : AppCompatActivity() {
 
     private fun isSendLoadInfoEnabled(): Boolean {
         val metadata = SingleAttributedData.getRecords()
-        val keyFromAppConstantWhatsappNumber = ("WHATSAPP_NUMBER_" + metadata.load_account).uppercase(Locale.ROOT)
-        val keyFromAppConstantTextTemplate = ("SEND_LOAD_INFO_TEMPLATE_" + metadata.load_account).uppercase(Locale.ROOT)
-        val numberToSendInfo = AppConstants.get(keyFromAppConstantWhatsappNumber)
-        val templateToSendInfo = AppConstants.get(keyFromAppConstantTextTemplate)
+        val numberToSendInfo = AppConstants.GeneratedKeys.getWhatsappNumber(metadata.load_account)
+        val templateToSendInfo = AppConstants.GeneratedKeys.getTemplateToSendInfo(metadata.load_account)
         val isSendLoadInfoEnabled = numberToSendInfo.isNotEmpty() && templateToSendInfo.isNotEmpty()
 
         if (!isSendLoadInfoEnabled) {
-            LogMe.log("Send load info disabled. Either '$keyFromAppConstantWhatsappNumber' or '$keyFromAppConstantTextTemplate' is not configured")
+            LogMe.log("Send load info disabled. Either '$numberToSendInfo' or '$templateToSendInfo' is not configured")
         } else {
             LogMe.log("Send load info enabled.")
         }

@@ -1,6 +1,7 @@
 package com.tech4bytes.mbrosv3.AppData.RemoteAppConstants
 
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
+import java.util.*
 
 enum class AppConstants {
     SMS_ORDER_SEQUENCE,
@@ -40,6 +41,17 @@ enum class AppConstants {
             }
             LogMe.log("Searching in AppConstants: $constant: Unsuccessful.")
             return ""
+        }
+    }
+    class GeneratedKeys {
+        companion object {
+            fun getWhatsappNumber(accountName: String): String {
+                return get(("WHATSAPP_NUMBERS_$accountName").uppercase(Locale.ROOT))
+            }
+
+            fun getTemplateToSendInfo(accountName: String): String {
+                return get(("SEND_LOAD_INFO_TEMPLATE_$accountName").uppercase(Locale.ROOT))
+            }
         }
     }
 }

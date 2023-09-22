@@ -81,9 +81,10 @@ class OneShotDelivery : AppCompatActivity() {
         Thread {
             populateDeliveryMap()
             updateSingleAttributedDataOnUI()
-            showOrders()
+
             initiallizeUI()
             runOnUiThread {
+                showOrders()
                 initializeOtherExpensesUI()
                 updateRelatedFields_LoadPcKg()
                 initiallizeRefuelUI()
@@ -308,22 +309,26 @@ class OneShotDelivery : AppCompatActivity() {
 
     private fun showOrders() {
 
-        runOnUiThread {
-            var t = showOrders(deliveryMapOrderedCustomers, R.id.one_shot_delivery_ordered_customers_entry_container)
-            var t2 = showOrders(deliveryMapUnOrderedCustomers, R.id.one_shot_delivery_unordered_customers_entry_container)
-
+        var t = showOrders(deliveryMapOrderedCustomers, R.id.one_shot_delivery_ordered_customers_entry_container)
+        var t2 = showOrders(deliveryMapUnOrderedCustomers, R.id.one_shot_delivery_unordered_customers_entry_container)
+//        runOnUiThread {
             findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).removeAllViews()
+            findViewById<LinearLayout>(R.id.one_shot_delivery_unordered_customers_entry_container).removeAllViews()
+//        }
+
             t.forEach { key, value ->
-                updateEntry(key, value)
-                findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).addView(value)
+//                runOnUiThread {
+                    updateEntry(key, value)
+                    findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).addView(value)
+//                }
+            }
+            t2.forEach { key, value ->
+//                runOnUiThread {
+                    updateEntry(key, value)
+                    findViewById<LinearLayout>(R.id.one_shot_delivery_unordered_customers_entry_container).addView(value)
+//                }
             }
 
-            findViewById<LinearLayout>(R.id.one_shot_delivery_unordered_customers_entry_container).removeAllViews()
-            t2.forEach { key, value ->
-                updateEntry(key, value)
-                findViewById<LinearLayout>(R.id.one_shot_delivery_unordered_customers_entry_container).addView(value)
-            }
-        }
     }
 
     var entrynumber = 1

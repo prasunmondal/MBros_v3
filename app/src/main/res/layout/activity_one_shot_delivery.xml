@@ -340,10 +340,10 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:orientation="vertical"
-                                android:padding="10dp">
+                                android:paddingHorizontal="5dp">
 
                                 <LinearLayout
-                                    android:layout_width="match_parent"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="left"
                                     android:foregroundGravity="left"
@@ -366,7 +366,7 @@
 
                                 <LinearLayout
                                     android:id="@+id/one_shot_delivery_refueling_km_container"
-                                    android:layout_width="match_parent"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:orientation="horizontal"
                                     android:paddingVertical="10dp">
@@ -379,10 +379,10 @@
 
                                     <com.google.android.material.textfield.TextInputEditText
                                         android:id="@+id/one_shot_delivery_refueling_km"
-                                        android:layout_width="110dp"
+                                        android:layout_width="90dp"
                                         android:layout_height="35dp"
                                         android:background="#00000000"
-                                        android:hint="Loading..."
+                                        android:hint="0"
                                         android:inputType="number"
                                         android:textColor="#FBC02D"
                                         android:textColorHint="#8DD8D4D4"
@@ -403,7 +403,7 @@
 
                                     <com.google.android.material.textfield.TextInputEditText
                                         android:id="@+id/one_shot_delivery_fuel_quantity"
-                                        android:layout_width="110dp"
+                                        android:layout_width="90dp"
                                         android:layout_height="35dp"
                                         android:background="#00000000"
                                         android:hint="00.000"
@@ -427,7 +427,7 @@
 
                                     <com.google.android.material.textfield.TextInputEditText
                                         android:id="@+id/osd_refuel_amount"
-                                        android:layout_width="110dp"
+                                        android:layout_width="90dp"
                                         android:layout_height="35dp"
                                         android:background="#00000000"
                                         android:hint="Rs"
@@ -444,7 +444,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:orientation="vertical"
-                                android:padding="10dp">
+                                android:paddingHorizontal="5dp">
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -463,7 +463,6 @@
                                         android:id="@+id/one_shot_delivery_refueling_km_diff"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="TextView"
                                         android:textColor="#888686" />
 
                                 </LinearLayout>
@@ -521,35 +520,179 @@
                         android:layout_height="wrap_content"
                         android:background="#40F57C00"
                         android:orientation="vertical"
+                        android:padding="10dp"
                         android:paddingVertical="20dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/textView70"
+                                        android:layout_width="90dp"
+                                        android:layout_height="wrap_content"
+                                        android:text="End KM"
+                                        android:textColor="#D2FFFFFF" />
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/one_shot_delivery_trip_end_km"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="35dp"
+                                        android:background="#00000000"
+                                        android:inputType="number"
+                                        android:paddingLeft="10dp"
+                                        android:textColor="#FBC02D"
+                                        android:textColorHint="#8DD8D4D4"
+                                        android:textSize="14sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/textView71"
+                                        android:layout_width="90dp"
+                                        android:layout_height="wrap_content"
+                                        android:text="Lab"
+                                        android:textColor="#D2FFFFFF" />
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/one_shot_delivery_labour_expenses"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="35dp"
+                                        android:background="#00000000"
+                                        android:inputType="number"
+                                        android:paddingLeft="10dp"
+                                        android:textColor="#FBC02D"
+                                        android:textColorHint="#8DD8D4D4"
+                                        android:textSize="14sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/textView74"
+                                        android:layout_width="90dp"
+                                        android:layout_height="wrap_content"
+                                        android:text="Extra Expense"
+                                        android:textColor="#D2FFFFFF" />
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/one_shot_delivery_extra_expenses"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="35dp"
+                                        android:background="#00000000"
+                                        android:inputType="number"
+                                        android:textColor="#FBC02D"
+                                        android:textColorHint="#8DD8D4D4"
+                                        android:textSize="14sp"
+                                        android:paddingLeft="10dp" />
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal"
+                                    android:paddingVertical="5dp">
+
+                                    <TextView
+                                        android:id="@+id/textView36"
+                                        android:layout_width="90dp"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="right"
+                                        android:text="Prev KM: "
+                                        android:textColor="#888686" />
+
+                                    <TextView
+                                        android:id="@+id/osd_prev_km"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingLeft="10dp"
+                                        android:text="TextView"
+                                        android:textColor="#888686" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal"
+                                    android:paddingVertical="5dp">
+
+                                    <TextView
+                                        android:id="@+id/textView43"
+                                        android:layout_width="90dp"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="right"
+                                        android:text="Diff: "
+                                        android:textColor="#888686" />
+
+                                    <TextView
+                                        android:id="@+id/osd_km_diff"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingLeft="10dp"
+                                        android:text="TextView"
+                                        android:textColor="#888686" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal"
+                                    android:paddingVertical="5dp">
+
+                                    <TextView
+                                        android:id="@+id/textView48"
+                                        android:layout_width="90dp"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="right"
+                                        android:text="Cost: "
+                                        android:textColor="#888686" />
+
+                                    <TextView
+                                        android:id="@+id/osd_km_cost"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingLeft="10dp"
+                                        android:text="TextView"
+                                        android:textColor="#888686" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:paddingHorizontal="10dp">
-
-                            <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/filledTextField"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:hint="KM"
-                                android:maxEms="10"
-                                android:minEms="10"
-                                android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
-                                app:hintTextColor="@color/osl_data_status_fresh_light">
-
-                                <!--this is the actual edit text which takes the input-->
-                                <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/one_shot_delivery_trip_end_km"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:background="@color/osd_single_attribute_rates_background_color"
-                                    android:inputType="number"
-                                    android:textColor="@color/osd_single_attribute_rates_hintText_color" />
-
-                            </com.google.android.material.textfield.TextInputLayout>
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="wrap_content"
@@ -564,13 +707,6 @@
                                 app:hintTextColor="@color/osl_data_status_fresh_light">
 
                                 <!--this is the actual edit text which takes the input-->
-                                <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/one_shot_delivery_labour_expenses"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:background="@color/osd_single_attribute_rates_background_color"
-                                    android:inputType="number"
-                                    android:textColor="@color/osd_single_attribute_rates_hintText_color" />
 
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -585,69 +721,9 @@
                                 app:hintTextColor="@color/osl_data_status_fresh_light">
 
                                 <!--this is the actual edit text which takes the input-->
-                                <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/one_shot_delivery_extra_expenses"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:background="@color/osd_single_attribute_rates_background_color"
-                                    android:inputType="number"
-                                    android:textColor="@color/osd_single_attribute_rates_hintText_color"
-                                    android:textColorHint="#038697" />
 
                             </com.google.android.material.textfield.TextInputLayout>
 
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal"
-                            android:paddingHorizontal="10dp"
-                            android:paddingBottom="10dp">
-
-                            <TextView
-                                android:id="@+id/textView36"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Prev KM: "
-                                android:textColor="@color/osd_single_attribute_rates_hintText_color" />
-
-                            <TextView
-                                android:id="@+id/osd_prev_km"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="TextView"
-                                android:textColor="@color/osd_single_attribute_rates_hintText_color" />
-
-                            <TextView
-                                android:id="@+id/textView43"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:paddingLeft="20dp"
-                                android:text="Diff: "
-                                android:textColor="@color/osd_single_attribute_rates_hintText_color" />
-
-                            <TextView
-                                android:id="@+id/osd_km_diff"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:paddingRight="20dp"
-                                android:text="TextView"
-                                android:textColor="@color/osd_single_attribute_rates_hintText_color" />
-
-                            <TextView
-                                android:id="@+id/textView48"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Cost: "
-                                android:textColor="@color/osd_single_attribute_rates_hintText_color" />
-
-                            <TextView
-                                android:id="@+id/osd_km_cost"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="TextView"
-                                android:textColor="@color/osd_single_attribute_rates_hintText_color" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -662,7 +738,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="horizontal"
-                            android:paddingHorizontal="10dp"
                             android:paddingTop="5dp">
 
                             <TextView
@@ -670,7 +745,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Salary: "
-                                android:textColor="#045660" />
+                                android:textColor="#7AFFA000" />
 
                             <TextView
                                 android:id="@+id/osd_salary_division"
@@ -679,7 +754,7 @@
                                 android:layout_weight="1"
                                 android:paddingStart="10dp"
                                 android:text="Salary Division"
-                                android:textColor="#045660" />
+                                android:textColor="#7AFFA000" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>

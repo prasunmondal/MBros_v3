@@ -16,6 +16,7 @@ import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 
+
 class OSD {
 
     class LoadInfo {
@@ -37,7 +38,10 @@ class OSD {
 
             fun initializeUI(context: OneShotDelivery, loadPcElement: EditText, loadKgElement: EditText, loadAvgWtElement: TextView, loadCompanyBranchArea: TextView) {
                 val record = SingleAttributedData.getRecords()
-                loadCompanyBranchArea.text = "${record.load_companyName} / ${record.load_branch} / ${record.load_area}"
+
+                context.runOnUiThread {
+                    loadCompanyBranchArea.text = "${record.load_companyName} / ${record.load_branch} / ${record.load_area}"
+                }
 
                 loadPcElement.doOnTextChanged { text, start, before, count ->
                     record.actualLoadPc = loadPcElement.text.toString()

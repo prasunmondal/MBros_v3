@@ -44,6 +44,7 @@
                     android:textColor="#FBC02D" />
 
                 <LinearLayout
+                    android:id="@+id/osd_container_load_info"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="#410288D1"
@@ -108,6 +109,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/osd_farm_rate_container"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -134,6 +136,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/osd_buffer_price_container"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -172,7 +175,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="right"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:paddingVertical="10dp">
 
                             <TextView
                                 android:id="@+id/osd_loading_avg_wt2"
@@ -191,6 +195,21 @@
                                 android:text="0.000"
                                 android:textColor="#888686" />
 
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingVertical="10dp">
+
+                            <TextView
+                                android:id="@+id/osd_load_company_branch_area"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:hint="Loading..."
+                                android:textColor="#FBC02D"
+                                android:textColorHint="#8DD8D4D4" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -213,7 +232,7 @@
                                 android:layout_weight="1"
                                 android:hint="Loading..."
                                 android:textColor="#D8D4D4"
-                                android:textColorHint="#403F3F" />
+                                android:textColorHint="#8DD8D4D4" />
 
                             <TextView
                                 android:id="@+id/osd_btn_send_load_info_to_account_payee"
@@ -226,88 +245,6 @@
                                 android:textColor="#D8D4D4"
                                 android:textSize="16sp" />
                         </LinearLayout>
-
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/osd_container_load_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:id="@+id/linearLayout15"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#130303"
-                        android:orientation="horizontal">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:hint="Load PC"
-                            android:maxEms="10"
-                            android:minEms="10"
-                            android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
-                            app:hintTextColor="@color/osl_data_status_fresh_light">
-
-                            <!--this is the actual edit text which takes the input-->
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:hint="Load KG"
-                            android:maxEms="10"
-                            android:minEms="10"
-                            android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
-                            app:hintTextColor="@color/osl_data_status_fresh_light">
-
-                            <!--this is the actual edit text which takes the input-->
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/osd_farm_rate_container"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:hint="FR"
-                            android:maxEms="10"
-                            android:minEms="10"
-                            android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
-                            app:hintTextColor="@color/osl_data_status_fresh_light">
-
-                            <!--this is the actual edit text which takes the input-->
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/osd_buffer_price_container"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:hint="Buffer"
-                            android:maxEms="10"
-                            android:minEms="10"
-                            android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
-                            app:hintTextColor="@color/osl_data_status_fresh_light">
-
-                            <!--this is the actual edit text which takes the input-->
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
 
                     </LinearLayout>
                 </LinearLayout>

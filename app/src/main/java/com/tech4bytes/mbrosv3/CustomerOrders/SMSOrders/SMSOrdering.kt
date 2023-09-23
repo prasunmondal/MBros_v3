@@ -50,7 +50,7 @@ class SMSOrdering : AppCompatActivity() {
         findViewById<EditText>(R.id.smsorder_avg_wt1).doOnTextChanged { text, start, before, count ->
             processSMS()
             showEntries()
-            showTotal()
+            updateTotal()
         }
     }
 

@@ -58,7 +58,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         AppContexts.set(this)
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        
+
         AppUtils.logError()
         getPermissions()
 

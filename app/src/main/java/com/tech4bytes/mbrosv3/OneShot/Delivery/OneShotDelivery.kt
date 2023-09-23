@@ -143,9 +143,8 @@ class OneShotDelivery : AppCompatActivity() {
         val refuelingKmElement = findViewById<EditText>(R.id.one_shot_delivery_refueling_km)
         val loadPriceElement = findViewById<EditText>(R.id.one_shot_delivery_price)
         val loadBufferElement = findViewById<EditText>(R.id.one_shot_delivery_buffer)
-        val loadCompanyBranchArea = findViewById<TextView>(R.id.osd_load_company_branch_area)
 
-        OSD.LoadInfo.initializeUI(this, loadPcElement, loadKgElement, loadAvgWtElement, loadCompanyBranchArea)
+        OSD.LoadInfo.initializeUI(this, loadPcElement, loadKgElement, loadAvgWtElement)
         didRefuelElement.setOnCheckedChangeListener { _, isChecked ->
             val obj = SingleAttributedData.getRecords()
             obj.did_refueled = isChecked.toString()

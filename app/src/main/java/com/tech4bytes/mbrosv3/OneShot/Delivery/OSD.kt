@@ -36,9 +36,10 @@ class OSD {
                 return isSendLoadInfoEnabled
             }
 
-            fun initializeUI(context: OneShotDelivery, loadPcElement: EditText, loadKgElement: EditText, loadAvgWtElement: TextView, loadCompanyBranchArea: TextView) {
+            fun initializeUI(context: OneShotDelivery, loadPcElement: EditText, loadKgElement: EditText, loadAvgWtElement: TextView) {
                 val record = SingleAttributedData.getRecords()
 
+                val loadCompanyBranchArea = context.findViewById<TextView>(R.id.osd_load_company_branch_area)
                 context.runOnUiThread {
                     loadCompanyBranchArea.text = "${record.load_companyName} / ${record.load_branch} / ${record.load_area}"
                 }

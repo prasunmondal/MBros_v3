@@ -200,30 +200,28 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:paddingVertical="10dp">
+                            android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/osd_load_company_branch_area"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:hint="Loading..."
-                                android:textColor="#FBC02D"
+                                android:textColor="#888686"
                                 android:textColorHint="#8DD8D4D4" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:paddingVertical="10dp">
+                            android:orientation="horizontal">
 
                             <TextView
                                 android:id="@+id/textView58"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="A/C: "
-                                android:textColor="#D8D4D4" />
+                                android:textColor="#888686" />
 
                             <TextView
                                 android:id="@+id/osd_company_name"
@@ -231,7 +229,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:hint="Loading..."
-                                android:textColor="#D8D4D4"
+                                android:textColor="#888686"
                                 android:textColorHint="#8DD8D4D4" />
 
                         </LinearLayout>
@@ -246,10 +244,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:gravity="right"
                                 android:onClick="onClickSendLoadInfoToCompany"
-                                android:paddingLeft="10dp"
-                                android:text="(Send Info)"
-                                android:textColor="#D8D4D4"
+                                android:text="[SEND INFO]"
+                                android:textColor="#FBC02D"
                                 android:textSize="16sp" />
                         </LinearLayout>
                     </LinearLayout>
@@ -463,6 +461,7 @@
                                         android:id="@+id/one_shot_delivery_refueling_km_diff"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
+                                        android:hint="Loading..."
                                         android:textColor="#888686" />
 
                                 </LinearLayout>
@@ -884,125 +883,133 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/imageView3"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:paddingRight="2dp"
-                        app:srcCompat="@drawable/ic_action_name" />
-
-                    <TextView
-                        android:id="@+id/one_shot_delivery_total_sale"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="5dp"
-                        android:hint="sale"
-                        android:paddingRight="5dp"
-                        android:textColor="#189C1D"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/imageView5"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="2dp"
-                        app:srcCompat="@drawable/money_deposit_icon" />
-
-                    <TextView
-                        android:id="@+id/one_shot_delivery_total_collected_amount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_marginHorizontal="5dp"
-                        android:hint="amount_collected"
-                        android:paddingRight="5dp"
-                        android:textColor="#085E0C"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/imageView6"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="2dp"
-                        app:srcCompat="@drawable/today_due_sum_icon" />
-
-                    <TextView
-                        android:id="@+id/one_shot_delivery_total_balance_due"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:hint="due_balance"
-                        android:paddingRight="5dp"
-                        android:textColor="#E81414"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/imageView7"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="2dp"
-                        app:srcCompat="@drawable/today_due_sum_icon" />
-
-                    <TextView
-                        android:id="@+id/osd_total_due"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:paddingRight="5dp"
-                        android:textColor="#E81414"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/osd_profit_details_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:visibility="gone">
 
-                <TextView
-                    android:id="@+id/osd_profit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="pr"
-                    android:textColor="#189C1D"
-                    android:textSize="18sp" />
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/imageView3"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:paddingRight="2dp"
+                                app:srcCompat="@drawable/ic_action_name" />
+
+                            <TextView
+                                android:id="@+id/one_shot_delivery_total_sale"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="5dp"
+                                android:hint="sale"
+                                android:paddingRight="5dp"
+                                android:textColor="#189C1D"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/imageView5"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:paddingLeft="5dp"
+                                android:paddingRight="2dp"
+                                app:srcCompat="@drawable/money_deposit_icon" />
+
+                            <TextView
+                                android:id="@+id/one_shot_delivery_total_collected_amount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:layout_marginHorizontal="5dp"
+                                android:hint="amount_collected"
+                                android:paddingRight="5dp"
+                                android:textColor="#085E0C"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/imageView6"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:paddingLeft="5dp"
+                                android:paddingRight="2dp"
+                                app:srcCompat="@drawable/today_due_sum_icon" />
+
+                            <TextView
+                                android:id="@+id/one_shot_delivery_total_balance_due"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:hint="due_balance"
+                                android:paddingRight="5dp"
+                                android:textColor="#E81414"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/imageView7"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:paddingLeft="5dp"
+                                android:paddingRight="2dp"
+                                app:srcCompat="@drawable/today_due_sum_icon" />
+
+                            <TextView
+                                android:id="@+id/osd_total_due"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:paddingRight="5dp"
+                                android:textColor="#E81414"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/osd_profit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="pr"
+                        android:textColor="#189C1D"
+                        android:textSize="18sp" />
+                </LinearLayout>
 
             </LinearLayout>
 

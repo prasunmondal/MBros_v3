@@ -143,8 +143,9 @@ class OneShotDelivery : AppCompatActivity() {
         val refuelingKmElement = findViewById<EditText>(R.id.one_shot_delivery_refueling_km)
         val loadPriceElement = findViewById<EditText>(R.id.one_shot_delivery_price)
         val loadBufferElement = findViewById<EditText>(R.id.one_shot_delivery_buffer)
+        val loadCompanyBranchArea = findViewById<TextView>(R.id.osd_load_company_branch_area)
 
-        OSD.LoadInfo.initializeUI(this, loadPcElement, loadKgElement, loadAvgWtElement)
+        OSD.LoadInfo.initializeUI(this, loadPcElement, loadKgElement, loadAvgWtElement, loadCompanyBranchArea)
         didRefuelElement.setOnCheckedChangeListener { _, isChecked ->
             val obj = SingleAttributedData.getRecords()
             obj.did_refueled = isChecked.toString()
@@ -635,8 +636,8 @@ class OneShotDelivery : AppCompatActivity() {
         val mileageLabel = findViewById<TextView>(R.id.one_shot_delivery_refueling_mileage)
         val refuelingKmDiffLabel = findViewById<TextView>(R.id.one_shot_delivery_refueling_km_diff)
         val refuelingKmElement = findViewById<EditText>(R.id.one_shot_delivery_refueling_km)
-        val refuelingDetailsContainer = findViewById<LinearLayout>(R.id.one_shot_delivery_refueling_details_container)
-        val refuelingKmContainer = findViewById<TextInputLayout>(R.id.one_shot_delivery_refueling_km_container)
+        val refuelingDetailsContainer = findViewById<LinearLayout>(R.id.osd_refuel_container)
+        val refuelingKmContainer = findViewById<LinearLayout>(R.id.one_shot_delivery_refueling_km_container)
         val didTankFullElement = findViewById<Switch>(R.id.one_shot_delivery_did_fuel_upto_tank_full)
         val didRefuelElement = findViewById<Switch>(R.id.one_shot_delivery_did_refuel)
 

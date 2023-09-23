@@ -35,11 +35,9 @@ class OSD {
                 return isSendLoadInfoEnabled
             }
 
-            fun initializeUI(context: OneShotDelivery, loadPcElement: EditText, loadKgElement: EditText, loadAvgWtElement: TextView) {
+            fun initializeUI(context: OneShotDelivery, loadPcElement: EditText, loadKgElement: EditText, loadAvgWtElement: TextView, loadCompanyBranchArea: TextView) {
                 val record = SingleAttributedData.getRecords()
-
-                val loadCompanyDetails = context.findViewById<TextView>(R.id.osd_load_company_branch_area)
-                loadCompanyDetails.text = "${record.load_companyName} / ${record.load_branch} / ${record.load_area}"
+                loadCompanyBranchArea.text = "${record.load_companyName} / ${record.load_branch} / ${record.load_area}"
 
                 loadPcElement.doOnTextChanged { text, start, before, count ->
                     record.actualLoadPc = loadPcElement.text.toString()

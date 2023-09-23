@@ -320,52 +320,47 @@
                         android:id="@+id/osd_refuel_container"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:background="#39750404"
                         android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
+                            android:layout_height="match_parent"
                             android:orientation="horizontal"
-                            android:paddingHorizontal="10dp">
-
-                            <Switch
-                                android:id="@+id/one_shot_delivery_did_fuel_upto_tank_full"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:checked="true"
-                                android:gravity="right"
-                                android:paddingLeft="20dp"
-                                android:text="Full Tank?"
-                                android:textColor="@color/osd_single_attribute_rates_hintText_color" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/one_shot_delivery_refueling_details_container"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:paddingHorizontal="10dp">
+                            android:padding="10dp">
 
                             <LinearLayout
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:orientation="horizontal">
+                                android:orientation="vertical"
+                                android:padding="10dp">
 
-                                <com.google.android.material.textfield.TextInputLayout
-                                    android:id="@+id/one_shot_delivery_refueling_km_container"
-                                    android:layout_width="wrap_content"
+                                <LinearLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:maxEms="10"
-                                    android:minEms="10"
-                                    android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
-                                    app:hintTextColor="@color/osl_data_status_fresh_light">
+                                    android:orientation="horizontal"
+                                    android:paddingVertical="10dp">
 
-                                    <!--this is the actual edit text which takes the input-->
+                                    <Switch
+                                        android:id="@+id/one_shot_delivery_did_fuel_upto_tank_full"
+                                        android:layout_width="180dp"
+                                        android:layout_height="wrap_content"
+                                        android:checked="true"
+                                        android:gravity="right|left"
+                                        android:paddingLeft="20dp"
+                                        android:text="Full Tank?"
+                                        android:textColor="@color/osd_single_attribute_rates_hintText_color" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:id="@+id/one_shot_delivery_refueling_km_container"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:paddingVertical="10dp">
+
                                     <com.google.android.material.textfield.TextInputEditText
                                         android:id="@+id/one_shot_delivery_refueling_km"
                                         android:layout_width="match_parent"
@@ -375,39 +370,14 @@
                                         android:inputType="number"
                                         android:textColor="@color/osd_single_attribute_rates_hintText_color"
                                         android:textColorHint="#038697" />
-                                </com.google.android.material.textfield.TextInputLayout>
+                                </LinearLayout>
 
-                                <com.google.android.material.textfield.TextInputLayout
-                                    android:layout_width="wrap_content"
+                                <LinearLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:maxEms="10"
-                                    android:minEms="10"
-                                    android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
-                                    app:hintTextColor="@color/osl_data_status_fresh_light">
+                                    android:orientation="horizontal"
+                                    android:paddingVertical="10dp">
 
-                                    <!--this is the actual edit text which takes the input-->
-                                    <com.google.android.material.textfield.TextInputEditText
-                                        android:id="@+id/osd_refuel_amount"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:background="@color/osd_single_attribute_rates_background_color"
-                                        android:hint="Rs"
-                                        android:inputType="number"
-                                        android:textColor="@color/osd_single_attribute_rates_hintText_color"
-                                        android:textColorHint="#038697" />
-                                </com.google.android.material.textfield.TextInputLayout>
-
-                                <com.google.android.material.textfield.TextInputLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:maxEms="10"
-                                    android:minEms="10"
-                                    android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
-                                    app:hintTextColor="@color/osl_data_status_fresh_light">
-
-                                    <!--this is the actual edit text which takes the input-->
                                     <com.google.android.material.textfield.TextInputEditText
                                         android:id="@+id/one_shot_delivery_fuel_quantity"
                                         android:layout_width="match_parent"
@@ -417,19 +387,39 @@
                                         android:inputType="numberDecimal"
                                         android:textColor="@color/osd_single_attribute_rates_hintText_color"
                                         android:textColorHint="#038697" />
-                                </com.google.android.material.textfield.TextInputLayout>
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
+                                </LinearLayout>
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
-                                    android:orientation="horizontal">
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:paddingVertical="10dp">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/osd_refuel_amount"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:background="@color/osd_single_attribute_rates_background_color"
+                                        android:hint="Rs"
+                                        android:inputType="number"
+                                        android:textColor="@color/osd_single_attribute_rates_hintText_color"
+                                        android:textColorHint="#038697" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:padding="10dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:paddingVertical="10dp">
 
                                     <TextView
                                         android:id="@+id/textView38"
@@ -449,10 +439,10 @@
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1"
+                                    android:layout_height="wrap_content"
                                     android:gravity="right"
-                                    android:orientation="horizontal">
+                                    android:orientation="horizontal"
+                                    android:paddingVertical="10dp">
 
                                     <TextView
                                         android:id="@+id/textView40"
@@ -472,7 +462,6 @@
                                 </LinearLayout>
 
                             </LinearLayout>
-
                         </LinearLayout>
 
                     </LinearLayout>

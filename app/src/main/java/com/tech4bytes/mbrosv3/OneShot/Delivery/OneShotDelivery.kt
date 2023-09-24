@@ -43,6 +43,7 @@ import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
+import org.apache.commons.collections4.CollectionUtils
 
 class OneShotDelivery : AppCompatActivity() {
 
@@ -97,17 +98,10 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun populateCustomerListDropdown() {
-        val sortedList = ListUtils.getAllPossibleValuesList(CustomerKYC.getAllCustomers(), CustomerKYCModel::nameEng).toList()
-
-        // remove already showing names from dropdown
-//        val alreadyInUI: List<String> = orders.stream()
-//            .map(SMSOrderModel::name)
-//            .collect(Collectors.toList())
-//        val listToShow = CollectionUtils.subtract(sortedList, alreadyInUI).toList()
-        val listToShow = sortedList
-        listToShow.forEach {
-            LogMe.log(it)
-        }
+        val allCustomers = ListUtils.getAllPossibleValuesList(CustomerKYC.getAllCustomers(), CustomerKYCModel::nameEng).toList()
+        val customersInUI = ListUtils.getAllPossibleValuesList(deliveryMapOrderedCustomers.values.toList(), DeliverToCustomerDataModel::name).toList()
+        val listToShow = CollectionUtils.subtract(allCustomers, customersInUI).toList().sorted()
+        
         val uiView = findViewById<AutoCompleteTextView>(R.id.osd_customer_picker)
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.template_dropdown_entry, listToShow)
         uiView.setAdapter(adapter)

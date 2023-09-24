@@ -295,6 +295,22 @@ class OneShotDelivery : AppCompatActivity() {
             deliveryMapOrderedCustomers[it.name] = deliverCustomersOrders
         }
 
+        DeliverToCustomerDataHandler.get().forEach {
+            if(!deliveryMapOrderedCustomers.containsKey(it.name)) {
+                val deliverCustomersOrders = DeliverToCustomerDataModel(
+                    id = "${System.currentTimeMillis()}",
+                    timestamp = DateUtils.getCurrentTimestamp(),
+                    name = it.name,
+                    orderedPc = "0",
+                    orderedKg = "0",
+                    rate = "${CustomerData.getDeliveryRate(it.name)}",
+                    prevDue = CustomerData.getLastDue(it.name),
+                    deliveryStatus = "DELIVERING"
+                )
+                deliveryMapOrderedCustomers[it.name] = deliverCustomersOrders
+            }
+        }
+
         deliveryMapUnOrderedCustomers = mutableMapOf()
         val listOfUnOrderedCustomers = GetCustomerOrders.getListOfUnOrderedCustomers()
         listOfUnOrderedCustomers.forEach {
@@ -345,10 +361,10 @@ class OneShotDelivery : AppCompatActivity() {
 
     private fun showOrders() {
         var t = showOrders(deliveryMapOrderedCustomers, R.id.one_shot_delivery_ordered_customers_entry_container)
-        var t2 = showOrders(deliveryMapUnOrderedCustomers, R.id.one_shot_delivery_unordered_customers_entry_container)
+//        var t2 = showOrders(deliveryMapUnOrderedCustomers, R.id.one_shot_delivery_unordered_customers_entry_container)
 //        runOnUiThread {
         findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).removeAllViews()
-        findViewById<LinearLayout>(R.id.one_shot_delivery_unordered_customers_entry_container).removeAllViews()
+//        findViewById<LinearLayout>(R.id.one_shot_delivery_unordered_customers_entry_container).removeAllViews()
 //        }
 
             t.forEach { key, value ->
@@ -357,12 +373,12 @@ class OneShotDelivery : AppCompatActivity() {
                     findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).addView(value)
 //                }
             }
-            t2.forEach { key, value ->
-//                runOnUiThread {
-                    updateEntry(key, value)
-                    findViewById<LinearLayout>(R.id.one_shot_delivery_unordered_customers_entry_container).addView(value)
-//                }
-            }
+//            t2.forEach { key, value ->
+////                runOnUiThread {
+//                    updateEntry(key, value)
+//                    findViewById<LinearLayout>(R.id.one_shot_delivery_unordered_customers_entry_container).addView(value)
+////                }
+//            }
 
     }
 

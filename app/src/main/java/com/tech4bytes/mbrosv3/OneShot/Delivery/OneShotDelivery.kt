@@ -75,7 +75,7 @@ class OneShotDelivery : AppCompatActivity() {
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
-        );
+        )
         supportActionBar?.hide()
 
         initializeVariables()
@@ -295,7 +295,7 @@ class OneShotDelivery : AppCompatActivity() {
         }
 
         DeliverToCustomerDataHandler.get().forEach {
-            if(!deliveryMapOrderedCustomers.containsKey(it.name)) {
+            if (!deliveryMapOrderedCustomers.containsKey(it.name)) {
                 val deliverCustomersOrders = DeliverToCustomerDataModel(
                     id = "${System.currentTimeMillis()}",
                     timestamp = DateUtils.getCurrentTimestamp(),
@@ -362,10 +362,10 @@ class OneShotDelivery : AppCompatActivity() {
         var t = showOrders(deliveryMapOrderedCustomers, R.id.one_shot_delivery_ordered_customers_entry_container)
         findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).removeAllViews()
 
-            t.forEach { (key, value) ->
-                    updateEntry(key, value)
-                    findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).addView(value)
-            }
+        t.forEach { (key, value) ->
+            updateEntry(key, value)
+            findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).addView(value)
+        }
     }
 
     private fun createOrderCard(value: DeliverToCustomerDataModel): View {
@@ -599,56 +599,56 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     companion object {
-    fun updateTotals(context: OneShotDelivery) {
-        val metadataObj = SingleAttributedData.getRecords()
-        val totalPcElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_pc)
-        val totalKgElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_kg)
-        val totalSaleElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_sale)
-        val totalShortageElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_shortage)
-        val totalCollectedElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_collected_amount)
-        val totalBalanceDueElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_balance_due)
+        fun updateTotals(context: OneShotDelivery) {
+            val metadataObj = SingleAttributedData.getRecords()
+            val totalPcElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_pc)
+            val totalKgElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_kg)
+            val totalSaleElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_sale)
+            val totalShortageElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_shortage)
+            val totalCollectedElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_collected_amount)
+            val totalBalanceDueElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_balance_due)
 
-        var sumPc = 0
-        var sumKg = 0.0
-        var sumSale = 0
-        var sumAmountCollected = 0
-        var sumBalanceDue = 0
+            var sumPc = 0
+            var sumKg = 0.0
+            var sumSale = 0
+            var sumAmountCollected = 0
+            var sumBalanceDue = 0
 
-        context.deliveryMapOrderedCustomers.forEach {
-            sumPc += NumberUtils.getIntOrZero(it.value.deliveredPc)
-            sumKg += NumberUtils.getDoubleOrZero(it.value.deliveredKg)
-            sumSale += NumberUtils.getIntOrZero(it.value.todaysAmount)
-            sumAmountCollected += NumberUtils.getIntOrZero(it.value.paid)
-            if (NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
-                sumBalanceDue += NumberUtils.getIntOrZero(it.value.balanceDue)
+            context.deliveryMapOrderedCustomers.forEach {
+                sumPc += NumberUtils.getIntOrZero(it.value.deliveredPc)
+                sumKg += NumberUtils.getDoubleOrZero(it.value.deliveredKg)
+                sumSale += NumberUtils.getIntOrZero(it.value.todaysAmount)
+                sumAmountCollected += NumberUtils.getIntOrZero(it.value.paid)
+                if (NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
+                    sumBalanceDue += NumberUtils.getIntOrZero(it.value.balanceDue)
+                }
             }
-        }
 
-        context.deliveryMapUnOrderedCustomers.forEach {
-            sumPc += NumberUtils.getIntOrZero(it.value.deliveredPc)
-            sumKg += NumberUtils.getDoubleOrZero(it.value.deliveredKg)
-            sumSale += NumberUtils.getIntOrZero(it.value.todaysAmount)
-            sumAmountCollected += NumberUtils.getIntOrZero(it.value.paid)
-            if (NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0.0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
-                sumBalanceDue += NumberUtils.getIntOrZero(it.value.balanceDue)
+            context.deliveryMapUnOrderedCustomers.forEach {
+                sumPc += NumberUtils.getIntOrZero(it.value.deliveredPc)
+                sumKg += NumberUtils.getDoubleOrZero(it.value.deliveredKg)
+                sumSale += NumberUtils.getIntOrZero(it.value.todaysAmount)
+                sumAmountCollected += NumberUtils.getIntOrZero(it.value.paid)
+                if (NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0.0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
+                    sumBalanceDue += NumberUtils.getIntOrZero(it.value.balanceDue)
+                }
             }
+
+            val loadedKg = NumberUtils.getDoubleOrZero(SingleAttributedData.getRecords().actualLoadKg)
+            val shortage = (loadedKg - sumKg) * 100 / loadedKg
+
+            totalPcElement.text = "$sumPc"
+            totalKgElement.text = "${"%.3f".format(sumKg)}"
+            totalSaleElement.text = "$sumSale"
+            metadataObj.daySale = sumSale.toString()
+
+            totalShortageElement.text = "▼ ${"%.3f".format(shortage)} kg"
+            totalCollectedElement.text = "$sumAmountCollected"
+            totalBalanceDueElement.text = "$sumBalanceDue"
+            SingleAttributedData.saveToLocal(metadataObj)
+
+            context.updateHiddenData()
         }
-
-        val loadedKg = NumberUtils.getDoubleOrZero(SingleAttributedData.getRecords().actualLoadKg)
-        val shortage = (loadedKg - sumKg) * 100 / loadedKg
-
-        totalPcElement.text = "$sumPc"
-        totalKgElement.text = "${"%.3f".format(sumKg)}"
-        totalSaleElement.text = "$sumSale"
-        metadataObj.daySale = sumSale.toString()
-
-        totalShortageElement.text = "▼ ${"%.3f".format(shortage)} kg"
-        totalCollectedElement.text = "$sumAmountCollected"
-        totalBalanceDueElement.text = "$sumBalanceDue"
-        SingleAttributedData.saveToLocal(metadataObj)
-
-        context.updateHiddenData()
-    }
     }
 
     fun onClickSaveOneShotDeliveryDataBtn(view: View) {
@@ -658,7 +658,7 @@ class OneShotDelivery : AppCompatActivity() {
                 findViewById<ProgressBar>(R.id.osd_save_progress_bar).visibility = View.VISIBLE
                 saveOneSortDeliveryButton.isEnabled = false
                 saveOneSortDeliveryButton.alpha = .5f
-                saveOneSortDeliveryButton.isClickable = false;
+                saveOneSortDeliveryButton.isClickable = false
             }
             gatherSingleAttributedData()
             gatherFuelData()
@@ -670,8 +670,8 @@ class OneShotDelivery : AppCompatActivity() {
             runOnUiThread()
             {
                 saveOneSortDeliveryButton.isEnabled = true
-                saveOneSortDeliveryButton.alpha = 1.0f;
-                saveOneSortDeliveryButton.isClickable = true;
+                saveOneSortDeliveryButton.alpha = 1.0f
+                saveOneSortDeliveryButton.isClickable = true
                 findViewById<ProgressBar>(R.id.osd_save_progress_bar).visibility = View.GONE
             }
         }.start()

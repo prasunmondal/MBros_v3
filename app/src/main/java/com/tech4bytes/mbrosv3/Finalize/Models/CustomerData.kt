@@ -161,9 +161,13 @@ class CustomerData : java.io.Serializable {
         }
 
         private fun getCustomerDeliveryRateFromSavedDeliveredData(name: String): Int {
-            return when {
-                NumberUtils.getIntOrZero(DeliverToCustomerActivity.getDeliveryRecord(name)!!.rate) > 0 -> NumberUtils.getIntOrZero(DeliverToCustomerActivity.getDeliveryRecord(name)!!.rate)
-                else -> 0
+            return try {
+                when {
+                    NumberUtils.getIntOrZero(DeliverToCustomerActivity.getDeliveryRecord(name)!!.rate) > 0 -> NumberUtils.getIntOrZero(DeliverToCustomerActivity.getDeliveryRecord(name)!!.rate)
+                    else -> 0
+                }
+            } catch (e: NullPointerException) {
+                0
             }
         }
     }

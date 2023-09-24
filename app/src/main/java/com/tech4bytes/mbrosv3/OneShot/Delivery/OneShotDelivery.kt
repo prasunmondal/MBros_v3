@@ -22,6 +22,7 @@ import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
+import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.SMSDetails.SendSMSDetailsUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerConfig
@@ -40,6 +41,7 @@ import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
+import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
 
 class OneShotDelivery : AppCompatActivity() {
@@ -89,8 +91,40 @@ class OneShotDelivery : AppCompatActivity() {
                 OSD.LoadInfo.updateRelatedFields_LoadPcKg(loadPcElement, loadKgElement, loadAvgWtElement)
                 initiallizeRefuelUI()
                 updateKmRelatedCosts()
+                populateCustomerListDropdown()
             }
         }.start()
+    }
+
+    private fun populateCustomerListDropdown() {
+        val sortedList = ListUtils.getAllPossibleValuesList(CustomerKYC.getAllCustomers(), CustomerKYCModel::nameEng).toList()
+
+        // remove already showing names from dropdown
+//        val alreadyInUI: List<String> = orders.stream()
+//            .map(SMSOrderModel::name)
+//            .collect(Collectors.toList())
+//        val listToShow = CollectionUtils.subtract(sortedList, alreadyInUI).toList()
+        val listToShow = sortedList
+        listToShow.forEach {
+            LogMe.log(it)
+        }
+        val uiView = findViewById<AutoCompleteTextView>(R.id.osd_customer_picker)
+        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.template_dropdown_entry, listToShow)
+        uiView.setAdapter(adapter)
+        uiView.threshold = 0
+        uiView.setText("")
+        uiView.setOnTouchListener { _, _ ->
+            uiView.showDropDown()
+            uiView.requestFocus()
+            false
+        }
+        uiView.setOnItemClickListener { adapterView, view, i, l ->
+            addNewCustomer(uiView.text.toString())
+//            showEntries()
+            populateCustomerListDropdown()
+            uiView.setText("")
+            uiView.hint = "+Customer"
+        }
     }
 
     private fun initializeVariables() {
@@ -279,13 +313,42 @@ class OneShotDelivery : AppCompatActivity() {
         }
     }
 
-    private fun showOrders() {
+    private fun addNewCustomer(name: String) {
+        val key = addToUnOrderedMap(name)
+        val value = createOrderCard(key)
+        showOrder(key, value)
+    }
 
+    private fun showOrder() {
+        TODO("Not yet implemented")
+    }
+
+    private fun addToUnOrderedMap(name: String): DeliverToCustomerDataModel {
+        val deliverCustomersOrders = DeliverToCustomerDataModel(
+            id = "${System.currentTimeMillis()}",
+            timestamp = DateUtils.getCurrentTimestamp(),
+            name = name,
+            orderedPc = "0",
+            orderedKg = "0",
+            rate = "${CustomerData.getDeliveryRate(name)}",
+            prevDue = CustomerData.getLastDue(name),
+            deliveryStatus = "DELIVERING"
+        )
+        deliveryMapUnOrderedCustomers[name] = deliverCustomersOrders
+        return deliverCustomersOrders
+    }
+
+    private fun showOrder(key: DeliverToCustomerDataModel, value: View) {
+        updateEntry(key, value)
+        findViewById<LinearLayout>(R.id.one_shot_delivery_unordered_customers_entry_container).addView(value)
+    }
+
+    private fun showOrders() {
         var t = showOrders(deliveryMapOrderedCustomers, R.id.one_shot_delivery_ordered_customers_entry_container)
         var t2 = showOrders(deliveryMapUnOrderedCustomers, R.id.one_shot_delivery_unordered_customers_entry_container)
 //        runOnUiThread {
-            findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).removeAllViews()
-            findViewById<LinearLayout>(R.id.one_shot_delivery_unordered_customers_entry_container).removeAllViews()
+        findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).removeAllViews()
+        findViewById<LinearLayout>(R.id.one_shot_delivery_unordered_customers_entry_container).removeAllViews()
 //        }
 
             t.forEach { key, value ->
@@ -303,6 +366,90 @@ class OneShotDelivery : AppCompatActivity() {
 
     }
 
+    private fun createOrderCard(value: DeliverToCustomerDataModel): View {
+        val layoutInflater = LayoutInflater.from(AppContexts.get())
+        val entry = layoutInflater.inflate(R.layout.activity_one_shot_delivery_fragment, null)
+
+        val nameElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_name)
+        val rateElementContainer = entry.findViewById<TextInputLayout>(R.id.osd_rate_for_customer_container)
+        val rateElement = entry.findViewById<TextInputEditText>(R.id.osd_rate_for_customer)
+        val pcElement = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_pc)
+        val kgElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_kg)
+        val paidElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid)
+        val balanceElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
+        val moreDetailsContainer = entry.findViewById<LinearLayout>(R.id.one_shot_delivery_fragment_more_details_container)
+        val sendSMSBtn = entry.findViewById<TextView>(R.id.osd_fragment_send_details)
+        rateElementContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
+
+        nameElement.text = value.name
+        balanceElement.text = value.prevDue
+        val deliveryRecord = DeliverToCustomerActivity.getDeliveryRecord(value.name)
+        if (deliveryRecord != null) {
+            pcElement.setText(deliveryRecord.deliveredPc)
+            kgElement.text = deliveryRecord.deliveredKg
+            paidElement.text = deliveryRecord.paid
+        }
+
+        if (SendSMSDetailsUtils.getSendSMSDetailsNumber(value.name) != null) {
+            sendSMSBtn.visibility = View.VISIBLE
+            sendSMSBtn.setOnClickListener {
+                val smsNumber = CustomerKYC.getCustomerByEngName(value.name)!!.smsNumber
+                val t = DateUtils.getDate(value.timestamp)
+                val formattedDate = DateUtils.getDateInFormat(t!!, "dd/MM/yyyy")
+                val smsText = CustomerKYC.getCustomerByEngName(value.name)!!.smsText
+                    .replace("<date>", formattedDate)
+                    .replace("<pc>", pcElement.text.toString())
+                    .replace("<kg>", kgElement.text.toString())
+                    .replace("<paidAmount>", paidElement.text.toString())
+                    .replace("<rate>", rateElement.text.toString())
+                    .replace("<balanceAmount>", balanceElement.text.toString())
+
+                SMSUtils.sendSMS(baseContext, smsText, smsNumber)
+                Toast.makeText(this, "SMS Sent: $smsNumber", Toast.LENGTH_LONG).show()
+            }
+        }
+
+        rateElement.setText("${CustomerData.getDeliveryRate(value.name)}")
+        fragmentUpdateCustomerWiseRateView(value, entry)
+
+        rateElement.doOnTextChanged { text, start, before, count ->
+            updateEntry(value, entry)
+            fragmentUpdateCustomerWiseRateView(value, entry)
+        }
+
+        pcElement.doOnTextChanged { text, start, before, count ->
+            updateEntry(value, entry)
+        }
+
+        kgElement.doOnTextChanged { text, start, before, count ->
+            updateEntry(value, entry)
+        }
+
+        paidElement.doOnTextChanged { text, start, before, count ->
+            updateEntry(value, entry)
+        }
+
+        balanceElement.setOnClickListener {
+            if (moreDetailsContainer.visibility == View.VISIBLE) {
+                moreDetailsContainer.visibility = View.GONE
+            } else {
+                moreDetailsContainer.visibility = View.VISIBLE
+            }
+            updateDetailedInfo(value, entry)
+        }
+
+        val recordContainer = entry.findViewById<CardView>(R.id.one_shot_delivery_fragment_record_container)
+        var cardColor = ContextCompat.getColor(this, R.color.one_shot_delivery_odd_card_color)
+        if (entrynumber % 2 == 0) {
+            cardColor = ContextCompat.getColor(this, R.color.one_shot_delivery_even_card_color)
+        }
+        entrynumber++
+        recordContainer.setBackgroundColor(cardColor)
+        uiMaps[value.name] = entry
+        return entry
+//            listContainer.addView(entry)
+    }
+
     var entrynumber = 1
     private fun showOrders(listOfCustomers: MutableMap<String, DeliverToCustomerDataModel>, container: Int): MutableMap<DeliverToCustomerDataModel, View> {
         entrynumber = 1
@@ -312,87 +459,8 @@ class OneShotDelivery : AppCompatActivity() {
         listContainer.removeAllViews()
 
         listOfCustomers.forEach { order ->
-            val layoutInflater = LayoutInflater.from(AppContexts.get())
-            val entry = layoutInflater.inflate(R.layout.activity_one_shot_delivery_fragment, null)
-
-            val nameElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_name)
-            val rateElementContainer = entry.findViewById<TextInputLayout>(R.id.osd_rate_for_customer_container)
-            val rateElement = entry.findViewById<TextInputEditText>(R.id.osd_rate_for_customer)
-            val pcElement = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_pc)
-            val kgElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_kg)
-            val paidElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid)
-            val balanceElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
-            val moreDetailsContainer = entry.findViewById<LinearLayout>(R.id.one_shot_delivery_fragment_more_details_container)
-            val sendSMSBtn = entry.findViewById<TextView>(R.id.osd_fragment_send_details)
-            rateElementContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
-
-            nameElement.text = order.value.name
-            balanceElement.text = order.value.prevDue
-            val deliveryRecord = DeliverToCustomerActivity.getDeliveryRecord(order.value.name)
-            if (deliveryRecord != null) {
-                pcElement.setText(deliveryRecord.deliveredPc)
-                kgElement.text = deliveryRecord.deliveredKg
-                paidElement.text = deliveryRecord.paid
-            }
-
-            if (SendSMSDetailsUtils.getSendSMSDetailsNumber(order.value.name) != null) {
-                sendSMSBtn.visibility = View.VISIBLE
-                sendSMSBtn.setOnClickListener {
-                    val smsNumber = CustomerKYC.getCustomerByEngName(order.value.name)!!.smsNumber
-                    val t = DateUtils.getDate(order.value.timestamp)
-                    val formattedDate = DateUtils.getDateInFormat(t!!, "dd/MM/yyyy")
-                    val smsText = CustomerKYC.getCustomerByEngName(order.value.name)!!.smsText
-                        .replace("<date>", formattedDate)
-                        .replace("<pc>", pcElement.text.toString())
-                        .replace("<kg>", kgElement.text.toString())
-                        .replace("<paidAmount>", paidElement.text.toString())
-                        .replace("<rate>", rateElement.text.toString())
-                        .replace("<balanceAmount>", balanceElement.text.toString())
-
-                    SMSUtils.sendSMS(baseContext, smsText, smsNumber)
-                    Toast.makeText(this, "SMS Sent: $smsNumber", Toast.LENGTH_LONG).show()
-                }
-            }
-
-            rateElement.setText("${CustomerData.getDeliveryRate(order.value.name)}")
-            fragmentUpdateCustomerWiseRateView(order, entry)
-
-            rateElement.doOnTextChanged { text, start, before, count ->
-                updateEntry(order.value, entry)
-                fragmentUpdateCustomerWiseRateView(order, entry)
-            }
-
-            pcElement.doOnTextChanged { text, start, before, count ->
-                updateEntry(order.value, entry)
-            }
-
-            kgElement.doOnTextChanged { text, start, before, count ->
-                updateEntry(order.value, entry)
-            }
-
-            paidElement.doOnTextChanged { text, start, before, count ->
-                updateEntry(order.value, entry)
-            }
-
-            balanceElement.setOnClickListener {
-                if (moreDetailsContainer.visibility == View.VISIBLE) {
-                    moreDetailsContainer.visibility = View.GONE
-                } else {
-                    moreDetailsContainer.visibility = View.VISIBLE
-                }
-                updateDetailedInfo(order.value, entry)
-            }
-
-            val recordContainer = entry.findViewById<CardView>(R.id.one_shot_delivery_fragment_record_container)
-            var cardColor = ContextCompat.getColor(this, R.color.one_shot_delivery_odd_card_color)
-            if (entrynumber % 2 == 0) {
-                cardColor = ContextCompat.getColor(this, R.color.one_shot_delivery_even_card_color)
-            }
-            entrynumber++
-            recordContainer.setBackgroundColor(cardColor)
-
-//            listContainer.addView(entry)
-            entryMap.put(order.value, entry)
+            val entry = createOrderCard(order.value)
+            entryMap[order.value] = entry
             uiMaps[order.value.name] = entry
         }
         return entryMap
@@ -409,9 +477,9 @@ class OneShotDelivery : AppCompatActivity() {
         }
     }
 
-    private fun fragmentUpdateCustomerWiseRateView(order: Map.Entry<String, DeliverToCustomerDataModel>, entry: View) {
+    private fun fragmentUpdateCustomerWiseRateView(value: DeliverToCustomerDataModel, entry: View) {
         val rateElement = entry.findViewById<TextInputEditText>(R.id.osd_rate_for_customer)
-        if (NumberUtils.getIntOrZero(rateElement.text.toString()) != CustomerData.getCustomerDefaultRate(order.value.name)) {
+        if (NumberUtils.getIntOrZero(rateElement.text.toString()) != CustomerData.getCustomerDefaultRate(value.name)) {
             rateElement.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
             rateElement.setTextColor(ContextCompat.getColor(this, R.color.white))
         } else {

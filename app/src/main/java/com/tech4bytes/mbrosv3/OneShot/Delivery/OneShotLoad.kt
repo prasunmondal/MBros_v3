@@ -242,10 +242,10 @@ class OneShotLoad : AppCompatActivity() {
     }
 
     private fun updateCase() {
-        companyLabel2.setText(EnglishUtils.toWordCase(companyLabel2.text.toString()))
-        companyBranch2.setText(EnglishUtils.toWordCase(companyBranch2.text.toString()))
-        companyArea2.setText(EnglishUtils.toWordCase(companyArea2.text.toString()))
-        companyAccount2.setText(EnglishUtils.toWordCase(companyAccount2.text.toString()))
+        companyLabel2.setText(EnglishUtils.toWordCase(companyLabel2.text.toString().trim()))
+        companyBranch2.setText(EnglishUtils.toWordCase(companyBranch2.text.toString().trim()))
+        companyArea2.setText(EnglishUtils.toWordCase(companyArea2.text.toString().trim()))
+        companyAccount2.setText(EnglishUtils.toWordCase(companyAccount2.text.toString().trim()))
     }
 
     fun onClickOneShotLoadSaveBtn(view: View) {

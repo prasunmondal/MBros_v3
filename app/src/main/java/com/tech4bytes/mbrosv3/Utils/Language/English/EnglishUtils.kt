@@ -1,16 +1,12 @@
 package com.tech4bytes.mbrosv3.Utils.Language.English
 
+import org.apache.commons.lang3.text.WordUtils
+
 class EnglishUtils {
 
     companion object {
-        fun toWordCase(givenString: String): String {
-            val arr = givenString.split(" ").toTypedArray()
-            val sb = StringBuffer()
-            for (i in arr.indices) {
-                sb.append(arr[i][0].uppercaseChar())
-                    .append(arr[i].substring(1)).append(" ")
-            }
-            return sb.toString().trim { it <= ' ' }
+        fun toWordCase(text: String): String {
+            return WordUtils.capitalize(text)
         }
     }
 }

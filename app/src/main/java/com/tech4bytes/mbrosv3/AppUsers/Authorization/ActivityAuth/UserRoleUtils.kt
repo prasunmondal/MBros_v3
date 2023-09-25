@@ -14,7 +14,7 @@ class UserRoleUtils {
             if (appUsersData == null) {
                 return mutableListOf()
             }
-            appUsersData!!.roles.split(",").forEach { role ->
+            appUsersData.roles.split(",").forEach { role ->
                 listOfRoles.add(ActivityAuthEnums.valueOf(role.trim()))
                 LogMe.log(role.trim())
             }

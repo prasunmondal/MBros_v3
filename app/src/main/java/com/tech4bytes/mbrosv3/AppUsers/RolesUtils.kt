@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken
 import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.tech4bytes.extrack.centralCache.CentralCache
+import com.tech4bytes.mbrosv3.OneShot.Delivery.Login
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -13,7 +14,7 @@ class RolesUtils {
 
     companion object {
 
-        val loginRoleKey: String = "loginRoleKey"
+        private const val loginRoleKey: String = "loginRoleKey"
         fun getAppUser(useCache: Boolean = true): AppUsersModel? {
             val cacheResults = CentralCache.get<AppUsersModel>(AppContexts.get(), loginRoleKey, useCache)
 
@@ -45,7 +46,7 @@ class RolesUtils {
 
 
             deviceList.forEach {
-                if (getPhoneId() == it.device_id) {
+                if (getPhoneId() == it.device_id && Login.getLoginPIN() == it.PIN) {
                     return it
                 }
             }

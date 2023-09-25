@@ -1,9 +1,14 @@
 package com.tech4bytes.mbrosv3.OneShot.Delivery
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
+import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetchActivity
+import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetchingInfo
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
+import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 
 class Login : AppCompatActivity() {
@@ -23,5 +28,7 @@ class Login : AppCompatActivity() {
 
     fun onClickLoginBtn(view: View) {
         enteredLoginPIN = findViewById<EditText>(R.id.login_pin_textfield).text.toString()
+        val switchActivityIntent = Intent(this, ActivityLogin::class.java)
+        startActivity(switchActivityIntent)
     }
 }

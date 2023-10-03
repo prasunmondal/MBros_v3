@@ -221,7 +221,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         startActivity(switchActivityIntent)
     }
 
-    fun onClickDeleteDeliveryDataBtn(view: View) {
+    fun onClickDdeleteDeliveryDataButtonFinalizeBtn(view: View) {
         val deleteDeliveryDataButtonFinalize = findViewById<Button>(R.id.deleteDeliveryDataButtonFinalize)
         Thread {
             runOnUiThread()

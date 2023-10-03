@@ -520,6 +520,7 @@
                 android:id="@+id/deleteDeliveryDataButtonFinalize"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="onClickDdeleteDeliveryDataButtonFinalizeBtn"
                 android:text="Clear Delivery Data Buffer" />
 
         </LinearLayout>

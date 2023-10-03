@@ -5,8 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
-import android.widget.Toast
-import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.UserRoleUtils
+import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetchActivity
+import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetchingInfo
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 
@@ -23,17 +24,6 @@ class Login : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
-        Thread {
-            UserRoleUtils.getUserRoles()
-            runOnUiThread {
-                Toast.makeText(this, "Device List Downloaded", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    fun checkPINValidity() {
-
     }
 
     fun onClickLoginBtn(view: View) {

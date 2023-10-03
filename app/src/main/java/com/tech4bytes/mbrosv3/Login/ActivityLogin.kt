@@ -142,7 +142,7 @@ class ActivityLogin : AppCompatActivity() {
         val time = DateUtils.getCurrentTimestamp()
         val id = System.currentTimeMillis().toString()
 
-        val obj = AppUsersModel(id, time, getPhoneId(), "", ActivityAuthEnums.UNIDENTIFIED.toString(), AuthorizationEnums.NONE.toString())
+        val obj = AppUsersModel(id, time, getPhoneId(), ActivityAuthEnums.UNIDENTIFIED.toString(), AuthorizationEnums.NONE.toString())
         PostObject.builder()
             .scriptId(ProjectConfig.dBServerScriptURL)
             .sheetId(ProjectConfig.get_db_sheet_id())

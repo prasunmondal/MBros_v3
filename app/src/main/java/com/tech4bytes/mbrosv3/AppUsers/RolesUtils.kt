@@ -15,8 +15,22 @@ class RolesUtils {
     companion object {
 
         private const val loginRoleKey: String = "loginRoleKey"
+        private const val allRolesInfo: String = "allRolesInfo"
         fun getAppUser(useCache: Boolean = true): AppUsersModel? {
             val cacheResults = CentralCache.get<AppUsersModel>(AppContexts.get(), loginRoleKey, useCache)
+
+            return if (cacheResults != null) {
+                cacheResults
+            } else {
+                val resultFromServer = getAppUsersDataFromServer()
+
+                CentralCache.put(loginRoleKey, resultFromServer)
+                resultFromServer
+            }
+        }
+
+        fun getAppUsers(useCache: Boolean = true): AppUsersModel? {
+            val cacheResults = CentralCache.get<AppUsersModel>(AppContexts.get(), allRolesInfo, useCache)
 
             return if (cacheResults != null) {
                 cacheResults

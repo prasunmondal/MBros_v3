@@ -643,6 +643,14 @@ class OneShotDelivery : AppCompatActivity() {
 
             context.updateHiddenData()
         }
+
+        fun deleteDeliveryDataOnServer() {
+            Delete.builder()
+                .scriptId(ProjectConfig.dBServerScriptURL)
+                .sheetId(ProjectConfig.get_db_sheet_id())
+                .tabName(DeliverToCustomerConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
+                .build().execute()
+        }
     }
 
     fun onClickSaveOneShotDeliveryDataBtn(view: View) {
@@ -762,14 +770,6 @@ class OneShotDelivery : AppCompatActivity() {
         }
 
         SingleAttributedData.saveToLocal(obj)
-    }
-
-    private fun deleteDeliveryDataOnServer() {
-        Delete.builder()
-            .scriptId(ProjectConfig.dBServerScriptURL)
-            .sheetId(ProjectConfig.get_db_sheet_id())
-            .tabName(DeliverToCustomerConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
-            .build().execute()
     }
 
     private fun saveDeliveryData() {

@@ -21,6 +21,7 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.De
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
+import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
@@ -218,5 +219,24 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         val switchActivityIntent = Intent(this, ActivityLogin::class.java)
         switchActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(switchActivityIntent)
+    }
+
+    fun onClickDeleteDeliveryDataBtn(view: View) {
+        val deleteDeliveryDataButtonFinalize = findViewById<Button>(R.id.deleteDeliveryDataButtonFinalize)
+        Thread {
+            runOnUiThread()
+            {
+                deleteDeliveryDataButtonFinalize.isEnabled = false
+                deleteDeliveryDataButtonFinalize.alpha = 0.5f
+                deleteDeliveryDataButtonFinalize.isClickable = false
+            }
+            OneShotDelivery.deleteDeliveryDataOnServer()
+            runOnUiThread()
+            {
+                deleteDeliveryDataButtonFinalize.isEnabled = true
+                deleteDeliveryDataButtonFinalize.alpha = 1.0f
+                deleteDeliveryDataButtonFinalize.isClickable = true
+            }
+        }.start()
     }
 }

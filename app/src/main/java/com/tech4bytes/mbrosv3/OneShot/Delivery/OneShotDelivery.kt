@@ -662,10 +662,12 @@ class OneShotDelivery : AppCompatActivity() {
                 saveOneSortDeliveryButton.alpha = .5f
                 saveOneSortDeliveryButton.isClickable = false
             }
+
             gatherSingleAttributedData()
             gatherFuelData()
-            saveSingleAttributeData()
             DeliverToCustomerDataHandler.deleteAllData()
+
+            saveSingleAttributeData()
             saveDeliveryData()
             SingleAttributedData.getRecords(false)
             DeliverToCustomerDataHandler.get(false)
@@ -774,24 +776,23 @@ class OneShotDelivery : AppCompatActivity() {
 
     private fun saveDeliveryData() {
         var eachStep = 0
-        deliveryMapOrderedCustomers.forEach {
+
+        val allDeliveredRecords: MutableMap<String, DeliverToCustomerDataModel> = mutableMapOf()
+        allDeliveredRecords.putAll(deliveryMapOrderedCustomers)
+        allDeliveredRecords.putAll(deliveryMapUnOrderedCustomers)
+
+        // save locally
+        allDeliveredRecords.forEach {
+            DeliverToCustomerDataHandler.saveToLocal(it.value)
+        }
+
+        // save to server
+        allDeliveredRecords.forEach {
             LogMe.log(it.value.name + ":: deliveredKg:" + it.value.deliveredKg)
             LogMe.log(it.value.name + ":: paid:" + it.value.paid)
             if (NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0.0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
                 it.value.deliveryStatus = "DELIVERED"
-                DeliverToCustomerDataHandler.save(it.value)
-                if (eachStep + 10 < 100) {
-                    eachStep += 10
-                } else {
-                    eachStep = 100
-                }
-                runOnUiThread { setSaveProgressBar(eachStep) }
-            }
-        }
-        deliveryMapUnOrderedCustomers.forEach {
-            if (NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0.0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
-                it.value.deliveryStatus = "DELIVERED"
-                DeliverToCustomerDataHandler.save(it.value)
+                DeliverToCustomerDataHandler.save(it.value, false)
                 if (eachStep + 10 < 100) {
                     eachStep += 10
                 } else {

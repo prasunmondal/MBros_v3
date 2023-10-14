@@ -44,15 +44,17 @@ class DeliverToCustomerDataHandler {
         }
 
         // Save Op
-        fun save(obj: DeliverToCustomerDataModel) {
+        fun save(obj: DeliverToCustomerDataModel, saveToLocal: Boolean) {
             LogMe.log("Getting delivery data: Save")
             obj.id = System.currentTimeMillis().toString()
             obj.date = DateUtils.getCurrentTimestamp()
-            saveToLocal(obj)
+            if(saveToLocal) {
+                saveToLocal(obj)
+            }
             saveToServer(obj)
         }
 
-        private fun saveToLocal(obj: DeliverToCustomerDataModel) {
+        fun saveToLocal(obj: DeliverToCustomerDataModel) {
             LogMe.log("Getting delivery data: Save To Local")
             val list = get() + obj
             CentralCache.put(DeliverToCustomerConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, list)

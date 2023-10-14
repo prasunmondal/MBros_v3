@@ -277,7 +277,7 @@ class DeliverToCustomerActivity : AppCompatActivity() {
         record.totalDue = "${calculateTotalAmount()}"
         record.balanceDue = "${calculateBalanceDue()}"
 
-        DeliverToCustomerDataHandler.save(record)
+        DeliverToCustomerDataHandler.save(record, true)
         goToActivityDeliveringDeliveryComplete()
     }
 

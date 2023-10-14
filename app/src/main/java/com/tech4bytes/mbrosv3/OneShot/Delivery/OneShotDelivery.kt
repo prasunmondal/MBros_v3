@@ -154,7 +154,7 @@ class OneShotDelivery : AppCompatActivity() {
         scrollToRow(scrollview, findViewById(R.id.osd_scrollview_child), findViewById<LinearLayout>(R.id.osd_scroll_to_element_other_expenses))
     }
 
-    private fun scrollToRow(scrollView: ScrollView, linearLayout: LinearLayout, textViewToShow: View) {
+    private fun scrollToRow(scrollView: ScrollView, linearLayout: View, textViewToShow: View) {
         val delay: Long = 100 //delay to let finish with possible modifications to ScrollView
         scrollView.postDelayed({
             val textRect = Rect() //coordinates to scroll to

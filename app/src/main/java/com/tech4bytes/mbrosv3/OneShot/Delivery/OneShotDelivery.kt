@@ -694,6 +694,8 @@ class OneShotDelivery : AppCompatActivity() {
         obj.vehicle_finalKm = NumberUtils.getIntOrZero(finalKmElement.text.toString()).toString()
         obj.labour_expenses = NumberUtils.getIntOrZero(labourExpensesElement.text.toString()).toString()
         obj.extra_expenses = NumberUtils.getIntOrZero(extraExpensesElement.text.toString()).toString()
+        obj.actualLoadKg = loadKgElement.text.toString()
+        obj.actualLoadPc = loadPcElement.text.toString()
 
         SingleAttributedData.saveToLocal(obj)
     }

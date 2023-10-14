@@ -46,14 +46,14 @@ class OSD {
 
                 loadPcElement.doOnTextChanged { text, start, before, count ->
                     record.actualLoadPc = loadPcElement.text.toString()
-                    SingleAttributedData.saveToLocal(record)
+//                    SingleAttributedData.saveToLocal(record)
                     updateRelatedFields_LoadPcKg(loadPcElement, loadKgElement, loadAvgWtElement)
                     OneShotDelivery.updateTotals(context)
                 }
 
                 loadKgElement.doOnTextChanged { text, start, before, count ->
                     record.actualLoadKg = loadKgElement.text.toString()
-                    SingleAttributedData.saveToLocal(record)
+//                    SingleAttributedData.saveToLocal(record)
                     updateRelatedFields_LoadPcKg(loadPcElement, loadKgElement, loadAvgWtElement)
                     OneShotDelivery.updateTotals(context)
                 }

@@ -4,9 +4,6 @@ data class AppUsersModel(val id: String, val timestamp: String, val device_id: S
 
     companion object {
 
-        fun isEligibleToViewHiddenDue(): Boolean {
-            return true
-        }
     }
 
     override fun toString(): String {

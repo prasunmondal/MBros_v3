@@ -50,6 +50,7 @@ class DataFetchingInfo {
                     executingMethods.add(CustomerKYC::getAllCustomers)
                     executingMethods.add(GetCustomerOrders::get)
                     executingMethods.add(DeliverToCustomerDataHandler::get)
+                    executingMethods.add(CustomerData::getRecords)
                 }
                 ActivityAuthEnums.BALANCE_VIEW -> {
                     executingMethods.add(CustomerKYC::getAllCustomers)

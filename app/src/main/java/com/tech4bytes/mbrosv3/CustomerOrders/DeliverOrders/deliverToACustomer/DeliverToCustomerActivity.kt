@@ -16,6 +16,8 @@ import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.AppUsers.AppUsersModel
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.UserRoleUtils
+import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
+import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
@@ -64,6 +66,7 @@ class DeliverToCustomerActivity : AppCompatActivity() {
         val totalDueElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::totalDue)!!
         val paidElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::paid)!!
         val balanceDueElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::balanceDue)!!
+        val bengaliNameElement =  findViewById<TextView>(R.id.activity_delivering_deliver_bengali_name)
 
         // Set UI Values
         UIUtils.setUIElementValue(nameElement, record.name)
@@ -74,6 +77,7 @@ class DeliverToCustomerActivity : AppCompatActivity() {
         UIUtils.setUIElementValue(totalDueElement, record.totalDue)
         UIUtils.setUIElementValue(paidElement, record.paid)
         UIUtils.setUIElementValue(balanceDueElement, CustomerData.getLastDue(record.name))
+        UIUtils.setUIElementValue(bengaliNameElement, CustomerKYC.get(record.name)!!.nameBeng)
 
         if (UserRoleUtils.doesHaveRole(ActivityAuthEnums.ADMIN)) {
             UIUtils.setUIElementValue(rate, record.rate)
@@ -85,7 +89,7 @@ class DeliverToCustomerActivity : AppCompatActivity() {
             (rate as EditText).setTextColor(ContextCompat.getColor(this, R.color.red))
         }
 
-        if (AppUsersModel.isEligibleToViewHiddenDue() || CustomerKYC.showBalance(UIUtils.getUIElementValue(nameElement))) {
+        if (AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_PROFITS) || CustomerKYC.showBalance(UIUtils.getUIElementValue(nameElement))) {
             UIUtils.setUIElementValue(prevDueElement, record.prevDue)
         }
 
@@ -136,7 +140,7 @@ class DeliverToCustomerActivity : AppCompatActivity() {
         setValidityColors(deliveredKgContainer, isValid)
 
         val nameElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::name)!!
-        if (!AppUsersModel.isEligibleToViewHiddenDue() && !CustomerKYC.showBalance(UIUtils.getUIElementValue(nameElement))) {
+        if (!AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_PROFITS) && !CustomerKYC.showBalance(UIUtils.getUIElementValue(nameElement))) {
             setValidityColors(deliveredRateContainer, true)
         }
     }
@@ -216,7 +220,7 @@ class DeliverToCustomerActivity : AppCompatActivity() {
         val balanceDueElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::balanceDue)!!
 
         // do not update UI if show balances is false
-        if (!AppUsersModel.isEligibleToViewHiddenDue() && !CustomerKYC.showBalance(UIUtils.getUIElementValue(name))) {
+        if (!AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_PROFITS) && !CustomerKYC.showBalance(UIUtils.getUIElementValue(name))) {
             UIUtils.setUIElementValue(todaysAmountElement, "0.00")
             UIUtils.setUIElementValue(totalDueElement, "0.00")
             UIUtils.setUIElementValue(balanceDueElement, "0.00")

@@ -17,6 +17,7 @@ class SMSUtils {
 
     companion object {
         fun sendSMS(context: Context, smsText: String, smsNumber: String) {
+            LogMe.log("Sending SMS: $smsNumber - $smsText")
             val sms: SmsManager = SmsManager.getDefault()
             val SENT = "SMS_SENT"
             val DELIVERED = "SMS_DELIVERED"

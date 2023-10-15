@@ -20,11 +20,13 @@ import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
+import com.tech4bytes.mbrosv3.Sms.OneShotSMS.OneShotSMS
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
+import com.tech4bytes.mbrosv3.VehicleManagement.ActivityRefueling
 import java.io.File
 import java.util.*
 
@@ -152,5 +154,10 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
     fun onClickDownloadDailyFile(view: View) {
         Toast.makeText(this, "Downloading Daily File", Toast.LENGTH_SHORT).show()
         downloadDailySheet()
+    }
+
+    fun goToSendSMSPage(view: View) {
+        val switchActivityIntent = Intent(this, OneShotSMS::class.java)
+        startActivity(switchActivityIntent)
     }
 }

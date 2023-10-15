@@ -1,8 +1,8 @@
 package com.tech4bytes.mbrosv3.Sms.OneShotSMS
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
@@ -25,8 +25,8 @@ class OneShotSMS : AppCompatActivity() {
 
     fun processQueue() {
         OSMS.get().forEach {
-            if(it.enabled.toBoolean()) {
-                when (it.sms_type) {
+            if (it.isEnabled.toBoolean()) {
+                when (it.communicationType) {
                     "DELIVERY_SMS" -> sendDeliverySMS(it)
                     "DAY_SUMMARY" -> sendDaySummary(it)
                     "LOAD_DETAILS" -> sendLoadDetails(it)
@@ -37,8 +37,8 @@ class OneShotSMS : AppCompatActivity() {
 
     private fun sendLoadDetails(smsDetail: OSMSModel) {
         val metadata = SingleAttributedData.getRecords()
-        if(smsDetail.variable.equals(metadata.load_account, true)) {
-            val templateToSendInfo = smsDetail.data
+        if (smsDetail.inputData.equals(metadata.load_account, true)) {
+            val templateToSendInfo = smsDetail.dataTemplate
 
             val formattedDate = DateUtils.getDateInFormat("dd/MM/yyyy")
             val text = templateToSendInfo
@@ -52,29 +52,28 @@ class OneShotSMS : AppCompatActivity() {
 
     private fun sendViaDesiredMedium(smsDetail: OSMSModel, text: String) {
         when (smsDetail.platform) {
-            "SMS" -> SMSUtils.sendSMS(AppContexts.get(), text, smsDetail.number)
-            "WHATSAPP" -> Whatsapp.sendMessage(AppContexts.get(), smsDetail.number, text)
+            "SMS" -> SMSUtils.sendSMS(AppContexts.get(), text, smsDetail.sendTo)
+            "WHATSAPP" -> Whatsapp.sendMessage(AppContexts.get(), smsDetail.sendTo, text)
         }
     }
 
     private fun sendDaySummary(smsDetail: OSMSModel) {
         val metadata = SingleAttributedData.getRecords()
-        val templateToSendInfo = smsDetail.data
+        val templateToSendInfo = smsDetail.dataTemplate
 
         val formattedDate = DateUtils.getDateInFormat("dd/MM/yyyy")
-            val text = templateToSendInfo
-                .replace("<date>", formattedDate)
-                .replace("<loadPc>", metadata.actualLoadPc)
-                .replace("<loadKg>", metadata.actualLoadKg)
-                .replace("<shortage>", DeliveryCalculations.getShortage(metadata.actualLoadKg, DeliveryCalculations.getTotalDeliveredKg().toString()).toString())
-                .replace("<km>", DeliveryCalculations.getKmDiff(metadata.vehicle_finalKm).toString())
-            sendViaDesiredMedium(smsDetail, text)
-
+        val text = templateToSendInfo
+            .replace("<date>", formattedDate)
+            .replace("<loadPc>", metadata.actualLoadPc)
+            .replace("<loadKg>", metadata.actualLoadKg)
+            .replace("<shortage>", DeliveryCalculations.getShortage(metadata.actualLoadKg, DeliveryCalculations.getTotalDeliveredKg().toString()).toString())
+            .replace("<km>", DeliveryCalculations.getKmDiff(metadata.vehicle_finalKm).toString())
+        sendViaDesiredMedium(smsDetail, text)
     }
 
     private fun sendDeliverySMS(smsDetail: OSMSModel) {
-        val deliveryData = DeliverToCustomerActivity.getDeliveryRecord(smsDetail.variable)!!
-        val templateToSendInfo = smsDetail.data
+        val deliveryData = DeliverToCustomerActivity.getDeliveryRecord(smsDetail.inputData)!!
+        val templateToSendInfo = smsDetail.dataTemplate
         val formattedDate = DateUtils.getDateInFormat("dd/MM/yyyy")
 
         val text = templateToSendInfo

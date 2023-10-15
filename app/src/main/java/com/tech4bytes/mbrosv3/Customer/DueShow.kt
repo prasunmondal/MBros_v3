@@ -18,12 +18,7 @@ import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
-import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ReflectionUtils
 import java.time.LocalDateTime
-import java.util.*
-import java.util.stream.IntStream
-import kotlin.reflect.KMutableProperty1
-import kotlin.streams.toList
 
 class DueShow : AppCompatActivity() {
 
@@ -41,7 +36,7 @@ class DueShow : AppCompatActivity() {
     }
 
     private fun getBalanceMap(showAfterDeliveryBalance: Boolean): MutableMap<String, Int> {
-        return if(showAfterDeliveryBalance) {
+        return if (showAfterDeliveryBalance) {
             if (balanceMapAfterDelivery == null)
                 balanceMapAfterDelivery = CustomerDueData.getBalance(true)
             balanceMapAfterDelivery as MutableMap<String, Int>

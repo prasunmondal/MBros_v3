@@ -101,7 +101,7 @@ class OneShotDelivery : AppCompatActivity() {
         val allCustomers = ListUtils.getAllPossibleValuesList(CustomerKYC.getAllCustomers(), CustomerKYCModel::nameEng).toList()
         val customersInUI = ListUtils.getAllPossibleValuesList(deliveryMapOrderedCustomers.values.toList(), DeliverToCustomerDataModel::name).toList()
         val listToShow = CollectionUtils.subtract(allCustomers, customersInUI).toList().sorted()
-        
+
         val uiView = findViewById<AutoCompleteTextView>(R.id.osd_customer_picker)
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.template_dropdown_entry, listToShow)
         uiView.setAdapter(adapter)

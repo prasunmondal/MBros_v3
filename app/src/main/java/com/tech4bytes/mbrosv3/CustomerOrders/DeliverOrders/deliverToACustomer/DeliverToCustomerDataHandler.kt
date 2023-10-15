@@ -48,7 +48,7 @@ class DeliverToCustomerDataHandler {
             LogMe.log("Getting delivery data: Save")
             obj.id = System.currentTimeMillis().toString()
             obj.date = DateUtils.getCurrentTimestamp()
-            if(saveToLocal) {
+            if (saveToLocal) {
                 saveToLocal(obj)
             }
             saveToServer(obj)

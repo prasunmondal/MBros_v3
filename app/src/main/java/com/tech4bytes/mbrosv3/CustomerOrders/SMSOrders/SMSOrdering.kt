@@ -22,10 +22,10 @@ import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
+import org.apache.commons.collections4.CollectionUtils
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.util.stream.Collectors
-import org.apache.commons.collections4.CollectionUtils
 
 
 class SMSOrdering : AppCompatActivity() {
@@ -114,7 +114,7 @@ class SMSOrdering : AppCompatActivity() {
     }
 
     private fun addCustomer(name: String) {
-        if(orders.none { it.name == name }) {
+        if (orders.none { it.name == name }) {
             // if the name is not already present in the list
             orders.add(SMSOrderModel(System.currentTimeMillis().toString(), name, NumberUtils.getIntOrZero("0"), NumberUtils.getDoubleOrZero("0"), NumberUtils.getIntOrZero("0")))
             showEntries()
@@ -240,7 +240,7 @@ class SMSOrdering : AppCompatActivity() {
     fun onClickToggleSMSView(view: View) {
         val c = findViewById<ScrollView>(R.id.smsorders_sms_view_scroll_container)
         val b = findViewById<TextView>(R.id.smsordering_toggle_sms_text)
-        c.visibility = if(c.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        c.visibility = if (c.visibility == View.VISIBLE) View.GONE else View.VISIBLE
         b.text = if (c.visibility == View.VISIBLE) "HIDE SMS" else "SHOW SMS"
     }
 }

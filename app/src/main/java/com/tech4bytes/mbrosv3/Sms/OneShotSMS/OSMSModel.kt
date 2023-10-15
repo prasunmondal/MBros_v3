@@ -1,8 +1,10 @@
 package com.tech4bytes.mbrosv3.Sms.OneShotSMS
 
-data class OSMSModel(val platform: String,
-                     val number: String,
-                     val sms_type: String,
-                     val variable: String,
-                     val data: String,
-                     val enabled: String): java.io.Serializable
+data class OSMSModel(
+    val platform: String,
+    val sendTo: String,
+    val communicationType: String,
+    val inputData: String,
+    val dataTemplate: String,
+    val isEnabled: String,
+) : java.io.Serializable

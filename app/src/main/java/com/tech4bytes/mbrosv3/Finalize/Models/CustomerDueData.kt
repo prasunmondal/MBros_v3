@@ -2,10 +2,6 @@ package com.tech4bytes.mbrosv3.Finalize.Models
 
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
-import java.util.stream.Collectors
-import java.util.stream.Collectors.toList
-
-
 
 
 class CustomerDueData {

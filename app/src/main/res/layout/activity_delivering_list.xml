@@ -72,6 +72,7 @@
             android:layout_weight="1"
             android:backgroundTint="#F15044"
             android:onClick="onClickGoToLoadPageButton"
+            android:visibility="invisible"
             app:srcCompat="@android:drawable/stat_sys_download" />
 
         <ImageButton
@@ -82,6 +83,7 @@
             android:backgroundTint="#B5E3F8"
             android:onClick="onClickRefuelButton"
             android:scaleType="fitCenter"
+            android:visibility="invisible"
             app:srcCompat="@drawable/transparent_fuel_icon_gas_station_icon_reneweable_energy_icon_5f52f25bdf0141_4368181815992715159134" />
 
         <ImageButton

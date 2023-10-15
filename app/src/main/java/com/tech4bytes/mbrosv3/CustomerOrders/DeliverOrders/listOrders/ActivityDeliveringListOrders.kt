@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import com.tech4bytes.mbrosv3.AppData.AppUtils
+import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerCalculations
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
@@ -42,6 +43,7 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
 
             val seqNoElement = entry.findViewById<AppCompatTextView>(R.id.activity_due_show_amount)
             val nameElement = entry.findViewById<AppCompatTextView>(R.id.fragment_actibity_login_roles_role)
+            val bengaliNameElement = entry.findViewById<AppCompatTextView>(R.id.fragment_delivery_bengali_name)
             val pcElement = entry.findViewById<AppCompatTextView>(R.id.activity_delivering_deliver_fragment_order_pc)
             val kgElement = entry.findViewById<AppCompatTextView>(R.id.activity_delivering_deliver_fragment_order_kg)
 
@@ -49,6 +51,7 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
             UIUtils.setUIElementValue(nameElement, order.name)
             UIUtils.setUIElementValue(pcElement, order.orderedPc)
             UIUtils.setUIElementValue(kgElement, order.orderedKg)
+            UIUtils.setUIElementValue(bengaliNameElement, CustomerKYC.get(order.name)!!.nameBeng)
 
             entry.setOnClickListener {
                 goTo_ActivityDeliveringDeliver(order.name)

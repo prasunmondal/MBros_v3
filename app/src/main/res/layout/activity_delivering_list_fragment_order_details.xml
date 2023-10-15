@@ -27,7 +27,8 @@
             android:gravity="center_vertical"
             android:hint="0."
             android:textColor="#000000"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:visibility="gone" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/activity_delivering_deliver_fragment_order_pc"
@@ -51,6 +52,18 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/fragment_actibity_login_roles_role"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_weight=".5"
+            android:gravity="center_vertical"
+            android:paddingLeft="5dp"
+            android:textColor="#231602"
+            android:textSize="20sp"
+            android:visibility="gone" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/fragment_delivery_bengali_name"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"

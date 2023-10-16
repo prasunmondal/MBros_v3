@@ -3,6 +3,7 @@ package com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -261,28 +262,43 @@ class DeliverToCustomerActivity : AppCompatActivity() {
     }
 
     fun onClickSubmitDeliveredRecord(view: View) {
-        val rate = UIUtils.getUIElementValue(getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::rate)!!)
-        val deliveredWeight = UIUtils.getUIElementValue(getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::deliveredKg)!!)
-        if (NumberUtils.getDoubleOrZero(rate) == 0.0 && NumberUtils.getDoubleOrZero(deliveredWeight) != 0.0) {
-            Toast.makeText(this, "সব গুলো লেখা হয়নি", Toast.LENGTH_LONG).show()
-            return
-        }
-
-        getAllAttributesOfClass<DeliverToCustomerDataModel>().forEach { kMutableProperty ->
-            val uiElement = getUiElementFromDeliveringPage(mainView, kMutableProperty)
-            if (uiElement != null) {
-                ReflectionUtils.setAttribute(record, kMutableProperty, UIUtils.getUIElementValue(uiElement))
+            val rate = UIUtils.getUIElementValue(getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::rate)!!)
+            val deliveredWeight = UIUtils.getUIElementValue(getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::deliveredKg)!!)
+            if (NumberUtils.getDoubleOrZero(rate) == 0.0 && NumberUtils.getDoubleOrZero(deliveredWeight) != 0.0) {
+                Toast.makeText(this, "সব গুলো লেখা হয়নি", Toast.LENGTH_LONG).show()
+                return
             }
-        }
-        record.id = System.currentTimeMillis().toString()
-        record.timestamp = DateUtils.getCurrentTimestamp()
-        record.deliveryStatus = "DELIVERED"
-        record.todaysAmount = "${calculateTodaysAmount()}"
-        record.totalDue = "${calculateTotalAmount()}"
-        record.balanceDue = "${calculateBalanceDue()}"
 
-        DeliverToCustomerDataHandler.save(record, true)
-        goToActivityDeliveringDeliveryComplete()
+            getAllAttributesOfClass<DeliverToCustomerDataModel>().forEach { kMutableProperty ->
+                val uiElement = getUiElementFromDeliveringPage(mainView, kMutableProperty)
+                if (uiElement != null) {
+                    ReflectionUtils.setAttribute(record, kMutableProperty, UIUtils.getUIElementValue(uiElement))
+                }
+            }
+            record.id = System.currentTimeMillis().toString()
+            record.timestamp = DateUtils.getCurrentTimestamp()
+            record.deliveryStatus = "DELIVERED"
+            record.todaysAmount = "${calculateTodaysAmount()}"
+            record.totalDue = "${calculateTotalAmount()}"
+            record.balanceDue = "${calculateBalanceDue()}"
+
+        val saveBtnElement = findViewById<Button>(R.id.activity_delivering_deliver_submit_btn)
+        Thread {
+            runOnUiThread {
+                saveBtnElement.isEnabled = false
+                saveBtnElement.alpha = .5f
+                saveBtnElement.isClickable = false
+                saveBtnElement.text = "Saving..."
+            }
+            DeliverToCustomerDataHandler.save(record, true)
+            runOnUiThread {
+                saveBtnElement.isEnabled = true
+                saveBtnElement.alpha = 1.0f
+                saveBtnElement.isClickable = true
+                saveBtnElement.text = "Save"
+            }
+            goToActivityDeliveringDeliveryComplete()
+        }.start()
     }
 
     private fun goToActivityDeliveringDeliveryComplete() {

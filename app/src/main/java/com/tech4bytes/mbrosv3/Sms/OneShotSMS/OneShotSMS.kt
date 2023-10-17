@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.CheckBox
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -18,6 +17,7 @@ class OneShotSMS : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_one_shot_sms)
+        supportActionBar!!.hide()
         AppContexts.set(this)
 
         container = findViewById(R.id.osms_container)
@@ -44,7 +44,6 @@ class OneShotSMS : AppCompatActivity() {
             contentUI.setOnClickListener {
                 msg.isEnabled = !msg.isEnabled
                 contentUI.isChecked = msg.isEnabled
-//                Toast.makeText(this, "$i. $text", Toast.LENGTH_SHORT).show()
             }
             container.addView(uiEntry)
             i++
@@ -52,13 +51,10 @@ class OneShotSMS : AppCompatActivity() {
     }
 
     fun onClickSendSMS(view: View) {
-        var i = 0
         smsList.forEach {
             if(it.isEnabled) {
-                Toast.makeText(this, i.toString(), Toast.LENGTH_SHORT).show()
                 OSMSProcessor.sendViaDesiredMedium(it.medium, it.number, it.text)
             }
-            i++
         }
     }
 

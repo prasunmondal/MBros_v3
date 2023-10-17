@@ -19,6 +19,9 @@ class ActivityDeliveringDeliveryComplete : AppCompatActivity() {
     }
 
     fun closeApp(view: View) {
+        view.isEnabled = false
+        view.alpha = 0.5f
+        view.isClickable = false
         if (UserRoleUtils.doesHaveRole(ActivityAuthEnums.COLLECTOR) || UserRoleUtils.doesHaveRole(ActivityAuthEnums.ADMIN))
             goToDeliveringListPage()
         else

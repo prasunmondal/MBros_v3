@@ -19,7 +19,9 @@
             android:id="@+id/osms_entry_sms_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="top"
             android:hint="Loading..."
+            android:padding="5dp"
             android:textColorHint="#B1ADAD" />
 
 

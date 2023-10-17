@@ -37,7 +37,7 @@ class OneShotSMS : AppCompatActivity() {
             val uiEntry = layoutInflater.inflate(R.layout.activity_one_shot_sms_entry_fragment, null)
             val contentUI = uiEntry.findViewById<CheckBox>(R.id.osms_entry_sms_content)
 
-            val text = "${i}. ${msg.number} (${msg.medium})\n\n${msg.text}"
+            val text = "${msg.number} (${msg.medium})\n\n${msg.text}"
             contentUI.text = text
             contentUI.isChecked = msg.isEnabled
 

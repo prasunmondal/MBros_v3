@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.CheckBox
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -30,27 +31,34 @@ class OneShotSMS : AppCompatActivity() {
 
     fun showMessages() {
         container.removeAllViews()
+        var i = 0
         smsList.forEach { msg ->
             val layoutInflater = LayoutInflater.from(AppContexts.get())
             val uiEntry = layoutInflater.inflate(R.layout.activity_one_shot_sms_entry_fragment, null)
             val contentUI = uiEntry.findViewById<CheckBox>(R.id.osms_entry_sms_content)
 
-            val text = "${msg.number} (${msg.medium})\n\n${msg.text}"
+            val text = "${i}. ${msg.number} (${msg.medium})\n\n${msg.text}"
             contentUI.text = text
             contentUI.isChecked = msg.isEnabled
 
-            uiEntry.setOnClickListener {
+            contentUI.setOnClickListener {
                 msg.isEnabled = !msg.isEnabled
                 contentUI.isChecked = msg.isEnabled
+//                Toast.makeText(this, "$i. $text", Toast.LENGTH_SHORT).show()
             }
             container.addView(uiEntry)
+            i++
         }
     }
 
     fun onClickSendSMS(view: View) {
+        var i = 0
         smsList.forEach {
-            if(it.isEnabled)
+            if(it.isEnabled) {
+                Toast.makeText(this, i.toString(), Toast.LENGTH_SHORT).show()
                 OSMSProcessor.sendViaDesiredMedium(it.medium, it.number, it.text)
+            }
+            i++
         }
     }
 

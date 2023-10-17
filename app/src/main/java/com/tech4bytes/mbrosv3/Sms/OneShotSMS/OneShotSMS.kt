@@ -11,8 +11,8 @@ import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 
 class OneShotSMS : AppCompatActivity() {
 
-    lateinit var container: LinearLayout
-    lateinit var smsList: MutableList<SMS>
+    private lateinit var container: LinearLayout
+    private lateinit var smsList: MutableList<SMS>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +29,7 @@ class OneShotSMS : AppCompatActivity() {
         }.start()
     }
 
-    fun showMessages() {
+    private fun showMessages() {
         container.removeAllViews()
         var i = 0
         smsList.forEach { msg ->
@@ -62,8 +62,7 @@ class OneShotSMS : AppCompatActivity() {
         val smsList: MutableList<SMS> = mutableListOf()
         OSMS.get().forEach {
             if (it.isEnabled.toBoolean()) {
-                var smsResult: SMS? = null
-                smsResult = when (it.communicationType) {
+                val smsResult: SMS? = when (it.communicationType) {
                     "DELIVERY_SMS" -> OSMSProcessor.sendDeliverySMS(it)
                     "DAY_SUMMARY" -> OSMSProcessor.sendDaySummary(it)
                     "LOAD_DETAILS" -> OSMSProcessor.sendLoadDetails(it)

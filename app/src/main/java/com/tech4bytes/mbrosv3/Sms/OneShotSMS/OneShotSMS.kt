@@ -1,89 +1,74 @@
 package com.tech4bytes.mbrosv3.Sms.OneShotSMS
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.CheckBox
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
-import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
 import com.tech4bytes.mbrosv3.R
-import com.tech4bytes.mbrosv3.SendInfoTexts.Whatsapp.Whatsapp
-import com.tech4bytes.mbrosv3.Sms.SMSUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
-import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 
 class OneShotSMS : AppCompatActivity() {
+
+    lateinit var container: LinearLayout
+    lateinit var smsList: MutableList<SMS>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_one_shot_sms)
         AppContexts.set(this)
+
+        container = findViewById(R.id.osms_container)
+        Thread {
+            smsList = getSMSList()
+            runOnUiThread {
+                showMessages()
+            }
+        }.start()
+    }
+
+    fun showMessages() {
+        container.removeAllViews()
+        smsList.forEach { msg ->
+            val layoutInflater = LayoutInflater.from(AppContexts.get())
+            val uiEntry = layoutInflater.inflate(R.layout.activity_one_shot_sms_entry_fragment, null)
+            val contentUI = uiEntry.findViewById<CheckBox>(R.id.osms_entry_sms_content)
+
+            val text = "${msg.number} (${msg.medium})\n\n${msg.text}"
+            contentUI.text = text
+            contentUI.isChecked = msg.isEnabled
+
+            uiEntry.setOnClickListener {
+                msg.isEnabled = !msg.isEnabled
+                contentUI.isChecked = msg.isEnabled
+            }
+            container.addView(uiEntry)
+        }
     }
 
     fun onClickSendSMS(view: View) {
-        processQueue()
+        smsList.forEach {
+            if(it.isEnabled)
+                OSMSProcessor.sendViaDesiredMedium(it.medium, it.number, it.text)
+        }
     }
 
-    fun processQueue() {
+    private fun getSMSList(): MutableList<SMS> {
+        val smsList: MutableList<SMS> = mutableListOf()
         OSMS.get().forEach {
             if (it.isEnabled.toBoolean()) {
-                when (it.communicationType) {
-                    "DELIVERY_SMS" -> sendDeliverySMS(it)
-                    "DAY_SUMMARY" -> sendDaySummary(it)
-                    "LOAD_DETAILS" -> sendLoadDetails(it)
+                var smsResult: SMS? = null
+                smsResult = when (it.communicationType) {
+                    "DELIVERY_SMS" -> OSMSProcessor.sendDeliverySMS(it)
+                    "DAY_SUMMARY" -> OSMSProcessor.sendDaySummary(it)
+                    "LOAD_DETAILS" -> OSMSProcessor.sendLoadDetails(it)
+                    else -> null
                 }
+                if(smsResult != null)
+                    smsList.add(smsResult)
             }
         }
-    }
-
-    private fun sendLoadDetails(smsDetail: OSMSModel) {
-        val metadata = SingleAttributedData.getRecords()
-        if (smsDetail.inputData.equals(metadata.load_account, true)) {
-            val templateToSendInfo = smsDetail.dataTemplate
-
-            val formattedDate = DateUtils.getDateInFormat("dd/MM/yyyy")
-            val text = templateToSendInfo
-                .replace("<date>", formattedDate)
-                .replace("<loadPc>", SingleAttributedData.getRecords().actualLoadPc)
-                .replace("<loadKg>", SingleAttributedData.getRecords().actualLoadKg)
-                .replace("<loadCompanyName>", metadata.load_companyName)
-            sendViaDesiredMedium(smsDetail, text)
-        }
-    }
-
-    private fun sendViaDesiredMedium(smsDetail: OSMSModel, text: String) {
-        when (smsDetail.platform) {
-            "SMS" -> SMSUtils.sendSMS(AppContexts.get(), text, smsDetail.sendTo)
-            "WHATSAPP" -> Whatsapp.sendMessage(AppContexts.get(), smsDetail.sendTo, text)
-        }
-    }
-
-    private fun sendDaySummary(smsDetail: OSMSModel) {
-        val metadata = SingleAttributedData.getRecords()
-        val templateToSendInfo = smsDetail.dataTemplate
-
-        val formattedDate = DateUtils.getDateInFormat("dd/MM/yyyy")
-        val text = templateToSendInfo
-            .replace("<date>", formattedDate)
-            .replace("<loadPc>", metadata.actualLoadPc)
-            .replace("<loadKg>", metadata.actualLoadKg)
-            .replace("<shortage>", DeliveryCalculations.getShortage(metadata.actualLoadKg, DeliveryCalculations.getTotalDeliveredKg().toString()).toString())
-            .replace("<km>", DeliveryCalculations.getKmDiff(metadata.vehicle_finalKm).toString())
-        sendViaDesiredMedium(smsDetail, text)
-    }
-
-    private fun sendDeliverySMS(smsDetail: OSMSModel) {
-        val deliveryData = DeliverToCustomerActivity.getDeliveryRecord(smsDetail.inputData)!!
-        val templateToSendInfo = smsDetail.dataTemplate
-        val formattedDate = DateUtils.getDateInFormat("dd/MM/yyyy")
-
-        val text = templateToSendInfo
-            .replace("<date>", formattedDate)
-            .replace("<pc>", deliveryData.deliveredPc)
-            .replace("<kg>", deliveryData.deliveredKg)
-            .replace("<paidAmount>", deliveryData.paid)
-            .replace("<rate>", deliveryData.rate)
-            .replace("<balanceAmount>", deliveryData.balanceDue)
-
-        sendViaDesiredMedium(smsDetail, text)
+        return smsList
     }
 }

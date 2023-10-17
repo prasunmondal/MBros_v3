@@ -8,3 +8,8 @@ data class OSMSModel(
     val dataTemplate: String,
     val isEnabled: String,
 ) : java.io.Serializable
+
+data class SMS(val medium: String,
+               val number: String,
+               val text: String,
+               var isEnabled: Boolean = true): java.io.Serializable

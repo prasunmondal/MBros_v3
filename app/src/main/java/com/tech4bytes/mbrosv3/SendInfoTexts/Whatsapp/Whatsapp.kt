@@ -52,7 +52,7 @@ class Whatsapp {
             shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri)
             shareIntent.putExtra("jid", "$number@s.whatsapp.net")
-            context.startActivity(shareIntent)
+            context.startActivity(Intent.createChooser(shareIntent, "Share it"))
         }
     }
 }

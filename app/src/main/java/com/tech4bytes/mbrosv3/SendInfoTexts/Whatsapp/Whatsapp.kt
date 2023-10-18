@@ -4,7 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Environment
 import android.widget.Toast
+import java.io.File
+
 
 class Whatsapp {
 
@@ -36,6 +39,19 @@ class Whatsapp {
                 Toast.makeText(context, "WhatsApp not Installed", Toast.LENGTH_SHORT)
                     .show()
             }
+        }
+
+        fun sendFileToWhatsapp(context: Context, filePath: String, number: String, text: String) {
+            val outputFile = File(filePath)
+            val uri = Uri.fromFile(outputFile)
+
+            val share = Intent()
+            share.action = Intent.ACTION_SEND
+            share.type = "application/pdf"
+            share.putExtra(Intent.EXTRA_STREAM, uri)
+            share.setPackage("com.whatsapp")
+
+            context.startActivity(share)
         }
     }
 }

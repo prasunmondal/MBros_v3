@@ -239,4 +239,8 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
             }
         }.start()
     }
+
+    fun onClickSendKhataBtn(view: View) {
+
+    }
 }

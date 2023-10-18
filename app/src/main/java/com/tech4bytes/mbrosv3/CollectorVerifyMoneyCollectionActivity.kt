@@ -1,11 +1,12 @@
 package com.tech4bytes.mbrosv3
 
-import android.app.DownloadManager
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.os.StrictMode
+import android.os.StrictMode.VmPolicy
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
@@ -20,14 +21,19 @@ import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
+import com.tech4bytes.mbrosv3.SendInfoTexts.Whatsapp.Whatsapp
 import com.tech4bytes.mbrosv3.Sms.OneShotSMS.OneShotSMS
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
-import java.io.File
+import java.io.*
+import java.net.MalformedURLException
+import java.net.URL
 import java.util.*
+import kotlin.io.path.toPath
+
 
 class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,20 +43,47 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
         AppUtils.logError()
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
+        val builder = VmPolicy.Builder()
+        StrictMode.setVmPolicy(builder.build())
+
         showDeliveryData()
     }
 
-    fun downloadDailySheet() {
-        val manager: DownloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        val uri = Uri.parse("https://docs.google.com/spreadsheets/d/e/2PACX-1vQSO3BWQ7b0JmySpKVSULco9FcxrDi3UX9uSIECvOdUCSUI8AyeCDjSnmwWeA-l6oHBkUNhDjTU7Rgd/pub?gid=1385397548&single=true&output=pdf")
-        val request = DownloadManager.Request(uri)
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
-        request.setDestinationUri(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toUri())
-        val filename = "MBros - ${DateUtils.getDateInFormat(Date(), "yyyy.MM.dd")}"
-        request.setTitle(filename)
-        val reference: Long = manager.enqueue(request)
-//        sharePDF(File(manager.getUriForDownloadedFile(reference).toString()))
+    fun downloadDailySheet(fullPath: String) {
+//        Thread {
+            try {
+                val u = URL("https://docs.google.com/spreadsheets/d/e/2PACX-1vQSO3BWQ7b0JmySpKVSULco9FcxrDi3UX9uSIECvOdUCSUI8AyeCDjSnmwWeA-l6oHBkUNhDjTU7Rgd/pub?gid=1385397548&single=true&output=pdf")
+                val iStream: InputStream = u.openStream()
+                val dis = DataInputStream(iStream)
+                val buffer = ByteArray(1024)
+                var length: Int
+                val fos = FileOutputStream(File(fullPath))
+                while (dis.read(buffer).also { length = it } > 0) {
+                    fos.write(buffer, 0, length)
+                }
+            } catch (mue: MalformedURLException) {
+                Log.e("SYNC getUpdate", "malformed url error", mue)
+            } catch (ioe: IOException) {
+                Log.e("SYNC getUpdate", "io error", ioe)
+            } catch (se: SecurityException) {
+                Log.e("SYNC getUpdate", "security error", se)
+            }
+//        }.start()
     }
+
+//    fun downloadDailySheet() {
+//        DownloadFiles()
+//        val manager: DownloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+//        val uri = Uri.parse("https://docs.google.com/spreadsheets/d/e/2PACX-1vQSO3BWQ7b0JmySpKVSULco9FcxrDi3UX9uSIECvOdUCSUI8AyeCDjSnmwWeA-l6oHBkUNhDjTU7Rgd/pub?gid=1385397548&single=true&output=pdf")
+//        val request = DownloadManager.Request(uri)
+//        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
+//        request.setDestinationUri(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toUri())
+//
+//        request.setTitle(filename)
+//        request.
+//        val reference: Long = manager.enqueue(request)
+////        sharePDF(File(manager.getUriForDownloadedFile(reference).toString()))
+//    }
 
     private fun sharePDF(file: File) {
         //  val file = File(pdfFilePath)
@@ -145,6 +178,7 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        super.onBackPressed()
         val switchActivityIntent = Intent(this, ActivityLogin::class.java)
         switchActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(switchActivityIntent)
@@ -152,7 +186,16 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
 
     fun onClickDownloadDailyFile(view: View) {
         Toast.makeText(this, "Downloading Daily File", Toast.LENGTH_SHORT).show()
-        downloadDailySheet()
+        val filename = "MBros - ${DateUtils.getDateInFormat(Date(), "yyyy.MM.dd")}"
+        val filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toURI().toPath().toString() + "/" + filename + ".pdf"
+
+        Thread {
+            downloadDailySheet(filePath)
+            runOnUiThread {
+                Toast.makeText(this, "Download Complete", Toast.LENGTH_SHORT).show()
+            }
+            Whatsapp.sendFileToWhatsapp(this, filePath, "", "")
+        }.start()
     }
 
     fun goToSendSMSPage(view: View) {

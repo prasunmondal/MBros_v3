@@ -4,9 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Environment
 import android.widget.Toast
+import androidx.core.content.FileProvider
+import com.tech4bytes.mbrosv3.BuildConfig
 import java.io.File
+import java.util.Objects
 
 
 class Whatsapp {
@@ -42,16 +44,14 @@ class Whatsapp {
         }
 
         fun sendFileToWhatsapp(context: Context, filePath: String, number: String, text: String) {
-            val outputFile = File(filePath)
-            val uri = Uri.fromFile(outputFile)
-
-            val share = Intent()
-            share.action = Intent.ACTION_SEND
-            share.type = "application/pdf"
-            share.putExtra(Intent.EXTRA_STREAM, uri)
-            share.setPackage("com.whatsapp")
-
-            context.startActivity(share)
+            val outputPath = File(filePath)
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.type = "application/pdf"
+            val fileUri = FileProvider.getUriForFile(Objects.requireNonNull(context),
+                BuildConfig.APPLICATION_ID + ".provider", outputPath)
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri)
+            context.startActivity(Intent.createChooser(shareIntent, "Share it"))
         }
     }
 }

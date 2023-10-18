@@ -194,7 +194,7 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
             runOnUiThread {
                 Toast.makeText(this, "Download Complete", Toast.LENGTH_SHORT).show()
             }
-            Whatsapp.sendFileToWhatsapp(this, filePath, "", "")
+            Whatsapp.sendFileToWhatsapp(this, filePath, "919679004046", "")
         }.start()
     }
 

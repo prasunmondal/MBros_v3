@@ -468,7 +468,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:padding="10dp">
+                android:padding="10dp"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -505,6 +506,82 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".7"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView69"
+                            android:layout_width="90dp"
+                            android:layout_height="wrap_content"
+                            android:text="Finalization"
+                            android:textColor="#D8EEF8" />
+
+                        <TextView
+                            android:id="@+id/textView75"
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:hint="Fetching status..."
+                            android:textColor="#D8EEF8"
+                            android:textColorHint="#56D8EEF8" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView71"
+                            android:layout_width="90dp"
+                            android:layout_height="wrap_content"
+                            android:text="Clear Day"
+                            android:textColor="#D8EEF8" />
+
+                        <TextView
+                            android:id="@+id/textView72"
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:hint="Fetching status..."
+                            android:textColor="#D8EEF8"
+                            android:textColorHint="#56D8EEF8" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".3"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/textView80"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Do"
+                        android:textColor="#D8EEF8" />
                 </LinearLayout>
 
             </LinearLayout>

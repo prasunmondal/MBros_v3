@@ -9,6 +9,7 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -20,7 +21,6 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.De
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
-import com.tech4bytes.mbrosv3.Finalize.Models.FinalizeConfig
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
 import com.tech4bytes.mbrosv3.R
@@ -31,6 +31,7 @@ import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.WeightUtils.WeightUtils
 import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
+
 
 class ActivityAdminDeliveryDashboard : AppCompatActivity() {
 
@@ -54,6 +55,8 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     private lateinit var loadAreaElement: TextView
     private lateinit var finalizingStatusIndicator: TextView
     private lateinit var resetStatusIndicator: TextView
+    private var isFinalisedDone: Boolean? = null
+    private var isResetDone: Boolean? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,14 +78,15 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     }
 
     private fun setStatuses(useCache: Boolean) {
-        setFinalizedIndicator(useCache)
-        setResetIndicator(useCache)
+        Thread {
+            setFinalizedIndicator(useCache)
+            setResetIndicator(useCache)
+        }.start()
     }
 
     private fun setFinalizedIndicator(useCache: Boolean) {
         Thread {
-            val status = isFinalised(useCache)
-            if(status) {
+            if(isFinalised(useCache)) {
                 runOnUiThread {
                     finalizingStatusIndicator.text = "Done"
                     finalizingStatusIndicator.setTextColor(ContextCompat.getColor(this, R.color.delivery_input_valid))
@@ -94,7 +98,9 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
                     finalizingStatusIndicator.setTextColor(ContextCompat.getColor(this, R.color.delivery_input_not_valid))
                     finalizingStatusIndicator.setOnClickListener {
                         finalizingStatusIndicator.text = "In Progress..."
+                        finalizingStatusIndicator.setOnClickListener {}
                         onClickSpoolCustomerData(finalizingStatusIndicator)
+                        isFinalisedDone = true
                     }
                 }
             }
@@ -103,8 +109,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
 
     private fun setResetIndicator(useCache: Boolean) {
         Thread {
-            val status = isResetDone(useCache)
-            if(status) {
+            if(isResetDone(useCache)) {
                 runOnUiThread {
                     resetStatusIndicator.text = "Done"
                     resetStatusIndicator.setTextColor(ContextCompat.getColor(this, R.color.delivery_input_valid))
@@ -115,22 +120,52 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
                     resetStatusIndicator.text = "Pending (Click to Start)"
                     resetStatusIndicator.setTextColor(ContextCompat.getColor(this, R.color.delivery_input_not_valid))
                     resetStatusIndicator.setOnClickListener {
-                        resetStatusIndicator.text = "In Progress..."
-                        onClickDdeleteDeliveryDataButtonFinalizeBtn(resetStatusIndicator)
+                        if(isFinalised(useCache)) {
+                            onClickDeleteDeliveryDataBtn()
+                            isResetDone = true
+                        } else {
+                            confirmDailyRecordDeletion("WARNING", "Ideally data should be finalized before deleting the records. Do you want to proceed?")
+                        }
+
                     }
                 }
             }
         }.start()
     }
 
+    private fun confirmDailyRecordDeletion(title: String, message: String) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setMessage(message)
+            .setTitle(title)
+            .setPositiveButton("Confirm") { dialog, id ->
+                // CONFIRM
+                resetStatusIndicator.text = "In Progress..."
+                resetStatusIndicator.setOnClickListener {}
+                onClickDeleteDeliveryDataBtn()
+                isResetDone = true
+            }
+            .setNegativeButton("Cancel") { dialog, id ->
+                // CANCEL
+            }.setIcon(android.R.drawable.ic_dialog_alert)
+            .show()
+    }
+
     private fun isFinalised(useCache: Boolean = true): Boolean {
+        if (isFinalisedDone != null) {
+            return isFinalisedDone!!
+        }
         val bufferKm = NumberUtils.getIntOrZero(SingleAttributedData.getRecords(useCache).vehicle_finalKm)
         val lastFinalizedKm = DaySummary.getPrevTripEndKm(useCache)
-        return lastFinalizedKm == bufferKm || bufferKm == 0
+        isFinalisedDone = (lastFinalizedKm == bufferKm || bufferKm == 0)
+        return isFinalisedDone!!
     }
 
     private fun isResetDone(useCache: Boolean): Boolean {
-        return DeliverToCustomerDataHandler.get(useCache).isEmpty()
+        if (isResetDone != null) {
+            return isResetDone!!
+        }
+        isResetDone = DeliverToCustomerDataHandler.get(useCache).isEmpty()
+        return isResetDone!!
     }
 
     private fun setListeners() {
@@ -259,7 +294,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
                 spoolBtnElement.isClickable = true
                 spoolBtnElement.text = "Finalize Data"
             }
-            setFinalizedIndicator(false)
+            setStatuses(false)
         }.start()
     }
 
@@ -287,23 +322,10 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         startActivity(switchActivityIntent)
     }
 
-    fun onClickDdeleteDeliveryDataButtonFinalizeBtn(view: View) {
-        val deleteDeliveryDataButtonFinalize = findViewById<Button>(R.id.deleteDeliveryDataButtonFinalize)
+    fun onClickDeleteDeliveryDataBtn() {
         Thread {
-            runOnUiThread()
-            {
-                deleteDeliveryDataButtonFinalize.isEnabled = false
-                deleteDeliveryDataButtonFinalize.alpha = 0.5f
-                deleteDeliveryDataButtonFinalize.isClickable = false
-            }
             OneShotDelivery.deleteDeliveryDataOnServer()
-            runOnUiThread()
-            {
-                deleteDeliveryDataButtonFinalize.isEnabled = true
-                deleteDeliveryDataButtonFinalize.alpha = 1.0f
-                deleteDeliveryDataButtonFinalize.isClickable = true
-            }
-            setResetIndicator(false)
+            setStatuses(false)
         }.start()
     }
 

@@ -538,7 +538,7 @@
 
                         <TextView
                             android:id="@+id/dashboard_finalizing_status_indicator"
-                            android:layout_width="150dp"
+                            android:layout_width="200dp"
                             android:layout_height="wrap_content"
                             android:hint="Fetching status..."
                             android:paddingLeft="10dp"
@@ -564,7 +564,7 @@
 
                         <TextView
                             android:id="@+id/dashboard_reset_status_indicator"
-                            android:layout_width="150dp"
+                            android:layout_width="200dp"
                             android:layout_height="wrap_content"
                             android:hint="Fetching status..."
                             android:paddingLeft="10dp"
@@ -608,14 +608,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:text="Send Khata" />
-
-            <Button
-                android:id="@+id/deleteDeliveryDataButtonFinalize"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:onClick="onClickDdeleteDeliveryDataButtonFinalizeBtn"
-                android:text="Clear Delivery Data Buffer" />
 
         </LinearLayout>
     </ScrollView>

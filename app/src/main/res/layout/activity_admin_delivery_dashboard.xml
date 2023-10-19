@@ -526,20 +526,48 @@
                         android:layout_height="wrap_content"
                         android:background="#345A5959"
                         android:orientation="horizontal"
-                        android:paddingHorizontal="10dp"
-                        android:paddingVertical="15dp">
+                        android:paddingHorizontal="10dp">
+
+                        <TextView
+                            android:id="@+id/textView73"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:paddingVertical="15dp"
+                            android:text="Send Khata"
+                            android:textColor="#D8EEF8" />
+
+                        <TextView
+                            android:id="@+id/dashboard_send_khata"
+                            android:layout_width="200dp"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="10dp"
+                            android:text="Click to Send"
+                            android:textColor="#D8EEF8"
+                            android:textColorHint="#56D8EEF8" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#345A5959"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="10dp">
 
                         <TextView
                             android:id="@+id/textView69"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
+                            android:paddingVertical="15dp"
                             android:text="Finalization"
                             android:textColor="#D8EEF8" />
 
                         <TextView
                             android:id="@+id/dashboard_finalizing_status_indicator"
                             android:layout_width="200dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
                             android:hint="Fetching status..."
                             android:paddingLeft="10dp"
                             android:textColor="#D8EEF8"
@@ -552,20 +580,21 @@
                         android:layout_height="wrap_content"
                         android:background="#345A5959"
                         android:orientation="horizontal"
-                        android:paddingHorizontal="10dp"
-                        android:paddingVertical="15dp">
+                        android:paddingHorizontal="10dp">
 
                         <TextView
                             android:id="@+id/textView71"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
+                            android:paddingVertical="15dp"
                             android:text="Reset Day Data"
                             android:textColor="#D8EEF8" />
 
                         <TextView
                             android:id="@+id/dashboard_reset_status_indicator"
                             android:layout_width="200dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
                             android:hint="Fetching status..."
                             android:paddingLeft="10dp"
                             android:textColor="#D8EEF8"

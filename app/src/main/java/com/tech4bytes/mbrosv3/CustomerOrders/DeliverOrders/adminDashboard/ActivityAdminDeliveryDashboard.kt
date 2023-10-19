@@ -8,7 +8,6 @@ import android.os.Environment
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
-import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -108,7 +107,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
                     finalizingStatusIndicator.setOnClickListener {
                         finalizingStatusIndicator.text = "In Progress..."
                         finalizingStatusIndicator.setOnClickListener {}
-                        onClickSpoolCustomerData()
+                        spoolCustomerData()
                         isFinalisedDone = true
                     }
                 }
@@ -278,8 +277,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         }
     }
 
-    fun onClickSpoolCustomerData() {
-
+    private fun spoolCustomerData() {
         Thread {
             val obj = SingleAttributedData.getRecords()
             obj.finalFarmRate = UIUtils.getUIElementValue(farmRateElement)
@@ -323,10 +321,6 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
             OneShotDelivery.deleteDeliveryDataOnServer()
             setStatuses(false)
         }.start()
-    }
-
-    fun onClickSendKhataBtn(view: View) {
-
     }
 
     fun onClickSendKhata(view: View) {

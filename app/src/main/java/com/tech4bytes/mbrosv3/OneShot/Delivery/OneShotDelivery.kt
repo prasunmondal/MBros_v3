@@ -440,7 +440,6 @@ class OneShotDelivery : AppCompatActivity() {
         recordContainer.setBackgroundColor(cardColor)
         uiMaps[value.name] = entry
         return entry
-//            listContainer.addView(entry)
     }
 
     var entrynumber = 1

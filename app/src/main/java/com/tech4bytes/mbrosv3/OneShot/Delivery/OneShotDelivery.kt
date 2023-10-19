@@ -329,10 +329,6 @@ class OneShotDelivery : AppCompatActivity() {
         showOrder(key, value)
     }
 
-    private fun showOrder() {
-        TODO("Not yet implemented")
-    }
-
     private fun addToUnOrderedMap(name: String): DeliverToCustomerDataModel {
         val deliverCustomersOrders = DeliverToCustomerDataModel(
             id = "${System.currentTimeMillis()}",
@@ -382,9 +378,9 @@ class OneShotDelivery : AppCompatActivity() {
         balanceElement.text = value.prevDue
         val deliveryRecord = DeliverToCustomerActivity.getDeliveryRecord(value.name)
         if (deliveryRecord != null) {
-            pcElement.setText(deliveryRecord.deliveredPc)
-            kgElement.text = deliveryRecord.deliveredKg
-            paidElement.text = deliveryRecord.paid
+            pcElement.setText(NumberUtils.getIntOrBlank(deliveryRecord.deliveredPc))
+            kgElement.text = NumberUtils.getDoubleOrBlank(deliveryRecord.deliveredKg)
+            paidElement.text = NumberUtils.getIntOrBlank(deliveryRecord.paid)
         }
 
         if (SendSMSDetailsUtils.getSendSMSDetailsNumber(value.name) != null) {
@@ -465,12 +461,10 @@ class OneShotDelivery : AppCompatActivity() {
 
     private fun getSMSPermission() {
         val PERMISSION_REQUEST_CODE = 123
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(android.Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_DENIED) {
-                Log.d("permission", "permission denied to SEND_SMS - requesting it")
-                val permissions = arrayOf(android.Manifest.permission.SEND_SMS)
-                requestPermissions(permissions, PERMISSION_REQUEST_CODE)
-            }
+        if (checkSelfPermission(android.Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_DENIED) {
+            Log.d("permission", "permission denied to SEND_SMS - requesting it")
+            val permissions = arrayOf(android.Manifest.permission.SEND_SMS)
+            requestPermissions(permissions, PERMISSION_REQUEST_CODE)
         }
     }
 

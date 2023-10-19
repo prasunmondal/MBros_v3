@@ -15,12 +15,26 @@ class NumberUtils {
             }
         }
 
+        fun getIntOrBlank(input: String): String {
+            val t = getIntOrZero(input)
+            if(t == 0)
+                return ""
+            return t.toString()
+        }
+
         fun getDoubleOrZero(input: String): Double {
             return try {
                 input.toDouble()
             } catch (e: Exception) {
                 0.0
             }
+        }
+
+        fun getDoubleOrBlank(input: String): String {
+            val t = getDoubleOrZero(input)
+            if(t == 0.0)
+                return ""
+            return t.toString()
         }
 
         fun getDoubleOrZero(input: String, roundOffPattern: String): Double {

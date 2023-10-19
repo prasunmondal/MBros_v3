@@ -70,44 +70,54 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         updateDashboard(true)
         setCompanyAndRateValuesInUI()
         setRuntimeUIValues()
-        setStatuses()
+        setStatuses(false)
         setListeners()
     }
 
-    private fun setStatuses() {
-        setFinalizedIndicator()
-        setResetIndicator()
+    private fun setStatuses(useCache: Boolean) {
+        setFinalizedIndicator(useCache)
+        setResetIndicator(useCache)
     }
 
-    private fun setFinalizedIndicator() {
+    private fun setFinalizedIndicator(useCache: Boolean) {
         Thread {
-            val status = isFinalised(false)
+            val status = isFinalised(useCache)
             if(status) {
                 runOnUiThread {
                     finalizingStatusIndicator.text = "Done"
                     finalizingStatusIndicator.setTextColor(ContextCompat.getColor(this, R.color.delivery_input_valid))
+                    finalizingStatusIndicator.setOnClickListener {}
                 }
             } else {
                 runOnUiThread {
-                    finalizingStatusIndicator.text = "Pending"
+                    finalizingStatusIndicator.text = "Pending (Click to Start)"
                     finalizingStatusIndicator.setTextColor(ContextCompat.getColor(this, R.color.delivery_input_not_valid))
+                    finalizingStatusIndicator.setOnClickListener {
+                        finalizingStatusIndicator.text = "In Progress..."
+                        onClickSpoolCustomerData(finalizingStatusIndicator)
+                    }
                 }
             }
         }.start()
     }
 
-    private fun setResetIndicator() {
+    private fun setResetIndicator(useCache: Boolean) {
         Thread {
-            val status = isResetDone(false)
+            val status = isResetDone(useCache)
             if(status) {
                 runOnUiThread {
                     resetStatusIndicator.text = "Done"
                     resetStatusIndicator.setTextColor(ContextCompat.getColor(this, R.color.delivery_input_valid))
+                    resetStatusIndicator.setOnClickListener {}
                 }
             } else {
                 runOnUiThread {
-                    resetStatusIndicator.text = "Pending"
+                    resetStatusIndicator.text = "Pending (Click to Start)"
                     resetStatusIndicator.setTextColor(ContextCompat.getColor(this, R.color.delivery_input_not_valid))
+                    resetStatusIndicator.setOnClickListener {
+                        resetStatusIndicator.text = "In Progress..."
+                        onClickDdeleteDeliveryDataButtonFinalizeBtn(resetStatusIndicator)
+                    }
                 }
             }
         }.start()
@@ -249,6 +259,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
                 spoolBtnElement.isClickable = true
                 spoolBtnElement.text = "Finalize Data"
             }
+            setFinalizedIndicator(false)
         }.start()
     }
 
@@ -292,6 +303,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
                 deleteDeliveryDataButtonFinalize.alpha = 1.0f
                 deleteDeliveryDataButtonFinalize.isClickable = true
             }
+            setResetIndicator(false)
         }.start()
     }
 

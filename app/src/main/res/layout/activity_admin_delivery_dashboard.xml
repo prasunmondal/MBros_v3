@@ -519,17 +519,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight=".7"
-                    android:orientation="vertical"
-                    android:padding="10dp">
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:background="#345A5959"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="15dp">
 
                         <TextView
                             android:id="@+id/textView69"
-                            android:layout_width="90dp"
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:text="Finalization"
                             android:textColor="#D8EEF8" />
@@ -539,6 +541,7 @@
                             android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:hint="Fetching status..."
+                            android:paddingLeft="10dp"
                             android:textColor="#D8EEF8"
                             android:textColorHint="#56D8EEF8" />
 
@@ -547,13 +550,16 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:background="#345A5959"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="15dp">
 
                         <TextView
                             android:id="@+id/textView71"
-                            android:layout_width="90dp"
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:text="Clear Day"
+                            android:text="Reset Day Data"
                             android:textColor="#D8EEF8" />
 
                         <TextView
@@ -561,6 +567,7 @@
                             android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:hint="Fetching status..."
+                            android:paddingLeft="10dp"
                             android:textColor="#D8EEF8"
                             android:textColorHint="#56D8EEF8" />
 

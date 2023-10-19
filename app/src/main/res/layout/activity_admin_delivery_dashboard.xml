@@ -594,14 +594,6 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/admin_dashboard_spool_customer_delivery_data"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:onClick="onClickSpoolCustomerData"
-                android:text="Finalize Data" />
-
-            <Button
                 android:id="@+id/dashboard_send_khata_btn"
                 android:layout_width="match_parent"
                 android:onClick="onClickSendKhataBtn"

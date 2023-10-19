@@ -42,7 +42,6 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     private lateinit var deliveredPcKgElement: TextView
     private lateinit var deliveredAvgWtElement: TextView
     private lateinit var projectedShortageElement: TextView
-    private lateinit var spoolBtnElement: Button
     private lateinit var farmRateElement: EditText
     private lateinit var deliveryRateElement: EditText
     private lateinit var profitElement: TextView
@@ -99,7 +98,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
                     finalizingStatusIndicator.setOnClickListener {
                         finalizingStatusIndicator.text = "In Progress..."
                         finalizingStatusIndicator.setOnClickListener {}
-                        onClickSpoolCustomerData(finalizingStatusIndicator)
+                        onClickSpoolCustomerData()
                         isFinalisedDone = true
                     }
                 }
@@ -191,7 +190,6 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         deliveredPcKgElement = findViewById(R.id.activity_admin_delivery_dashboard_delivered_pc_kg)
         deliveredAvgWtElement = findViewById(R.id.activity_admin_delivery_dashboard_delivered_avg_wt)
         projectedShortageElement = findViewById(R.id.activity_admin_delivery_dashboard_projected_shortage)
-        spoolBtnElement = findViewById(R.id.admin_dashboard_spool_customer_delivery_data)
         farmRateElement = findViewById(R.id.activity_admin_delivery_dashboard_farmrate)
         deliveryRateElement = findViewById(R.id.activity_admin_delivery_dashboard_delivery_base_price)
         profitElement = findViewById(R.id.admin_dash_profit)
@@ -270,15 +268,9 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         }
     }
 
-    fun onClickSpoolCustomerData(view: View) {
+    fun onClickSpoolCustomerData() {
 
         Thread {
-            runOnUiThread {
-                spoolBtnElement.isEnabled = false
-                spoolBtnElement.alpha = .5f
-                spoolBtnElement.isClickable = false
-                spoolBtnElement.text = "Finalizing Data... .. ."
-            }
             val obj = SingleAttributedData.getRecords()
             obj.finalFarmRate = UIUtils.getUIElementValue(farmRateElement)
             val deliveryRate = UIUtils.getUIElementValue(deliveryRateElement)
@@ -288,12 +280,6 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
             Refueling.spoolRefuelingData()
             DaySummary.saveToServer()
             SingleAttributedData.invalidateCache()
-            runOnUiThread {
-                spoolBtnElement.isEnabled = true
-                spoolBtnElement.alpha = 1.0f
-                spoolBtnElement.isClickable = true
-                spoolBtnElement.text = "Finalize Data"
-            }
             setStatuses(false)
         }.start()
     }

@@ -814,6 +814,7 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        super.onBackPressed()
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         builder.setMessage("Unsaved changes will be lost. Do you want to go back?")
             .setTitle("Going back")

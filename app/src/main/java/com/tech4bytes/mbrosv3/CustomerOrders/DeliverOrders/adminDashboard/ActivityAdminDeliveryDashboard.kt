@@ -4,11 +4,14 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -24,13 +27,20 @@ import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
 import com.tech4bytes.mbrosv3.R
+import com.tech4bytes.mbrosv3.SendInfoTexts.Whatsapp.Whatsapp
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.WeightUtils.WeightUtils
 import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
+import java.io.*
+import java.net.MalformedURLException
+import java.net.URL
+import java.util.*
+import kotlin.io.path.toPath
 
 
 class ActivityAdminDeliveryDashboard : AppCompatActivity() {
@@ -317,5 +327,39 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
 
     fun onClickSendKhataBtn(view: View) {
 
+    }
+
+    fun onClickSendKhata(view: View) {
+        Toast.makeText(this, "Downloading Daily File", Toast.LENGTH_SHORT).show()
+        val filename = "MBros - ${DateUtils.getDateInFormat(Date(), "yyyy.MM.dd")}"
+        val filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toURI().toPath().toString() + "/" + filename + ".pdf"
+
+        Thread {
+            downloadDailySheet(filePath)
+            runOnUiThread {
+                Toast.makeText(this, "Download Complete", Toast.LENGTH_SHORT).show()
+            }
+            Whatsapp.sendFileToWhatsapp(this, filePath, "919679004046", "")
+        }.start()
+    }
+
+    fun downloadDailySheet(fullPath: String) {
+        try {
+            val u = URL("https://docs.google.com/spreadsheets/d/e/2PACX-1vQSO3BWQ7b0JmySpKVSULco9FcxrDi3UX9uSIECvOdUCSUI8AyeCDjSnmwWeA-l6oHBkUNhDjTU7Rgd/pub?gid=1385397548&single=true&output=pdf")
+            val iStream: InputStream = u.openStream()
+            val dis = DataInputStream(iStream)
+            val buffer = ByteArray(1024)
+            var length: Int
+            val fos = FileOutputStream(File(fullPath))
+            while (dis.read(buffer).also { length = it } > 0) {
+                fos.write(buffer, 0, length)
+            }
+        } catch (mue: MalformedURLException) {
+            Log.e("SYNC getUpdate", "malformed url error", mue)
+        } catch (ioe: IOException) {
+            Log.e("SYNC getUpdate", "io error", ioe)
+        } catch (se: SecurityException) {
+            Log.e("SYNC getUpdate", "security error", se)
+        }
     }
 }

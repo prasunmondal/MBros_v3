@@ -49,27 +49,7 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
         showDeliveryData()
     }
 
-    fun downloadDailySheet(fullPath: String) {
-//        Thread {
-            try {
-                val u = URL("https://docs.google.com/spreadsheets/d/e/2PACX-1vQSO3BWQ7b0JmySpKVSULco9FcxrDi3UX9uSIECvOdUCSUI8AyeCDjSnmwWeA-l6oHBkUNhDjTU7Rgd/pub?gid=1385397548&single=true&output=pdf")
-                val iStream: InputStream = u.openStream()
-                val dis = DataInputStream(iStream)
-                val buffer = ByteArray(1024)
-                var length: Int
-                val fos = FileOutputStream(File(fullPath))
-                while (dis.read(buffer).also { length = it } > 0) {
-                    fos.write(buffer, 0, length)
-                }
-            } catch (mue: MalformedURLException) {
-                Log.e("SYNC getUpdate", "malformed url error", mue)
-            } catch (ioe: IOException) {
-                Log.e("SYNC getUpdate", "io error", ioe)
-            } catch (se: SecurityException) {
-                Log.e("SYNC getUpdate", "security error", se)
-            }
-//        }.start()
-    }
+
 
 //    fun downloadDailySheet() {
 //        DownloadFiles()
@@ -184,19 +164,19 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
         startActivity(switchActivityIntent)
     }
 
-    fun onClickDownloadDailyFile(view: View) {
-        Toast.makeText(this, "Downloading Daily File", Toast.LENGTH_SHORT).show()
-        val filename = "MBros - ${DateUtils.getDateInFormat(Date(), "yyyy.MM.dd")}"
-        val filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toURI().toPath().toString() + "/" + filename + ".pdf"
-
-        Thread {
-            downloadDailySheet(filePath)
-            runOnUiThread {
-                Toast.makeText(this, "Download Complete", Toast.LENGTH_SHORT).show()
-            }
-            Whatsapp.sendFileToWhatsapp(this, filePath, "919679004046", "")
-        }.start()
-    }
+//    fun onClickDownloadDailyFile(view: View) {
+//        Toast.makeText(this, "Downloading Daily File", Toast.LENGTH_SHORT).show()
+//        val filename = "MBros - ${DateUtils.getDateInFormat(Date(), "yyyy.MM.dd")}"
+//        val filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toURI().toPath().toString() + "/" + filename + ".pdf"
+//
+//        Thread {
+//            downloadDailySheet(filePath)
+//            runOnUiThread {
+//                Toast.makeText(this, "Download Complete", Toast.LENGTH_SHORT).show()
+//            }
+//            Whatsapp.sendFileToWhatsapp(this, filePath, "919679004046", "")
+//        }.start()
+//    }
 
     fun goToSendSMSPage(view: View) {
         val switchActivityIntent = Intent(this, OneShotSMS::class.java)

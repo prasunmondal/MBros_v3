@@ -55,18 +55,6 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/vmc_download_daily_file_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="right|center_vertical"
-            android:onClick="onClickDownloadDailyFile"
-            android:text="Get Daily File"
-            android:textColor="#C8BE95"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <TextView
             android:id="@+id/vmc_sms_btn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

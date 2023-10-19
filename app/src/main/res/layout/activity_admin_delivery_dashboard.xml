@@ -513,6 +513,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="50dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -541,6 +542,7 @@
                             android:layout_width="200dp"
                             android:layout_height="match_parent"
                             android:gravity="center_vertical"
+                            android:onClick="onClickSendKhata"
                             android:paddingLeft="10dp"
                             android:text="Click to Send"
                             android:textColor="#D8EEF8"
@@ -621,14 +623,6 @@
                 </LinearLayout>
 
             </LinearLayout>
-
-            <Button
-                android:id="@+id/dashboard_send_khata_btn"
-                android:layout_width="match_parent"
-                android:onClick="onClickSendKhataBtn"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Send Khata" />
 
         </LinearLayout>
     </ScrollView>

@@ -3,18 +3,13 @@ package com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.ActivityDeliveringDeliveryComplete
 import com.tech4bytes.mbrosv3.AppData.AppUtils
-import com.tech4bytes.mbrosv3.AppUsers.AppUsersModel
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.UserRoleUtils
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
@@ -67,7 +62,7 @@ class DeliverToCustomerActivity : AppCompatActivity() {
         val totalDueElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::totalDue)!!
         val paidElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::paid)!!
         val balanceDueElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::balanceDue)!!
-        val bengaliNameElement =  findViewById<TextView>(R.id.activity_delivering_deliver_bengali_name)
+        val bengaliNameElement = findViewById<TextView>(R.id.activity_delivering_deliver_bengali_name)
 
         // Set UI Values
         UIUtils.setUIElementValue(nameElement, record.name)
@@ -262,25 +257,25 @@ class DeliverToCustomerActivity : AppCompatActivity() {
     }
 
     fun onClickSubmitDeliveredRecord(view: View) {
-            val rate = UIUtils.getUIElementValue(getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::rate)!!)
-            val deliveredWeight = UIUtils.getUIElementValue(getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::deliveredKg)!!)
-            if (NumberUtils.getDoubleOrZero(rate) == 0.0 && NumberUtils.getDoubleOrZero(deliveredWeight) != 0.0) {
-                Toast.makeText(this, "সব গুলো লেখা হয়নি", Toast.LENGTH_LONG).show()
-                return
-            }
+        val rate = UIUtils.getUIElementValue(getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::rate)!!)
+        val deliveredWeight = UIUtils.getUIElementValue(getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::deliveredKg)!!)
+        if (NumberUtils.getDoubleOrZero(rate) == 0.0 && NumberUtils.getDoubleOrZero(deliveredWeight) != 0.0) {
+            Toast.makeText(this, "সব গুলো লেখা হয়নি", Toast.LENGTH_LONG).show()
+            return
+        }
 
-            getAllAttributesOfClass<DeliverToCustomerDataModel>().forEach { kMutableProperty ->
-                val uiElement = getUiElementFromDeliveringPage(mainView, kMutableProperty)
-                if (uiElement != null) {
-                    ReflectionUtils.setAttribute(record, kMutableProperty, UIUtils.getUIElementValue(uiElement))
-                }
+        getAllAttributesOfClass<DeliverToCustomerDataModel>().forEach { kMutableProperty ->
+            val uiElement = getUiElementFromDeliveringPage(mainView, kMutableProperty)
+            if (uiElement != null) {
+                ReflectionUtils.setAttribute(record, kMutableProperty, UIUtils.getUIElementValue(uiElement))
             }
-            record.id = System.currentTimeMillis().toString()
-            record.timestamp = DateUtils.getCurrentTimestamp()
-            record.deliveryStatus = "DELIVERED"
-            record.todaysAmount = "${calculateTodaysAmount()}"
-            record.totalDue = "${calculateTotalAmount()}"
-            record.balanceDue = "${calculateBalanceDue()}"
+        }
+        record.id = System.currentTimeMillis().toString()
+        record.timestamp = DateUtils.getCurrentTimestamp()
+        record.deliveryStatus = "DELIVERED"
+        record.todaysAmount = "${calculateTodaysAmount()}"
+        record.totalDue = "${calculateTotalAmount()}"
+        record.balanceDue = "${calculateBalanceDue()}"
 
         val saveBtnElement = findViewById<Button>(R.id.activity_delivering_deliver_submit_btn)
         Thread {

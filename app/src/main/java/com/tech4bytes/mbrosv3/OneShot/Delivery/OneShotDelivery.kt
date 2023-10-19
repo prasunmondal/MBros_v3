@@ -633,7 +633,7 @@ class OneShotDelivery : AppCompatActivity() {
             val shortage = (loadedKg - sumKg) * 100 / loadedKg
 
             totalPcElement.text = "$sumPc"
-            totalKgElement.text = "${"%.3f".format(sumKg)}"
+            totalKgElement.text = "%.3f".format(sumKg)
             totalSaleElement.text = "$sumSale"
             metadataObj.daySale = sumSale.toString()
 

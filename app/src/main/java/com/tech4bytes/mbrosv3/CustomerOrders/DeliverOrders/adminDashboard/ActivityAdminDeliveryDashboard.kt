@@ -94,7 +94,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
 
     private fun setFinalizedIndicator(useCache: Boolean) {
         Thread {
-            if(isFinalised(useCache)) {
+            if (isFinalised(useCache)) {
                 runOnUiThread {
                     finalizingStatusIndicator.text = "Done"
                     finalizingStatusIndicator.setTextColor(ContextCompat.getColor(this, R.color.delivery_input_valid))
@@ -117,7 +117,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
 
     private fun setResetIndicator(useCache: Boolean) {
         Thread {
-            if(isResetDone(useCache)) {
+            if (isResetDone(useCache)) {
                 runOnUiThread {
                     resetStatusIndicator.text = "Done"
                     resetStatusIndicator.setTextColor(ContextCompat.getColor(this, R.color.delivery_input_valid))
@@ -128,7 +128,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
                     resetStatusIndicator.text = "Pending (Click to Start)"
                     resetStatusIndicator.setTextColor(ContextCompat.getColor(this, R.color.delivery_input_not_valid))
                     resetStatusIndicator.setOnClickListener {
-                        if(isFinalised(useCache)) {
+                        if (isFinalised(useCache)) {
                             onClickDeleteDeliveryDataBtn()
                             isResetDone = true
                         } else {

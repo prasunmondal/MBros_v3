@@ -6,13 +6,11 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.StrictMode
 import android.os.StrictMode.VmPolicy
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -21,18 +19,12 @@ import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
-import com.tech4bytes.mbrosv3.SendInfoTexts.Whatsapp.Whatsapp
 import com.tech4bytes.mbrosv3.Sms.OneShotSMS.OneShotSMS
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
-import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
-import java.io.*
-import java.net.MalformedURLException
-import java.net.URL
-import java.util.*
-import kotlin.io.path.toPath
+import java.io.File
 
 
 class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
@@ -48,7 +40,6 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
 
         showDeliveryData()
     }
-
 
 
 //    fun downloadDailySheet() {

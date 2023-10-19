@@ -52,7 +52,7 @@ class OneShotSMS : AppCompatActivity() {
 
     fun onClickSendSMS(view: View) {
         smsList.forEach {
-            if(it.isEnabled) {
+            if (it.isEnabled) {
                 OSMSProcessor.sendViaDesiredMedium(it.medium, it.number, it.text)
             }
         }
@@ -68,7 +68,7 @@ class OneShotSMS : AppCompatActivity() {
                     "LOAD_DETAILS" -> OSMSProcessor.sendLoadDetails(it)
                     else -> null
                 }
-                if(smsResult != null)
+                if (smsResult != null)
                     smsList.add(smsResult)
             }
         }

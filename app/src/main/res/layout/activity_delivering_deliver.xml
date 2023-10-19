@@ -80,8 +80,8 @@
                 android:layout_height="wrap_content"
                 android:text="Name"
                 android:textColor="#250101"
-                android:visibility="gone"
-                android:textSize="28sp" />
+                android:textSize="28sp"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/activity_delivering_deliver_bengali_name"

@@ -2,9 +2,7 @@ package com.tech4bytes.mbrosv3.SendInfoTexts.Whatsapp
 
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.widget.Toast
 import androidx.core.content.FileProvider
 import com.tech4bytes.mbrosv3.BuildConfig
 import java.io.File
@@ -27,19 +25,6 @@ class Whatsapp {
                 context.startActivity(intent)
             } catch (e: Exception) {
                 e.printStackTrace()
-            }
-        }
-
-        fun sendMessage(context: Context, text: String) {
-            try {
-                val waIntent = Intent(Intent.ACTION_SEND)
-                waIntent.type = "text/plain"
-                waIntent.setPackage("com.whatsapp")
-                waIntent.putExtra(Intent.EXTRA_TEXT, text)
-                context.startActivity(Intent.createChooser(waIntent, "Share with"))
-            } catch (e: PackageManager.NameNotFoundException) {
-                Toast.makeText(context, "WhatsApp not Installed", Toast.LENGTH_SHORT)
-                    .show()
             }
         }
 

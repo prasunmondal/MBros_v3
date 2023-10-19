@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
@@ -813,9 +814,19 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        val switchActivityIntent = Intent(this, ActivityLogin::class.java)
-        switchActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(switchActivityIntent)
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setMessage("Unsaved changes will be lost. Do you want to go back?")
+            .setTitle("Going back")
+            .setPositiveButton("Yes") { dialog, id ->
+                // CONFIRM
+                val switchActivityIntent = Intent(this, ActivityLogin::class.java)
+                switchActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(switchActivityIntent)
+            }
+            .setNegativeButton("No") { dialog, id ->
+                // CANCEL
+            }.setIcon(android.R.drawable.ic_dialog_alert)
+            .show()
     }
 
     fun onClickGoToMoneyVerification(view: View) {

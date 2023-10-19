@@ -490,7 +490,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/textView72"
+                            android:id="@+id/dashboard_reset_status_indicator"
                             android:layout_width="30dp"
                             android:layout_height="50dp"
                             android:background="@drawable/rounded"

@@ -535,7 +535,7 @@
                             android:textColor="#D8EEF8" />
 
                         <TextView
-                            android:id="@+id/textView75"
+                            android:id="@+id/dashboard_finalizing_status_indicator"
                             android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:hint="Fetching status..."
@@ -557,7 +557,7 @@
                             android:textColor="#D8EEF8" />
 
                         <TextView
-                            android:id="@+id/textView72"
+                            android:id="@+id/dashboard_reset_status_indicator"
                             android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:hint="Fetching status..."

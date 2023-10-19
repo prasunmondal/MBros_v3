@@ -20,6 +20,7 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.De
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
+import com.tech4bytes.mbrosv3.Finalize.Models.FinalizeConfig
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
 import com.tech4bytes.mbrosv3.R
@@ -51,6 +52,8 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     private lateinit var loadBranchElement: TextView
     private lateinit var loadAccountElement: TextView
     private lateinit var loadAreaElement: TextView
+    private lateinit var finalizingStatusIndicator: TextView
+    private lateinit var resetStatusIndicator: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,11 +66,61 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         AppUtils.logError()
         getPermissions()
 
-        initiallizeVariables()
+        initializeVariables()
         updateDashboard(true)
         setCompanyAndRateValuesInUI()
         setRuntimeUIValues()
+        setStatuses()
         setListeners()
+    }
+
+    private fun setStatuses() {
+        setFinalizedIndicator()
+        setResetIndicator()
+    }
+
+    private fun setFinalizedIndicator() {
+        Thread {
+            val status = isFinalised(false)
+            if(status) {
+                runOnUiThread {
+                    finalizingStatusIndicator.text = "Done"
+                    finalizingStatusIndicator.setTextColor(ContextCompat.getColor(this, R.color.delivery_input_valid))
+                }
+            } else {
+                runOnUiThread {
+                    finalizingStatusIndicator.text = "Pending"
+                    finalizingStatusIndicator.setTextColor(ContextCompat.getColor(this, R.color.delivery_input_not_valid))
+                }
+            }
+        }.start()
+    }
+
+    private fun setResetIndicator() {
+        Thread {
+            val status = isResetDone(false)
+            if(status) {
+                runOnUiThread {
+                    resetStatusIndicator.text = "Done"
+                    resetStatusIndicator.setTextColor(ContextCompat.getColor(this, R.color.delivery_input_valid))
+                }
+            } else {
+                runOnUiThread {
+                    resetStatusIndicator.text = "Pending"
+                    resetStatusIndicator.setTextColor(ContextCompat.getColor(this, R.color.delivery_input_not_valid))
+                }
+            }
+        }.start()
+    }
+
+    private fun isFinalised(useCache: Boolean = true): Boolean {
+        val bufferKm = NumberUtils.getIntOrZero(SingleAttributedData.getRecords(useCache).vehicle_finalKm)
+        val lastFinalizedKm = DaySummary.getPrevTripEndKm(useCache)
+        return lastFinalizedKm == bufferKm || bufferKm == 0
+    }
+
+    private fun isResetDone(useCache: Boolean): Boolean {
+        return DeliverToCustomerDataHandler.get(useCache).isEmpty()
     }
 
     private fun setListeners() {
@@ -85,7 +138,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         }
     }
 
-    private fun initiallizeVariables() {
+    private fun initializeVariables() {
         deliveredNumberElement = findViewById(R.id.activity_admin_delivery_dashboard_delivered_number)
         totalPcElement = findViewById(R.id.activity_admin_delivery_dashboard_total_pc)
         totalKgElement = findViewById(R.id.activity_admin_delivery_dashboard_loaded_kg)
@@ -104,6 +157,8 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         loadBranchElement = findViewById(R.id.activity_admin_delivery_dashboard_load_company_branch)
         loadAccountElement = findViewById(R.id.activity_admin_delivery_dashboard_load_account)
         loadAreaElement = findViewById(R.id.activity_admin_delivery_dashboard_load_company_area)
+        finalizingStatusIndicator = findViewById(R.id.dashboard_finalizing_status_indicator)
+        resetStatusIndicator = findViewById(R.id.dashboard_reset_status_indicator)
     }
 
     private fun getPermissions() {

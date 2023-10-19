@@ -125,8 +125,8 @@ data class DaySummary(
             return ListUtils.sortListByAttribute(parsedResult, DaySummary::timestamp)
         }
 
-        fun getPrevTripEndKm(): Int {
-            val list = get()
+        fun getPrevTripEndKm(useCache: Boolean = true): Int {
+            val list = get(useCache)
             return NumberUtils.getIntOrZero(list[list.size - 1].trip_end_km)
         }
 

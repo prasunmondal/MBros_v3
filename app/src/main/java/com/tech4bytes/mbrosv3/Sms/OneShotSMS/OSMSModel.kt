@@ -6,8 +6,14 @@ data class OSMSModel(
     val communicationType: String,
     val inputData: String,
     val dataTemplate: String,
-    val isEnabled: String,
-) : java.io.Serializable
+    val enablement_template: String,
+    val isEnabled: String
+) : java.io.Serializable {
+
+    override fun toString(): String {
+        return "OSMSModel(platform='$platform', sendTo='$sendTo', communicationType='$communicationType', inputData='$inputData', dataTemplate='$dataTemplate', enablement_template='$enablement_template', isEnabled='$isEnabled')"
+    }
+}
 
 data class SMS(
     val medium: String,

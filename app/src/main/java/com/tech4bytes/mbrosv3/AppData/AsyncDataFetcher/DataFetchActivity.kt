@@ -83,8 +83,4 @@ class DataFetchActivity : AppCompatActivity() {
             }
         }.start()
     }
-
-    fun onClickDataFetchComplete(view: View) {
-        super.onBackPressed()
-    }
 }

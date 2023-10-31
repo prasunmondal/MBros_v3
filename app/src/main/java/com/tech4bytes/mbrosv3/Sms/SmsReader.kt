@@ -13,6 +13,7 @@ class SmsReader {
 
     companion object {
         fun getAllSms(context: Context): MutableList<SMSModel> {
+            SMSPermissions.askPermission(context, android.Manifest.permission.SEND_SMS)
             val smsList = mutableListOf<SMSModel>()
 
             val cr: ContentResolver = context.contentResolver

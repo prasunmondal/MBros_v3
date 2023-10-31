@@ -1,13 +1,17 @@
 package com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
@@ -17,14 +21,17 @@ import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
+import com.tech4bytes.mbrosv3.Sms.SMSPermissions
 import com.tech4bytes.mbrosv3.Sms.SmsReader
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 import org.apache.commons.collections4.CollectionUtils
 import java.math.RoundingMode
 import java.text.DecimalFormat
+import java.util.*
 import java.util.stream.Collectors
 
 
@@ -41,9 +48,23 @@ class SMSOrdering : AppCompatActivity() {
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
+        SMSPermissions.askPermission(this, android.Manifest.permission.SEND_SMS)
+
+        setUpUI()
         populateCustomerListDropdown()
         setUpListeners()
         showSMS()
+    }
+
+
+
+    fun setUpUI() {
+        val offset = 1000L * 60 * 60 * 24;
+        val currentDate = System.currentTimeMillis()
+        val listDate = Date(currentDate + offset)
+        val listDateUI = findViewById<TextView>(R.id.smsordering_list_date)
+
+        listDateUI.text = DateUtils.getDateInFormat(listDate, "dd/mm/yyyy")
     }
 
     private fun setUpListeners() {

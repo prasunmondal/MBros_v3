@@ -3,7 +3,6 @@ package com.tech4bytes.mbrosv3.OneShot.Delivery
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Rect
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,6 +18,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.prasunmondal.postjsontosheets.clients.delete.Delete
 import com.tech4bytes.mbrosv3.AppData.AppUtils
+import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
@@ -265,7 +265,8 @@ class OneShotDelivery : AppCompatActivity() {
 
         refuelingKmElement.doOnTextChanged { text, start, before, count ->
             val refuelingKm = NumberUtils.getIntOrZero(refuelingKmElement.text.toString())
-            finalKmElement.setText((refuelingKm + 7).toString())
+            val addKmToFuelKmToGetFinalKm = NumberUtils.getIntOrZero(AppConstants.get(AppConstants.ADD_TO_FUELING_KMS_TO_GET_FINAL_KM))
+            finalKmElement.setText((refuelingKm + addKmToFuelKmToGetFinalKm).toString())
         }
 
         updateRefuelingUIDetails()
@@ -273,7 +274,11 @@ class OneShotDelivery : AppCompatActivity() {
 
     private fun populateDeliveryMap() {
         deliveryMapOrderedCustomers = mutableMapOf()
+        deliveryMapUnOrderedCustomers = mutableMapOf()
+
         val listOfOrderedCustomers = GetCustomerOrders.getListOfOrderedCustomers()
+        val listOfUnOrderedCustomers = GetCustomerOrders.getListOfUnOrderedCustomers()
+
         listOfOrderedCustomers.forEach {
             val deliverCustomersOrders = DeliverToCustomerDataModel(
                 id = "${System.currentTimeMillis()}",
@@ -290,23 +295,19 @@ class OneShotDelivery : AppCompatActivity() {
         }
 
         DeliverToCustomerDataHandler.get().forEach {
-//            if (!deliveryMapOrderedCustomers.containsKey(it.name)) {
-                val deliverCustomersOrders = DeliverToCustomerDataModel(
-                    id = "${System.currentTimeMillis()}",
-                    timestamp = DateUtils.getCurrentTimestamp(),
-                    name = it.name,
-                    orderedPc = "0",
-                    orderedKg = "0",
-                    rate = "${CustomerData.getDeliveryRate(it.name)}",
-                    prevDue = CustomerData.getLastDue(it.name),
-                    deliveryStatus = "DELIVERING"
-                )
-                deliveryMapOrderedCustomers[it.name] = deliverCustomersOrders
-//            }
+            val deliverCustomersOrders = DeliverToCustomerDataModel(
+                id = "${System.currentTimeMillis()}",
+                timestamp = DateUtils.getCurrentTimestamp(),
+                name = it.name,
+                orderedPc = "0",
+                orderedKg = "0",
+                rate = "${CustomerData.getDeliveryRate(it.name)}",
+                prevDue = CustomerData.getLastDue(it.name),
+                deliveryStatus = "DELIVERING"
+            )
+            deliveryMapOrderedCustomers[it.name] = deliverCustomersOrders
         }
 
-        deliveryMapUnOrderedCustomers = mutableMapOf()
-        val listOfUnOrderedCustomers = GetCustomerOrders.getListOfUnOrderedCustomers()
         listOfUnOrderedCustomers.forEach {
             val deliverCustomersOrders = DeliverToCustomerDataModel(
                 id = "${System.currentTimeMillis()}",
@@ -350,7 +351,7 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun showOrders() {
-        var t = showOrders(deliveryMapOrderedCustomers, R.id.one_shot_delivery_ordered_customers_entry_container)
+        val t = showOrders(deliveryMapOrderedCustomers, R.id.one_shot_delivery_ordered_customers_entry_container)
         findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).removeAllViews()
 
         t.forEach { (key, value) ->

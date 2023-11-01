@@ -46,14 +46,12 @@ class OSD {
 
                 loadPcElement.doOnTextChanged { text, start, before, count ->
                     record.actualLoadPc = loadPcElement.text.toString()
-//                    SingleAttributedData.saveToLocal(record)
                     updateRelatedFields_LoadPcKg(loadPcElement, loadKgElement, loadAvgWtElement)
                     OneShotDelivery.updateTotals(context)
                 }
 
                 loadKgElement.doOnTextChanged { text, start, before, count ->
                     record.actualLoadKg = loadKgElement.text.toString()
-//                    SingleAttributedData.saveToLocal(record)
                     updateRelatedFields_LoadPcKg(loadPcElement, loadKgElement, loadAvgWtElement)
                     OneShotDelivery.updateTotals(context)
                 }
@@ -71,7 +69,6 @@ class OSD {
                 }
             }
 
-            // TODO: remove parameters
             fun sendLoadInfoToCompany(loadedPc: String, loadedKg: String) {
                 val metadata = SingleAttributedData.getRecords()
                 val numberToSendInfo = AppConstants.GeneratedKeys.getWhatsappNumber(metadata.load_account)

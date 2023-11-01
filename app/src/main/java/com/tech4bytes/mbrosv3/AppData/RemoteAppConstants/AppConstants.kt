@@ -10,6 +10,7 @@ enum class AppConstants {
     DRIVER_SALARY,
     SEND_DELIVERY_DETAILS_BY_SMS,
     DELIVERY_BASE_RATE_DIFF,
+    ADD_TO_FUELING_KMS_TO_GET_FINAL_KM,
     DUE_SHOW_BALANCE_AVG_DAYS;
 
     companion object {

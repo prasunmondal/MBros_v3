@@ -69,7 +69,7 @@ class SMSOrdering : AppCompatActivity() {
 
         runOnUiThread {
             val listDateUI = findViewById<TextView>(R.id.smsordering_list_date)
-            listDateUI.text = DateUtils.getDateInFormat(listDate, "dd/mm/yyyy")
+            listDateUI.text = DateUtils.getDateInFormat(listDate, "dd/MM/yyyy")
         }
     }
 

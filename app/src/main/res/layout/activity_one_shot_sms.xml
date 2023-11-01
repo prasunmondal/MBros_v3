@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="#000000"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:paddingHorizontal="10dp"
         android:paddingVertical="5dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,10 +21,22 @@
 
         <TextView
             android:id="@+id/textView61"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/biorhyme"
-            android:text="Mondal Bros. - Msg Centre"
+            android:text="Mondal Bros."
+            android:textColor="#FBF0D6"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView75"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/biorhyme"
+            android:gravity="end"
+            android:text=" - Msg Centre"
             android:textColor="#FBF0D6"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -43,7 +55,17 @@
             android:id="@+id/osms_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView72"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:height="500dp"
+                android:gravity="center"
+                android:text="Loading..."
+                android:textColor="@color/hint_text_loading" />
+        </LinearLayout>
     </ScrollView>
 
     <Button

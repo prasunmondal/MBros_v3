@@ -48,9 +48,11 @@ class OSMSProcessor {
 
         fun sendDeliverySMS(smsDetail: OSMSModel): SMS? {
             LogMe.log(smsDetail.toString())
-            val deliveryData = DeliverToCustomerActivity.getDeliveryRecord(smsDetail.inputData)!!
-            val formattedDate = DateUtils.getDateInFormat("dd/MM/yyyy")
 
+            // if delivery data is not available for the customer, send null - no communication required
+            val deliveryData = DeliverToCustomerActivity.getDeliveryRecord(smsDetail.inputData) ?: return null
+
+            val formattedDate = DateUtils.getDateInFormat("dd/MM/yyyy")
             val replaceMethod = { template: String ->
                 template.replace("<date>", formattedDate)
                 .replace("<name>", deliveryData.name)

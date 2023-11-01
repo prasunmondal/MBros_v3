@@ -16,6 +16,7 @@
     <color name="button_enabled">#00BCD4</color>
     <color name="button_disabled">#F3A3A3A3</color>
 
+    <color name="hint_text_loading">#8DD8D4D4</color>
 
     <!--    CUSTOM COLORS -->
     <color name="delivery_completed">#C3CAC4</color>

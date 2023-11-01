@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
+import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.BusinessLogic.Sorter
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
@@ -44,6 +45,7 @@ class SMSOrdering : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_smsordering)
         AppContexts.set(this)
+        AppUtils.logError()
         supportActionBar!!.hide()
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -62,9 +64,11 @@ class SMSOrdering : AppCompatActivity() {
         val offset = 1000L * 60 * 60 * 24;
         val currentDate = System.currentTimeMillis()
         val listDate = Date(currentDate + offset)
-        val listDateUI = findViewById<TextView>(R.id.smsordering_list_date)
 
-        listDateUI.text = DateUtils.getDateInFormat(listDate, "dd/mm/yyyy")
+        runOnUiThread {
+            val listDateUI = findViewById<TextView>(R.id.smsordering_list_date)
+            listDateUI.text = DateUtils.getDateInFormat(listDate, "dd/mm/yyyy")
+        }
     }
 
     private fun setUpListeners() {
@@ -87,17 +91,19 @@ class SMSOrdering : AppCompatActivity() {
 //        showTotal()
 
         smsFiltered.forEach { sms ->
-            val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_fragments, null)
-            entry.findViewById<TextView>(R.id.smsorder_listEntry_receive_number).text = sms.number
-            entry.findViewById<TextView>(R.id.smsorder_listEntry_text).text = sms.body
-            entry.findViewById<TextView>(R.id.smsorder_listEntry_date).text = sms.datetime.split(" ")[2]
-            entry.findViewById<TextView>(R.id.smsorder_listEntry_month).text = sms.datetime.split(" ")[1]
-            container.addView(entry)
-            entry.setOnClickListener {
-                smsToProcess = sms.body
-                processSMS()
-                showEntries()
-                onClickToggleSMSView(entry)
+            runOnUiThread {
+                val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_fragments, null)
+                entry.findViewById<TextView>(R.id.smsorder_listEntry_receive_number).text = sms.number
+                entry.findViewById<TextView>(R.id.smsorder_listEntry_text).text = sms.body
+                entry.findViewById<TextView>(R.id.smsorder_listEntry_date).text = sms.datetime.split(" ")[2]
+                entry.findViewById<TextView>(R.id.smsorder_listEntry_month).text = sms.datetime.split(" ")[1]
+                container.addView(entry)
+                entry.setOnClickListener {
+                    smsToProcess = sms.body
+                    processSMS()
+                    showEntries()
+                    onClickToggleSMSView(entry)
+                }
             }
         }
     }
@@ -150,23 +156,25 @@ class SMSOrdering : AppCompatActivity() {
             .map(SMSOrderModel::name)
             .collect(Collectors.toList())
         val listToShow = CollectionUtils.subtract(sortedList, alreadyInUI).toList()
-
-        val uiView = findViewById<AutoCompleteTextView>(R.id.smsorder_customer_picker)
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.template_dropdown_entry, listToShow)
-        uiView.setAdapter(adapter)
-        uiView.threshold = 0
-        uiView.setText("")
-        uiView.setOnTouchListener { _, _ ->
-            uiView.showDropDown()
-            uiView.requestFocus()
-            false
-        }
-        uiView.setOnItemClickListener { adapterView, view, i, l ->
-            addCustomer(uiView.text.toString())
-            showEntries()
-            populateCustomerListDropdown()
+
+        runOnUiThread {
+            val uiView = findViewById<AutoCompleteTextView>(R.id.smsorder_customer_picker)
+            uiView.setAdapter(adapter)
+            uiView.threshold = 0
             uiView.setText("")
-            uiView.hint = "+Customer"
+            uiView.setOnTouchListener { _, _ ->
+                uiView.showDropDown()
+                uiView.requestFocus()
+                false
+            }
+            uiView.setOnItemClickListener { adapterView, view, i, l ->
+                addCustomer(uiView.text.toString())
+                showEntries()
+                populateCustomerListDropdown()
+                uiView.setText("")
+                uiView.hint = "+Customer"
+            }
         }
     }
 
@@ -175,21 +183,23 @@ class SMSOrdering : AppCompatActivity() {
         orderListContainer.removeAllViews()
         orders = Sorter.sortByNameList(orders, SMSOrderModel::name) as MutableList<SMSOrderModel>
         for (j in 0 until orders.size) {
-            val balance = CustomerDueData.getBalance(orders[j].name)
-            val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_list_fragments, null)
-            entry.findViewById<TextView>(R.id.smsorder_listEntry_calculated_pc).text = orders[j].calculatedPc.toString()
+            runOnUiThread {
+                val balance = CustomerDueData.getBalance(orders[j].name)
+                val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_list_fragments, null)
+                entry.findViewById<TextView>(R.id.smsorder_listEntry_calculated_pc).text = orders[j].calculatedPc.toString()
 
-            val finalizedPcView = entry.findViewById<EditText>(R.id.smsorder_listEntry_pc)
-            finalizedPcView.hint = orders[j].orderedPc.toString()
-            finalizedPcView.doOnTextChanged { text, start, before, count ->
-                orders[j].orderedPc = NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedPcView))
-                updateTotal()
+                val finalizedPcView = entry.findViewById<EditText>(R.id.smsorder_listEntry_pc)
+                finalizedPcView.hint = orders[j].orderedPc.toString()
+                finalizedPcView.doOnTextChanged { text, start, before, count ->
+                    orders[j].orderedPc = NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedPcView))
+                    updateTotal()
+                }
+
+                entry.findViewById<TextView>(R.id.smsorder_listEntry_date).text = orders[j].orderedKg.toString()
+                entry.findViewById<TextView>(R.id.smsorder_listEntry_number).text = orders[j].name
+                entry.findViewById<TextView>(R.id.smsorder_listEntry_amount).text = "$balance"
+                orderListContainer.addView(entry)
             }
-
-            entry.findViewById<TextView>(R.id.smsorder_listEntry_date).text = orders[j].orderedKg.toString()
-            entry.findViewById<TextView>(R.id.smsorder_listEntry_number).text = orders[j].name
-            entry.findViewById<TextView>(R.id.smsorder_listEntry_amount).text = "$balance"
-            orderListContainer.addView(entry)
         }
         showTotal()
     }

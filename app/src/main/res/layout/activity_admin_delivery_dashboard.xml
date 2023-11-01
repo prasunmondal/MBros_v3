@@ -539,7 +539,7 @@
 
                         <TextView
                             android:id="@+id/dashboard_send_khata"
-                            android:layout_width="150dp"
+                            android:layout_width="120dp"
                             android:layout_height="match_parent"
                             android:gravity="center_vertical"
                             android:onClick="onClickSendKhata"
@@ -554,11 +554,10 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
+                            android:hint="checking..."
                             android:onClick="onClickSendKhata"
                             android:paddingLeft="10dp"
-                            android:text="Checking..."
-                            android:textColor="#D8EEF8"
-                            android:textColorHint="#56D8EEF8" />
+                            android:textColorHint="@color/hint_text_loading" />
 
                     </LinearLayout>
 

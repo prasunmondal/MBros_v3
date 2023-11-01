@@ -87,9 +87,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     }
 
     private fun setStatuses(useCache: Boolean) {
-        Thread {
-            setSheetCalculatorCorrectness(false)
-        }
+        setSheetCalculatorCorrectness(false)
         Thread {
             setFinalizedIndicator(useCache)
             setResetIndicator(useCache)
@@ -97,12 +95,17 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     }
 
     private fun setSheetCalculatorCorrectness(useCache: Boolean) {
-        val khataCorrectnessIndicator = findViewById<TextView>(R.id.dashboard_check_khata_status)
-        val khataCorrectnessStatus = SheetCalculator.isKhataGreen(useCache)
-        val khataCorrectnessText = if(khataCorrectnessStatus) "Verified" else "Incorrect"
-        val khataCorrectnessColor = if(khataCorrectnessStatus) R.color.delivery_input_valid else R.color.delivery_input_not_valid
-        khataCorrectnessIndicator.text = khataCorrectnessText
-        khataCorrectnessIndicator.setTextColor(ContextCompat.getColor(this, khataCorrectnessColor))
+        Thread {
+            val khataCorrectnessStatus = SheetCalculator.isKhataGreen(useCache)
+
+            runOnUiThread {
+                val khataCorrectnessIndicator = findViewById<TextView>(R.id.dashboard_check_khata_status)
+                val khataCorrectnessText = if (khataCorrectnessStatus) "Verified" else "Incorrect"
+                val khataCorrectnessColor = if (khataCorrectnessStatus) R.color.delivery_input_valid else R.color.delivery_input_not_valid
+                khataCorrectnessIndicator.text = khataCorrectnessText
+                khataCorrectnessIndicator.setTextColor(ContextCompat.getColor(this, khataCorrectnessColor))
+            }
+        }.start()
     }
 
     private fun isKhataGreen() {

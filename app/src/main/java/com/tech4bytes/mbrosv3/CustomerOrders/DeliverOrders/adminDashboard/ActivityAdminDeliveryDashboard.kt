@@ -95,6 +95,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     private fun setFinalizedIndicator(useCache: Boolean) {
         Thread {
             if (isFinalised(useCache)) {
+                isFinalisedDone = true
                 runOnUiThread {
                     finalizingStatusIndicator.text = "Done"
                     finalizingStatusIndicator.setTextColor(ContextCompat.getColor(this, R.color.delivery_input_valid))
@@ -108,7 +109,6 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
                         finalizingStatusIndicator.text = "In Progress..."
                         finalizingStatusIndicator.setOnClickListener {}
                         spoolCustomerData()
-                        isFinalisedDone = true
                     }
                 }
             }
@@ -118,6 +118,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     private fun setResetIndicator(useCache: Boolean) {
         Thread {
             if (isResetDone(useCache)) {
+                isResetDone = true
                 runOnUiThread {
                     resetStatusIndicator.text = "Done"
                     resetStatusIndicator.setTextColor(ContextCompat.getColor(this, R.color.delivery_input_valid))
@@ -131,7 +132,6 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
                         if (isFinalised(useCache)) {
                             resetStatusIndicator.text = "In Progress..."
                             onClickDeleteDeliveryDataBtn()
-                            isResetDone = true
                         } else {
                             confirmDailyRecordDeletion("WARNING", "Ideally data should be finalized before deleting the records. Do you want to proceed?")
                         }

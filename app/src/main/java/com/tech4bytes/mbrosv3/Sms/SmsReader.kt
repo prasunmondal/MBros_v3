@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.provider.Telephony
 import android.widget.Toast
+import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import java.util.*
 import java.util.stream.Collectors
 
@@ -46,7 +47,11 @@ class SmsReader {
         }
 
         fun getSMSFromNumber(smsList: MutableList<SMSModel>, number: String): MutableList<SMSModel> {
-            return smsList.stream().filter { p -> p.number.contains(number) }.collect(Collectors.toList())
+            LogMe.log(number)
+            return smsList.stream().filter { p ->
+                LogMe.log(number + ": " + p.number + " = " + number.contains(p.number))
+                number.contains(p.number)
+            }.collect(Collectors.toList())
         }
 
         fun getSMSStartingWith(smsList: MutableList<SMSModel>, str: String): MutableList<SMSModel> {

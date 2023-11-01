@@ -52,10 +52,12 @@ class SMSOrdering : AppCompatActivity() {
 
         SMSPermissions.askPermission(this, android.Manifest.permission.SEND_SMS)
 
-        setUpUI()
-        populateCustomerListDropdown()
-        setUpListeners()
-        showSMS()
+        Thread {
+            setUpUI()
+            populateCustomerListDropdown()
+            setUpListeners()
+            showSMS()
+        }.start()
     }
 
 

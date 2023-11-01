@@ -61,7 +61,7 @@ class SMSOrdering : AppCompatActivity() {
 
 
     fun setUpUI() {
-        val offset = 1000L * 60 * 60 * 24;
+        val offset = 1000L * 60 * 60 * 12;
         val currentDate = System.currentTimeMillis()
         val listDate = Date(currentDate + offset)
 

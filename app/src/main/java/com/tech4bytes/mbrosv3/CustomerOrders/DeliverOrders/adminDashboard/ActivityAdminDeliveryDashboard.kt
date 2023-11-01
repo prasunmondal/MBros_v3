@@ -17,7 +17,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import com.tech4bytes.mbrosv3.AppData.AppUtils
-import com.tech4bytes.mbrosv3.BusinessData.SheetCalculator
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerCalculations
@@ -88,25 +87,9 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
 
     private fun setStatuses(useCache: Boolean) {
         Thread {
-            setSheetCalculatorCorrectness(false)
-        }
-        Thread {
             setFinalizedIndicator(useCache)
             setResetIndicator(useCache)
         }.start()
-    }
-
-    private fun setSheetCalculatorCorrectness(useCache: Boolean) {
-        val khataCorrectnessIndicator = findViewById<TextView>(R.id.dashboard_check_khata_status)
-        val khataCorrectnessStatus = SheetCalculator.isKhataGreen(useCache)
-        val khataCorrectnessText = if(khataCorrectnessStatus) "Verified" else "Incorrect"
-        val khataCorrectnessColor = if(khataCorrectnessStatus) R.color.delivery_input_valid else R.color.delivery_input_not_valid
-        khataCorrectnessIndicator.text = khataCorrectnessText
-        khataCorrectnessIndicator.setTextColor(ContextCompat.getColor(this, khataCorrectnessColor))
-    }
-
-    private fun isKhataGreen() {
-
     }
 
     private fun setFinalizedIndicator(useCache: Boolean) {

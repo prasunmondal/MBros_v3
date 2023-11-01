@@ -129,12 +129,12 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
                     resetStatusIndicator.setTextColor(ContextCompat.getColor(this, R.color.delivery_input_not_valid))
                     resetStatusIndicator.setOnClickListener {
                         if (isFinalised(useCache)) {
+                            resetStatusIndicator.text = "In Progress..."
                             onClickDeleteDeliveryDataBtn()
                             isResetDone = true
                         } else {
                             confirmDailyRecordDeletion("WARNING", "Ideally data should be finalized before deleting the records. Do you want to proceed?")
                         }
-
                     }
                 }
             }

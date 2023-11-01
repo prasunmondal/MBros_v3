@@ -28,7 +28,7 @@ class Whatsapp {
             }
         }
 
-        fun sendFileUsingWhatsapp(context: Context, filePath: String, number: String, text: String) {
+        fun sendFileToWhatsapp(context: Context, filePath: String, number: String, text: String) {
             val outputPath = File(filePath)
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.type = "application/pdf"

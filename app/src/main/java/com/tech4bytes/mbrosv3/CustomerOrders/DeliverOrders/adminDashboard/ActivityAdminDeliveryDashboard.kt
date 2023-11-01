@@ -333,7 +333,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
             runOnUiThread {
                 Toast.makeText(this, "Download Complete", Toast.LENGTH_SHORT).show()
             }
-            Whatsapp.sendFileUsingWhatsapp(this, filePath, "919679004046", "")
+            Whatsapp.sendFileToWhatsapp(this, filePath, "919679004046", "")
         }.start()
     }
 

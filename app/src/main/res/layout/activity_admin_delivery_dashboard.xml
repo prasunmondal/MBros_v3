@@ -539,12 +539,24 @@
 
                         <TextView
                             android:id="@+id/dashboard_send_khata"
-                            android:layout_width="200dp"
+                            android:layout_width="150dp"
                             android:layout_height="match_parent"
                             android:gravity="center_vertical"
                             android:onClick="onClickSendKhata"
                             android:paddingLeft="10dp"
                             android:text="Click to Send"
+                            android:textColor="#D8EEF8"
+                            android:textColorHint="#56D8EEF8" />
+
+                        <TextView
+                            android:id="@+id/dashboard_check_khata_status"
+                            android:layout_width="200dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"
+                            android:onClick="onClickSendKhata"
+                            android:paddingLeft="10dp"
+                            android:text="Checking..."
                             android:textColor="#D8EEF8"
                             android:textColorHint="#56D8EEF8" />
 

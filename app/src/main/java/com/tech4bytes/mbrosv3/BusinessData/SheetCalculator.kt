@@ -20,6 +20,7 @@ class SheetCalculator: java.io.Serializable {
         fun getRecords(useCache: Boolean = true): SheetCalculator {
             LogMe.log("Getting SheetCalculator Records")
             val cacheResults = CentralCache.get<SheetCalculator>(AppContexts.get(), recordsKey, useCache)
+
             LogMe.log("Getting SheetCalculator records: Cache Hit: " + (cacheResults != null))
             return if (cacheResults != null) {
                 cacheResults
@@ -28,6 +29,10 @@ class SheetCalculator: java.io.Serializable {
                 CentralCache.put(recordsKey, resultFromServer)
                 resultFromServer
             }
+        }
+
+        fun isKhataGreen(useCache: Boolean): Boolean {
+            return getRecords(useCache).is_khata_green.toBoolean()
         }
 
         private fun getRecordsFromServer(): SheetCalculator {

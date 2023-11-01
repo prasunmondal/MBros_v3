@@ -59,9 +59,7 @@ class SMSOrdering : AppCompatActivity() {
             showSMS()
         }.start()
     }
-
-
-
+    
     fun setUpUI() {
         val offset = 1000L * 60 * 60 * 12;
         val currentDate = System.currentTimeMillis()

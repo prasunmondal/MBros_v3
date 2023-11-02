@@ -88,10 +88,8 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
 
     private fun setStatuses(useCache: Boolean) {
         setSheetCalculatorCorrectness(false)
-        Thread {
-            setFinalizedIndicator(useCache)
-            setResetIndicator(useCache)
-        }.start()
+        setFinalizedIndicator(useCache)
+        setResetIndicator(useCache)
     }
 
     private fun setSheetCalculatorCorrectness(useCache: Boolean) {

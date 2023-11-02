@@ -27,8 +27,8 @@
     <color name="verify_delivery_not_valid">#815B02</color>
     <color name="verify_delivery_valid">#000000</color>
 
-    <color name="one_shot_delivery_odd_card_color">#0C1E25</color>
-    <color name="one_shot_delivery_even_card_color">#17282E</color>
+    <color name="one_shot_delivery_odd_card_color">#8B17282E</color>
+    <color name="one_shot_delivery_even_card_color">#8B0C1E25</color>
     <color name="osd_single_attribute_rates_background_color">#062E3C</color>
     <color name="osd_single_attribute_rates_hintText_color">#5FBCDD</color>
 

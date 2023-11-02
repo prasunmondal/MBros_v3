@@ -557,7 +557,11 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun getPcForEntry(entry: View): Int {
-        val pc = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc).text.toString()
+        var pc = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc).text.toString()
+        val kg = NumberUtils.getDoubleOrZero(entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_kg).text.toString())
+        if(pc.isEmpty() &&  kg > 0.0) {
+            pc = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc).hint.toString()
+        }
         if (pc.isEmpty())
             return 0
         return pc.toInt()

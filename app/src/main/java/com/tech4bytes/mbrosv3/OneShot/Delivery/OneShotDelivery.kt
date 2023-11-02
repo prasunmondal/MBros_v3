@@ -383,6 +383,8 @@ class OneShotDelivery : AppCompatActivity() {
             pcElement.setText(NumberUtils.getIntOrBlank(deliveryRecord.deliveredPc))
             kgElement.text = NumberUtils.getDoubleOrBlank(deliveryRecord.deliveredKg)
             paidElement.text = NumberUtils.getIntOrBlank(deliveryRecord.paid)
+            val pcHintText = if(NumberUtils.getIntOrZero(deliveryRecord.orderedPc) == 0) "pc" else deliveryRecord.orderedPc
+            pcElement.hint = pcHintText
         }
 
         if (SendSMSDetailsUtils.getSendSMSDetailsNumber(value.name) != null) {

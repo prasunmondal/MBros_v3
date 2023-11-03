@@ -292,7 +292,6 @@ class OneShotDelivery : AppCompatActivity() {
         }
 
         DeliverToCustomerDataHandler.get().forEach {
-//            if (!deliveryMapOrderedCustomers.containsKey(it.name)) {
                 val deliverCustomersOrders = DeliverToCustomerDataModel(
                     id = "${System.currentTimeMillis()}",
                     timestamp = DateUtils.getCurrentTimestamp(),
@@ -304,7 +303,6 @@ class OneShotDelivery : AppCompatActivity() {
                     deliveryStatus = "DELIVERING"
                 )
                 deliveryMapOrderedCustomers[it.name] = deliverCustomersOrders
-//            }
         }
 
         deliveryMapUnOrderedCustomers = mutableMapOf()
@@ -347,7 +345,7 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun showOrder(key: DeliverToCustomerDataModel, value: View) {
-        updateEntry(key, value)
+        OSDDeliveryEntryInfo.updateEntry(this, key, value)
         findViewById<LinearLayout>(R.id.one_shot_delivery_unordered_customers_entry_container).addView(value)
     }
 
@@ -356,7 +354,7 @@ class OneShotDelivery : AppCompatActivity() {
         findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).removeAllViews()
 
         t.forEach { (key, value) ->
-            updateEntry(key, value)
+            OSDDeliveryEntryInfo.updateEntry(this, key, value)
             findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).addView(value)
         }
     }
@@ -407,34 +405,9 @@ class OneShotDelivery : AppCompatActivity() {
         }
 
         rateElement.setText("${CustomerData.getDeliveryRate(value.name)}")
-        fragmentUpdateCustomerWiseRateView(value, entry)
+        OSDDeliveryEntryInfo.fragmentUpdateCustomerWiseRateView(this, value, entry)
 
-        rateElement.doOnTextChanged { text, start, before, count ->
-            updateEntry(value, entry)
-            fragmentUpdateCustomerWiseRateView(value, entry)
-        }
-
-        pcElement.doOnTextChanged { text, start, before, count ->
-            updateEntry(value, entry)
-        }
-
-        kgElement.doOnTextChanged { text, start, before, count ->
-            updateEntry(value, entry)
-        }
-
-        paidElement.doOnTextChanged { text, start, before, count ->
-            updateEntry(value, entry)
-        }
-
-        balanceElement.setOnClickListener {
-            if (moreDetailsContainer.visibility == View.VISIBLE) {
-                moreDetailsContainer.visibility = View.GONE
-            } else {
-                moreDetailsContainer.visibility = View.VISIBLE
-            }
-            updateDetailedInfo(value, entry)
-        }
-
+        OSDDeliveryEntryInfo.setListeners(this, value, entry)
         val recordContainer = entry.findViewById<CardView>(R.id.one_shot_delivery_fragment_record_container)
         var cardColor = ContextCompat.getColor(this, R.color.one_shot_delivery_odd_card_color)
         if (entrynumber % 2 == 0) {
@@ -471,48 +444,12 @@ class OneShotDelivery : AppCompatActivity() {
         }
     }
 
-    private fun fragmentUpdateCustomerWiseRateView(value: DeliverToCustomerDataModel, entry: View) {
-        val rateElement = entry.findViewById<TextInputEditText>(R.id.osd_rate_for_customer)
-        if (NumberUtils.getIntOrZero(rateElement.text.toString()) != CustomerData.getCustomerDefaultRate(value.name)) {
-            rateElement.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
-            rateElement.setTextColor(ContextCompat.getColor(this, R.color.white))
-        } else {
-            rateElement.setBackgroundColor(0x00000000)
-            rateElement.setTextColor(rateElement.textColors.defaultColor)
-        }
-    }
-
     private fun updateRates() {
         uiMaps.forEach {
             val rate = CustomerData.getCustomerDefaultRate(it.key)
             val rateElement = it.value.findViewById<TextView>(R.id.osd_rate_for_customer)
             rateElement.text = rate.toString()
         }
-    }
-
-    private fun updateEntry(order: DeliverToCustomerDataModel, entry: View) {
-        val kg = getKgForEntry(entry)
-        order.deliveredKg = kg.toString()
-        order.deliveredPc = getPcForEntry(entry).toString()
-        order.todaysAmount = getTodaysSaleAmountForEntry(entry).toString()
-        order.paid = getPaidAmountForEntry(entry).toString()
-        order.rate = getRateForEntry(entry).toString()
-        order.totalDue = "${NumberUtils.getIntOrZero(order.prevDue) + getTodaysSaleAmountForEntry(entry)}"
-        order.balanceDue = "${NumberUtils.getIntOrZero(order.prevDue) + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(entry)}"
-
-        val balanceElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
-
-        balanceElement.text = getDueBalance(order, entry).toString()
-        updateTotals(this)
-        updateDetailedInfo(order, entry)
-
-        val pc = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc)
-        if(kg > 0.0) {
-            pc.setHintTextColor(ContextCompat.getColor(this, R.color.osd_pc_hint_color_2))
-        } else {
-            pc.setHintTextColor(ContextCompat.getColor(this, R.color.osd_pc_hint_color_1))
-        }
-
     }
 
     private fun updateHiddenData() {
@@ -534,72 +471,6 @@ class OneShotDelivery : AppCompatActivity() {
         runOnUiThread {
             totalDueElement.text = NumberUtils.getIntOrZero(sum.toString()).toString()
         }
-    }
-
-    private fun updateDetailedInfo(order: DeliverToCustomerDataModel, entry: View) {
-        val container = entry.findViewById<LinearLayout>(R.id.one_shot_delivery_fragment_more_details_container)
-
-        if (container.visibility == View.VISIBLE) {
-            val prevDue = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_prev_due)
-            val kg = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_kg)
-            val rate = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_rate)
-            val todaysSale = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_sale_total)
-            val total = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_total_due)
-            val paid = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_paid_amount)
-            val balanceDue = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_balance_due)
-
-            prevDue.text = "₹ ${order.prevDue}"
-            kg.text = "${order.deliveredKg} kg"
-            rate.text = "₹ ${order.rate}"
-            todaysSale.text = "₹ ${order.todaysAmount}"
-            total.text = "₹ ${order.totalDue}"
-            paid.text = "₹ ${order.paid}"
-            balanceDue.text = "₹ ${order.balanceDue}"
-        }
-    }
-
-    private fun getRateForEntry(entry: View): Int {
-        val rate = entry.findViewById<TextView>(R.id.osd_rate_for_customer).text.toString()
-        if (rate.isEmpty())
-            return 0
-        return rate.toInt()
-    }
-
-    private fun getPcForEntry(entry: View): Int {
-        var pc = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc).text.toString()
-        val kg = NumberUtils.getDoubleOrZero(entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_kg).text.toString())
-        if(pc.isEmpty() &&  kg > 0.0) {
-            pc = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc).hint.toString()
-        }
-        if (pc.isEmpty())
-            return 0
-        return NumberUtils.getIntOrZero(pc)
-    }
-
-    private fun getKgForEntry(entry: View): Double {
-        val kg = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_kg).text.toString()
-        if (kg.isEmpty())
-            return 0.0
-        return NumberUtils.getDoubleOrZero(kg)
-    }
-
-    private fun getPaidAmountForEntry(entry: View): Int {
-        val paid = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid).text.toString()
-        if (paid.isEmpty())
-            return 0
-        return paid.toInt()
-    }
-
-    private fun getTodaysSaleAmountForEntry(entry: View): Int {
-        val kg = getKgForEntry(entry)
-        val rate = getRateForEntry(entry)
-        val roundUpOffset = 0.000001
-        return (kg * rate + roundUpOffset).toInt()
-    }
-
-    private fun getDueBalance(order: DeliverToCustomerDataModel, entry: View): Int {
-        val prevBal = order.prevDue
-        return NumberUtils.getIntOrZero(prevBal) + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(entry)
     }
 
     companion object {

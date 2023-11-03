@@ -3,7 +3,6 @@ package com.tech4bytes.mbrosv3.OneShot.Delivery
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Rect
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -86,16 +85,16 @@ class OneShotDelivery : AppCompatActivity() {
         getSMSPermission()
         Thread {
             populateDeliveryMap()
-            OSD.LoadInfo.updateSingleAttributedDataOnUI(this, loadPcElement, loadKgElement)
+            OSDLoadInfo.updateSingleAttributedDataOnUI(this, loadPcElement, loadKgElement)
             initiallizeUI()
             runOnUiThread {
                 showOrders()
                 initializeOtherExpensesUI()
-                OSD.LoadInfo.updateRelatedFields_LoadPcKg(loadPcElement, loadKgElement, loadAvgWtElement)
+                OSDLoadInfo.updateRelatedFields_LoadPcKg(loadPcElement, loadKgElement, loadAvgWtElement)
                 initiallizeRefuelUI()
                 updateKmRelatedCosts()
                 populateCustomerListDropdown()
-                OSD.LoadInfo.setListeners(this, loadPcElement, loadKgElement, loadAvgWtElement)
+                OSDLoadInfo.setListeners(this, loadPcElement, loadKgElement, loadAvgWtElement)
             }
         }.start()
     }
@@ -174,7 +173,7 @@ class OneShotDelivery : AppCompatActivity() {
         val loadPriceElement = findViewById<EditText>(R.id.one_shot_delivery_price)
         val loadBufferElement = findViewById<EditText>(R.id.one_shot_delivery_buffer)
 
-        OSD.LoadInfo.initializeUI(this, loadPcElement, loadKgElement, loadAvgWtElement)
+        OSDLoadInfo.initializeUI(this, loadPcElement, loadKgElement, loadAvgWtElement)
         didRefuelElement.setOnCheckedChangeListener { _, isChecked ->
             val obj = SingleAttributedData.getRecords()
             obj.did_refueled = isChecked.toString()
@@ -863,6 +862,6 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     fun onClickSendLoadInfoToCompany(view: View) {
-        OSD.LoadInfo.sendLoadInfoToCompany(loadPcElement.text.toString(), loadKgElement.text.toString())
+        OSDLoadInfo.sendLoadInfoToCompany(loadPcElement.text.toString(), loadKgElement.text.toString())
     }
 }

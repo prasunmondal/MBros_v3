@@ -1,24 +1,96 @@
 package com.tech4bytes.mbrosv3.OneShot.Delivery
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.tech4bytes.mbrosv3.Customer.CustomerKYC
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.SMSDetails.SendSMSDetailsUtils
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.R
+import com.tech4bytes.mbrosv3.Sms.SMSUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 
 class OSDDeliveryEntryInfo {
 
     companion object {
-        fun setListeners(context: Context, value: DeliverToCustomerDataModel, entry: View) {
+        var uiMaps: MutableMap<String, View> = mutableMapOf()
+
+        var entrynumber = 1
+        fun createOrderCard(context: Context, value: DeliverToCustomerDataModel): View {
+            val layoutInflater = LayoutInflater.from(AppContexts.get())
+            val entry = layoutInflater.inflate(R.layout.activity_one_shot_delivery_fragment, null)
+
+            val nameElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_name)
+            val rateElementContainer = entry.findViewById<TextInputLayout>(R.id.osd_rate_for_customer_container)
+            val rateElement = entry.findViewById<TextInputEditText>(R.id.osd_rate_for_customer)
+            val pcElement = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_pc)
+            val kgElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_kg)
+            val paidElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid)
+            val balanceElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
+            val moreDetailsContainer = entry.findViewById<LinearLayout>(R.id.one_shot_delivery_fragment_more_details_container)
+            val sendSMSBtn = entry.findViewById<TextView>(R.id.osd_fragment_send_details)
+            rateElementContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
+
+            nameElement.text = value.name
+            balanceElement.text = value.prevDue
+            val deliveryRecord = DeliverToCustomerActivity.getDeliveryRecord(value.name)
+            if (deliveryRecord != null) {
+                pcElement.setText(NumberUtils.getIntOrBlank(deliveryRecord.deliveredPc))
+                kgElement.text = NumberUtils.getDoubleOrBlank(deliveryRecord.deliveredKg)
+                paidElement.text = NumberUtils.getIntOrBlank(deliveryRecord.paid)
+                val pcHintText = if(NumberUtils.getIntOrZero(deliveryRecord.orderedPc) == 0) "pc" else deliveryRecord.orderedPc
+                pcElement.hint = pcHintText
+            }
+
+            if (SendSMSDetailsUtils.getSendSMSDetailsNumber(value.name) != null) {
+                sendSMSBtn.visibility = View.VISIBLE
+                sendSMSBtn.setOnClickListener {
+                    val smsNumber = CustomerKYC.getCustomerByEngName(value.name)!!.smsNumber
+                    val t = DateUtils.getDate(value.timestamp)
+                    val formattedDate = DateUtils.getDateInFormat(t!!, "dd/MM/yyyy")
+                    val smsText = CustomerKYC.getCustomerByEngName(value.name)!!.smsText
+                        .replace("<date>", formattedDate)
+                        .replace("<pc>", pcElement.text.toString())
+                        .replace("<kg>", kgElement.text.toString())
+                        .replace("<paidAmount>", paidElement.text.toString())
+                        .replace("<rate>", rateElement.text.toString())
+                        .replace("<balanceAmount>", balanceElement.text.toString())
+
+                    SMSUtils.sendSMS(context, smsText, smsNumber)
+                    Toast.makeText(context, "SMS Sent: $smsNumber", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            rateElement.setText("${CustomerData.getDeliveryRate(value.name)}")
+            OSDDeliveryEntryInfo.fragmentUpdateCustomerWiseRateView(context, value, entry)
+
+            val recordContainer = entry.findViewById<CardView>(R.id.one_shot_delivery_fragment_record_container)
+            var cardColor = ContextCompat.getColor(context, R.color.one_shot_delivery_odd_card_color)
+            if (entrynumber % 2 == 0) {
+                cardColor = ContextCompat.getColor(context, R.color.one_shot_delivery_even_card_color)
+            }
+            entrynumber++
+            recordContainer.setBackgroundColor(cardColor)
+            uiMaps[value.name] = entry
+
+            return entry
+        }
+
+        fun setListeners(context: Context, value: DeliverToCustomerDataModel) {
+            val entry = uiMaps[value.name]!!
             val rateElement = entry.findViewById<TextInputEditText>(R.id.osd_rate_for_customer)
             val pcElement = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_pc)
             val kgElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_kg)
@@ -61,6 +133,14 @@ class OSDDeliveryEntryInfo {
             } else {
                 rateElement.setBackgroundColor(0x00000000)
                 rateElement.setTextColor(rateElement.textColors.defaultColor)
+            }
+        }
+
+        fun updateRates() {
+            uiMaps.forEach {
+                val rate = CustomerData.getCustomerDefaultRate(it.key)
+                val rateElement = it.value.findViewById<TextView>(R.id.osd_rate_for_customer)
+                rateElement.text = rate.toString()
             }
         }
 

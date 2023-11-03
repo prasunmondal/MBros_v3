@@ -43,7 +43,7 @@ class OSDLoadInfo {
             }
         }
 
-        fun setListeners(context: OneShotDelivery, loadPcElement: EditText, loadKgElement: EditText, loadAvgWtElement: TextView) {
+        fun setListeners(context: OneShotDelivery, loadPcElement: EditText, loadKgElement: EditText, loadAvgWtElement: TextView, loadPriceElement: EditText, loadBufferElement: EditText) {
             val record = SingleAttributedData.getRecords()
 
             loadPcElement.doOnTextChanged { text, start, before, count ->
@@ -56,6 +56,18 @@ class OSDLoadInfo {
                 record.actualLoadKg = loadKgElement.text.toString()
                 updateRelatedFields_LoadPcKg(loadPcElement, loadKgElement, loadAvgWtElement)
                 OneShotDelivery.updateTotals(context)
+            }
+
+            loadPriceElement.doOnTextChanged { text, start, before, count ->
+                record.finalFarmRate = loadPriceElement.text.toString()
+                SingleAttributedData.saveToLocal(record)
+                OSDDeliveryEntryInfo.updateRates()
+            }
+
+            loadBufferElement.doOnTextChanged { text, start, before, count ->
+                record.bufferRate = loadBufferElement.text.toString()
+                SingleAttributedData.saveToLocal(record)
+                OSDDeliveryEntryInfo.updateRates()
             }
         }
 

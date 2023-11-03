@@ -50,7 +50,6 @@ class OneShotDelivery : AppCompatActivity() {
 
     var deliveryMapOrderedCustomers: MutableMap<String, DeliverToCustomerDataModel> = mutableMapOf()
     var deliveryMapUnOrderedCustomers: MutableMap<String, DeliverToCustomerDataModel> = mutableMapOf()
-    var uiMaps: MutableMap<String, View> = mutableMapOf()
     lateinit var saveOneSortDeliveryButton: Button
     lateinit var deleteDeliveryDataButton: Button
     lateinit var sidebarIconLoadDetails: ImageView
@@ -81,6 +80,9 @@ class OneShotDelivery : AppCompatActivity() {
         supportActionBar?.hide()
 
         initializeVariables()
+        val loadPriceElement = findViewById<EditText>(R.id.one_shot_delivery_price)
+        val loadBufferElement = findViewById<EditText>(R.id.one_shot_delivery_buffer)
+
 
         getSMSPermission()
         Thread {
@@ -94,7 +96,7 @@ class OneShotDelivery : AppCompatActivity() {
                 initiallizeRefuelUI()
                 updateKmRelatedCosts()
                 populateCustomerListDropdown()
-                OSDLoadInfo.setListeners(this, loadPcElement, loadKgElement, loadAvgWtElement)
+                OSDLoadInfo.setListeners(this, loadPcElement, loadKgElement, loadAvgWtElement, loadPriceElement, loadBufferElement)
             }
         }.start()
     }
@@ -170,8 +172,6 @@ class OneShotDelivery : AppCompatActivity() {
         val didTankFullElement = findViewById<Switch>(R.id.one_shot_delivery_did_fuel_upto_tank_full)
         val refuelingQtyElement = findViewById<EditText>(R.id.one_shot_delivery_fuel_quantity)
         val refuelingKmElement = findViewById<EditText>(R.id.one_shot_delivery_refueling_km)
-        val loadPriceElement = findViewById<EditText>(R.id.one_shot_delivery_price)
-        val loadBufferElement = findViewById<EditText>(R.id.one_shot_delivery_buffer)
 
         OSDLoadInfo.initializeUI(this, loadPcElement, loadKgElement, loadAvgWtElement)
         didRefuelElement.setOnCheckedChangeListener { _, isChecked ->
@@ -196,17 +196,6 @@ class OneShotDelivery : AppCompatActivity() {
 
         val record = SingleAttributedData.getRecords()
 
-        loadPriceElement.doOnTextChanged { text, start, before, count ->
-            record.finalFarmRate = loadPriceElement.text.toString()
-            SingleAttributedData.saveToLocal(record)
-            updateRates()
-        }
-
-        loadBufferElement.doOnTextChanged { text, start, before, count ->
-            record.bufferRate = loadBufferElement.text.toString()
-            SingleAttributedData.saveToLocal(record)
-            updateRates()
-        }
     }
 
 
@@ -325,8 +314,9 @@ class OneShotDelivery : AppCompatActivity() {
 
     private fun addNewCustomer(name: String) {
         val key = addToUnOrderedMap(name)
-        val value = createOrderCard(key)
-        showOrder(key, value)
+        val uiFragment = OSDDeliveryEntryInfo.createOrderCard(this, key)
+        OSDDeliveryEntryInfo.setListeners(this, key)
+        showOrder(key, uiFragment)
     }
 
     private fun addToUnOrderedMap(name: String): DeliverToCustomerDataModel {
@@ -359,78 +349,22 @@ class OneShotDelivery : AppCompatActivity() {
         }
     }
 
-    private fun createOrderCard(value: DeliverToCustomerDataModel): View {
-        val layoutInflater = LayoutInflater.from(AppContexts.get())
-        val entry = layoutInflater.inflate(R.layout.activity_one_shot_delivery_fragment, null)
 
-        val nameElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_name)
-        val rateElementContainer = entry.findViewById<TextInputLayout>(R.id.osd_rate_for_customer_container)
-        val rateElement = entry.findViewById<TextInputEditText>(R.id.osd_rate_for_customer)
-        val pcElement = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_pc)
-        val kgElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_kg)
-        val paidElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid)
-        val balanceElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
-        val moreDetailsContainer = entry.findViewById<LinearLayout>(R.id.one_shot_delivery_fragment_more_details_container)
-        val sendSMSBtn = entry.findViewById<TextView>(R.id.osd_fragment_send_details)
-        rateElementContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
 
-        nameElement.text = value.name
-        balanceElement.text = value.prevDue
-        val deliveryRecord = DeliverToCustomerActivity.getDeliveryRecord(value.name)
-        if (deliveryRecord != null) {
-            pcElement.setText(NumberUtils.getIntOrBlank(deliveryRecord.deliveredPc))
-            kgElement.text = NumberUtils.getDoubleOrBlank(deliveryRecord.deliveredKg)
-            paidElement.text = NumberUtils.getIntOrBlank(deliveryRecord.paid)
-            val pcHintText = if(NumberUtils.getIntOrZero(deliveryRecord.orderedPc) == 0) "pc" else deliveryRecord.orderedPc
-            pcElement.hint = pcHintText
-        }
 
-        if (SendSMSDetailsUtils.getSendSMSDetailsNumber(value.name) != null) {
-            sendSMSBtn.visibility = View.VISIBLE
-            sendSMSBtn.setOnClickListener {
-                val smsNumber = CustomerKYC.getCustomerByEngName(value.name)!!.smsNumber
-                val t = DateUtils.getDate(value.timestamp)
-                val formattedDate = DateUtils.getDateInFormat(t!!, "dd/MM/yyyy")
-                val smsText = CustomerKYC.getCustomerByEngName(value.name)!!.smsText
-                    .replace("<date>", formattedDate)
-                    .replace("<pc>", pcElement.text.toString())
-                    .replace("<kg>", kgElement.text.toString())
-                    .replace("<paidAmount>", paidElement.text.toString())
-                    .replace("<rate>", rateElement.text.toString())
-                    .replace("<balanceAmount>", balanceElement.text.toString())
-
-                SMSUtils.sendSMS(baseContext, smsText, smsNumber)
-                Toast.makeText(this, "SMS Sent: $smsNumber", Toast.LENGTH_LONG).show()
-            }
-        }
-
-        rateElement.setText("${CustomerData.getDeliveryRate(value.name)}")
-        OSDDeliveryEntryInfo.fragmentUpdateCustomerWiseRateView(this, value, entry)
-
-        OSDDeliveryEntryInfo.setListeners(this, value, entry)
-        val recordContainer = entry.findViewById<CardView>(R.id.one_shot_delivery_fragment_record_container)
-        var cardColor = ContextCompat.getColor(this, R.color.one_shot_delivery_odd_card_color)
-        if (entrynumber % 2 == 0) {
-            cardColor = ContextCompat.getColor(this, R.color.one_shot_delivery_even_card_color)
-        }
-        entrynumber++
-        recordContainer.setBackgroundColor(cardColor)
-        uiMaps[value.name] = entry
-        return entry
-    }
-
-    var entrynumber = 1
     private fun showOrders(listOfCustomers: MutableMap<String, DeliverToCustomerDataModel>, container: Int): MutableMap<DeliverToCustomerDataModel, View> {
-        entrynumber = 1
         val listContainer = findViewById<LinearLayout>(container)
         val entryMap: MutableMap<DeliverToCustomerDataModel, View> = mutableMapOf()
 
         listContainer.removeAllViews()
 
         listOfCustomers.forEach { order ->
-            val entry = createOrderCard(order.value)
+            val entry = OSDDeliveryEntryInfo.createOrderCard(this, order.value)
             entryMap[order.value] = entry
-            uiMaps[order.value.name] = entry
+        }
+
+        listOfCustomers.forEach { order ->
+            OSDDeliveryEntryInfo.setListeners(this, order.value)
         }
         return entryMap
     }
@@ -441,14 +375,6 @@ class OneShotDelivery : AppCompatActivity() {
             Log.d("permission", "permission denied to SEND_SMS - requesting it")
             val permissions = arrayOf(android.Manifest.permission.SEND_SMS)
             requestPermissions(permissions, PERMISSION_REQUEST_CODE)
-        }
-    }
-
-    private fun updateRates() {
-        uiMaps.forEach {
-            val rate = CustomerData.getCustomerDefaultRate(it.key)
-            val rateElement = it.value.findViewById<TextView>(R.id.osd_rate_for_customer)
-            rateElement.text = rate.toString()
         }
     }
 

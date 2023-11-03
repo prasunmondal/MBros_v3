@@ -344,9 +344,10 @@ class OneShotDelivery : AppCompatActivity() {
         findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).removeAllViews()
 
         t.forEach { (key, value) ->
-            OSDDeliveryEntryInfo.updateEntry(this, key, value)
+            OSDDeliveryEntryInfo.updateEntry(this, key, value, false)
             findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).addView(value)
         }
+        updateTotals(this)
     }
 
 

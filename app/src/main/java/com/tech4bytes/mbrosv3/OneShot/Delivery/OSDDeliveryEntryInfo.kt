@@ -144,7 +144,7 @@ class OSDDeliveryEntryInfo {
             }
         }
 
-        fun updateEntry(context: OneShotDelivery, order: DeliverToCustomerDataModel, entry: View) {
+        fun updateEntry(context: OneShotDelivery, order: DeliverToCustomerDataModel, entry: View, updateTotals: Boolean = true) {
             val kg = getKgForEntry(entry)
             order.deliveredKg = kg.toString()
             order.deliveredPc = getPcForEntry(entry).toString()
@@ -157,7 +157,7 @@ class OSDDeliveryEntryInfo {
             val balanceElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
 
             balanceElement.text = getDueBalance(order, entry).toString()
-            OneShotDelivery.updateTotals(context)
+            if(updateTotals) OneShotDelivery.updateTotals(context)
             updateDetailedInfo(order, entry)
 
             val pc = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc)

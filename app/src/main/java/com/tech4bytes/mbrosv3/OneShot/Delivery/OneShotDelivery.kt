@@ -491,7 +491,8 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun updateEntry(order: DeliverToCustomerDataModel, entry: View) {
-        order.deliveredKg = getKgForEntry(entry).toString()
+        val kg = getKgForEntry(entry)
+        order.deliveredKg = kg.toString()
         order.deliveredPc = getPcForEntry(entry).toString()
         order.todaysAmount = getTodaysSaleAmountForEntry(entry).toString()
         order.paid = getPaidAmountForEntry(entry).toString()
@@ -504,6 +505,14 @@ class OneShotDelivery : AppCompatActivity() {
         balanceElement.text = getDueBalance(order, entry).toString()
         updateTotals(this)
         updateDetailedInfo(order, entry)
+
+        val pc = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc)
+        if(kg > 0.0) {
+            pc.setHintTextColor(ContextCompat.getColor(this, R.color.osd_pc_hint_color_2))
+        } else {
+            pc.setHintTextColor(ContextCompat.getColor(this, R.color.osd_pc_hint_color_1))
+        }
+
     }
 
     private fun updateHiddenData() {
@@ -564,15 +573,14 @@ class OneShotDelivery : AppCompatActivity() {
         }
         if (pc.isEmpty())
             return 0
-        return pc.toInt()
+        return NumberUtils.getIntOrZero(pc)
     }
 
     private fun getKgForEntry(entry: View): Double {
         val kg = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_kg).text.toString()
         if (kg.isEmpty())
             return 0.0
-        return kg.toDouble()
-
+        return NumberUtils.getDoubleOrZero(kg)
     }
 
     private fun getPaidAmountForEntry(entry: View): Int {

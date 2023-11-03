@@ -95,6 +95,7 @@ class OneShotDelivery : AppCompatActivity() {
                 initiallizeRefuelUI()
                 updateKmRelatedCosts()
                 populateCustomerListDropdown()
+                OSD.LoadInfo.setListeners(this, loadPcElement, loadKgElement, loadAvgWtElement)
             }
         }.start()
     }

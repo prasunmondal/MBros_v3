@@ -43,6 +43,10 @@ class OSD {
                 context.runOnUiThread {
                     loadCompanyBranchArea.text = "${record.load_companyName} / ${record.load_branch} / ${record.load_area}"
                 }
+            }
+
+            fun setListeners(context: OneShotDelivery, loadPcElement: EditText, loadKgElement: EditText, loadAvgWtElement: TextView) {
+                val record = SingleAttributedData.getRecords()
 
                 loadPcElement.doOnTextChanged { text, start, before, count ->
                     record.actualLoadPc = loadPcElement.text.toString()

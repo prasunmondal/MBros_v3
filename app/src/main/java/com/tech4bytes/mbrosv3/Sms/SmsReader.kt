@@ -1,10 +1,13 @@
 package com.tech4bytes.mbrosv3.Sms
 
+import android.app.Activity
 import android.content.ContentResolver
 import android.content.Context
 import android.database.Cursor
 import android.provider.Telephony
 import android.widget.Toast
+import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
+import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import java.util.*
 import java.util.stream.Collectors
 
@@ -19,7 +22,10 @@ class SmsReader {
             val cr: ContentResolver = context.contentResolver
 
             val projection = arrayOf("_id", "address", "person", "body", "date", "type")
-            val c: Cursor? = cr.query(Telephony.Sms.CONTENT_URI, projection, getFilterQuery(fromNumbers), null, "date desc")
+            val c: Cursor? = cr.query(Telephony.Sms.CONTENT_URI, projection,
+                "(${getSMSFilterQueryForDateFiltering(context)}) AND (${getFilterQuery(fromNumbers)})",
+                null,
+                "date desc")
 
             var totalSMS = 0
             if (c != null) {
@@ -59,7 +65,25 @@ class SmsReader {
         fun getSMSStartingWith(smsList: MutableList<SMSModel>, str: String): MutableList<SMSModel> {
             return smsList.stream().filter { p -> p.body.contains(str) }.collect(Collectors.toList())
         }
+
+        fun getSMSFilterQueryForDateFiltering(context: Context): String {
+            var noOfDays = NumberUtils.getIntOrZero(AppConstants.get(AppConstants.SMS_ORDERING_SHOW_SMS_FOR_N_DAYS))
+
+            if(noOfDays == 0) {
+                // in case of misconfiguration, take 30 as default
+                noOfDays = 30
+                (context as Activity).runOnUiThread {
+                    Toast.makeText(context, "Error found in misconfig of ${AppConstants.SMS_ORDERING_SHOW_SMS_FOR_N_DAYS.name}. Using fallback value of 30 days", Toast.LENGTH_LONG).show()
+                }
+            }
+
+            val offset = 1000L * 60 * 60 * 24 * noOfDays
+            val currentDate = System.currentTimeMillis()
+            val selectedDate = Date(currentDate - offset)
+            return "date>=" + selectedDate.time
+        }
     }
+
 
 
 }

@@ -1,6 +1,7 @@
 package com.tech4bytes.mbrosv3.AppData.RemoteAppConstants
 
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
+import java.lang.reflect.Type
 import java.util.*
 
 enum class AppConstants {
@@ -11,7 +12,8 @@ enum class AppConstants {
     SEND_DELIVERY_DETAILS_BY_SMS,
     DELIVERY_BASE_RATE_DIFF,
     ADD_TO_FUELING_KMS_TO_GET_FINAL_KM,
-    DUE_SHOW_BALANCE_AVG_DAYS;
+    DUE_SHOW_BALANCE_AVG_DAYS,
+    SMS_ORDERING_SHOW_SMS_FOR_N_DAYS;
 
     companion object {
         fun fetchAll(useCache: Boolean = true) {

@@ -84,9 +84,6 @@ class SMSOrdering : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     fun showSMS() {
         val smsFiltered = SmsReader.getAllSms(this, StringUtils.getListFromCSV(AppConstants.get(AppConstants.SMS_ORDER_GET_ORDER_PH_NUMBER)).toTypedArray())
-        runOnUiThread {
-            Toast.makeText(this, "Done SMS!", Toast.LENGTH_LONG).show()
-        }
         val container = findViewById<LinearLayout>(R.id.smsorders_sms_view_container)
 
 //        smsToProcess = "100+50+0+0+40+40+0+30+30+20+40+20+10+120"

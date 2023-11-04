@@ -1,17 +1,13 @@
 package com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.AppData.AppUtils
@@ -58,8 +54,8 @@ class SMSOrdering : AppCompatActivity() {
             setUpUI()
             populateCustomerListDropdown()
             setUpListeners()
-            showSMS()
         }.start()
+        showSMS()
     }
 
     fun setUpUI() {
@@ -83,27 +79,30 @@ class SMSOrdering : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     fun showSMS() {
-        val smsFiltered = SmsReader.getAllSms(this, StringUtils.getListFromCSV(AppConstants.get(AppConstants.SMS_ORDER_GET_ORDER_PH_NUMBER)).toTypedArray())
-        val container = findViewById<LinearLayout>(R.id.smsorders_sms_view_container)
+        Thread {
+            val smsFiltered = SmsReader.getAllSms(this, StringUtils.getListFromCSV(AppConstants.get(AppConstants.SMS_ORDER_GET_ORDER_PH_NUMBER)).toTypedArray())
+            val container = findViewById<LinearLayout>(R.id.smsorders_sms_view_container)
+            container.removeAllViews()
 
-//        smsToProcess = "100+50+0+0+40+40+0+30+30+20+40+20+10+120"
+//            smsToProcess = "100+50+0+0+40+40+0+30+30+20+40+20+10+120"
 
-        smsFiltered.forEach { sms ->
-            runOnUiThread {
-                val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_fragments, null)
-                entry.findViewById<TextView>(R.id.smsorder_listEntry_receive_number).text = sms.number
-                entry.findViewById<TextView>(R.id.smsorder_listEntry_text).text = sms.body
-                entry.findViewById<TextView>(R.id.smsorder_listEntry_date).text = sms.datetime.split(" ")[2]
-                entry.findViewById<TextView>(R.id.smsorder_listEntry_month).text = sms.datetime.split(" ")[1]
-                container.addView(entry)
-                entry.setOnClickListener {
-                    smsToProcess = sms.body
-                    processSMS()
-                    showEntries()
-                    onClickToggleSMSView(entry)
+            smsFiltered.forEach { sms ->
+                runOnUiThread {
+                    val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_fragments, null)
+                    entry.findViewById<TextView>(R.id.smsorder_listEntry_receive_number).text = sms.number
+                    entry.findViewById<TextView>(R.id.smsorder_listEntry_text).text = sms.body
+                    entry.findViewById<TextView>(R.id.smsorder_listEntry_date).text = sms.datetime.split(" ")[2]
+                    entry.findViewById<TextView>(R.id.smsorder_listEntry_month).text = sms.datetime.split(" ")[1]
+                    container.addView(entry)
+                    entry.setOnClickListener {
+                        smsToProcess = sms.body
+                        processSMS()
+                        showEntries()
+                        onClickToggleSMSView(entry)
+                    }
                 }
             }
-        }
+        }.start()
     }
 
     private fun processSMS() {

@@ -29,6 +29,7 @@ import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
+import com.tech4bytes.mbrosv3.Utils.T4B.StringUtils
 import org.apache.commons.collections4.CollectionUtils
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -51,6 +52,7 @@ class SMSOrdering : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         SMSPermissions.askPermission(this, android.Manifest.permission.SEND_SMS)
+        SMSPermissions.askPermission(this, android.Manifest.permission.READ_SMS)
 
         Thread {
             setUpUI()
@@ -81,14 +83,13 @@ class SMSOrdering : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     fun showSMS() {
-        val allSMS = SmsReader.getAllSms(this)
-        val smsFiltered = SmsReader.getSMSStartingWith(SmsReader.getSMSFromNumber(allSMS, AppConstants.get(AppConstants.SMS_ORDER_GET_ORDER_PH_NUMBER)), "")
+        val smsFiltered = SmsReader.getAllSms(this, StringUtils.getListFromCSV(AppConstants.get(AppConstants.SMS_ORDER_GET_ORDER_PH_NUMBER)).toTypedArray())
+        runOnUiThread {
+            Toast.makeText(this, "Done SMS!", Toast.LENGTH_LONG).show()
+        }
         val container = findViewById<LinearLayout>(R.id.smsorders_sms_view_container)
 
 //        smsToProcess = "100+50+0+0+40+40+0+30+30+20+40+20+10+120"
-//        processSMS()
-//        showEntries()
-//        showTotal()
 
         smsFiltered.forEach { sms ->
             runOnUiThread {

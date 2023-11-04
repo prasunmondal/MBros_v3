@@ -5,7 +5,6 @@ import android.content.Context
 import android.database.Cursor
 import android.provider.Telephony
 import android.widget.Toast
-import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import java.util.*
 import java.util.stream.Collectors
 
@@ -13,12 +12,15 @@ import java.util.stream.Collectors
 class SmsReader {
 
     companion object {
-        fun getAllSms(context: Context): MutableList<SMSModel> {
+        fun getAllSms(context: Context, fromNumbers: Array<String>): MutableList<SMSModel> {
+
             SMSPermissions.askPermission(context, android.Manifest.permission.SEND_SMS)
             val smsList = mutableListOf<SMSModel>()
-
             val cr: ContentResolver = context.contentResolver
-            val c: Cursor? = cr.query(Telephony.Sms.CONTENT_URI, null, null, null, null)
+
+            val projection = arrayOf("_id", "address", "person", "body", "date", "type")
+            val c: Cursor? = cr.query(Telephony.Sms.CONTENT_URI, projection, getFilterQuery(fromNumbers), null, "date desc")
+
             var totalSMS = 0
             if (c != null) {
                 totalSMS = c.count
@@ -46,12 +48,12 @@ class SmsReader {
             return smsList
         }
 
-        fun getSMSFromNumber(smsList: MutableList<SMSModel>, number: String): MutableList<SMSModel> {
-            LogMe.log(number)
-            return smsList.stream().filter { p ->
-                LogMe.log(number + ": " + p.number + " = " + number.contains(p.number))
-                number.contains(p.number)
-            }.collect(Collectors.toList())
+        private fun getFilterQuery(fromNumbers: Array<String>): String {
+            return fromNumbers.joinToString(
+                separator = "' OR  address= '",
+                prefix = "address= '",
+                postfix = "'"
+            )
         }
 
         fun getSMSStartingWith(smsList: MutableList<SMSModel>, str: String): MutableList<SMSModel> {

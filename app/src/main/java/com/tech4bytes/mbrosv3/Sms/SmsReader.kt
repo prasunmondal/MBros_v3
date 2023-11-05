@@ -18,12 +18,13 @@ class SmsReader {
         fun getAllSms(context: Context, fromNumbers: Array<String>): MutableList<SMSModel> {
 
             SMSPermissions.askPermission(context, android.Manifest.permission.SEND_SMS)
+            SMSPermissions.askPermission(context, android.Manifest.permission.READ_SMS)
             val smsList = mutableListOf<SMSModel>()
             val cr: ContentResolver = context.contentResolver
 
-            val projection = arrayOf("_id", "address", "person", "body", "date", "type")
-            val c: Cursor? = cr.query(Telephony.Sms.CONTENT_URI, projection,
-                "(${getSMSFilterQueryForDateFiltering(context)}) AND (${getFilterQuery(fromNumbers)})",
+//            val projection = arrayOf("_id", "address", "person", "body", "date", "type")
+            val c: Cursor? = cr.query(Telephony.Sms.CONTENT_URI, null,
+                "(${getFilterQuery(fromNumbers)})",
                 null,
                 "date desc")
 

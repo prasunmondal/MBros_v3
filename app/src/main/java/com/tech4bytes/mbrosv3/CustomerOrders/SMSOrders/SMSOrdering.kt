@@ -54,8 +54,8 @@ class SMSOrdering : AppCompatActivity() {
             setUpUI()
             populateCustomerListDropdown()
             setUpListeners()
+            showSMS()
         }.start()
-        showSMS()
     }
 
     fun setUpUI() {
@@ -79,12 +79,12 @@ class SMSOrdering : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     fun showSMS() {
-        Thread {
             val smsFiltered = SmsReader.getAllSms(this, StringUtils.getListFromCSV(AppConstants.get(AppConstants.SMS_ORDER_GET_ORDER_PH_NUMBER)).toTypedArray())
             val container = findViewById<LinearLayout>(R.id.smsorders_sms_view_container)
-            container.removeAllViews()
 
-//            smsToProcess = "100+50+0+0+40+40+0+30+30+20+40+20+10+120"
+            runOnUiThread {
+                findViewById<TextView>(R.id.smsordering_loading_sms_label).visibility = View.GONE
+            }
 
             smsFiltered.forEach { sms ->
                 runOnUiThread {
@@ -102,7 +102,6 @@ class SMSOrdering : AppCompatActivity() {
                     }
                 }
             }
-        }.start()
     }
 
     private fun processSMS() {

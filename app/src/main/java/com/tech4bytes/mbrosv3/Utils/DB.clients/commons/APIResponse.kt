@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import java.lang.reflect.Type
 
 open class APIResponse {
@@ -22,17 +23,21 @@ open class APIResponse {
         return getJsonObject()!!.get(JsonTags.RESPONSE_OP_CODE).asInt
     }
 
-    fun getJsonObject(): JsonObject? {
+    fun getJsonObject(responseString: String = ""): JsonObject? {
+        val parsingString = if(responseString.isNotEmpty()) responseString else responsePayload
         val parser = JsonParser()
-        return parser.parse(responsePayload).asJsonObject
+        return parser.parse(parsingString).asJsonObject
     }
 
-    fun <T> parseToObject(jsonString: String?, type: Type): ArrayList<T> {
+    fun <T> parseToObject(jsonString: String?, type: Type, doesContainSheetName: Boolean = false): ArrayList<T> {
         Log.e("parsing to object ", jsonString!!)
         var arrayLabel = JsonTags.RESPONSE_DATA_CODE
         var jsonarray: JsonArray? = null
         try {
             jsonarray = getJsonObject()!!.getAsJsonArray(arrayLabel)
+            jsonarray.forEach {
+                LogMe.log(it.asString)
+            }
         } catch (e: Exception) {
             Log.e("parseJSONObject", "Error while parsing")
         }

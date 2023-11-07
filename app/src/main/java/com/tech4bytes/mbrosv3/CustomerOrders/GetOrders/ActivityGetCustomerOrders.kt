@@ -98,13 +98,13 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
 
         pcElement.doOnTextChanged { text, start, before, count ->
             order.orderedPc = pcElement.text.toString()
-            GetCustomerOrders.updateObj(order)
+            GetCustomerOrdersUtils.updateObj(order)
             updateTotalPc()
         }
 
         kgElement.doOnTextChanged { text, start, before, count ->
             order.orderedKg = kgElement.text.toString()
-            GetCustomerOrders.updateObj(order)
+            GetCustomerOrdersUtils.updateObj(order)
             updateTotalKg()
         }
 

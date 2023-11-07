@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.BusinessLogic.Sorter
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
+import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
@@ -94,9 +95,10 @@ class DueShow : AppCompatActivity() {
     fun shouldShow(customerData: CustomerData): Boolean {
         if (NumberUtils.getIntOrZero(customerData.balanceDue) != 0)
             return true
-        if (CustomerKYC.getCustomerByEngName(customerData.name) == null)
+        val customer = CustomerKYCUtils.getCustomerByEngName(customerData.name)
+        if (customer == null)
             return false
-        if (CustomerKYC.getCustomerByEngName(customerData.name)!!.isActiveCustomer.toBoolean())
+        if (customer.isActiveCustomer.toBoolean())
             return true
         return false
     }
@@ -122,7 +124,7 @@ class DueShow : AppCompatActivity() {
     private fun showDues(showAfterDeliveryBalance: Boolean = true) {
         val listContainer = findViewById<LinearLayout>(R.id.activity_due_show_fragment_conntainer)
         listContainer.removeAllViews()
-        var latestRecords = removeInActiveCustomers(CustomerData.getAllLatestRecords())
+        var latestRecords = removeInActiveCustomers(CustomerDataUtils.getAllLatestRecords())
         latestRecords = Sorter.sortByNameList(latestRecords, CustomerData::name) as MutableList<CustomerData>
 
         val balanceTextColor = if (showAfterDeliveryBalance) R.color.due_show_including_finalized_transactions else R.color.due_show_excluding_finalized_transactions

@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.prasunmondal.postjsontosheets.clients.get.GetMultipleTabs
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.AppData.AppUtils
@@ -23,21 +24,27 @@ import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.AppUsers.Config
 import com.tech4bytes.mbrosv3.AppUsers.RolesUtils
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
+import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.Customer.DueShow
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard.ActivityAdminDeliveryDashboard
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.CustomerTransactions
 import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrdering
+import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.MoneyCounter.MoneyCounter
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotLoad
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
+import com.tech4bytes.mbrosv3.Sms.OneShotSMS.OSMS
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
+import kotlin.reflect.KFunction
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -53,6 +60,33 @@ class ActivityLogin : AppCompatActivity() {
         AppContexts.set(this)
         AppUtils.logError()
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+            val sheetClassMap: MutableMap<String, KFunction<Any>> = mutableMapOf()
+            sheetClassMap["smsModel"] = OSMS::parseAndSaveToLocal
+            sheetClassMap["metadata"] = SingleAttributedData::parseAndSaveToLocal
+            sheetClassMap["customerDetails"] = CustomerKYC::parseAndSaveToLocal
+//            sheetClassMap["deliveries"] = CustomerData::parseAndSaveToLocal
+            sheetClassMap["DeliverOrders"] = DeliverToCustomerDataHandler::parseAndSaveToLocal
+
+
+            GetMultipleTabs.builder().scriptId("https://script.google.com/macros/s/AKfycbyVdzZW7Bg5-tAFM4_LfWfBozea-OPyFQQrHMGkNJiqXBsEyMZXNlG-QbX5aF5VXABPZQ/exec")
+                .sheetId("1X6HriHjIE0XfAblDlE7Uf5a8JTHu00kW2SWvTFKL78w")
+                .tabName("smsModel, metadata, customerDetails, DeliverOrders")
+                .SheetClassMapBuilder(sheetClassMap)
+                .build()
+                .execute()
+
+        LogMe.log("Fetching Complete")
+        OSMS.get()
+        LogMe.log("Got it!")
+        SingleAttributedData.getRecords()
+        LogMe.log("List Size (OSMS): " + OSMS.get().size)
+        LogMe.log("List Size (SingleAttributedData): " + SingleAttributedData.getRecords().id)
+
+
+
+
+        // ---- End exp -----
 
         val roles = RolesUtils.getAppUser()
         LogMe.log("Got Role: $roles")

@@ -5,17 +5,12 @@ import android.content.pm.PackageManager
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.prasunmondal.postjsontosheets.clients.delete.Delete
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
@@ -24,18 +19,17 @@ import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.SMSDetails.SendSMSDetailsUtils
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerConfig
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
+import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrdersUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
+import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
-import com.tech4bytes.mbrosv3.Sms.SMSUtils
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -264,7 +258,7 @@ class OneShotDelivery : AppCompatActivity() {
 
     private fun populateDeliveryMap() {
         deliveryMapOrderedCustomers = mutableMapOf()
-        val listOfOrderedCustomers = GetCustomerOrders.getListOfOrderedCustomers()
+        val listOfOrderedCustomers = GetCustomerOrdersUtils.getListOfOrderedCustomers()
         listOfOrderedCustomers.forEach {
             val deliverCustomersOrders = DeliverToCustomerDataModel(
                 id = "${System.currentTimeMillis()}",
@@ -272,8 +266,8 @@ class OneShotDelivery : AppCompatActivity() {
                 name = it.name,
                 orderedPc = it.orderedPc,
                 orderedKg = it.orderedKg,
-                rate = "${CustomerData.getDeliveryRate(it.name)}",
-                prevDue = CustomerData.getLastDue(it.name),
+                rate = "${CustomerDataUtils.getDeliveryRate(it.name)}",
+                prevDue = CustomerDataUtils.getLastDue(it.name),
                 deliveryStatus = "DELIVERING"
             )
 
@@ -287,15 +281,15 @@ class OneShotDelivery : AppCompatActivity() {
                     name = it.name,
                     orderedPc = "0",
                     orderedKg = "0",
-                    rate = "${CustomerData.getDeliveryRate(it.name)}",
-                    prevDue = CustomerData.getLastDue(it.name),
+                    rate = "${CustomerDataUtils.getDeliveryRate(it.name)}",
+                    prevDue = CustomerDataUtils.getLastDue(it.name),
                     deliveryStatus = "DELIVERING"
                 )
                 deliveryMapOrderedCustomers[it.name] = deliverCustomersOrders
         }
 
         deliveryMapUnOrderedCustomers = mutableMapOf()
-        val listOfUnOrderedCustomers = GetCustomerOrders.getListOfUnOrderedCustomers()
+        val listOfUnOrderedCustomers = GetCustomerOrdersUtils.getListOfUnOrderedCustomers()
         listOfUnOrderedCustomers.forEach {
             val deliverCustomersOrders = DeliverToCustomerDataModel(
                 id = "${System.currentTimeMillis()}",
@@ -303,8 +297,8 @@ class OneShotDelivery : AppCompatActivity() {
                 name = it.name,
                 orderedPc = "0",
                 orderedKg = "0",
-                rate = "${CustomerData.getDeliveryRate(it.name)}",
-                prevDue = CustomerData.getLastDue(it.name),
+                rate = "${CustomerDataUtils.getDeliveryRate(it.name)}",
+                prevDue = CustomerDataUtils.getLastDue(it.name),
                 deliveryStatus = "DELIVERING"
             )
 
@@ -326,8 +320,8 @@ class OneShotDelivery : AppCompatActivity() {
             name = name,
             orderedPc = "0",
             orderedKg = "0",
-            rate = "${CustomerData.getDeliveryRate(name)}",
-            prevDue = CustomerData.getLastDue(name),
+            rate = "${CustomerDataUtils.getDeliveryRate(name)}",
+            prevDue = CustomerDataUtils.getLastDue(name),
             deliveryStatus = "DELIVERING"
         )
         deliveryMapUnOrderedCustomers[name] = deliverCustomersOrders
@@ -453,11 +447,7 @@ class OneShotDelivery : AppCompatActivity() {
         }
 
         fun deleteDeliveryDataOnServer() {
-            Delete.builder()
-                .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.get_db_sheet_id())
-                .tabName(DeliverToCustomerConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
-                .build().execute()
+            DeliverToCustomerDataHandler.deleteAllFromServer()
         }
     }
 

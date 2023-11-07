@@ -85,7 +85,7 @@ class OrdersMakeList : AppCompatActivity() {
             val metadataObj = SingleAttributedData.getRecords()
             var totalPc = 0
             var totalKg = 0
-            GetCustomerOrders.getListOfOrderedCustomers().forEach {
+            GetCustomerOrdersUtils.getListOfOrderedCustomers().forEach {
                 totalPc += NumberUtils.getIntOrZero(getFinalPc(it))
                 totalKg += NumberUtils.getIntOrZero(getFinalKg(it))
             }

@@ -61,21 +61,6 @@ class ActivityLogin : AppCompatActivity() {
         AppUtils.logError()
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
-            val sheetClassMap: MutableMap<String, KFunction<Any>> = mutableMapOf()
-            sheetClassMap["smsModel"] = OSMS::parseAndSaveToLocal
-            sheetClassMap["metadata"] = SingleAttributedData::parseAndSaveToLocal
-            sheetClassMap["customerDetails"] = CustomerKYC::parseAndSaveToLocal
-//            sheetClassMap["deliveries"] = CustomerData::parseAndSaveToLocal
-            sheetClassMap["DeliverOrders"] = DeliverToCustomerDataHandler::parseAndSaveToLocal
-
-
-            GetMultipleTabs.builder().scriptId("https://script.google.com/macros/s/AKfycbyVdzZW7Bg5-tAFM4_LfWfBozea-OPyFQQrHMGkNJiqXBsEyMZXNlG-QbX5aF5VXABPZQ/exec")
-                .sheetId("1X6HriHjIE0XfAblDlE7Uf5a8JTHu00kW2SWvTFKL78w")
-                .tabName("smsModel, metadata, customerDetails, DeliverOrders")
-                .SheetClassMapBuilder(sheetClassMap)
-                .build()
-                .execute()
-
         LogMe.log("Fetching Complete")
         OSMS.get()
         LogMe.log("Got it!")

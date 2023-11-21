@@ -1,7 +1,13 @@
 package com.prasunmondal.postjsontosheets.clients.get
 
+import android.util.Log
+import com.google.gson.reflect.TypeToken
 import com.prasunmondal.postjsontosheets.clients.commons.APICalls
+import com.prasunmondal.postjsontosheets.clients.commons.APIResponse
 import com.prasunmondal.postjsontosheets.clients.commons.ExecutePostCalls
+import com.tech4bytes.extrack.centralCache.CentralCache
+import com.tech4bytes.mbrosv3.Customer.CustomerKYC
+import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import org.json.JSONObject
 import java.net.URL
@@ -18,19 +24,16 @@ class GetMultipleTabs: APICalls, GetMultipleTabsFlow, GetMultipleTabsFlow.Script
     private lateinit var sheetClassMap: MutableMap<String, KFunction<Any>>
     private var onCompletion: Consumer<GetMultipleTabsResponse>? = null
 
-    override fun scriptId(scriptURL: String): GetMultipleTabsFlow.SheetIdBuilder {
-        this.scriptURL = scriptURL
-        return this
+    private fun <T> parseToObjectList(result: GetMultipleTabsResponse): List<T> {
+        return result.parseToObject(
+            result.getRawResponse(),
+            object : TypeToken<ArrayList<T>?>() {}.type)
     }
 
-    override fun sheetId(sheetId: String): GetMultipleTabsFlow.TabNameBuilder {
-        this.sheetId = sheetId
-        return this
-    }
-
-    override fun tabName(tabName: String): GetMultipleTabsFlow.SheetClassMapBuilder {
-        this.tabName = tabName
-        return this
+    fun <T> parseAndSaveToLocal(cacheKey: String, result: GetMultipleTabsResponse): List<T> {
+        val parsedObj = parseToObjectList<T>(result)
+        CentralCache.put(cacheKey, parsedObj)
+        return parsedObj
     }
 
     override fun postCompletion(onCompletion: Consumer<GetMultipleTabsResponse>?): GetMultipleTabsFlow.FinalRequestBuilder {
@@ -51,8 +54,11 @@ class GetMultipleTabs: APICalls, GetMultipleTabsFlow, GetMultipleTabsFlow.Script
         return this
     }
 
-    override fun execute(): GetMultipleTabsResponse {
-        return fetchAllMultipleTabs()
+    fun <T> execute(cacheKey: String): GetMultipleTabsResponse {
+        val result =
+            fetchAllMultipleTabs()
+        parseAndSaveToLocal<T>(cacheKey, result)
+        return result
     }
 
     private fun fetchAllMultipleTabs(): GetMultipleTabsResponse {
@@ -64,9 +70,8 @@ class GetMultipleTabs: APICalls, GetMultipleTabsFlow, GetMultipleTabsFlow.Script
         postDataParams.put("tabName", this.tabName)
 
         val c = ExecutePostCalls(scriptUrl, postDataParams) { response -> postExecute(response) }
-        var response = c.execute().get()
-//        var response = "{\"records\":{\"dataFreshness\":[{\"metadata\":\"7055b8269e9ee540\",\"deliverOrders\":\"ddd\",\"fuel\":1699020149058,\"metadataForCalc\":\"7055b8269e9ee540\"}],\"smsModel\":[{\"platform\":\"SMS\",\"sendTo\":7001553445,\"communicationType\":\"DELIVERY_SMS\",\"inputData\":\"Prabir\",\"dataTemplate\":\"Date: <date>\\nDelivery Details: <pc>pc / <kg>kg\\n\\n- Mondal Bros.\",\"enablement_template\":\"<pc>,<kg>\",\"isEnabled\":true},{\"platform\":\"SMS\",\"sendTo\":7001553445,\"communicationType\":\"DELIVERY_SMS\",\"inputData\":\"Mathura\",\"dataTemplate\":\"Date: <date>\\nCustomer: <name>\\nDelivery Details: <pc>pc / <kg>kg\\n\\n- Mondal Bros.\",\"enablement_template\":\"<pc>,<kg>\",\"isEnabled\":true},{\"platform\":\"SMS\",\"sendTo\":9734075801,\"communicationType\":\"DAY_SUMMARY\",\"inputData\":\"\",\"dataTemplate\":\"Date: <date>\\nLoad: <loadPc>pc / <loadKg>kg\\nShortage: <shortage> kg\\nKM: <km>\\n\\n- Mondal Bros.\",\"enablement_template\":\"\",\"isEnabled\":true},{\"platform\":\"SMS\",\"sendTo\":9679004046,\"communicationType\":\"DAY_SUMMARY\",\"inputData\":\"\",\"dataTemplate\":\"Date: <date>\\nLoad: <loadPc>pc / <loadKg>kg\\nShortage: <shortage> kg\\nKM: <km>\\n\\n- Mondal Bros.\",\"enablement_template\":\"\",\"isEnabled\":true},{\"platform\":\"SMS\",\"sendTo\":9679004046,\"communicationType\":\"LOAD_DETAILS\",\"inputData\":\"Shalimar\",\"dataTemplate\":\"Date: <date>\\nSend Money to Shalimar\\n\\n- Mondal Bros.\",\"enablement_template\":\"\",\"isEnabled\":true},{\"platform\":\"WHATSAPP\",\"sendTo\":918617434349,\"communicationType\":\"LOAD_DETAILS\",\"inputData\":\"Montu\",\"dataTemplate\":\"Date: <date>\\nFrom: <loadCompanyName>\\nLoad Details: <loadPc>pc / <loadKg>kg\\n\\n- Mondal Bros.\",\"enablement_template\":\"\",\"isEnabled\":true},{\"platform\":\"WHATSAPP\",\"sendTo\":919679004046,\"communicationType\":\"KHATA\",\"inputData\":\"\",\"dataTemplate\":\"Send Day Record File\",\"enablement_template\":\"\",\"isEnabled\":false}]}}"
-//        this.sheetClassMap[]
+        val response = c.execute().get()
+        Log.e("DBCall:: Inbound", response)
         val resultsMap = GetMultipleTabsResponse(response).getParsedList()
         resultsMap.forEach {
             LogMe.log("Converting ${it.key} to object: ${resultsMap[it.key]}")
@@ -86,5 +91,26 @@ class GetMultipleTabs: APICalls, GetMultipleTabsFlow, GetMultipleTabsFlow.Script
         fun builder(): GetMultipleTabsFlow.ScriptIdBuilder {
             return GetMultipleTabs()
         }
+    }
+
+    override fun execute(): GetMultipleTabsResponse {
+        val result =
+            fetchAllMultipleTabs()
+        return result
+    }
+
+    override fun scriptId(scriptURL: String): GetMultipleTabsFlow.SheetIdBuilder {
+        this.scriptURL = scriptURL
+        return this
+    }
+
+    override fun sheetId(sheetId: String): GetMultipleTabsFlow.TabNameBuilder {
+        this.sheetId = sheetId
+        return this
+    }
+
+    override fun tabName(tabName: String): GetMultipleTabsFlow.SheetClassMapBuilder {
+        this.tabName = tabName
+        return this
     }
 }

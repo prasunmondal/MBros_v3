@@ -24,7 +24,8 @@ class DeliverToCustomerDataHandler {
                 LogMe.log("Getting delivery data: Cache failed")
                 parseAndSaveToLocal(TAB_NAME, getFromServer())
             }
-            return cacheResults!!
+            if (cacheResults == null) return listOf()
+            return cacheResults
         }
 
         private fun getFromServer(): GetResponse {
@@ -66,7 +67,6 @@ class DeliverToCustomerDataHandler {
                 .dataObject(obj as Any)
                 .build().execute()
         }
-
 
         // Delete Data
         fun deleteAllData() {

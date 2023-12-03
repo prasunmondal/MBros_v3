@@ -11,6 +11,7 @@ data class DeliverToCustomerDataModel(
     var deliveredKg: String = "",
     var rate: String = "",
     var todaysAmount: String = "",
+    var customerAccount: String = "",
     var prevDue: String = "",
     var totalDue: String = "",
     var paid: String = "",

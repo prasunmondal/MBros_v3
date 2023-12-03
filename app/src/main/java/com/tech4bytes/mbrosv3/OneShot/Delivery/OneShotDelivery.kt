@@ -266,6 +266,10 @@ class OneShotDelivery : AppCompatActivity() {
         deliveryMapOrderedCustomers = mutableMapOf()
         val listOfOrderedCustomers = GetCustomerOrders.getListOfOrderedCustomers()
         listOfOrderedCustomers.forEach {
+            var customerAccount = CustomerKYC.get(it.name)!!.customerAccount
+            if(customerAccount.isEmpty())
+                customerAccount = it.name
+
             val deliverCustomersOrders = DeliverToCustomerDataModel(
                 id = "${System.currentTimeMillis()}",
                 timestamp = DateUtils.getCurrentTimestamp(),
@@ -274,6 +278,7 @@ class OneShotDelivery : AppCompatActivity() {
                 orderedKg = it.orderedKg,
                 rate = "${CustomerData.getDeliveryRate(it.name)}",
                 prevDue = CustomerData.getLastDue(it.name),
+                customerAccount = customerAccount,
                 deliveryStatus = "DELIVERING"
             )
 

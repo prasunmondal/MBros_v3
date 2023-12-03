@@ -23,6 +23,7 @@ import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.AppUsers.Config
 import com.tech4bytes.mbrosv3.AppUsers.RolesUtils
+import com.tech4bytes.mbrosv3.BuildConfig
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.DueShow
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard.ActivityAdminDeliveryDashboard
@@ -56,6 +57,7 @@ class ActivityLogin : AppCompatActivity() {
 
         val roles = RolesUtils.getAppUser()
         LogMe.log("Got Role: $roles")
+        updateAppVerOnUI()
         updateWelcomeDetails()
         Thread {
             val container = findViewById<LinearLayout>(R.id.activity_login_roles_container)
@@ -95,6 +97,10 @@ class ActivityLogin : AppCompatActivity() {
         findViewById<TextView>(R.id.welcome_date).text = DateUtils.getCurrentDate("dd")
         findViewById<TextView>(R.id.welcome_month).text = DateUtils.getCurrentDate("MMMM")
         findViewById<TextView>(R.id.welcome_year).text = DateUtils.getCurrentDate("yyyy")
+    }
+
+    private fun updateAppVerOnUI() {
+        findViewById<TextView>(R.id.app_ver_label).text = "${BuildConfig.lastGitCommitHash} (${BuildConfig.lastGitCommitDate})"
     }
 
     private fun getRoleAndActivityMapping(role: ActivityAuthEnums): (() -> Unit)? {

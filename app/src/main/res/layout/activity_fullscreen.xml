@@ -133,7 +133,18 @@
     <!--        app:layout_constraintEnd_toEndOf="parent"-->
     <!--        app:layout_constraintStart_toStartOf="parent" />-->
 
+    <TextView
+        android:id="@+id/app_ver_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="App Ver."
+        android:textColor="#535252"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout15"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <LinearLayout
+        android:id="@+id/linearLayout15"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#000000"

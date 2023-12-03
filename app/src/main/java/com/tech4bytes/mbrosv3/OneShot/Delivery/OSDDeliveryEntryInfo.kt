@@ -13,7 +13,6 @@ import androidx.core.widget.doOnTextChanged
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
-import com.tech4bytes.mbrosv3.Customer.CustomerKYCUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.SMSDetails.SendSMSDetailsUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
@@ -59,11 +58,10 @@ class OSDDeliveryEntryInfo {
             if (SendSMSDetailsUtils.getSendSMSDetailsNumber(value.name) != null) {
                 sendSMSBtn.visibility = View.VISIBLE
                 sendSMSBtn.setOnClickListener {
-                    val customer = CustomerKYCUtils.getCustomerByEngName(value.name)!!
-                    val smsNumber = customer.smsNumber
+                    val smsNumber = CustomerKYC.getCustomerByEngName(value.name)!!.smsNumber
                     val t = DateUtils.getDate(value.timestamp)
                     val formattedDate = DateUtils.getDateInFormat(t!!, "dd/MM/yyyy")
-                    val smsText = customer.smsText
+                    val smsText = CustomerKYC.getCustomerByEngName(value.name)!!.smsText
                         .replace("<date>", formattedDate)
                         .replace("<pc>", pcElement.text.toString())
                         .replace("<kg>", kgElement.text.toString())
@@ -76,7 +74,7 @@ class OSDDeliveryEntryInfo {
                 }
             }
 
-            rateElement.setText("${CustomerDataUtils.getDeliveryRate(value.name)}")
+            rateElement.setText("${CustomerData.getDeliveryRate(value.name)}")
             OSDDeliveryEntryInfo.fragmentUpdateCustomerWiseRateView(context, value, entry)
 
             val recordContainer = entry.findViewById<CardView>(R.id.one_shot_delivery_fragment_record_container)
@@ -129,7 +127,7 @@ class OSDDeliveryEntryInfo {
 
         fun fragmentUpdateCustomerWiseRateView(context: Context, value: DeliverToCustomerDataModel, entry: View) {
             val rateElement = entry.findViewById<TextInputEditText>(R.id.osd_rate_for_customer)
-            if (NumberUtils.getIntOrZero(rateElement.text.toString()) != CustomerDataUtils.getCustomerDefaultRate(value.name)) {
+            if (NumberUtils.getIntOrZero(rateElement.text.toString()) != CustomerData.getCustomerDefaultRate(value.name)) {
                 rateElement.setBackgroundColor(ContextCompat.getColor(context, R.color.red))
                 rateElement.setTextColor(ContextCompat.getColor(context, R.color.white))
             } else {
@@ -140,7 +138,7 @@ class OSDDeliveryEntryInfo {
 
         fun updateRates() {
             uiMaps.forEach {
-                val rate = CustomerDataUtils.getCustomerDefaultRate(it.key)
+                val rate = CustomerData.getCustomerDefaultRate(it.key)
                 val rateElement = it.value.findViewById<TextView>(R.id.osd_rate_for_customer)
                 rateElement.text = rate.toString()
             }

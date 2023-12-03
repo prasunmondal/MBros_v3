@@ -29,38 +29,57 @@ data class CustomerKYCModel(
 
 class CustomerKYC : java.io.Serializable {
     companion object {
-        val SHEET_TAB_NAME = "customerDetails"
-        val cacheKey = "customerDetails"
 
         fun getAllCustomers(useCache: Boolean = true): List<CustomerKYCModel> {
+            val cacheKey = "allCustomersList"
             val cacheResults = CentralCache.get<ArrayList<CustomerKYCModel>>(AppContexts.get(), cacheKey, useCache)
 
             return if (cacheResults != null) {
                 cacheResults
             } else {
-                val resultFromServer = getFromServer()
-                parseAndSaveToLocal(cacheKey, resultFromServer)
+                val resultFromServer = getCustomerListFromServer()
+                CentralCache.put(cacheKey, resultFromServer)
+                resultFromServer
             }
         }
 
-        private fun getFromServer(): GetResponse {
-            return Get.builder()
+        fun get(englishName: String): CustomerKYCModel? {
+            getAllCustomers().forEach {
+                if (it.nameEng == englishName)
+                    return it
+            }
+            return null
+        }
+
+        fun showBalance(engName: String): Boolean {
+            getAllCustomers().forEach {
+                if (it.nameEng == engName)
+                    return it.showDue.toBoolean()
+            }
+            return true
+        }
+
+        fun getCustomerByEngName(engName: String): CustomerKYCModel? {
+            getAllCustomers().forEach {
+                if (it.nameEng == engName)
+                    return it
+            }
+            return null
+        }
+
+        private fun getCustomerListFromServer(): List<CustomerKYCModel> {
+            // val waitDialog = ProgressDialog.show(AppContexts.get(), "Please Wait", "লোড হচ্ছে", true)
+            val result: GetResponse = Get.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
                 .sheetId(ProjectConfig.get_db_sheet_id())
-                .tabName(SHEET_TAB_NAME)
+                .tabName(Customer_Config.SHEET_TAB_NAME)
                 .build().execute()
-        }
 
-        fun parseToObject(result: GetResponse): List<CustomerKYCModel> {
+            // waitDialog!!.dismiss()
             return result.parseToObject(
                 result.getRawResponse(),
-                object : TypeToken<ArrayList<CustomerKYCModel>?>() {}.type)
-        }
-
-        fun parseAndSaveToLocal(cacheKey: String, result: GetResponse): List<CustomerKYCModel> {
-            val parsedObj = parseToObject(result)
-            CentralCache.put(cacheKey, parsedObj)
-            return parsedObj
+                object : TypeToken<ArrayList<CustomerKYCModel>?>() {}.type
+            )
         }
     }
 }

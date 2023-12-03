@@ -10,11 +10,9 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
-import com.tech4bytes.mbrosv3.Customer.CustomerKYCUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerCalculations
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
-import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrdersUtils
 import com.tech4bytes.mbrosv3.Loading.ActivityDeliveringLoad
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
@@ -31,8 +29,8 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
         AppContexts.set(this, this)
         AppUtils.logError()
 
-        showOrders(GetCustomerOrdersUtils.getListOfOrderedCustomers(), R.id.activity_delivering_deliver_order_list)
-        showOrders(GetCustomerOrdersUtils.getListOfUnOrderedCustomers(), R.id.activity_delivering_deliver_unorder_list)
+        showOrders(GetCustomerOrders.getListOfOrderedCustomers(), R.id.activity_delivering_deliver_order_list)
+        showOrders(GetCustomerOrders.getListOfUnOrderedCustomers(), R.id.activity_delivering_deliver_unorder_list)
     }
 
     fun showOrders(listOfCustomers: List<GetCustomerOrders>, container: Int) {
@@ -53,7 +51,7 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
             UIUtils.setUIElementValue(nameElement, order.name)
             UIUtils.setUIElementValue(pcElement, order.orderedPc)
             UIUtils.setUIElementValue(kgElement, order.orderedKg)
-            UIUtils.setUIElementValue(bengaliNameElement, CustomerKYCUtils.getCustomerByEngName(order.name)!!.nameBeng)
+            UIUtils.setUIElementValue(bengaliNameElement, CustomerKYC.get(order.name)!!.nameBeng)
 
             entry.setOnClickListener {
                 goTo_ActivityDeliveringDeliver(order.name)

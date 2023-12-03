@@ -9,7 +9,7 @@ class CustomerDueData {
 
         fun getBalance(shouldIncludePostDeliveryUpdates: Boolean = true): MutableMap<String, Int> {
             val dueMap: MutableMap<String, Int> = mutableMapOf()
-            CustomerDataUtils.getAllLatestRecords().forEach {
+            CustomerData.getAllLatestRecords().forEach {
                 dueMap[it.name] = NumberUtils.getIntOrZero(it.balanceDue)
             }
             if (shouldIncludePostDeliveryUpdates) {

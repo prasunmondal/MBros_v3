@@ -1,12 +1,13 @@
 package com.tech4bytes.mbrosv3.BusinessData
 
+import android.annotation.SuppressLint
+import android.provider.Settings
 import com.google.gson.reflect.TypeToken
 import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.ProjectConfig
-import com.tech4bytes.mbrosv3.Utils.Android.SystemUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -52,32 +53,44 @@ data class SingleAttributedData(
 
     companion object {
 
+        private var recordsKey = "SingleAttributedMetadata"
         private var SHEET_TABNAME = "metadata"
-        private var recordsKey = SHEET_TABNAME
-
 
         fun getRecords(useCache: Boolean = true): SingleAttributedData {
             LogMe.log("Getting delivery records")
             val cacheResults = CentralCache.get<SingleAttributedData>(AppContexts.get(), recordsKey, useCache)
-
             LogMe.log("Getting delivery records: Cache Hit: " + (cacheResults != null))
             return if (cacheResults != null) {
                 cacheResults
             } else {
                 val resultFromServer = getRecordsFromServer()
-                return parseAndSaveToLocal(recordsKey, resultFromServer)
+
+                CentralCache.put(recordsKey, resultFromServer)
+                resultFromServer
             }
         }
 
-        fun parseAndSaveToLocal(cacheKey: String, resultFromServer: GetResponse): SingleAttributedData {
-            val parsedResult = parseToObject(resultFromServer)
-            CentralCache.put(cacheKey, parsedResult)
-            return parsedResult
+        fun getBufferRateInt(): Int {
+            if (getRecords().bufferRate.isEmpty())
+                return 0
+            return getRecords().bufferRate.toInt()
+        }
+
+        fun getFinalRateInt(): Int {
+            if (getRecords().finalFarmRate.isEmpty())
+                return 0
+            return getRecords().finalFarmRate.toInt()
         }
 
         fun save(obj: SingleAttributedData) {
             saveToLocal(obj)
             saveToServer(obj)
+        }
+
+        fun saveAttribute(kMutableProperty: KMutableProperty1<SingleAttributedData, String>, value: String) {
+            val obj = getRecords()
+            ReflectionUtils.setAttribute(obj, kMutableProperty, value)
+            save(obj)
         }
 
         fun saveAttributeToLocal(kMutableProperty: KMutableProperty1<SingleAttributedData, String>, value: String) {
@@ -86,24 +99,27 @@ data class SingleAttributedData(
             saveToLocal(obj)
         }
 
+        fun getAttribute(kMutableProperty: KMutableProperty1<SingleAttributedData, String>): String {
+            val obj = getRecords()
+            return ReflectionUtils.readInstanceProperty(obj, kMutableProperty.name)
+        }
+
         private fun getCombinedResultsFromList(list: List<SingleAttributedData>): SingleAttributedData {
             if (list.isEmpty()) return SingleAttributedData()
             return list[0]
         }
 
-        fun parseToObject(result: GetResponse): SingleAttributedData {
-            val recordsList = result.parseToObject<SingleAttributedData>(result.getRawResponse(), object : TypeToken<ArrayList<SingleAttributedData>?>() {}.type)
-            recordsList.sortBy { it.id }
-            recordsList.reverse()
-            return getCombinedResultsFromList(recordsList)
-        }
-
-        private fun getRecordsFromServer(): GetResponse {
-            return Get.builder()
+        private fun getRecordsFromServer(): SingleAttributedData {
+            val result: GetResponse = Get.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
                 .sheetId(ProjectConfig.get_db_sheet_id())
                 .tabName(SHEET_TABNAME)
                 .build().execute()
+
+            val recordsList = result.parseToObject<SingleAttributedData>(result.getRawResponse(), object : TypeToken<ArrayList<SingleAttributedData>?>() {}.type)
+            recordsList.sortBy { it.id }
+            recordsList.reverse()
+            return getCombinedResultsFromList(recordsList)
         }
 
         private fun saveToServer(record: SingleAttributedData) {
@@ -118,10 +134,19 @@ data class SingleAttributedData(
         fun saveToLocal(obj: SingleAttributedData?) {
             if (obj != null) {
                 obj.id = System.currentTimeMillis().toString()
-                obj.recordGeneratorDevice = SystemUtils.getPhoneId()
+                obj.recordGeneratorDevice = getPhoneId()
                 obj.date = DateUtils.getCurrentTimestamp()
+//            obj.datetime = DateUtils.getCurrentTimestamp()
             }
             CentralCache.put(recordsKey, obj)
+        }
+
+        @SuppressLint("HardwareIds")
+        private fun getPhoneId(): String {
+            return Settings.Secure.getString(
+                AppContexts.get().contentResolver,
+                Settings.Secure.ANDROID_ID
+            )
         }
 
         fun invalidateCache() {

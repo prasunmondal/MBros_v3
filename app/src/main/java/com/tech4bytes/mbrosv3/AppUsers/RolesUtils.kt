@@ -6,7 +6,6 @@ import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.ProjectConfig
-import com.tech4bytes.mbrosv3.Utils.Android.SystemUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 
@@ -46,11 +45,18 @@ class RolesUtils {
 
 
             deviceList.forEach {
-                if (SystemUtils.getPhoneId() == it.device_id) {
+                if (getPhoneId() == it.device_id) {
                     return it
                 }
             }
             return null
+        }
+
+        private fun getPhoneId(): String {
+            return Settings.Secure.getString(
+                AppContexts.get().contentResolver,
+                Settings.Secure.ANDROID_ID
+            );
         }
     }
 }

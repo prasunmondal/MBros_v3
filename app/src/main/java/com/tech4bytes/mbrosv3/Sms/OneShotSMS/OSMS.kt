@@ -19,28 +19,23 @@ class OSMS {
                 cacheResults
             } else {
                 val resultFromServer = getFromServer()
-                parseAndSaveToLocal(cacheKey, resultFromServer)
+                CentralCache.put(cacheKey, resultFromServer)
+                resultFromServer
             }
         }
 
-        private fun getFromServer(): GetResponse {
-            return Get.builder()
+
+        private fun getFromServer(): List<OSMSModel> {
+            val result: GetResponse = Get.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
                 .sheetId(ProjectConfig.get_db_sheet_id())
                 .tabName(OSMSConfig.SHEET_TEMPLATE_TAB_NAME)
                 .build().execute()
-        }
 
-        fun parseToObject(result: GetResponse): List<OSMSModel> {
             return result.parseToObject(
                 result.getRawResponse(),
-                object : TypeToken<ArrayList<OSMSModel>?>() {}.type)
-        }
-
-        fun parseAndSaveToLocal(cacheKey: String, result: GetResponse): List<OSMSModel> {
-            val parsedObj = parseToObject(result)
-            CentralCache.put(cacheKey, parsedObj)
-            return parsedObj
+                object : TypeToken<ArrayList<OSMSModel>?>() {}.type
+            )
         }
     }
 }

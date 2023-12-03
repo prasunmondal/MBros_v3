@@ -10,7 +10,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
-import com.tech4bytes.mbrosv3.BusinessData.BulkDataFetch
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import kotlin.reflect.KFunction
@@ -53,18 +52,15 @@ class DataFetchActivity : AppCompatActivity() {
                 map[it.key] = FetchData(uiEntry, DataFetchingInfo.getDescription(it.key), it.key, it.value.useCache, false)
             }
 
-            Thread {
-                BulkDataFetch.getAllData()
-                map.forEach {
-                    @Suppress("UNCHECKED_CAST")
-                    run(map, it.key, it.value.useCache, nextActivity)
-                }
-            }.start()
+            map.forEach {
+                @Suppress("UNCHECKED_CAST")
+                run(map, it.key, it.value.useCache, nextActivity)
+            }
         }
     }
 
     private fun run(list: MutableMap<KFunction<Any>, FetchData>, key: KFunction<Any>, useCache: Boolean, nextActivity: Class<*>?) { //uiEntry: View, function: (Boolean) -> (Unit)) {
-
+        Thread {
             @Suppress("UNCHECKED_CAST")
             (key as ((Boolean) -> Unit)).invoke(useCache)
             runOnUiThread {
@@ -85,6 +81,6 @@ class DataFetchActivity : AppCompatActivity() {
                     goToNextActivity(nextActivity)
                 }
             }
-
+        }.start()
     }
 }

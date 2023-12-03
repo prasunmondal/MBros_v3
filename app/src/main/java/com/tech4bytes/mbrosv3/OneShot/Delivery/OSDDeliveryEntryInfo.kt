@@ -18,7 +18,6 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.SMSDetails.SendSMSDet
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
-import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.SMSUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -78,7 +77,7 @@ class OSDDeliveryEntryInfo {
             }
 
             rateElement.setText("${CustomerDataUtils.getDeliveryRate(value.name)}")
-            fragmentUpdateCustomerWiseRateView(context, value, entry)
+            OSDDeliveryEntryInfo.fragmentUpdateCustomerWiseRateView(context, value, entry)
 
             val recordContainer = entry.findViewById<CardView>(R.id.one_shot_delivery_fragment_record_container)
             var cardColor = ContextCompat.getColor(context, R.color.one_shot_delivery_odd_card_color)

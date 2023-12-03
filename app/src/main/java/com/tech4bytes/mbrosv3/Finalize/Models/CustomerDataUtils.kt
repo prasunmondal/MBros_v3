@@ -1,12 +1,21 @@
 package com.tech4bytes.mbrosv3.Finalize.Models
 
+import com.google.gson.reflect.TypeToken
+import com.prasunmondal.postjsontosheets.clients.get.Get
+import com.prasunmondal.postjsontosheets.clients.get.GetResponse
+import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
+import com.tech4bytes.extrack.centralCache.CentralCache
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.BusinessLogic.Sorter
+import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.Customer.CustomerKYCUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
+import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
+import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
@@ -16,11 +25,9 @@ class CustomerDataUtils {
 
     companion object {
         fun getCustomerDefaultRate(name: String): Int {
-            val rate1 = SingleAttributedDataUtils.getFinalRateInt();
-            val rate2 = SingleAttributedDataUtils.getBufferRateInt();
-            val rate3 = NumberUtils.getIntOrZero(CustomerKYCUtils.getCustomerByEngName(name)!!.rateDifference)
-
-            return rate1 + rate2 + rate3
+            return SingleAttributedDataUtils.getFinalRateInt()
+            + SingleAttributedDataUtils.getBufferRateInt()
+            + CustomerKYCUtils.getCustomerByEngName(name)!!.rateDifference.toInt()
         }
 
         fun getDeliveryRate(name: String): Int {
@@ -73,8 +80,8 @@ class CustomerDataUtils {
 
         fun getAllLatestRecords(): MutableList<CustomerData> {
             val customerRecords = CustomerData.getRecords()
-            customerRecords.sortedBy { it.orderId }
-            customerRecords.reversed()
+            customerRecords.sortBy { it.orderId }
+            customerRecords.reverse()
 
             val addedNames = mutableListOf<String>()
             val latestRecordsList = mutableListOf<CustomerData>()

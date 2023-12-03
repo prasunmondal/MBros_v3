@@ -39,15 +39,10 @@ open class APIResponse {
                 LogMe.log(it.asString)
             }
         } catch (e: Exception) {
-            Log.e("parseJSONObject", e.stackTraceToString())
             Log.e("parseJSONObject", "Error while parsing")
         }
-        return try {
-            val result: ArrayList<T> = GsonBuilder().create().fromJson(jsonarray.toString(), type)
-            result
-        } catch (npe: NullPointerException) {
-            arrayListOf()
-        }
+        val result: ArrayList<T> = GsonBuilder().create().fromJson(jsonarray.toString(), type)
+        return result
     }
 
     fun getExceptionMessage(): String {

@@ -2,7 +2,6 @@ package com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher
 
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
-import com.tech4bytes.mbrosv3.BusinessData.BulkDataFetch
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
@@ -27,7 +26,6 @@ class DataFetchingInfo {
                 DaySummary::get.toString() -> "Transaction reports"
                 Refueling::get.toString() -> "Fuel data"
                 AppConstants::fetchAll.toString() -> "App Constants Data"
-                BulkDataFetch::getAllData.toString() -> "Bulk Fetching Data"
                 else -> "Get data"
             }
         }
@@ -37,9 +35,8 @@ class DataFetchingInfo {
 
             when (activity) {
                 ActivityAuthEnums.ADMIN,
-                ActivityAuthEnums.ONE_SHOT_DELIVERY
+                ActivityAuthEnums.ONE_SHOT_DELIVERY,
                 -> {
-                    executingMethods.add(BulkDataFetch::getAllData)
                     executingMethods.add(SingleAttributedData::getRecords)
                     executingMethods.add(CustomerKYC::getAllCustomers)
                     executingMethods.add(GetCustomerOrders::get)
@@ -50,45 +47,38 @@ class DataFetchingInfo {
                     executingMethods.add(AppConstants::fetchAll)
                 }
                 ActivityAuthEnums.DELIVERY -> {
-                    executingMethods.add(BulkDataFetch::getAllData)
                     executingMethods.add(CustomerKYC::getAllCustomers)
                     executingMethods.add(GetCustomerOrders::get)
                     executingMethods.add(DeliverToCustomerDataHandler::get)
                     executingMethods.add(CustomerData::getRecords)
                 }
                 ActivityAuthEnums.BALANCE_VIEW -> {
-                    executingMethods.add(BulkDataFetch::getAllData)
                     executingMethods.add(CustomerKYC::getAllCustomers)
                     executingMethods.add(CustomerData::getRecords)
                     executingMethods.add(DeliverToCustomerDataHandler::get)
                 }
                 ActivityAuthEnums.ORDER_COLLECTOR -> {
-                    executingMethods.add(BulkDataFetch::getAllData)
                     executingMethods.add(SingleAttributedData::getRecords)
                     executingMethods.add(CustomerKYC::getAllCustomers)
                     executingMethods.add(GetCustomerOrders::get)
                     executingMethods.add(CustomerData::getRecords)
                 }
                 ActivityAuthEnums.LOAD_INFORMATION -> {
-                    executingMethods.add(BulkDataFetch::getAllData)
                     executingMethods.add(SingleAttributedData::getRecords, true)
                     executingMethods.add(DaySummary::get, true)
                 }
                 ActivityAuthEnums.MONEY_CALCULATOR -> {
-                    executingMethods.add(BulkDataFetch::getAllData)
                     executingMethods.add(SingleAttributedData::getRecords)
                     executingMethods.add(DeliverToCustomerDataHandler::get)
                     executingMethods.add(AppConstants::fetchAll)
                 }
                 ActivityAuthEnums.SMS_ORDERING -> {
-                    executingMethods.add(BulkDataFetch::getAllData)
                     executingMethods.add(CustomerKYC::getAllCustomers)
                     executingMethods.add(AppConstants::fetchAll)
                     executingMethods.add(DeliverToCustomerDataHandler::get)
                     executingMethods.add(CustomerData::getRecords)
                 }
                 ActivityAuthEnums.CUSTOMER_TRANSACTIONS -> {
-                    executingMethods.add(BulkDataFetch::getAllData)
                     executingMethods.add(CustomerData::getRecords)
                 }
                 else -> {}

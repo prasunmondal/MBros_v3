@@ -100,7 +100,7 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     private fun updateAppVerOnUI() {
-        findViewById<TextView>(R.id.app_ver_label).text = "${BuildConfig.lastGitCommitHash} (${BuildConfig.lastGitCommitDate})"
+        findViewById<TextView>(R.id.app_ver_label).text = "App Version: ${BuildConfig.lastGitCommitHash} (${BuildConfig.lastGitCommitDate})"
     }
 
     private fun getRoleAndActivityMapping(role: ActivityAuthEnums): (() -> Unit)? {

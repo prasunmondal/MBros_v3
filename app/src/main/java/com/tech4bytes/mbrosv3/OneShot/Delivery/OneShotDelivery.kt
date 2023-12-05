@@ -286,22 +286,9 @@ class OneShotDelivery : AppCompatActivity() {
         }
 
         DeliverToCustomerDataHandler.get().forEach {
-                val deliverCustomersOrders = DeliverToCustomerDataModel(
-                    id = "${System.currentTimeMillis()}",
-                    timestamp = DateUtils.getCurrentTimestamp(),
-                    name = it.name,
-                    orderedPc = "0",
-                    orderedKg = "0",
-                    rate = "${CustomerData.getDeliveryRate(it.name)}",
-                    prevDue = CustomerData.getLastDue(it.name),
-                    deliveryStatus = "DELIVERING"
-                )
-                deliveryMapOrderedCustomers[it.name] = deliverCustomersOrders
-        }
-
-        deliveryMapUnOrderedCustomers = mutableMapOf()
-        val listOfUnOrderedCustomers = GetCustomerOrders.getListOfUnOrderedCustomers()
-        listOfUnOrderedCustomers.forEach {
+            var customerAccount = CustomerKYC.get(it.name)!!.customerAccount
+            if(customerAccount.isEmpty())
+                customerAccount = it.name
             val deliverCustomersOrders = DeliverToCustomerDataModel(
                 id = "${System.currentTimeMillis()}",
                 timestamp = DateUtils.getCurrentTimestamp(),
@@ -309,6 +296,27 @@ class OneShotDelivery : AppCompatActivity() {
                 orderedPc = "0",
                 orderedKg = "0",
                 rate = "${CustomerData.getDeliveryRate(it.name)}",
+                customerAccount = customerAccount,
+                prevDue = CustomerData.getLastDue(it.name),
+                deliveryStatus = "DELIVERING"
+            )
+            deliveryMapOrderedCustomers[it.name] = deliverCustomersOrders
+        }
+
+        deliveryMapUnOrderedCustomers = mutableMapOf()
+        val listOfUnOrderedCustomers = GetCustomerOrders.getListOfUnOrderedCustomers()
+        listOfUnOrderedCustomers.forEach {
+            var customerAccount = CustomerKYC.get(it.name)!!.customerAccount
+            if(customerAccount.isEmpty())
+                customerAccount = it.name
+            val deliverCustomersOrders = DeliverToCustomerDataModel(
+                id = "${System.currentTimeMillis()}",
+                timestamp = DateUtils.getCurrentTimestamp(),
+                name = it.name,
+                orderedPc = "0",
+                orderedKg = "0",
+                rate = "${CustomerData.getDeliveryRate(it.name)}",
+                customerAccount = customerAccount,
                 prevDue = CustomerData.getLastDue(it.name),
                 deliveryStatus = "DELIVERING"
             )

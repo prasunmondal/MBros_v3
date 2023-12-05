@@ -44,6 +44,7 @@ class OSDDeliveryEntryInfo {
             val sendSMSBtn = entry.findViewById<TextView>(R.id.osd_fragment_send_details)
             rateElementContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
 
+            value.customerAccount = CustomerKYC.get(value.name)!!.customerAccount
             nameElement.text = value.name
             balanceElement.text = value.prevDue
             val deliveryRecord = DeliverToCustomerActivity.getDeliveryRecord(value.name)

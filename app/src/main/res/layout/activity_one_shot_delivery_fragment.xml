@@ -33,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
+                android:gravity="right"
                 android:orientation="vertical"
                 android:paddingVertical="7dp">
 
@@ -116,6 +117,32 @@
                         android:textSize="14sp" />
 
                     <EditText
+                        android:id="@+id/one_shot_delivery_fragment_paidOnline"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="Online"
+                        android:inputType="number"
+                        android:nextFocusDown="@+id/one_shot_delivery_fragment_balance_due"
+                        android:textColor="#EAE4CF"
+                        android:textColorHint="@color/osd_pc_hint_color_1"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/one_shot_delivery_fragment_paidCash"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="Cash"
+                        android:inputType="number"
+                        android:nextFocusDown="@+id/one_shot_delivery_fragment_balance_due"
+                        android:textColor="#EAE4CF"
+                        android:textColorHint="@color/osd_pc_hint_color_1"
+                        android:textSize="14sp" />
+
+                    <EditText
                         android:id="@+id/one_shot_delivery_fragment_paid"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
@@ -128,18 +155,20 @@
                         android:textColorHint="@color/osd_pc_hint_color_1"
                         android:textSize="14sp" />
 
-                    <TextView
-                        android:id="@+id/one_shot_delivery_fragment_balance_due"
-                        android:layout_width="wrap_content"
-                        android:layout_height="50dp"
-                        android:layout_weight="1"
-                        android:fontFamily="sans-serif-medium"
-                        android:gravity="right"
-                        android:hint="Balance"
-                        android:text="Balance"
-                        android:textColor="#FAB7B1"
-                        android:textSize="16sp" />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/one_shot_delivery_fragment_balance_due"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="right|center_vertical"
+                    android:hint="Balance"
+                    android:paddingHorizontal="10dp"
+                    android:text="Balance"
+                    android:textColor="#FAB7B1"
+                    android:textSize="16sp" />
 
                 <LinearLayout
                     android:id="@+id/one_shot_delivery_fragment_more_details_container"

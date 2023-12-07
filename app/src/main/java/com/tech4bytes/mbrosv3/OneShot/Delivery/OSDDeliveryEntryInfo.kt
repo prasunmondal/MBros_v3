@@ -98,6 +98,8 @@ class OSDDeliveryEntryInfo {
             val paidElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid)
             val balanceElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
             val moreDetailsContainer = entry.findViewById<LinearLayout>(R.id.one_shot_delivery_fragment_more_details_container)
+            val paidOnlineElement = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidOnline)
+            val paidCashElement = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidCash)
 
             rateElement.doOnTextChanged { text, start, before, count ->
                 updateEntry(context as OneShotDelivery, value, entry)
@@ -112,6 +114,14 @@ class OSDDeliveryEntryInfo {
                 updateEntry(context as OneShotDelivery, value, entry)
             }
 
+            paidCashElement.doOnTextChanged { text, start, before, count ->
+                updatePaidElement(entry)
+            }
+
+            paidOnlineElement.doOnTextChanged { text, start, before, count ->
+                updatePaidElement(entry)
+            }
+
             paidElement.doOnTextChanged { text, start, before, count ->
                 updateEntry(context as OneShotDelivery, value, entry)
             }
@@ -124,6 +134,14 @@ class OSDDeliveryEntryInfo {
                 }
                 updateDetailedInfo(value, entry)
             }
+        }
+
+        private fun updatePaidElement(entry: View) {
+            val paidElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid)
+            val paidOnlineElement = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidOnline).text.toString()
+            val paidCashElement = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidCash).text.toString()
+
+            paidElement.setText(NumberUtils.getIntOrZero(paidOnlineElement) + NumberUtils.getIntOrZero(paidCashElement))
         }
 
         fun fragmentUpdateCustomerWiseRateView(context: Context, value: DeliverToCustomerDataModel, entry: View) {

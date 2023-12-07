@@ -76,7 +76,7 @@ class OSDDeliveryEntryInfo {
             }
 
             rateElement.setText("${CustomerData.getDeliveryRate(value.name)}")
-            OSDDeliveryEntryInfo.fragmentUpdateCustomerWiseRateView(context, value, entry)
+            fragmentUpdateCustomerWiseRateView(context, value, entry)
 
             val recordContainer = entry.findViewById<CardView>(R.id.one_shot_delivery_fragment_record_container)
             var cardColor = ContextCompat.getColor(context, R.color.one_shot_delivery_odd_card_color)

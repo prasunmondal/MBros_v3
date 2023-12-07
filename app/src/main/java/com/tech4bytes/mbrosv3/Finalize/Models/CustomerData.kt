@@ -29,6 +29,8 @@ class CustomerData : java.io.Serializable {
     var prevAmount = ""
     var deliveredAmount = ""
     var totalAmount = ""
+    var paidCash = ""
+    var paidOnline = ""
     var paid = ""
     var customerAccount = ""
     var balanceDue = ""
@@ -36,7 +38,7 @@ class CustomerData : java.io.Serializable {
     var profit = ""
     var profitPercent = ""
 
-    constructor(orderId: String, timestamp: String, name: String, deliveredPc: String, deliveredKg: String, rate: String, prevAmount: String, deliveredAmount: String, totalAmount: String, paid: String, customerAccount: String, balanceDue: String, profit: String, profitPercent: String) {
+    constructor(orderId: String, timestamp: String, name: String, deliveredPc: String, deliveredKg: String, rate: String, prevAmount: String, deliveredAmount: String, totalAmount: String, paidCash: String, paidOnline: String, paid: String, customerAccount: String, balanceDue: String, profit: String, profitPercent: String) {
         this.orderId = orderId
         this.timestamp = timestamp
         this.name = name
@@ -46,6 +48,8 @@ class CustomerData : java.io.Serializable {
         this.prevAmount = prevAmount
         this.deliveredAmount = deliveredAmount
         this.totalAmount = totalAmount
+        this.paidCash = paidCash
+        this.paidOnline = paidOnline
         this.paid = paid
         this.customerAccount = customerAccount
         this.balanceDue = balanceDue
@@ -84,7 +88,7 @@ class CustomerData : java.io.Serializable {
                 LogMe.log("ProfitPerCustomer: Name: ${it.name}: $totalProfit * ${NumberUtils.getDoubleOrZero(it.deliveredKg)} / $actualDeliveredKg = $profitByCustomer")
 
                 it.timestamp = DateUtils.getDateInFormat(Date(it.id.toLong()), "M/d/yyyy")
-                val record = CustomerData(it.id, it.timestamp, it.name, it.deliveredPc, it.deliveredKg, it.rate, it.prevDue, it.todaysAmount, it.totalDue, it.paid, it.customerAccount, it.balanceDue, NumberUtils.roundOff2places(profitByCustomer).toString(), NumberUtils.roundOff2places(profitPercentByCustomer).toString())
+                val record = CustomerData(it.id, it.timestamp, it.name, it.deliveredPc, it.deliveredKg, it.rate, it.prevDue, it.todaysAmount, it.totalDue, it.paidCash, it.paidOnline, it.paid, it.customerAccount, it.balanceDue, NumberUtils.roundOff2places(profitByCustomer).toString(), NumberUtils.roundOff2places(profitPercentByCustomer).toString())
                 addToFinalizeSheet(record)
             }
         }

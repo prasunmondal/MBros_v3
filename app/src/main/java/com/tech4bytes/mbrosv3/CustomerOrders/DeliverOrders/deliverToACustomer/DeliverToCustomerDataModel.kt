@@ -14,6 +14,8 @@ data class DeliverToCustomerDataModel(
     var customerAccount: String = "",
     var prevDue: String = "",
     var totalDue: String = "",
+    var paidCash: String = "",
+    var paidOnline: String = "",
     var paid: String = "",
     var balanceDue: String = "",
     var deliveryStatus: String = "",

@@ -169,6 +169,8 @@ class OSDDeliveryEntryInfo {
             order.deliveredPc = getPcForEntry(entry).toString()
             order.todaysAmount = getTodaysSaleAmountForEntry(entry).toString()
             order.paid = getPaidAmountForEntry(entry).toString()
+            order.paidCash = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidCash).text.toString()
+            order.paidOnline = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidOnline).text.toString()
             order.rate = getRateForEntry(entry).toString()
             order.totalDue = "${NumberUtils.getIntOrZero(order.prevDue) + getTodaysSaleAmountForEntry(entry)}"
             order.balanceDue = "${NumberUtils.getIntOrZero(order.prevDue) + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(entry)}"

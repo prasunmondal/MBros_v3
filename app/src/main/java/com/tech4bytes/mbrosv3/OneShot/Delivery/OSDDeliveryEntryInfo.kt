@@ -140,8 +140,8 @@ class OSDDeliveryEntryInfo {
             val paidElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid)
             val paidOnlineElement = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidOnline).text.toString()
             val paidCashElement = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidCash).text.toString()
-
-            paidElement.setText(NumberUtils.getIntOrZero(paidOnlineElement) + NumberUtils.getIntOrZero(paidCashElement))
+            val totalPaid = NumberUtils.getIntOrZero(paidOnlineElement) + NumberUtils.getIntOrZero(paidCashElement)
+            paidElement.text = totalPaid.toString()
         }
 
         fun fragmentUpdateCustomerWiseRateView(context: Context, value: DeliverToCustomerDataModel, entry: View) {

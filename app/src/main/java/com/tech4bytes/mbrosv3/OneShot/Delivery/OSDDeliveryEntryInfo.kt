@@ -38,6 +38,8 @@ class OSDDeliveryEntryInfo {
             val rateElement = entry.findViewById<TextInputEditText>(R.id.osd_rate_for_customer)
             val pcElement = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_pc)
             val kgElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_kg)
+            val paidCashElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paidCash)
+            val paidOnlineElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paidOnline)
             val paidElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid)
             val balanceElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
             val moreDetailsContainer = entry.findViewById<LinearLayout>(R.id.one_shot_delivery_fragment_more_details_container)
@@ -52,6 +54,8 @@ class OSDDeliveryEntryInfo {
                 pcElement.setText(NumberUtils.getIntOrBlank(deliveryRecord.deliveredPc))
                 kgElement.text = NumberUtils.getDoubleOrBlank(deliveryRecord.deliveredKg)
                 paidElement.text = NumberUtils.getIntOrBlank(deliveryRecord.paid)
+                paidCashElement.text = NumberUtils.getIntOrBlank(deliveryRecord.paidCash)
+                paidOnlineElement.text = NumberUtils.getIntOrBlank(deliveryRecord.paidOnline)
                 val pcHintText = if(NumberUtils.getIntOrZero(deliveryRecord.orderedPc) == 0) "pc" else deliveryRecord.orderedPc
                 pcElement.hint = pcHintText
             }

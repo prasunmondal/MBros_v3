@@ -117,19 +117,6 @@
                         android:textSize="14sp" />
 
                     <EditText
-                        android:id="@+id/one_shot_delivery_fragment_paidOnline"
-                        android:layout_width="100dp"
-                        android:layout_height="50dp"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:hint="Online"
-                        android:inputType="number"
-                        android:nextFocusDown="@+id/one_shot_delivery_fragment_balance_due"
-                        android:textColor="#EAE4CF"
-                        android:textColorHint="@color/osd_pc_hint_color_1"
-                        android:textSize="14sp" />
-
-                    <EditText
                         android:id="@+id/one_shot_delivery_fragment_paidCash"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
@@ -143,14 +130,29 @@
                         android:textSize="14sp" />
 
                     <EditText
-                        android:id="@+id/one_shot_delivery_fragment_paid"
+                        android:id="@+id/one_shot_delivery_fragment_paidOnline"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:layout_weight="1"
                         android:ems="10"
+                        android:hint="Online"
+                        android:inputType="number"
+                        android:nextFocusDown="@+id/one_shot_delivery_fragment_balance_due"
+                        android:textColor="#EAE4CF"
+                        android:textColorHint="@color/osd_pc_hint_color_1"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/one_shot_delivery_fragment_paid"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:gravity="right|center_vertical"
                         android:hint="Paid"
                         android:inputType="number"
                         android:nextFocusDown="@+id/one_shot_delivery_fragment_balance_due"
+                        android:paddingEnd="10dp"
                         android:textColor="#EAE4CF"
                         android:textColorHint="@color/osd_pc_hint_color_1"
                         android:textSize="14sp" />

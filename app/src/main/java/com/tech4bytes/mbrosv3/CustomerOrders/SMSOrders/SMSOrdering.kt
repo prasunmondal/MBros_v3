@@ -193,6 +193,9 @@ class SMSOrdering : AppCompatActivity() {
 
                 entry.findViewById<TextView>(R.id.smsorder_listEntry_date).text = orders[j].orderedKg.toString()
                 entry.findViewById<TextView>(R.id.smsorder_listEntry_number).text = orders[j].name
+                if(orders[j].name == CustomerKYC.getCustomerByEngName(orders[j].name)!!.customerAccount) {
+                    entry.findViewById<TextView>(R.id.smsorder_listEntry_amount).text = CustomerKYC.getCustomerByEngName(orders[j].name)!!.customerAccount    
+                }
                 entry.findViewById<TextView>(R.id.smsorder_listEntry_amount).text = "$balance"
                 orderListContainer.addView(entry)
             }

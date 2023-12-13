@@ -14,6 +14,7 @@ import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
+import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import java.util.stream.Collectors
 
 
@@ -59,7 +60,11 @@ class CustomerTransactions : AppCompatActivity() {
     }
 
     private fun showTransactions(name: String) {
-        val list = CustomerData.getRecords().filter { it.name == name }
+        LogMe.startMethod()
+        val list = CustomerData.getRecords().filter { it.customerAccount == name }
+        list.forEach {
+            LogMe.log(it.toString())
+        }
         val listContainer = findViewById<LinearLayout>(R.id.ct_list_container)
         listContainer.removeAllViews()
         addHeader(listContainer)

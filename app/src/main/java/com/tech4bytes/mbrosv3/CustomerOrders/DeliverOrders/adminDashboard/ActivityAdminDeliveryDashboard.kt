@@ -180,9 +180,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         if (isFinalisedDone != null) {
             return isFinalisedDone!!
         }
-        val bufferKm = NumberUtils.getIntOrZero(SingleAttributedData.getRecords(useCache).vehicle_finalKm)
-        val lastFinalizedKm = DaySummary.getPrevTripEndKm(useCache)
-        isFinalisedDone = (lastFinalizedKm == bufferKm || bufferKm == 0)
+        isFinalisedDone = DaySummary.isDayFinalized(useCache)
         return isFinalisedDone!!
     }
 

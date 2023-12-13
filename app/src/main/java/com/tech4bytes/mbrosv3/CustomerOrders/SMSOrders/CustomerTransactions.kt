@@ -10,7 +10,6 @@ import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AppCompatActivity
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.CustomerAddTransactionActivity
-import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.OrdersMakeList
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
@@ -34,7 +33,7 @@ class CustomerTransactions : AppCompatActivity() {
         val customerNamesSpinner = findViewById<Spinner>(R.id.ct_customer_names_spinner)
         val adapter = ArrayAdapter(
             this,
-            android.R.layout.simple_spinner_item, getCompanyNames()
+            android.R.layout.simple_spinner_item, CustomerData.getAllCustomerNames()
         )
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -52,13 +51,6 @@ class CustomerTransactions : AppCompatActivity() {
                 showTransactions("")
             }
         })
-    }
-
-    private fun getCompanyNames(): List<String> {
-        return CustomerData.getRecords().stream()
-            .filter { d -> d.name.isNotEmpty() }
-            .map(CustomerData::name)
-            .collect(Collectors.toSet()).toList().sorted()
     }
 
     private fun showTransactions(name: String) {

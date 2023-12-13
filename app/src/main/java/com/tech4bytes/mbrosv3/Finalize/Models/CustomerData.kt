@@ -18,6 +18,7 @@ import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import java.util.*
+import java.util.stream.Collectors
 
 class CustomerData : java.io.Serializable {
     var orderId = ""
@@ -102,8 +103,8 @@ class CustomerData : java.io.Serializable {
                 .build().execute()
         }
 
-        fun getAllLatestRecords(): MutableList<CustomerData> {
-            val customerRecords = getRecords()
+        fun getAllLatestRecords(useCache: Boolean = true): MutableList<CustomerData> {
+            val customerRecords = getRecords(useCache)
             customerRecords.sortBy { it.orderId }
             customerRecords.reverse()
 
@@ -118,8 +119,24 @@ class CustomerData : java.io.Serializable {
             return latestRecordsList
         }
 
-        fun getLastDue(name: String): String {
-            val customerRecords = getAllLatestRecords()
+        fun getAllLatestRecordsByAccount(useCache: Boolean = true): MutableList<CustomerData> {
+            val customerRecords = getRecords(useCache)
+            customerRecords.sortBy { it.orderId }
+            customerRecords.reverse()
+
+            val addedNames = mutableListOf<String>()
+            val latestRecordsList = mutableListOf<CustomerData>()
+            customerRecords.forEach {
+                if (!addedNames.contains(it.customerAccount)) {
+                    latestRecordsList.add(it)
+                    addedNames.add(it.customerAccount)
+                }
+            }
+            return latestRecordsList
+        }
+
+        fun getLastDue(name: String, useCache: Boolean = true): String {
+            val customerRecords = getAllLatestRecords(useCache)
             customerRecords.forEach {
                 if (it.name == name)
                     return it.balanceDue
@@ -175,6 +192,13 @@ class CustomerData : java.io.Serializable {
             } catch (e: NullPointerException) {
                 0
             }
+        }
+
+        fun getAllCustomerNames(): List<String> {
+            return getRecords().stream()
+                .filter { d -> d.name.isNotEmpty() }
+                .map(CustomerData::name)
+                .collect(Collectors.toSet()).toList().sorted()
         }
     }
 }

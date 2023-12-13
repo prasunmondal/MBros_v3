@@ -175,5 +175,11 @@ data class DaySummary(
                 "Sunshine"
             }
         }
+
+        fun isDayFinalized(useCache: Boolean = true): Boolean {
+            val bufferKm = NumberUtils.getIntOrZero(SingleAttributedData.getRecords(useCache).vehicle_finalKm)
+            val lastFinalizedKm = DaySummary.getPrevTripEndKm(useCache)
+            return (lastFinalizedKm == bufferKm || bufferKm == 0)
+        }
     }
 }

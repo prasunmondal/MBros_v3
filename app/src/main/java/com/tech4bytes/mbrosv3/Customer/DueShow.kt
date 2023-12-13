@@ -38,11 +38,11 @@ class DueShow : AppCompatActivity() {
     private fun getBalanceMap(showAfterDeliveryBalance: Boolean): MutableMap<String, Int> {
         return if (showAfterDeliveryBalance) {
             if (balanceMapAfterDelivery == null)
-                balanceMapAfterDelivery = CustomerDueData.getBalance(true)
+                balanceMapAfterDelivery = CustomerDueData.getBalance()
             balanceMapAfterDelivery as MutableMap<String, Int>
         } else {
             if (balanceMapBeforeDelivery == null)
-                balanceMapBeforeDelivery = CustomerDueData.getBalance(false)
+                balanceMapBeforeDelivery = CustomerDueData.getBalance(shouldIncludePostDeliveryUpdates = false, includeStagedPayments = false)
             balanceMapBeforeDelivery as MutableMap<String, Int>
         }
     }

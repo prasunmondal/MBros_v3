@@ -196,8 +196,8 @@ class CustomerData : java.io.Serializable {
             }
         }
 
-        fun getAllCustomerNames(): List<String> {
-            return getRecords().stream()
+        fun getAllCustomerNames(useCache: Boolean = true): List<String> {
+            return getRecords(useCache).stream()
                 .filter { d -> d.name.isNotEmpty() }
                 .map(CustomerData::name)
                 .collect(Collectors.toSet()).toList().sorted()

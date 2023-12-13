@@ -25,15 +25,15 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
         }.start()
 
         Thread {
-            setCustomerNameDropdown()
+            setCustomerNameDropdown(useCache)
         }.start()
     }
 
-    private fun setCustomerNameDropdown() {
+    private fun setCustomerNameDropdown(useCache: Boolean = true) {
         val customerNamesSpinner = findViewById<Spinner>(R.id.addTransaction_name)
         val adapter = ArrayAdapter(
             this,
-            android.R.layout.simple_spinner_item, CustomerData.getAllCustomerNames()
+            android.R.layout.simple_spinner_item, CustomerData.getAllCustomerNames(useCache)
         )
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -89,15 +89,17 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
     }
     
     fun onClickSubmitBtn(view: View) {
-        val recordId = System.currentTimeMillis().toString()
         val name = findViewById<Spinner>(R.id.addTransaction_name).selectedItem.toString()
         val prevAmount = CustomerData.getLastDue(name, false)
         val paidAmount = findViewById<EditText>(R.id.addTransaction_amount).text.toString()
-        val paidOnline = findViewById<RadioButton>(R.id.addTransaction_txn_mode_online).isChecked
-        val paidOnlineAmount = if(paidOnline) "$paidAmount" else "0"
-        val paidCashAmount = if(!paidOnline) "$paidAmount" else "0"
         val notes = findViewById<EditText>(R.id.addTransaction_note).text.toString()
 
-        StagedPay.transact(name, prevAmount, "CREDIT", paidAmount, "UPI", notes)
+        val selectedTxnTypeElement = findViewById<RadioGroup>(R.id.addTransaction_txn_type).checkedRadioButtonId
+        val txnType = findViewById<RadioButton>(selectedTxnTypeElement).text.toString().uppercase()
+
+        val selectedTxnModeElement = findViewById<RadioGroup>(R.id.addTransaction_txn_mode).checkedRadioButtonId
+        val txnMode = findViewById<RadioButton>(selectedTxnModeElement).text.toString().uppercase()
+
+        StagedPay.transact(name, prevAmount, txnType, paidAmount, txnMode, notes)
     }
 }

@@ -17,11 +17,13 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.SMSDetails.SendSMSDet
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
+import com.tech4bytes.mbrosv3.Payments.Staged.StagedPaymentUtils
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.SMSUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
+import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils.Companion.getIntOrZero
 
 class OSDDeliveryEntryInfo {
 
@@ -50,15 +52,16 @@ class OSDDeliveryEntryInfo {
             nameElement.text = value.name
             balanceElement.text = value.prevDue
             val deliveryRecord = DeliverToCustomerActivity.getDeliveryRecord(value.name)
+            paidOnlineElement.text = NumberUtils.getIntOrBlank(StagedPaymentUtils.getStagedPayments(value.name).paidAmount)
             if (deliveryRecord != null) {
                 pcElement.setText(NumberUtils.getIntOrBlank(deliveryRecord.deliveredPc))
                 kgElement.text = NumberUtils.getDoubleOrBlank(deliveryRecord.deliveredKg)
-                paidElement.text = NumberUtils.getIntOrBlank(deliveryRecord.paid)
+                paidElement.text = (getIntOrZero(deliveryRecord.paidCash) + getIntOrZero(paidOnlineElement.text.toString())).toString()
                 paidCashElement.text = NumberUtils.getIntOrBlank(deliveryRecord.paidCash)
-                paidOnlineElement.text = NumberUtils.getIntOrBlank(deliveryRecord.paidOnline)
-                val pcHintText = if(NumberUtils.getIntOrZero(deliveryRecord.orderedPc) == 0) "pc" else deliveryRecord.orderedPc
+                val pcHintText = if(getIntOrZero(deliveryRecord.orderedPc) == 0) "pc" else deliveryRecord.orderedPc
                 pcElement.hint = pcHintText
             }
+            updatePaidElement(entry)
 
             if (SendSMSDetailsUtils.getSendSMSDetailsNumber(value.name) != null) {
                 sendSMSBtn.visibility = View.VISIBLE
@@ -144,13 +147,13 @@ class OSDDeliveryEntryInfo {
             val paidElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid)
             val paidOnlineElement = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidOnline).text.toString()
             val paidCashElement = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidCash).text.toString()
-            val totalPaid = NumberUtils.getIntOrZero(paidOnlineElement) + NumberUtils.getIntOrZero(paidCashElement)
+            val totalPaid = getIntOrZero(paidOnlineElement) + getIntOrZero(paidCashElement)
             paidElement.text = NumberUtils.getIntOrBlank(totalPaid.toString())
         }
 
         fun fragmentUpdateCustomerWiseRateView(context: Context, value: DeliverToCustomerDataModel, entry: View) {
             val rateElement = entry.findViewById<TextInputEditText>(R.id.osd_rate_for_customer)
-            if (NumberUtils.getIntOrZero(rateElement.text.toString()) != CustomerData.getCustomerDefaultRate(value.name)) {
+            if (getIntOrZero(rateElement.text.toString()) != CustomerData.getCustomerDefaultRate(value.name)) {
                 rateElement.setBackgroundColor(ContextCompat.getColor(context, R.color.red))
                 rateElement.setTextColor(ContextCompat.getColor(context, R.color.white))
             } else {
@@ -176,8 +179,8 @@ class OSDDeliveryEntryInfo {
             order.paidCash = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidCash).text.toString()
             order.paidOnline = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidOnline).text.toString()
             order.rate = getRateForEntry(entry).toString()
-            order.totalDue = "${NumberUtils.getIntOrZero(order.prevDue) + getTodaysSaleAmountForEntry(entry)}"
-            order.balanceDue = "${NumberUtils.getIntOrZero(order.prevDue) + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(entry)}"
+            order.totalDue = "${getIntOrZero(order.prevDue) + getTodaysSaleAmountForEntry(entry)}"
+            order.balanceDue = "${getIntOrZero(order.prevDue) + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(entry)}"
 
             val balanceElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
 
@@ -218,7 +221,7 @@ class OSDDeliveryEntryInfo {
 
         private fun getDueBalance(order: DeliverToCustomerDataModel, entry: View): Int {
             val prevBal = order.prevDue
-            return NumberUtils.getIntOrZero(prevBal) + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(entry)
+            return getIntOrZero(prevBal) + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(entry)
         }
 
         private fun getPcForEntry(entry: View): Int {
@@ -229,7 +232,7 @@ class OSDDeliveryEntryInfo {
             }
             if (pc.isEmpty())
                 return 0
-            return NumberUtils.getIntOrZero(pc)
+            return getIntOrZero(pc)
         }
 
         private fun getKgForEntry(entry: View): Double {

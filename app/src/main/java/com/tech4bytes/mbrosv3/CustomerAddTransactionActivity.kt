@@ -5,12 +5,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.core.content.ContextCompat
-import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
-import com.tech4bytes.mbrosv3.Finalize.Models.FinalizeConfig
+import com.tech4bytes.mbrosv3.Payments.Staged.StagedPay
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
-import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 
 class CustomerAddTransactionActivity : AppCompatActivity() {
@@ -98,32 +96,8 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
         val paidOnline = findViewById<RadioButton>(R.id.addTransaction_txn_mode_online).isChecked
         val paidOnlineAmount = if(paidOnline) "$paidAmount" else "0"
         val paidCashAmount = if(!paidOnline) "$paidAmount" else "0"
+        val notes = findViewById<EditText>(R.id.addTransaction_note).text.toString()
 
-        val dataObject = CustomerData(
-            orderId = recordId,
-            timestamp = DateUtils.getCurrentTimestamp(),
-            name = name,
-            deliveredPc = "0",
-            deliveredKg = "0",
-            rate = "0",
-            prevAmount = prevAmount,
-            deliveredAmount = "0",
-            totalAmount = prevAmount,
-            paidCash = paidCashAmount,
-            paidOnline = paidOnlineAmount,
-            paid = paidAmount,
-            customerAccount = name,
-            balanceDue = (NumberUtils.getIntOrZero(prevAmount) - NumberUtils.getIntOrZero(paidAmount)).toString(),
-            profit = "0",
-            profitPercent = "0",
-            notes = findViewById<EditText>(R.id.addTransaction_note).text.toString()
-        )
-
-        PostObject.builder()
-            .scriptId(ProjectConfig.dBServerScriptURL)
-            .sheetId(ProjectConfig.get_db_finalize_sheet_id())
-            .tabName(FinalizeConfig.SHEET_FINALIZE_DELIVERIES_TAB_NAME)
-            .dataObject(dataObject as Any)
-            .build().execute()
+        StagedPay.transact(name, prevAmount, "CREDIT", paidAmount, "UPI", notes)
     }
 }

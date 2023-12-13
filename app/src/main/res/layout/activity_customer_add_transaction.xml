@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CustomerAddTransactionActivity">
+
+    <AutoCompleteTextView
+        android:id="@+id/addTransaction_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/addTransaction_txn_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/addTransaction_name">
+
+        <RadioButton
+            android:id="@+id/addTransaction_txn_type_credit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Credit" />
+
+        <RadioButton
+            android:id="@+id/addTransaction_txn_type_debit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Debit" />
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/addTransaction_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Amount: 00.00"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@+id/addTransaction_txn_type" />
+
+    <RadioGroup
+        android:id="@+id/addTransaction_txn_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/addTransaction_amount">
+
+        <RadioButton
+            android:id="@+id/addTransaction_txn_mode_online"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Online Pay" />
+
+        <RadioButton
+            android:id="@+id/addTransaction_txn_mode_cash"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cash" />
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/addTransaction_note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Notes"
+        android:inputType="textPersonName"
+        app:layout_constraintTop_toBottomOf="@+id/addTransaction_txn_mode" />
+
+    <TextView
+        android:id="@+id/addTransaction_submit_btn"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@color/app_dark_buttons_background_color"
+        android:gravity="center"
+        android:text="Submit and Finalize"
+        android:textColor="@color/app_dark_buttons_text_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

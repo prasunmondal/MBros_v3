@@ -25,7 +25,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/custommerAccount_creditpage_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout22">
@@ -36,5 +36,18 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"></LinearLayout>
     </ScrollView>
+
+    <TextView
+        android:id="@+id/custommerAccount_creditpage_btn"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@color/app_dark_buttons_background_color"
+        android:gravity="center"
+        android:onClick="onClickAddCustomerTransaction"
+        android:text="Add Transaction"
+        android:textColor="#FAFAFA"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,8 @@ import android.widget.*
 import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AppCompatActivity
 import com.tech4bytes.mbrosv3.AppData.AppUtils
+import com.tech4bytes.mbrosv3.CustomerAddTransactionActivity
+import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.OrdersMakeList
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
@@ -114,6 +116,11 @@ class CustomerTransactions : AppCompatActivity() {
     override fun onBackPressed() {
         val switchActivityIntent = Intent(this, ActivityLogin::class.java)
         switchActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(switchActivityIntent)
+    }
+
+    fun onClickAddCustomerTransaction(view: View) {
+        val switchActivityIntent = Intent(this, CustomerAddTransactionActivity::class.java)
         startActivity(switchActivityIntent)
     }
 }

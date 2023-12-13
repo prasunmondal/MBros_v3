@@ -19,6 +19,9 @@
     <color name="hint_text_loading">#8DD8D4D4</color>
 
     <!--    CUSTOM COLORS -->
+    <color name="app_dark_buttons_background_color">#150101</color>
+    <color name="app_dark_buttons_text_color">#FAFAFA</color>
+
     <color name="delivery_completed">#C3CAC4</color>
     <color name="delivery_pending">#EDF3AC45</color>
     <color name="delivery_input_not_valid">#FBDEDE</color>

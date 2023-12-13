@@ -18,6 +18,7 @@ import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
+import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -44,7 +45,7 @@ class DeliverToCustomerActivity : AppCompatActivity() {
         LogMe.log("Delivering to: $inputName")
         record = getDeliveryRecord(inputName)!!
         if (record.prevDue.isEmpty()) {
-            record.prevDue = CustomerData.getLastDue(record.name)
+            record.prevDue = CustomerDueData.getLastDue(record.name)
         }
         initiallizeUI()
     }
@@ -72,7 +73,7 @@ class DeliverToCustomerActivity : AppCompatActivity() {
         UIUtils.setUIElementValue(deliveredKgElement, record.deliveredKg)
         UIUtils.setUIElementValue(totalDueElement, record.totalDue)
         UIUtils.setUIElementValue(paidElement, record.paid)
-        UIUtils.setUIElementValue(balanceDueElement, CustomerData.getLastDue(record.name))
+        UIUtils.setUIElementValue(balanceDueElement, CustomerDueData.getLastDue(record.name))
         UIUtils.setUIElementValue(bengaliNameElement, CustomerKYC.get(record.name)!!.nameBeng)
 
         if (UserRoleUtils.doesHaveRole(ActivityAuthEnums.ADMIN)) {

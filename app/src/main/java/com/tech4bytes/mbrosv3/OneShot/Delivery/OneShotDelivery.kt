@@ -277,7 +277,7 @@ class OneShotDelivery : AppCompatActivity() {
                 orderedPc = it.orderedPc,
                 orderedKg = it.orderedKg,
                 rate = "${CustomerData.getDeliveryRate(it.name)}",
-                prevDue = CustomerData.getLastDue(it.name),
+                prevDue = CustomerDueData.getLastDue(it.name),
                 customerAccount = customerAccount,
                 deliveryStatus = "DELIVERING"
             )
@@ -297,7 +297,7 @@ class OneShotDelivery : AppCompatActivity() {
                 orderedKg = "0",
                 rate = "${CustomerData.getDeliveryRate(it.name)}",
                 customerAccount = customerAccount,
-                prevDue = CustomerData.getLastDue(it.name),
+                prevDue = CustomerDueData.getLastDue(it.name),
                 deliveryStatus = "DELIVERING"
             )
             deliveryMapOrderedCustomers[it.name] = deliverCustomersOrders
@@ -317,7 +317,7 @@ class OneShotDelivery : AppCompatActivity() {
                 orderedKg = "0",
                 rate = "${CustomerData.getDeliveryRate(it.name)}",
                 customerAccount = customerAccount,
-                prevDue = CustomerData.getLastDue(it.name),
+                prevDue = CustomerDueData.getLastDue(it.name),
                 deliveryStatus = "DELIVERING"
             )
 
@@ -340,7 +340,7 @@ class OneShotDelivery : AppCompatActivity() {
             orderedPc = "0",
             orderedKg = "0",
             rate = "${CustomerData.getDeliveryRate(name)}",
-            prevDue = CustomerData.getLastDue(name),
+            prevDue = CustomerDueData.getLastDue(name),
             deliveryStatus = "DELIVERING"
         )
         deliveryMapUnOrderedCustomers[name] = deliverCustomersOrders

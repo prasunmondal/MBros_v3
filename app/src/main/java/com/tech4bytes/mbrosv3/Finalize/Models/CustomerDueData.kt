@@ -23,5 +23,14 @@ class CustomerDueData {
         fun getBalance(name: String, shouldIncludePostDeliveryUpdates: Boolean = true): Int {
             return getBalance(shouldIncludePostDeliveryUpdates)[name] ?: 0
         }
+
+        fun getLastDue(name: String, useCache: Boolean = true): String {
+            val customerRecords = CustomerData.getAllLatestRecords(useCache)
+            customerRecords.forEach {
+                if (it.name == name)
+                    return it.balanceDue
+            }
+            return "0"
+        }
     }
 }

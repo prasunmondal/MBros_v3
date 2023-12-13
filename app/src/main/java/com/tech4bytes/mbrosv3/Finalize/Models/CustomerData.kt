@@ -137,15 +137,6 @@ class CustomerData : java.io.Serializable {
             return latestRecordsList
         }
 
-        fun getLastDue(name: String, useCache: Boolean = true): String {
-            val customerRecords = getAllLatestRecords(useCache)
-            customerRecords.forEach {
-                if (it.name == name)
-                    return it.balanceDue
-            }
-            return "0"
-        }
-
         private var recordsKey = "customerRecords"
         fun getRecords(useCache: Boolean = true): ArrayList<CustomerData> {
             LogMe.log("Getting delivery records")

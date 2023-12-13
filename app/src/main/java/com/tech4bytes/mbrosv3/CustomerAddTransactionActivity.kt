@@ -115,7 +115,8 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
             customerAccount = name,
             balanceDue = (NumberUtils.getIntOrZero(prevAmount) - NumberUtils.getIntOrZero(paidAmount)).toString(),
             profit = "0",
-            profitPercent = "0"
+            profitPercent = "0",
+            notes = findViewById<EditText>(R.id.addTransaction_note).text.toString()
         )
 
         PostObject.builder()

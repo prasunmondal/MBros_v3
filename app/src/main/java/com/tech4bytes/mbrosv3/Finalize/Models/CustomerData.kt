@@ -38,8 +38,9 @@ class CustomerData : java.io.Serializable {
     var avgWt = ""
     var profit = ""
     var profitPercent = ""
+    var notes = ""
 
-    constructor(orderId: String, timestamp: String, name: String, deliveredPc: String, deliveredKg: String, rate: String, prevAmount: String, deliveredAmount: String, totalAmount: String, paidCash: String, paidOnline: String, paid: String, customerAccount: String, balanceDue: String, profit: String, profitPercent: String) {
+    constructor(orderId: String, timestamp: String, name: String, deliveredPc: String, deliveredKg: String, rate: String, prevAmount: String, deliveredAmount: String, totalAmount: String, paidCash: String, paidOnline: String, paid: String, customerAccount: String, balanceDue: String, profit: String, profitPercent: String, notes: String = "") {
         this.orderId = orderId
         this.timestamp = timestamp
         this.name = name
@@ -57,6 +58,7 @@ class CustomerData : java.io.Serializable {
         this.avgWt = NumberUtils.roundOff3places(deliveredKg.toDouble() / deliveredPc.toInt()).toString()
         this.profit = profit
         this.profitPercent = profitPercent
+        this.notes = notes
     }
 
     fun getCustomerNames(): HashSet<String> {

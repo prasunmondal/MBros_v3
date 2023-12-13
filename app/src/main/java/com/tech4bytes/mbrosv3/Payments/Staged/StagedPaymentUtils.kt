@@ -17,6 +17,15 @@ class StagedPaymentUtils {
 
         fun getStagedPayments(name: String, useCache: Boolean = true): StagedPaymentsModel {
             var list = getAllStagedPayments(useCache).filter { it.name == name }
+            if(list.isEmpty())
+                return StagedPaymentsModel(prevBalance = "",
+                    name = name,
+                    transactionType = PaymentsType.CREDIT,
+                    paidAmount = "0",
+                    newBalance = "",
+                    paymentMode = "",
+                    notes = "")
+
             var sumPaid = 0
             var allNotes = ""
             list.forEach {

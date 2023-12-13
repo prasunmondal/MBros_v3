@@ -90,7 +90,7 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
     
     fun onClickSubmitBtn(view: View) {
         val name = findViewById<Spinner>(R.id.addTransaction_name).selectedItem.toString()
-        val prevAmount = CustomerDueData.getLastDue(name, false)
+        val prevAmount = CustomerDueData.getLastFinalizedDue(name, false)
         val paidAmount = findViewById<EditText>(R.id.addTransaction_amount).text.toString()
         val notes = findViewById<EditText>(R.id.addTransaction_note).text.toString()
 

@@ -16,7 +16,7 @@ class SMSPermissions {
             val permissionsArray = arrayOf(permission)
             if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED)
             {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this as Activity, permission))
+                if (ActivityCompat.shouldShowRequestPermissionRationale(context as Activity, permission))
                 {
                     ActivityCompat.requestPermissions(context as Activity, permissionsArray, 1);
                 }

@@ -45,7 +45,7 @@ class DeliverToCustomerActivity : AppCompatActivity() {
         LogMe.log("Delivering to: $inputName")
         record = getDeliveryRecord(inputName)!!
         if (record.prevDue.isEmpty()) {
-            record.prevDue = CustomerDueData.getLastDue(record.name)
+            record.prevDue = CustomerDueData.getLastFinalizedDue(record.name)
         }
         initiallizeUI()
     }
@@ -73,7 +73,7 @@ class DeliverToCustomerActivity : AppCompatActivity() {
         UIUtils.setUIElementValue(deliveredKgElement, record.deliveredKg)
         UIUtils.setUIElementValue(totalDueElement, record.totalDue)
         UIUtils.setUIElementValue(paidElement, record.paid)
-        UIUtils.setUIElementValue(balanceDueElement, CustomerDueData.getLastDue(record.name))
+        UIUtils.setUIElementValue(balanceDueElement, CustomerDueData.getLastFinalizedDue(record.name))
         UIUtils.setUIElementValue(bengaliNameElement, CustomerKYC.get(record.name)!!.nameBeng)
 
         if (UserRoleUtils.doesHaveRole(ActivityAuthEnums.ADMIN)) {

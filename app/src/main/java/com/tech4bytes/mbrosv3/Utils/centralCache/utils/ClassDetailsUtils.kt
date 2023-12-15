@@ -10,8 +10,11 @@ class ClassDetailsUtils {
         Returns the calling method.
         Example: com.tech4bytes.extrack.models.ExpenseData
          */
-        fun getCaller(): String {
-            val parentPackage = "com.tech4bytes.extrack.centralCache"
+        fun getCaller(thresholdClass: String = ""): String {
+            val parentPackage =
+                if(thresholdClass.isNotEmpty()) thresholdClass
+                else "com.tech4bytes.extrack.centralCache"
+
             var startSearching = false
 
             /*

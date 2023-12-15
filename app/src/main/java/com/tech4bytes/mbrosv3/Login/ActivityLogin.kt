@@ -16,6 +16,7 @@ import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetchActivity
 import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetchingInfo
+import com.tech4bytes.mbrosv3.AppData.testCall
 import com.tech4bytes.mbrosv3.AppUsers.AppUsersModel
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.UserRoleUtils
@@ -55,42 +56,43 @@ class ActivityLogin : AppCompatActivity() {
         AppUtils.logError()
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
-        val roles = RolesUtils.getAppUser()
-        LogMe.log("Got Role: $roles")
-        updateAppVerOnUI()
-        updateWelcomeDetails()
-        Thread {
-            val container = findViewById<LinearLayout>(R.id.activity_login_roles_container)
-            if (UserRoleUtils.getUserRoles().isEmpty()) {
-                runOnUiThread {
-                    Toast.makeText(this, "Registering Device: ${getPhoneId()}", Toast.LENGTH_LONG).show()
-                }
-                logUnIdentifiedDevice()
-            } else {
-                AuthorizationUtils.getAllUserAuthorizations()
-                if (UserRoleUtils.getUserRoles().size == 1) {
-                    // if the user has only one role, directly go to the home page.
-                    goToHomePageAsPerRole(UserRoleUtils.getUserRoles()[0])
-                } else {
-                    UserRoleUtils.getUserRoles().forEach { role ->
-                        if (getRoleAndActivityMapping(role) != null) {
-                            val layoutInflater = LayoutInflater.from(AppContexts.get())
-                            val entry = layoutInflater.inflate(R.layout.fragment_activity_login_roles, null)
-
-                            val displayText = if (ActivityAuthEnums.getString(role) == null) role.name else ActivityAuthEnums.getString(role)
-                            entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).text = displayText
-
-                            entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).setOnClickListener {
-                                goToHomePageAsPerRole(role)
-                            }
-                            runOnUiThread {
-                                container.addView(entry)
-                            }
-                        }
-                    }
-                }
-            }
-        }.start()
+        testCall().t()
+//        val roles = RolesUtils.getAppUser()
+//        LogMe.log("Got Role: $roles")
+//        updateAppVerOnUI()
+//        updateWelcomeDetails()
+//        Thread {
+//            val container = findViewById<LinearLayout>(R.id.activity_login_roles_container)
+//            if (UserRoleUtils.getUserRoles().isEmpty()) {
+//                runOnUiThread {
+//                    Toast.makeText(this, "Registering Device: ${getPhoneId()}", Toast.LENGTH_LONG).show()
+//                }
+//                logUnIdentifiedDevice()
+//            } else {
+//                AuthorizationUtils.getAllUserAuthorizations()
+//                if (UserRoleUtils.getUserRoles().size == 1) {
+//                    // if the user has only one role, directly go to the home page.
+//                    goToHomePageAsPerRole(UserRoleUtils.getUserRoles()[0])
+//                } else {
+//                    UserRoleUtils.getUserRoles().forEach { role ->
+//                        if (getRoleAndActivityMapping(role) != null) {
+//                            val layoutInflater = LayoutInflater.from(AppContexts.get())
+//                            val entry = layoutInflater.inflate(R.layout.fragment_activity_login_roles, null)
+//
+//                            val displayText = if (ActivityAuthEnums.getString(role) == null) role.name else ActivityAuthEnums.getString(role)
+//                            entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).text = displayText
+//
+//                            entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).setOnClickListener {
+//                                goToHomePageAsPerRole(role)
+//                            }
+//                            runOnUiThread {
+//                                container.addView(entry)
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }.start()
     }
 
     private fun updateWelcomeDetails() {

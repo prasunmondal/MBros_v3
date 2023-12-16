@@ -483,7 +483,7 @@ class OneShotDelivery : AppCompatActivity() {
             saveSingleAttributeData()
             saveDeliveryData()
             SingleAttributedData.getRecords(false)
-            DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>(false)
+            DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>()
             runOnUiThread()
             {
                 saveOneSortDeliveryButton.isEnabled = true

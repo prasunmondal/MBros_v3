@@ -11,10 +11,16 @@ class testCall {
             LogMe.log("data t2: " + it.t2)
         }
 
-        t = modelClass().get<modelClass>()
+        t = modelClass().get()
         t.forEach { it ->
             LogMe.log("data t1: " + it.t1)
+            it.t1 = "90"
             LogMe.log("data t2: " + it.t2)
+            it.t2 = "80"
         }
+        LogMe.log(t[0].t1)
+        LogMe.log(t[0].t2)
+
+        modelClass().saveToServer(t[0])
     }
 }

@@ -12,10 +12,17 @@ import java.lang.reflect.Type
 
 abstract class Tech4BytesSerializable : java.io.Serializable {
 
-    abstract var scriptURL: String
-    abstract var sheetURL: String
-    abstract var tabname: String
-    abstract var cacheObjectType: Type
+    @Transient var scriptURL: String
+    @Transient var sheetURL: String
+    @Transient var tabname: String
+    @Transient var cacheObjectType: Type
+
+    constructor(scriptURL: String, sheetURL: String, tabname: String, cacheObjectType: Type) {
+        this.scriptURL = scriptURL
+        this.sheetURL = sheetURL
+        this.tabname = tabname
+        this.cacheObjectType = cacheObjectType
+    }
 
     fun <T> get(useCache: Boolean = true, filterName: String = "default"): ArrayList<T> {
         val cacheKey = getFilterName(filterName)
@@ -47,11 +54,11 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
 
     fun <T> saveToLocalThenServer(obj: T) {
         saveToLocal(obj, getFilterName())
-        saveToServer(obj)
+//        saveToServer(obj)
     }
 
     fun <T> saveToServerThenLocal(obj: T) {
-        saveToServer(obj)
+//        saveToServer(obj)
         saveToLocal(obj, getFilterName())
     }
 
@@ -59,7 +66,8 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
         CentralCache.put(cacheKey, obj)
     }
 
-    fun <T> saveToServer(obj: T) {
+    fun saveToServer(obj: modelClass) {
+
         PostObject.builder()
             .scriptId(scriptURL)
             .sheetId(sheetURL)

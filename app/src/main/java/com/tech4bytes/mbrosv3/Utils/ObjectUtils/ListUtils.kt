@@ -27,7 +27,7 @@ class ListUtils {
             return ArrayList(result.keys).toTypedArray()
         }
 
-        fun <T> sortListByAttribute(records: List<T>, attribute: KMutableProperty1<T, String>): List<T> {
+        fun <T> sortListByAttribute(records: List<T>, attribute: KMutableProperty1<T, String>): MutableList<T> {
             return records.stream().sorted(Comparator.comparing(attribute)).collect(Collectors.toList())!!
         }
 

@@ -285,7 +285,8 @@ class DeliverToCustomerActivity : AppCompatActivity() {
                 saveBtnElement.isClickable = false
                 saveBtnElement.text = "Saving..."
             }
-            DeliverToCustomerDataHandler.save(record, true)
+            DeliverToCustomerDataHandler.saveToLocal(record)
+            DeliverToCustomerDataHandler.saveToServer(record)
             runOnUiThread {
                 saveBtnElement.isEnabled = true
                 saveBtnElement.alpha = 1.0f

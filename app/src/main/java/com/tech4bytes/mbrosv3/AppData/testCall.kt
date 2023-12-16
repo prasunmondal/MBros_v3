@@ -13,7 +13,7 @@ class testCall {
         val u = modelClass()
         u.t2 = 89.toString();
         u.t1 = 78.toString();
-        UtilClass.saveToServerThenLocal(u, true)
+        UtilClass.saveToServerThenLocal(u)
 
         t = UtilClass.get()
         LogMe.log("t size: " + t.size)

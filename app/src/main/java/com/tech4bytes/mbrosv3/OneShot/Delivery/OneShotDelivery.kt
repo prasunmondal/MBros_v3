@@ -277,7 +277,7 @@ class OneShotDelivery : AppCompatActivity() {
             deliveryMapOrderedCustomers[it.name] = deliverCustomersOrders
         }
 
-        DeliverToCustomerDataHandler.get().forEach {
+        DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>().forEach {
             var customerAccount = CustomerKYC.get(it.name)!!.customerAccount
             if(customerAccount.isEmpty())
                 customerAccount = it.name
@@ -478,12 +478,12 @@ class OneShotDelivery : AppCompatActivity() {
 
             gatherSingleAttributedData()
             gatherFuelData()
-            DeliverToCustomerDataHandler.deleteAllData()
+            DeliverToCustomerDataHandler.deleteData()
 
             saveSingleAttributeData()
             saveDeliveryData()
             SingleAttributedData.getRecords(false)
-            DeliverToCustomerDataHandler.get(false)
+            DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>(false)
             runOnUiThread()
             {
                 saveOneSortDeliveryButton.isEnabled = true
@@ -607,7 +607,7 @@ class OneShotDelivery : AppCompatActivity() {
             LogMe.log(it.value.name + ":: paid:" + it.value.paid)
             if (NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0.0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
                 it.value.deliveryStatus = "DELIVERED"
-                DeliverToCustomerDataHandler.save(it.value, false)
+                DeliverToCustomerDataHandler.saveToServer(it.value)
                 if (eachStep + 10 < 100) {
                     eachStep += 10
                 } else {

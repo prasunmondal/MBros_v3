@@ -5,6 +5,7 @@ import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEn
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
@@ -22,7 +23,7 @@ class DataFetchingInfo {
                 CustomerKYC::getAllCustomers.toString() -> "Get Customer KYCs"
                 CustomerData::getRecords.toString() -> "Previous delivery reports"
                 SingleAttributedData::getRecords.toString() -> "Metadata"
-                DeliverToCustomerDataHandler::get.toString() -> "Current delivery reports"
+//                DeliverToCustomerDataHandler::get.toString() -> "Current delivery reports"
                 DaySummary::get.toString() -> "Transaction reports"
                 Refueling::get.toString() -> "Fuel data"
                 AppConstants::fetchAll.toString() -> "App Constants Data"
@@ -41,7 +42,7 @@ class DataFetchingInfo {
                     executingMethods.add(CustomerKYC::getAllCustomers)
                     executingMethods.add(GetCustomerOrders::get)
                     executingMethods.add(CustomerData::getRecords)
-                    executingMethods.add(DeliverToCustomerDataHandler::get)
+////                    executingMethods.add(DeliverToCustomerDataHandler::get)
                     executingMethods.add(DaySummary::get)
                     executingMethods.add(Refueling::get)
                     executingMethods.add(AppConstants::fetchAll)
@@ -49,13 +50,13 @@ class DataFetchingInfo {
                 ActivityAuthEnums.DELIVERY -> {
                     executingMethods.add(CustomerKYC::getAllCustomers)
                     executingMethods.add(GetCustomerOrders::get)
-                    executingMethods.add(DeliverToCustomerDataHandler::get)
+//                    executingMethods.add(DeliverToCustomerDataHandler::get)
                     executingMethods.add(CustomerData::getRecords)
                 }
                 ActivityAuthEnums.BALANCE_VIEW -> {
                     executingMethods.add(CustomerKYC::getAllCustomers)
                     executingMethods.add(CustomerData::getRecords)
-                    executingMethods.add(DeliverToCustomerDataHandler::get)
+//                    executingMethods.add(DeliverToCustomerDataHandler::get)
                 }
                 ActivityAuthEnums.ORDER_COLLECTOR -> {
                     executingMethods.add(SingleAttributedData::getRecords)
@@ -69,13 +70,13 @@ class DataFetchingInfo {
                 }
                 ActivityAuthEnums.MONEY_CALCULATOR -> {
                     executingMethods.add(SingleAttributedData::getRecords)
-                    executingMethods.add(DeliverToCustomerDataHandler::get)
+//                    executingMethods.add(DeliverToCustomerDataHandler::get)
                     executingMethods.add(AppConstants::fetchAll)
                 }
                 ActivityAuthEnums.SMS_ORDERING -> {
                     executingMethods.add(CustomerKYC::getAllCustomers)
                     executingMethods.add(AppConstants::fetchAll)
-                    executingMethods.add(DeliverToCustomerDataHandler::get)
+//                    executingMethods.add(DeliverToCustomerDataHandler::get)
                     executingMethods.add(CustomerData::getRecords)
                 }
                 ActivityAuthEnums.CUSTOMER_TRANSACTIONS -> {

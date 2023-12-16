@@ -76,7 +76,7 @@ class CustomerData : java.io.Serializable {
     companion object {
 
         fun spoolDeliveringData() {
-            var deliveredData = DeliverToCustomerDataHandler.get()
+            var deliveredData = DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>()
             deliveredData = Sorter.sortByNameList(deliveredData, DeliverToCustomerDataModel::name) as List<DeliverToCustomerDataModel>
 
             val totalProfit = DaySummary.getDayProfit()

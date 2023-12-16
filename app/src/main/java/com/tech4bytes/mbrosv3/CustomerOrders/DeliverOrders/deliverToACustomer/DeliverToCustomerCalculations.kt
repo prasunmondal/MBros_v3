@@ -7,7 +7,7 @@ class DeliverToCustomerCalculations {
     companion object {
 
         fun getByName(inputName: String): DeliverToCustomerDataModel? {
-            DeliverToCustomerDataHandler.get().forEach {
+            DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>().forEach {
                 if (it.name == inputName) {
                     return it
                 }
@@ -17,7 +17,7 @@ class DeliverToCustomerCalculations {
 
         fun getTotalPcDelivered(): Int {
             var sum = 0
-            DeliverToCustomerDataHandler.get().forEach {
+            DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>().forEach {
                 sum += NumberUtils.getIntOrZero(it.deliveredPc)
             }
             return sum
@@ -25,7 +25,7 @@ class DeliverToCustomerCalculations {
 
         fun getTotalKgDelivered(): Double {
             var sum = 0.0
-            DeliverToCustomerDataHandler.get().forEach {
+            DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>().forEach {
                 sum += NumberUtils.getDoubleOrZero(it.deliveredKg)
             }
             return sum
@@ -33,7 +33,7 @@ class DeliverToCustomerCalculations {
 
         fun getTotalAmountPaidTodayByCustomers(): Int {
             var sum = 0
-            DeliverToCustomerDataHandler.get().forEach {
+            DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>().forEach {
                 sum += NumberUtils.getIntOrZero(it.paid)
             }
             return sum

@@ -29,7 +29,7 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
         this.cacheObjectType = cacheObjectType
     }
 
-    fun <T> get(useCache: Boolean = true, filterName: String = "default"): ArrayList<T> {
+    fun <T> get(useCache: Boolean = true, filterName: String = "default"): List<T> {
         val cacheKey = getFilterName(filterName)
         LogMe.log("Getting records")
 
@@ -82,9 +82,14 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
         saveToLocal(dataObject, getFilterName())
     }
 
-    fun <T : Any> saveToLocal(dataObject: T, cacheKey: String = getFilterName()) {
+    fun <T : Any> saveToLocal(dataObject: T?, cacheKey: String = getFilterName()) {
+        if(dataObject == null) {
+            CentralCache.put(cacheKey, dataObject)
+            return
+        }
+
         val dataToSave = if(appendInLocal) {
-            val allData = get<T>()
+            val allData = get<T>() as MutableList
             allData.addAll(arrayListOf(dataObject))
             allData
         }
@@ -119,13 +124,13 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
     *
      */
 
-    fun <T> deleteData() {
+    fun deleteData() {
         deleteDataFromServer()
-        deleteDataFromLocal<T>()
+        deleteDataFromLocal()
     }
 
-    fun <T> deleteDataFromLocal() {
-        saveToLocal(listOf<T>())
+    fun deleteDataFromLocal() {
+        saveToLocal(null)
     }
 
     fun deleteDataFromServer() {

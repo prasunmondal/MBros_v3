@@ -22,6 +22,7 @@ import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerCalculations
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
@@ -188,7 +189,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         if (isResetDone != null) {
             return isResetDone!!
         }
-        isResetDone = DeliverToCustomerDataHandler.get(useCache).isEmpty()
+        isResetDone = DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>(useCache).isEmpty()
         return isResetDone!!
     }
 
@@ -252,7 +253,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     }
 
     fun updateDeliveredInfo(useCache: Boolean) {
-        val countersDelivered = DeliverToCustomerDataHandler.get(useCache)
+        val countersDelivered = DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>(useCache)
         val numberOfCustomersDelivered = countersDelivered.size
         val totalNumberOfCustomers = GetCustomerOrders.getNumberOfCustomersOrdered(useCache)
         val deliveredPc = DeliverToCustomerCalculations.getTotalPcDelivered()
@@ -275,7 +276,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
 
     fun updateDashboard(useCache: Boolean) {
         SingleAttributedData.getRecords(useCache)
-        DeliverToCustomerDataHandler.get(useCache)
+        DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>(useCache)
         GetCustomerOrders.get(useCache)
 
         updateLoadInfo(useCache)

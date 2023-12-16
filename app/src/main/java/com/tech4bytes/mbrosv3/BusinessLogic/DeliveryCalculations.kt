@@ -3,6 +3,7 @@ package com.tech4bytes.mbrosv3.BusinessLogic
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -24,7 +25,7 @@ class DeliveryCalculations {
 
         fun getDaySaleAmount(): Int {
             var sum = 0
-            DeliverToCustomerDataHandler.get().forEach {
+            DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>().forEach {
                 sum += NumberUtils.getIntOrZero(it.todaysAmount)
             }
             return sum
@@ -32,7 +33,7 @@ class DeliveryCalculations {
 
         fun getTotalOfPaidAmounts(): Int {
             var sum = 0
-            DeliverToCustomerDataHandler.get().forEach {
+            DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>().forEach {
                 sum += NumberUtils.getIntOrZero(it.paid)
             }
             return sum
@@ -40,7 +41,7 @@ class DeliveryCalculations {
 
         fun getTotalDeliveredPc(): Int {
             var sum = 0
-            DeliverToCustomerDataHandler.get().forEach {
+            DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>().forEach {
                 sum += NumberUtils.getIntOrZero(it.deliveredPc)
             }
             return sum
@@ -48,7 +49,7 @@ class DeliveryCalculations {
 
         fun getTotalDeliveredKg(): Double {
             var sum = 0.0
-            DeliverToCustomerDataHandler.get().forEach {
+            DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>().forEach {
                 sum += NumberUtils.getDoubleOrZero(it.deliveredKg)
             }
             return sum
@@ -83,7 +84,7 @@ class DeliveryCalculations {
             CustomerData.getAllLatestRecords().forEach {
                 dueMap[it.name] = NumberUtils.getIntOrZero(it.balanceDue)
             }
-            DeliverToCustomerDataHandler.get().forEach {
+            DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>().forEach {
                 dueMap[it.name] = NumberUtils.getIntOrZero(it.balanceDue)
             }
 

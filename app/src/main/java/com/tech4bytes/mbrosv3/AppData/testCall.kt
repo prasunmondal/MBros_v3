@@ -5,22 +5,20 @@ import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 class testCall {
 
     fun t() {
-        var t = modelClass().get<modelClass>()
-        t.forEach { it ->
-            LogMe.log("data t1: " + it.t1)
-            LogMe.log("data t2: " + it.t2)
+        var t = UtilClass.get<modelClass>(false)
+        LogMe.log("t size: " + t.size)
+        t.forEach {
+            LogMe.log("1. data: ${it.t1} , ${it.t2}")
         }
+        val u = modelClass()
+        u.t2 = 89.toString();
+        u.t1 = 78.toString();
+        UtilClass.saveToServerThenLocal(u, true)
 
-        t = modelClass().get()
-        t.forEach { it ->
-            LogMe.log("data t1: " + it.t1)
-            it.t1 = "90"
-            LogMe.log("data t2: " + it.t2)
-            it.t2 = "80"
+        t = UtilClass.get()
+        LogMe.log("t size: " + t.size)
+        t.forEach {
+            LogMe.log("data: ${it.t1} , ${it.t2}")
         }
-        LogMe.log(t[0].t1)
-        LogMe.log(t[0].t2)
-
-        modelClass().saveToServer(t[0])
     }
 }

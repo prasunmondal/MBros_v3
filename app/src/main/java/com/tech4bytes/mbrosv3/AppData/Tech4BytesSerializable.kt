@@ -1,5 +1,6 @@
 package com.tech4bytes.mbrosv3.AppData
 
+import com.prasunmondal.postjsontosheets.clients.delete.Delete
 import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
@@ -16,21 +17,31 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
     @Transient var sheetURL: String
     @Transient var tabname: String
     @Transient var cacheObjectType: Type
+    @Transient var appendInServer: Boolean
+    @Transient var appendInLocal: Boolean
 
-    constructor(scriptURL: String, sheetURL: String, tabname: String, cacheObjectType: Type) {
+    constructor(scriptURL: String, sheetURL: String, tabname: String, cacheObjectType: Type, appendInServer: Boolean, appendInLocal: Boolean) {
         this.scriptURL = scriptURL
         this.sheetURL = sheetURL
         this.tabname = tabname
+        this.appendInServer = appendInServer
+        this.appendInLocal = appendInLocal
         this.cacheObjectType = cacheObjectType
     }
 
     fun <T> get(useCache: Boolean = true, filterName: String = "default"): ArrayList<T> {
         val cacheKey = getFilterName(filterName)
         LogMe.log("Getting records")
-        val cacheResults = CentralCache.get<ArrayList<T>>(AppContexts.get(), cacheKey, useCache)
+
+        val cacheResults = try {
+            CentralCache.get<ArrayList<T>>(AppContexts.get(), cacheKey, useCache)
+        } catch (ex: ClassCastException) {
+            arrayListOf(CentralCache.get<T>(AppContexts.get(), cacheKey, useCache))
+        }
+
         LogMe.log("Getting delivery records: Cache Hit: " + (cacheResults != null))
         return if (cacheResults != null) {
-            cacheResults
+            cacheResults as ArrayList<T>
         } else {
             val resultFromServer = getFromServer<T>()
             CentralCache.put(cacheKey, resultFromServer)
@@ -52,27 +63,76 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
         return "${ClassDetailsUtils.getCaller(ClassDetailsUtils.getCaller())}/$sheetURL/$tabname/$filterName"
     }
 
-    fun <T> saveToLocalThenServer(obj: T) {
-        saveToLocal(obj, getFilterName())
-//        saveToServer(obj)
+    fun <T : Any> saveToLocalThenServer(dataObject: T) {
+        saveToLocal(dataObject, getFilterName())
+        saveToServer(dataObject)
     }
 
-    fun <T> saveToServerThenLocal(obj: T) {
-//        saveToServer(obj)
-        saveToLocal(obj, getFilterName())
+    /*
+    *
+    *
+    *
+    * Save Data Code
+    *
+    *
+    *
+     */
+    fun <T : Any> saveToServerThenLocal(dataObject: T) {
+        saveToServer(dataObject)
+        saveToLocal(dataObject, getFilterName())
     }
 
-    fun <T> saveToLocal(obj: T, cacheKey: String = getFilterName()) {
-        CentralCache.put(cacheKey, obj)
+    fun <T : Any> saveToLocal(dataObject: T, cacheKey: String = getFilterName()) {
+        val dataToSave = if(appendInLocal) {
+            val allData = get<T>()
+            allData.addAll(arrayListOf(dataObject))
+            allData
+        }
+        else {
+            dataObject
+        }
+        CentralCache.put(cacheKey, dataToSave)
     }
 
-    fun saveToServer(obj: modelClass) {
+    fun <T> saveToServer(obj: T) {
+        if (!appendInServer) {
+            deleteDataFromServer()
+        }
 
         PostObject.builder()
             .scriptId(scriptURL)
             .sheetId(sheetURL)
             .tabName(tabname)
             .dataObject(obj as Any)
+            .build().execute()
+    }
+
+
+    /*
+    *
+    *
+    *
+    *
+    * Deletion Codes
+    *
+    *
+    *
+     */
+
+    fun <T> deleteData() {
+        deleteDataFromServer()
+        deleteDataFromLocal<T>()
+    }
+
+    fun <T> deleteDataFromLocal() {
+        saveToLocal(listOf<T>())
+    }
+
+    fun deleteDataFromServer() {
+        Delete.builder()
+            .scriptId(scriptURL)
+            .sheetId(sheetURL)
+            .tabName(tabname)
             .build().execute()
     }
 }

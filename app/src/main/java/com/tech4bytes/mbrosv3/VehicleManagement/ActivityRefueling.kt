@@ -47,8 +47,8 @@ class ActivityRefueling : AppCompatActivity() {
     }
 
     fun onClickRefuelingSubmitBtn(view: View) {
-        val obj = Refueling(measure = getFuelMeasure(), amount = getRefuelingAmount(), refueling_km = getKM(), is_full_tank = isTankFulled())
-        Refueling.addToServer(obj)
+        val obj = RefuelingModel(measure = getFuelMeasure(), amount = getRefuelingAmount(), refueling_km = getKM(), is_full_tank = isTankFulled())
+        RefuelingUtils.saveToServer(obj)
         goToActivityDeliveringDeliveryComplete()
     }
 

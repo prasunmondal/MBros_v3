@@ -4,13 +4,10 @@ import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
-import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
 import kotlin.reflect.KFunction
 
 class DataFetchingInfo {
@@ -25,7 +22,7 @@ class DataFetchingInfo {
                 SingleAttributedData::getRecords.toString() -> "Metadata"
 //                DeliverToCustomerDataHandler::get.toString() -> "Current delivery reports"
                 DaySummary::get.toString() -> "Transaction reports"
-                Refueling::get.toString() -> "Fuel data"
+//                RefuelingUtils::get<RefuelingModel>.toString() -> "Fuel data"
                 AppConstants::fetchAll.toString() -> "App Constants Data"
                 else -> "Get data"
             }
@@ -44,7 +41,7 @@ class DataFetchingInfo {
                     executingMethods.add(CustomerData::getRecords)
 ////                    executingMethods.add(DeliverToCustomerDataHandler::get)
                     executingMethods.add(DaySummary::get)
-                    executingMethods.add(Refueling::get)
+//                    executingMethods.add(RefuelingUtils::get)
                     executingMethods.add(AppConstants::fetchAll)
                 }
                 ActivityAuthEnums.DELIVERY -> {

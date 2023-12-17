@@ -36,7 +36,7 @@ import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.WeightUtils.WeightUtils
-import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
+import com.tech4bytes.mbrosv3.VehicleManagement.RefuelingUtils
 import java.io.*
 import java.net.MalformedURLException
 import java.net.URL
@@ -302,7 +302,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
             obj.bufferRate = DeliveryCalculations.getBufferPrice(obj.finalFarmRate, deliveryRate).toString()
             SingleAttributedData.save(obj)
             CustomerData.spoolDeliveringData()
-            Refueling.spoolRefuelingData()
+            RefuelingUtils.spoolRefuelingData()
             DaySummary.saveToServer()
             SingleAttributedData.invalidateCache()
             setStatuses(false)

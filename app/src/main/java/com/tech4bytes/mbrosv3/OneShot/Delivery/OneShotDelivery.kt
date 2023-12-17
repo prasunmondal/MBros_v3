@@ -35,7 +35,7 @@ import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
-import com.tech4bytes.mbrosv3.VehicleManagement.Refueling
+import com.tech4bytes.mbrosv3.VehicleManagement.RefuelingUtils
 import org.apache.commons.collections4.CollectionUtils
 
 class OneShotDelivery : AppCompatActivity() {
@@ -533,7 +533,7 @@ class OneShotDelivery : AppCompatActivity() {
         didTankFullElement.visibility = if (didRefuelElement.isChecked) View.VISIBLE else View.GONE
         refuelingKmContainer.visibility = if (didTankFullElement.isChecked) View.VISIBLE else View.GONE
 
-        refuelingKmDiffLabel.text = if (didTankFullElement.isChecked) Refueling.getKmDifferenceForRefueling(refuelingKmElement.text.toString()).toString() else "N/A"
+        refuelingKmDiffLabel.text = if (didTankFullElement.isChecked) RefuelingUtils.getKmDifferenceForRefueling(refuelingKmElement.text.toString()).toString() else "N/A"
         mileageLabel.text = if (didTankFullElement.isChecked) getMileage() + " km/L" else "N/A"
 
         LogMe.log("KM: " + refuelingKmElement.text.toString())
@@ -546,9 +546,9 @@ class OneShotDelivery : AppCompatActivity() {
 
         val refuelingKM = refuelingKmElement.text.toString()
         val refuelingQty = refuelingQtyElement.text.toString()
-        LogMe.log("Converting String: " + Refueling.getMileage(refuelingKM, refuelingQty))
+        LogMe.log("Converting String: " + RefuelingUtils.getMileage(refuelingKM, refuelingQty))
         return if (NumberUtils.getDoubleOrZero(refuelingQty) > 0.0)
-            Refueling.getMileage(refuelingKM, refuelingQty)
+            RefuelingUtils.getMileage(refuelingKM, refuelingQty)
         else
             "N/A"
     }
@@ -577,7 +577,7 @@ class OneShotDelivery : AppCompatActivity() {
 
             if (didTankFullElement.isChecked) {
                 obj.refueling_km = refuelingKmElement.text.toString()
-                obj.refueling_prevKm = Refueling.getPreviousRefuelingKM()
+                obj.refueling_prevKm = RefuelingUtils.getPreviousRefuelingKM()
                 obj.refuel_mileage = getMileage()
             } else {
                 obj.refueling_km = ""

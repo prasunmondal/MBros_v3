@@ -1,6 +1,6 @@
 package com.tech4bytes.mbrosv3.Sms.OneShotSMS
 
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
 import com.tech4bytes.mbrosv3.SendInfoTexts.Whatsapp.Whatsapp
@@ -14,15 +14,15 @@ class OSMSProcessor {
     companion object {
 
         fun sendLoadDetails(smsDetail: OSMSModel): SMS? {
-            val metadata = SingleAttributedData.getRecords()
+            val metadata = SingleAttributedDataUtils.getRecords()
             if (smsDetail.inputData.equals(metadata.load_account, true)) {
                 val templateToSendInfo = smsDetail.dataTemplate
 
                 val formattedDate = DateUtils.getDateInFormat("dd/MM/yyyy")
                 val text = templateToSendInfo
                     .replace("<date>", formattedDate)
-                    .replace("<loadPc>", SingleAttributedData.getRecords().actualLoadPc)
-                    .replace("<loadKg>", SingleAttributedData.getRecords().actualLoadKg)
+                    .replace("<loadPc>", SingleAttributedDataUtils.getRecords().actualLoadPc)
+                    .replace("<loadKg>", SingleAttributedDataUtils.getRecords().actualLoadKg)
                     .replace("<loadCompanyName>", metadata.load_companyName)
 
                 return SMS(smsDetail.platform, smsDetail.sendTo, text)
@@ -32,7 +32,7 @@ class OSMSProcessor {
         }
 
         fun sendDaySummary(smsDetail: OSMSModel): SMS {
-            val metadata = SingleAttributedData.getRecords()
+            val metadata = SingleAttributedDataUtils.getRecords()
             val templateToSendInfo = smsDetail.dataTemplate
 
             val formattedDate = DateUtils.getDateInFormat("dd/MM/yyyy")

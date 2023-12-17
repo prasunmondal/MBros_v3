@@ -8,7 +8,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.SendInfoTexts.Whatsapp.Whatsapp
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -20,7 +20,7 @@ class OSDLoadInfo {
 
     companion object {
         private fun isSendLoadInfoEnabled(): Boolean {
-            val metadata = SingleAttributedData.getRecords()
+            val metadata = SingleAttributedDataUtils.getRecords()
             val numberToSendInfo = AppConstants.GeneratedKeys.getWhatsappNumber(metadata.load_account)
             val templateToSendInfo = AppConstants.GeneratedKeys.getTemplateToSendInfo(metadata.load_account)
             val isSendLoadInfoEnabled = numberToSendInfo.isNotEmpty() && templateToSendInfo.isNotEmpty()
@@ -35,7 +35,7 @@ class OSDLoadInfo {
         }
 
         fun initializeUI(context: OneShotDelivery, loadPcElement: EditText, loadKgElement: EditText, loadAvgWtElement: TextView) {
-            val record = SingleAttributedData.getRecords()
+            val record = SingleAttributedDataUtils.getRecords()
 
             val loadCompanyBranchArea = context.findViewById<TextView>(R.id.osd_load_company_branch_area)
             context.runOnUiThread {
@@ -44,7 +44,7 @@ class OSDLoadInfo {
         }
 
         fun setListeners(context: OneShotDelivery, loadPcElement: EditText, loadKgElement: EditText, loadAvgWtElement: TextView, loadPriceElement: EditText, loadBufferElement: EditText) {
-            val record = SingleAttributedData.getRecords()
+            val record = SingleAttributedDataUtils.getRecords()
 
             loadPcElement.doOnTextChanged { text, start, before, count ->
                 record.actualLoadPc = loadPcElement.text.toString()
@@ -60,13 +60,13 @@ class OSDLoadInfo {
 
             loadPriceElement.doOnTextChanged { text, start, before, count ->
                 record.finalFarmRate = loadPriceElement.text.toString()
-                SingleAttributedData.saveToLocal(record)
+                SingleAttributedDataUtils.saveToLocal(record)
                 OSDDeliveryEntryInfo.updateRates()
             }
 
             loadBufferElement.doOnTextChanged { text, start, before, count ->
                 record.bufferRate = loadBufferElement.text.toString()
-                SingleAttributedData.saveToLocal(record)
+                SingleAttributedDataUtils.saveToLocal(record)
                 OSDDeliveryEntryInfo.updateRates()
             }
         }
@@ -84,7 +84,7 @@ class OSDLoadInfo {
         }
 
         fun sendLoadInfoToCompany(loadedPc: String, loadedKg: String) {
-            val metadata = SingleAttributedData.getRecords()
+            val metadata = SingleAttributedDataUtils.getRecords()
             val numberToSendInfo = AppConstants.GeneratedKeys.getWhatsappNumber(metadata.load_account)
             val templateToSendInfo = AppConstants.GeneratedKeys.getTemplateToSendInfo(metadata.load_account)
 
@@ -103,15 +103,15 @@ class OSDLoadInfo {
                     context.findViewById<TextView>(R.id.osd_btn_send_load_info_to_account_payee).visibility = View.GONE
                 }
 
-                loadPcElement.setText(SingleAttributedData.getRecords().actualLoadPc)
-                loadKgElement.setText(SingleAttributedData.getRecords().actualLoadKg)
-                context.findViewById<TextView>(R.id.osd_company_name).text = SingleAttributedData.getRecords().load_account
+                loadPcElement.setText(SingleAttributedDataUtils.getRecords().actualLoadPc)
+                loadKgElement.setText(SingleAttributedDataUtils.getRecords().actualLoadKg)
+                context.findViewById<TextView>(R.id.osd_company_name).text = SingleAttributedDataUtils.getRecords().load_account
             }
 
             if (AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_FARM_RATE)) {
                 val loadPriceElement = context.findViewById<EditText>(R.id.one_shot_delivery_price)
                 context.runOnUiThread {
-                    loadPriceElement.setText(SingleAttributedData.getRecords().finalFarmRate)
+                    loadPriceElement.setText(SingleAttributedDataUtils.getRecords().finalFarmRate)
                 }
             } else {
                 context.runOnUiThread {
@@ -122,7 +122,7 @@ class OSDLoadInfo {
             if (AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_BUFFER_RATE)) {
                 val loadBufferElement = context.findViewById<EditText>(R.id.one_shot_delivery_buffer)
                 context.runOnUiThread {
-                    loadBufferElement.setText(SingleAttributedData.getRecords().bufferRate)
+                    loadBufferElement.setText(SingleAttributedDataUtils.getRecords().bufferRate)
                 }
             } else {
                 context.runOnUiThread {

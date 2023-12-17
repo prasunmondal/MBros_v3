@@ -12,7 +12,7 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.AppData.AppUtils
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.Loading.LoadModel
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
@@ -46,13 +46,13 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
 
         val avg_wt = findViewById<EditText>(R.id.get_orders_avg_wt34)
         avg_wt.doOnTextChanged { text, start, before, count ->
-            val metadata = SingleAttributedData.getRecords()
+            val metadata = SingleAttributedDataUtils.getRecords()
             metadata.estimatedLoadAvgWt = if (avg_wt.text.toString().isEmpty()) {
                 ""
             } else {
                 "${avg_wt.text.toString().toInt()}"
             }
-            SingleAttributedData.saveToLocal(metadata)
+            SingleAttributedDataUtils.saveToLocal(metadata)
         }
 
         listOrders.forEach {
@@ -74,11 +74,11 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
 
     private fun setSavedAvgWt() {
         val avg_wt = findViewById<EditText>(R.id.get_orders_avg_wt34)
-        avg_wt.setText(SingleAttributedData.getRecords().estimatedLoadAvgWt)
+        avg_wt.setText(SingleAttributedDataUtils.getRecords().estimatedLoadAvgWt)
     }
 
     private fun setTotalLoadOrder() {
-        val metadataObj = SingleAttributedData.getRecords()
+        val metadataObj = SingleAttributedDataUtils.getRecords()
         val kg = metadataObj.estimatedLoadKg + ""
         val pc = metadataObj.estimatedLoadPc + ""
         UIUtils.setUIElementValue(LoadModel.getUiElementFromOrderingPage(containerView, LoadModel::requiredKg), kg)
@@ -145,7 +145,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
     }
 
     fun onClickGoToFinalizeOrdersPage(view: View) {
-        if (SingleAttributedData.getRecords().estimatedLoadAvgWt.isEmpty()) {
+        if (SingleAttributedDataUtils.getRecords().estimatedLoadAvgWt.isEmpty()) {
             Toast.makeText(this, "Please enter avg wt.", Toast.LENGTH_LONG).show()
             return
         }
@@ -155,7 +155,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
     }
 
     fun onClickGoToMakeListPage(view: View) {
-        if (SingleAttributedData.getRecords().estimatedLoadAvgWt.isEmpty()) {
+        if (SingleAttributedDataUtils.getRecords().estimatedLoadAvgWt.isEmpty()) {
             Toast.makeText(this, "Please enter avg wt.", Toast.LENGTH_LONG).show()
             return
         }

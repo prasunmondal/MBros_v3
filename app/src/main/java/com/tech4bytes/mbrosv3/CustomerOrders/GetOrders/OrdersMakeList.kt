@@ -9,7 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -82,7 +82,7 @@ class OrdersMakeList : AppCompatActivity() {
             GetCustomerOrders.deleteAll()
             GetCustomerOrders.save()
 
-            val metadataObj = SingleAttributedData.getRecords()
+            val metadataObj = SingleAttributedDataUtils.getRecords()
             var totalPc = 0
             var totalKg = 0
             GetCustomerOrders.getListOfOrderedCustomers().forEach {
@@ -92,7 +92,7 @@ class OrdersMakeList : AppCompatActivity() {
             metadataObj.estimatedLoadPc = totalPc.toString()
             metadataObj.estimatedLoadKg = totalKg.toString()
 
-            SingleAttributedData.save(metadataObj)
+            SingleAttributedDataUtils.saveToLocalThenServer(metadataObj)
             runOnUiThread {
                 Toast.makeText(this, "Data save complete!", Toast.LENGTH_LONG).show()
             }

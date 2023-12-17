@@ -34,7 +34,7 @@ class StagedPay {
                 paidAmountInt *= -1
             }
             stagedObj.newBalance = (NumberUtils.getIntOrZero(prevBalance) - paidAmountInt).toString()
-            StagedPaymentUtils.save(stagedObj)
+            StagedPaymentUtils.saveToServerThenLocal(stagedObj)
         }
     }
 }

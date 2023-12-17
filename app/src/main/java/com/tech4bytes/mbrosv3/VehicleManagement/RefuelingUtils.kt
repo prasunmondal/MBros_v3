@@ -2,7 +2,7 @@ package com.tech4bytes.mbrosv3.VehicleManagement
 
 import com.google.gson.reflect.TypeToken
 import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
@@ -44,7 +44,7 @@ object RefuelingUtils : Tech4BytesSerializable(
         }
 
         fun spoolRefuelingData() {
-            val singleAttributedObj = SingleAttributedData.getRecords()
+            val singleAttributedObj = SingleAttributedDataUtils.getRecords()
             if (singleAttributedObj.did_refueled.toBoolean()) {
                 val refuelingObj = RefuelingModel("", "", "", false)
                 refuelingObj.id = singleAttributedObj.id

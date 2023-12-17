@@ -19,17 +19,19 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
     @Transient var cacheObjectType: Type
     @Transient var appendInServer: Boolean
     @Transient var appendInLocal: Boolean
+    @Transient var getEmptyListIfEmpty: Boolean
 
-    constructor(scriptURL: String, sheetURL: String, tabname: String, cacheObjectType: Type, appendInServer: Boolean, appendInLocal: Boolean) {
+    constructor(scriptURL: String, sheetURL: String, tabname: String, cacheObjectType: Type, appendInServer: Boolean, appendInLocal: Boolean, getEmptyListIfNoResultsFoundInServer: Boolean = false) {
         this.scriptURL = scriptURL
         this.sheetURL = sheetURL
         this.tabname = tabname
         this.appendInServer = appendInServer
         this.appendInLocal = appendInLocal
         this.cacheObjectType = cacheObjectType
+        this.getEmptyListIfEmpty = getEmptyListIfNoResultsFoundInServer
     }
 
-    fun <T> get(useCache: Boolean = true, filterName: String = "default"): List<T> {
+    fun <T : Any> get(useCache: Boolean = true, getEmptyListIfEmpty: Boolean = false, filterName: String = "default"): List<T> {
         val cacheKey = getFilterName(filterName)
         LogMe.log("Getting records")
 
@@ -44,8 +46,10 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
             cacheResults as ArrayList<T>
         } else {
             var dataList = getFromServer<T>()
+            if((getEmptyListIfEmpty || this.getEmptyListIfEmpty) && dataList.isNullOrEmpty())
+                return listOf()
             dataList = filterResults(dataList)
-            dataList = sortsResults(dataList)
+            dataList = sortResults(dataList)
 
             CentralCache.put(cacheKey, dataList)
             dataList
@@ -66,16 +70,16 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
         return "${ClassDetailsUtils.getCaller(ClassDetailsUtils.getCaller())}/$sheetURL/$tabname/$filterName"
     }
 
-    fun <T> filterResults(list: ArrayList<T>): ArrayList<T> {
+    open fun <T: Any> filterResults(list: ArrayList<T>): ArrayList<T> {
         return list
     }
 
-    fun <T> sortsResults(list: ArrayList<T>): ArrayList<T> {
+    open fun <T: Any> sortResults(list: ArrayList<T>): ArrayList<T> {
         return list
     }
 
     fun <T : Any> saveToLocalThenServer(dataObject: T) {
-        saveToLocal(dataObject, getFilterName())
+        saveToLocal(dataObject)
         saveToServer(dataObject)
     }
 
@@ -90,12 +94,20 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
      */
     fun <T : Any> saveToServerThenLocal(dataObject: T) {
         saveToServer(dataObject)
-        saveToLocal(dataObject, getFilterName())
+        saveToLocal(dataObject)
     }
 
-    fun <T : Any> saveToLocal(dataObject: T?, cacheKey: String = getFilterName()) {
+    /**
+     * dataObject: Data to save
+     * cacheKey: cacheKey used to identify the cache object, pass null to generate the cacheKey
+     */
+    fun <T : Any> saveToLocal(dataObject: T?, cacheKey: String? = getFilterName()) {
+        var finalCacheKey = cacheKey
+        if(finalCacheKey == null) {
+            finalCacheKey = getFilterName()
+        }
         if(dataObject == null) {
-            CentralCache.put(cacheKey, dataObject)
+            CentralCache.put(finalCacheKey, dataObject)
             return
         }
 
@@ -103,13 +115,13 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
             var dataList = get<T>() as ArrayList
             dataList.addAll(arrayListOf(dataObject))
             dataList = filterResults(dataList)
-            dataList = sortsResults(dataList)
+            dataList = sortResults(dataList)
             dataList
         }
         else {
             dataObject
         }
-        CentralCache.put(cacheKey, dataToSave)
+        CentralCache.put(finalCacheKey, dataToSave)
     }
 
     fun <T> saveToServer(obj: T) {

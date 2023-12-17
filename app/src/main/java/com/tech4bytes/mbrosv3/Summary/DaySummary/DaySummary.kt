@@ -7,7 +7,7 @@ import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Summary.SummaryConfig
@@ -73,7 +73,7 @@ data class DaySummary(
 
         fun getDaySummaryObjectForCurrentData(): DaySummary {
             val daySummaryObj = DaySummary()
-            val metadata = SingleAttributedData.getRecords()
+            val metadata = SingleAttributedDataUtils.getRecords()
 
             val loadAvgWt = NumberUtils.getDoubleOrZero(metadata.actualLoadKg) / NumberUtils.getDoubleOrZero(metadata.actualLoadPc)
 
@@ -135,25 +135,25 @@ data class DaySummary(
         }
 
         fun getBirdCost(): Int {
-            return (NumberUtils.getDoubleOrZero(SingleAttributedData.getRecords().actualLoadKg)
-                    * NumberUtils.getIntOrZero(SingleAttributedData.getRecords().finalFarmRate))
+            return (NumberUtils.getDoubleOrZero(SingleAttributedDataUtils.getRecords().actualLoadKg)
+                    * NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().finalFarmRate))
                 .toInt()
         }
 
         fun kmCost(): Int {
-            return (NumberUtils.getIntOrZero(SingleAttributedData.getRecords().vehicle_finalKm) - getPrevTripEndKm()) * 12
+            return (NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().vehicle_finalKm) - getPrevTripEndKm()) * 12
         }
 
         fun getLabourCost(): Int {
-            return NumberUtils.getIntOrZero(SingleAttributedData.getRecords().labour_expenses)
+            return NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().labour_expenses)
         }
 
         fun getExtraCost(): Int {
-            return NumberUtils.getIntOrZero(SingleAttributedData.getRecords().extra_expenses)
+            return NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().extra_expenses)
         }
 
         fun getDaySale(): Int {
-            return NumberUtils.getIntOrZero(SingleAttributedData.getRecords().daySale)
+            return NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().daySale)
         }
 
         fun getDayProfit(): Int {
@@ -177,7 +177,7 @@ data class DaySummary(
         }
 
         fun isDayFinalized(useCache: Boolean = true): Boolean {
-            val bufferKm = NumberUtils.getIntOrZero(SingleAttributedData.getRecords(useCache).vehicle_finalKm)
+            val bufferKm = NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords(useCache).vehicle_finalKm)
             val lastFinalizedKm = DaySummary.getPrevTripEndKm(useCache)
             return (lastFinalizedKm == bufferKm || bufferKm == 0)
         }

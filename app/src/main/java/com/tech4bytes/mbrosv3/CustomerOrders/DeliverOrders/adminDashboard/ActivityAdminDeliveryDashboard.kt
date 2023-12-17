@@ -18,7 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.BusinessData.SheetCalculator
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerCalculations
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
@@ -195,15 +195,15 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
 
     private fun setListeners() {
         farmRateElement.addTextChangedListener {
-            val obj = SingleAttributedData.getRecords()
+            val obj = SingleAttributedDataUtils.getRecords()
             obj.finalFarmRate = it.toString()
-            SingleAttributedData.saveToLocal(obj)
+            SingleAttributedDataUtils.saveToLocal(obj)
             setRuntimeUIValues()
         }
         deliveryRateElement.addTextChangedListener {
-            val obj = SingleAttributedData.getRecords()
+            val obj = SingleAttributedDataUtils.getRecords()
             obj.bufferRate = DeliveryCalculations.getBufferPrice(obj.finalFarmRate, it.toString()).toString()
-            SingleAttributedData.saveToLocal(obj)
+            SingleAttributedDataUtils.saveToLocal(obj)
             setRuntimeUIValues()
         }
     }
@@ -240,7 +240,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
 
     fun updateLoadInfo(useCache: Boolean) {
 
-        val loadMetadata = SingleAttributedData.getRecords(useCache)
+        val loadMetadata = SingleAttributedDataUtils.getRecords(useCache)
         UIUtils.setUIElementValue(totalPcElement, loadMetadata.actualLoadPc)
         UIUtils.setUIElementValue(totalKgElement, "%.3f".format(WeightUtils.roundOff3places(loadMetadata.actualLoadKg)))
 
@@ -275,7 +275,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     }
 
     fun updateDashboard(useCache: Boolean) {
-        SingleAttributedData.getRecords(useCache)
+        SingleAttributedDataUtils.getRecords(useCache)
         DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>(useCache)
         GetCustomerOrders.get(useCache)
 
@@ -286,7 +286,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
 
     private fun updateProjectedInfo(useCache: Boolean) {
         try {
-            val metadataObj = SingleAttributedData.getRecords(useCache)
+            val metadataObj = SingleAttributedDataUtils.getRecords(useCache)
             val shortage = DeliveryCalculations.getShortage(NumberUtils.getDoubleOrZero(metadataObj.actualLoadKg), DeliverToCustomerCalculations.getTotalKgDelivered())
             UIUtils.setUIElementValue(projectedShortageElement, "${WeightUtils.roundOff3places(shortage)}")
         } catch (e: Exception) {
@@ -296,21 +296,21 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
 
     private fun spoolCustomerData() {
         Thread {
-            val obj = SingleAttributedData.getRecords()
+            val obj = SingleAttributedDataUtils.getRecords()
             obj.finalFarmRate = UIUtils.getUIElementValue(farmRateElement)
             val deliveryRate = UIUtils.getUIElementValue(deliveryRateElement)
             obj.bufferRate = DeliveryCalculations.getBufferPrice(obj.finalFarmRate, deliveryRate).toString()
-            SingleAttributedData.save(obj)
+            SingleAttributedDataUtils.saveToLocalThenServer(obj)
             CustomerData.spoolDeliveringData()
             RefuelingUtils.spoolRefuelingData()
             DaySummary.saveToServer()
-            SingleAttributedData.invalidateCache()
+            SingleAttributedDataUtils.invalidateCache()
             setStatuses(false)
         }.start()
     }
 
     fun setCompanyAndRateValuesInUI() {
-        val obj = SingleAttributedData.getRecords()
+        val obj = SingleAttributedDataUtils.getRecords()
         UIUtils.setUIElementValue(loadCompanyElement, obj.load_companyName)
         UIUtils.setUIElementValue(loadBranchElement, obj.load_branch)
         UIUtils.setUIElementValue(loadAccountElement, obj.load_account)

@@ -14,7 +14,8 @@ import androidx.core.widget.doOnTextChanged
 import com.prasunmondal.postjsontosheets.clients.delete.Delete
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataModel
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
@@ -167,14 +168,14 @@ class OneShotDelivery : AppCompatActivity() {
 
         OSDLoadInfo.initializeUI(this, loadPcElement, loadKgElement, loadAvgWtElement)
         didRefuelElement.setOnCheckedChangeListener { _, isChecked ->
-            val obj = SingleAttributedData.getRecords()
+            val obj = SingleAttributedDataUtils.getRecords()
             obj.did_refueled = isChecked.toString()
-            SingleAttributedData.saveToLocal(obj)
+            SingleAttributedDataUtils.saveToLocal(obj)
             updateRefuelingUIDetails()
         }
 
         didTankFullElement.setOnCheckedChangeListener { _, isChecked ->
-            SingleAttributedData.saveAttributeToLocal(SingleAttributedData::refueling_isFullTank, isChecked.toString())
+            SingleAttributedDataUtils.saveAttributeToLocal(SingleAttributedDataModel::refueling_isFullTank, isChecked.toString())
             updateRefuelingUIDetails()
         }
 
@@ -186,7 +187,7 @@ class OneShotDelivery : AppCompatActivity() {
             updateRefuelingUIDetails()
         }
 
-        val record = SingleAttributedData.getRecords()
+        val record = SingleAttributedDataUtils.getRecords()
 
     }
 
@@ -194,10 +195,10 @@ class OneShotDelivery : AppCompatActivity() {
     private fun initializeOtherExpensesUI() {
         val salaryDivisionElement = findViewById<TextView>(R.id.osd_salary_division)
 
-        UIUtils.setUIElementValue(finalKmElement, SingleAttributedData.getRecords().vehicle_finalKm)
-        UIUtils.setUIElementValue(labourExpensesElement, SingleAttributedData.getRecords().labour_expenses)
-        UIUtils.setUIElementValue(extraExpensesElement, SingleAttributedData.getRecords().extra_expenses)
-        UIUtils.setUIElementValue(salaryDivisionElement, SingleAttributedData.getRecords().salaryDivision.replace("#", "  #  "))
+        UIUtils.setUIElementValue(finalKmElement, SingleAttributedDataUtils.getRecords().vehicle_finalKm)
+        UIUtils.setUIElementValue(labourExpensesElement, SingleAttributedDataUtils.getRecords().labour_expenses)
+        UIUtils.setUIElementValue(extraExpensesElement, SingleAttributedDataUtils.getRecords().extra_expenses)
+        UIUtils.setUIElementValue(salaryDivisionElement, SingleAttributedDataUtils.getRecords().salaryDivision.replace("#", "  #  "))
 
         finalKmElement.doOnTextChanged { text, start, before, count ->
             updateKmRelatedCosts()
@@ -224,9 +225,9 @@ class OneShotDelivery : AppCompatActivity() {
         val kmDiff = DeliveryCalculations.getKmDiff(currentKmOnUI)
         val kmCost = DeliveryCalculations.getKmCost(currentKmOnUI)
 
-        val singleDataObj = SingleAttributedData.getRecords()
+        val singleDataObj = SingleAttributedDataUtils.getRecords()
         singleDataObj.vehicle_finalKm = currentKm.toString()
-        SingleAttributedData.saveToLocal(singleDataObj)
+        SingleAttributedDataUtils.saveToLocal(singleDataObj)
 
         kmDiffElement.text = kmDiff.toString()
         kmCostElement.text = kmCost.toString()
@@ -239,11 +240,11 @@ class OneShotDelivery : AppCompatActivity() {
         val refuelingKmElement = findViewById<EditText>(R.id.one_shot_delivery_refueling_km)
         val refuelingAmountElement = findViewById<EditText>(R.id.osd_refuel_amount)
 
-        UIUtils.setUIElementValue(didRefuelElement, SingleAttributedData.getRecords().did_refueled)
-        UIUtils.setUIElementValue(didTankFullElement, SingleAttributedData.getRecords().refueling_isFullTank)
-        UIUtils.setUIElementValue(refuelingQtyElement, SingleAttributedData.getRecords().refueling_qty)
-        UIUtils.setUIElementValue(refuelingKmElement, SingleAttributedData.getRecords().refueling_km)
-        UIUtils.setUIElementValue(refuelingAmountElement, SingleAttributedData.getRecords().refueling_amount)
+        UIUtils.setUIElementValue(didRefuelElement, SingleAttributedDataUtils.getRecords().did_refueled)
+        UIUtils.setUIElementValue(didTankFullElement, SingleAttributedDataUtils.getRecords().refueling_isFullTank)
+        UIUtils.setUIElementValue(refuelingQtyElement, SingleAttributedDataUtils.getRecords().refueling_qty)
+        UIUtils.setUIElementValue(refuelingKmElement, SingleAttributedDataUtils.getRecords().refueling_km)
+        UIUtils.setUIElementValue(refuelingAmountElement, SingleAttributedDataUtils.getRecords().refueling_amount)
 
         refuelingKmElement.doOnTextChanged { text, start, before, count ->
             val refuelingKm = NumberUtils.getIntOrZero(refuelingKmElement.text.toString())
@@ -407,7 +408,7 @@ class OneShotDelivery : AppCompatActivity() {
 
     companion object {
         fun updateTotals(context: OneShotDelivery) {
-            val metadataObj = SingleAttributedData.getRecords()
+            val metadataObj = SingleAttributedDataUtils.getRecords()
             val totalPcElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_pc)
             val totalKgElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_kg)
             val totalSaleElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_sale)
@@ -441,7 +442,7 @@ class OneShotDelivery : AppCompatActivity() {
                 }
             }
 
-            val loadedKg = NumberUtils.getDoubleOrZero(SingleAttributedData.getRecords().actualLoadKg)
+            val loadedKg = NumberUtils.getDoubleOrZero(SingleAttributedDataUtils.getRecords().actualLoadKg)
             val shortage = (loadedKg - sumKg) * 100 / loadedKg
 
             totalPcElement.text = "$sumPc"
@@ -452,7 +453,7 @@ class OneShotDelivery : AppCompatActivity() {
             totalShortageElement.text = "▼ ${"%.3f".format(shortage)} kg"
             totalCollectedElement.text = "$sumAmountCollected"
             totalBalanceDueElement.text = "$sumBalanceDue"
-            SingleAttributedData.saveToLocal(metadataObj)
+            SingleAttributedDataUtils.saveToLocal(metadataObj)
 
             context.updateHiddenData()
         }
@@ -482,7 +483,7 @@ class OneShotDelivery : AppCompatActivity() {
 
             saveSingleAttributeData()
             saveDeliveryData()
-            SingleAttributedData.getRecords(false)
+            SingleAttributedDataUtils.getRecords(false)
             DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>()
             runOnUiThread()
             {
@@ -503,19 +504,19 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun gatherSingleAttributedData() {
-        val obj = SingleAttributedData.getRecords()
+        val obj = SingleAttributedDataUtils.getRecords()
         obj.vehicle_finalKm = NumberUtils.getIntOrZero(finalKmElement.text.toString()).toString()
         obj.labour_expenses = NumberUtils.getIntOrZero(labourExpensesElement.text.toString()).toString()
         obj.extra_expenses = NumberUtils.getIntOrZero(extraExpensesElement.text.toString()).toString()
         obj.actualLoadKg = loadKgElement.text.toString()
         obj.actualLoadPc = loadPcElement.text.toString()
 
-        SingleAttributedData.saveToLocal(obj)
+        SingleAttributedDataUtils.saveToLocal(obj)
     }
 
     private fun saveSingleAttributeData() {
         Thread {
-            SingleAttributedData.save(SingleAttributedData.getRecords())
+            SingleAttributedDataUtils.saveToLocalThenServer(SingleAttributedDataUtils.getRecords())
             setSaveProgressBar(10)
         }.start()
     }
@@ -554,7 +555,7 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun gatherFuelData() {
-        val obj = SingleAttributedData.getRecords()
+        val obj = SingleAttributedDataUtils.getRecords()
         val didRefuelElement = findViewById<Switch>(R.id.one_shot_delivery_did_refuel)
         obj.refueling_km = ""
         obj.refueling_prevKm = ""
@@ -586,7 +587,7 @@ class OneShotDelivery : AppCompatActivity() {
             }
         }
 
-        SingleAttributedData.saveToLocal(obj)
+        SingleAttributedDataUtils.saveToLocal(obj)
     }
 
     private fun saveDeliveryData() {

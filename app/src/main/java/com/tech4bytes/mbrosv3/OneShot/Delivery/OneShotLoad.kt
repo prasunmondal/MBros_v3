@@ -15,7 +15,7 @@ import androidx.core.widget.doOnTextChanged
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.tech4bytes.mbrosv3.AppData.AppUtils
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
@@ -52,7 +52,7 @@ class OneShotLoad : AppCompatActivity() {
     }
 
     private fun getServerChecksumString(): String {
-        val metadata = SingleAttributedData.getRecords()
+        val metadata = SingleAttributedDataUtils.getRecords()
         return "companyName:${metadata.load_companyName} " +
                 "- companyBranch: ${metadata.load_branch} " +
                 "- companyArea: ${metadata.load_area}" +
@@ -65,7 +65,7 @@ class OneShotLoad : AppCompatActivity() {
     }
 
     private fun getUIChecksumString(): String {
-        val metadata = SingleAttributedData.getRecords()
+        val metadata = SingleAttributedDataUtils.getRecords()
         return "companyName:${companyLabel2.text} " +
                 "- companyBranch: ${companyBranch2.text} " +
                 "- companyArea: ${companyArea2.text}" +
@@ -100,7 +100,7 @@ class OneShotLoad : AppCompatActivity() {
     }
 
     private fun initializePays() {
-        val dataObj = SingleAttributedData.getRecords()
+        val dataObj = SingleAttributedDataUtils.getRecords()
         labour2Enabled = NumberUtils.getIntOrZero(dataObj.numberOfPeopleTakingSalary) > 2
         val salaries = dataObj.salaryDivision.split("#")
         if (salaries.isEmpty()) {
@@ -119,7 +119,7 @@ class OneShotLoad : AppCompatActivity() {
     }
 
     private fun setUIValues(fromUI: Boolean = true) {
-        val data = SingleAttributedData.getRecords()
+        val data = SingleAttributedDataUtils.getRecords()
         val companyName = if (fromUI) companyLabel2.text.toString() else data.load_companyName
         val branchName = if (fromUI) companyBranch2.text.toString() else data.load_branch
         val areaName = if (fromUI) companyArea2.text.toString() else data.load_area
@@ -200,7 +200,7 @@ class OneShotLoad : AppCompatActivity() {
     }
 
     private fun updateUIFromObj(useCache: Boolean = true) {
-        val obj = SingleAttributedData.getRecords(useCache)
+        val obj = SingleAttributedDataUtils.getRecords(useCache)
         val deliveryBasePrice = initialFarmRate
         inHandCash.setText(obj.extra_cash_given)
         deliveryBasePrice.setText(DeliveryCalculations.getBaseDeliveryPrice(obj.finalFarmRate, obj.bufferRate).toString())
@@ -209,7 +209,7 @@ class OneShotLoad : AppCompatActivity() {
     }
 
     private fun updateObjFromUI() {
-        val obj = SingleAttributedData.getRecords()
+        val obj = SingleAttributedDataUtils.getRecords()
         val companyName = companyLabel2.text.toString()
         val branch = companyBranch2.text.toString()
         val account = companyAccount2.text.toString()
@@ -228,7 +228,7 @@ class OneShotLoad : AppCompatActivity() {
         obj.numberOfPeopleTakingSalary = getTotalNoOfLaboursFromUI()
         obj.salaryDivision = getSalaryDivisionFromUI()
 
-        SingleAttributedData.saveToLocal(obj)
+        SingleAttributedDataUtils.saveToLocal(obj)
     }
 
     private fun getTotalNoOfLaboursFromUI(): String {
@@ -252,15 +252,15 @@ class OneShotLoad : AppCompatActivity() {
         updateCase()
         hideKeyboard()
         updateObjFromUI()
-        SingleAttributedData.saveToLocal(SingleAttributedData.getRecords())
+        SingleAttributedDataUtils.saveToLocal(SingleAttributedDataUtils.getRecords())
         Thread {
             runOnUiThread {
                 oslSaveBtn.isEnabled = false
                 oslSaveBtn.alpha = .5f
                 oslSaveBtn.isClickable = false
             }
-            SingleAttributedData.save(SingleAttributedData.getRecords())
-            SingleAttributedData.getRecords(false)
+            SingleAttributedDataUtils.saveToLocalThenServer(SingleAttributedDataUtils.getRecords())
+            SingleAttributedDataUtils.getRecords(false)
             runOnUiThread {
                 markDataFresh(true)
                 Toast.makeText(this, "Data Saved!", Toast.LENGTH_LONG).show()

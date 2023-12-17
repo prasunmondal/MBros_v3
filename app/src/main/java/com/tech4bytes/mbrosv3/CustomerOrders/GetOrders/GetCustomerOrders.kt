@@ -6,7 +6,7 @@ import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -34,7 +34,7 @@ data class GetCustomerOrders(
         if (orderedPc.isNotEmpty()) {
             return orderedPc
         }
-        val pc = NumberUtils.getDoubleOrZero(orderedKg) * 1000 / NumberUtils.getIntOrZero(SingleAttributedData.getRecords().estimatedLoadAvgWt)
+        val pc = NumberUtils.getDoubleOrZero(orderedKg) * 1000 / NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().estimatedLoadAvgWt)
         return if (allowFraction) {
             NumberUtils.roundOff2places(pc).toString()
         } else {
@@ -46,7 +46,7 @@ data class GetCustomerOrders(
         if (orderedKg.isNotEmpty()) {
             return orderedKg
         }
-        val kg = NumberUtils.getDoubleOrZero((NumberUtils.getIntOrZero(orderedPc) * (SingleAttributedData.getRecords().estimatedLoadAvgWt.toInt() / 1000)).toString(), "#.#")
+        val kg = NumberUtils.getDoubleOrZero((NumberUtils.getIntOrZero(orderedPc) * (SingleAttributedDataUtils.getRecords().estimatedLoadAvgWt.toInt() / 1000)).toString(), "#.#")
         return if (allowFraction) {
             NumberUtils.roundOff2places(kg).toString()
         } else {

@@ -2,7 +2,7 @@ package com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher
 
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedData
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
@@ -19,7 +19,7 @@ class DataFetchingInfo {
                 GetCustomerOrders::get.toString() -> "Customer orders"
                 CustomerKYC::getAllCustomers.toString() -> "Get Customer KYCs"
                 CustomerData::getRecords.toString() -> "Previous delivery reports"
-                SingleAttributedData::getRecords.toString() -> "Metadata"
+                SingleAttributedDataUtils::getRecords.toString() -> "Metadata"
 //                DeliverToCustomerDataHandler::get.toString() -> "Current delivery reports"
                 DaySummary::get.toString() -> "Transaction reports"
 //                RefuelingUtils::get<RefuelingModel>.toString() -> "Fuel data"
@@ -35,7 +35,7 @@ class DataFetchingInfo {
                 ActivityAuthEnums.ADMIN,
                 ActivityAuthEnums.ONE_SHOT_DELIVERY,
                 -> {
-                    executingMethods.add(SingleAttributedData::getRecords)
+                    executingMethods.add(SingleAttributedDataUtils::getRecords)
                     executingMethods.add(CustomerKYC::getAllCustomers)
                     executingMethods.add(GetCustomerOrders::get)
                     executingMethods.add(CustomerData::getRecords)
@@ -56,17 +56,17 @@ class DataFetchingInfo {
 //                    executingMethods.add(DeliverToCustomerDataHandler::get)
                 }
                 ActivityAuthEnums.ORDER_COLLECTOR -> {
-                    executingMethods.add(SingleAttributedData::getRecords)
+                    executingMethods.add(SingleAttributedDataUtils::getRecords)
                     executingMethods.add(CustomerKYC::getAllCustomers)
                     executingMethods.add(GetCustomerOrders::get)
                     executingMethods.add(CustomerData::getRecords)
                 }
                 ActivityAuthEnums.LOAD_INFORMATION -> {
-                    executingMethods.add(SingleAttributedData::getRecords, true)
+                    executingMethods.add(SingleAttributedDataUtils::getRecords, true)
                     executingMethods.add(DaySummary::get, true)
                 }
                 ActivityAuthEnums.MONEY_CALCULATOR -> {
-                    executingMethods.add(SingleAttributedData::getRecords)
+                    executingMethods.add(SingleAttributedDataUtils::getRecords)
 //                    executingMethods.add(DeliverToCustomerDataHandler::get)
                     executingMethods.add(AppConstants::fetchAll)
                 }

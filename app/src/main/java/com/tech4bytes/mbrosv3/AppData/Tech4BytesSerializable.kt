@@ -43,9 +43,12 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
         return if (cacheResults != null) {
             cacheResults as ArrayList<T>
         } else {
-            val resultFromServer = getFromServer<T>()
-            CentralCache.put(cacheKey, resultFromServer)
-            resultFromServer
+            var dataList = getFromServer<T>()
+            dataList = filterResults(dataList)
+            dataList = sortsResults(dataList)
+
+            CentralCache.put(cacheKey, dataList)
+            dataList
         }
     }
 
@@ -61,6 +64,14 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
 
     private fun getFilterName(filterName: String = "default"): String {
         return "${ClassDetailsUtils.getCaller(ClassDetailsUtils.getCaller())}/$sheetURL/$tabname/$filterName"
+    }
+
+    fun <T> filterResults(list: ArrayList<T>): ArrayList<T> {
+        return list
+    }
+
+    fun <T> sortsResults(list: ArrayList<T>): ArrayList<T> {
+        return list
     }
 
     fun <T : Any> saveToLocalThenServer(dataObject: T) {
@@ -89,9 +100,11 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
         }
 
         val dataToSave = if(appendInLocal) {
-            val allData = get<T>() as MutableList
-            allData.addAll(arrayListOf(dataObject))
-            allData
+            var dataList = get<T>() as ArrayList
+            dataList.addAll(arrayListOf(dataObject))
+            dataList = filterResults(dataList)
+            dataList = sortsResults(dataList)
+            dataList
         }
         else {
             dataObject

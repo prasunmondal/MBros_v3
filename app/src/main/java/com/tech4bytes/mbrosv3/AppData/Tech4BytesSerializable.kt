@@ -8,7 +8,6 @@ import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.extrack.centralCache.utils.ClassDetailsUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
-import java.lang.reflect.Type
 
 
 abstract class Tech4BytesSerializable : java.io.Serializable {
@@ -16,7 +15,6 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
     @Transient var scriptURL: String
     @Transient var sheetURL: String
     @Transient var tabname: String
-    @Transient var cacheObjectType: Type
     @Transient var appendInServer: Boolean
     @Transient var appendInLocal: Boolean
     @Transient var getEmptyListIfEmpty: Boolean
@@ -45,7 +43,7 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
             cacheResults as ArrayList<T>
         } else {
             var dataList = getFromServer<T>()
-            if((getEmptyListIfEmpty || this.getEmptyListIfEmpty) && dataList.isNullOrEmpty())
+            if((getEmptyListIfEmpty || this.getEmptyListIfEmpty) && dataList.isEmpty())
                 return listOf()
             dataList = filterResults(dataList)
             dataList = sortResults(dataList)

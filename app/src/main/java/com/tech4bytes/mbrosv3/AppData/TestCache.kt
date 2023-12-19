@@ -14,4 +14,5 @@ object UtilClass: Tech4BytesSerializable(
     "testAnd",
     appendInServer = true,
     appendInLocal = true,
+    cacheObjectType = object : TypeToken<ArrayList<modelClass?>?>() {}.type
 )

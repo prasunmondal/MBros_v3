@@ -27,7 +27,6 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
         this.tabname = tabname
         this.appendInServer = appendInServer
         this.appendInLocal = appendInLocal
-        this.cacheObjectType = cacheObjectType
         this.getEmptyListIfEmpty = getEmptyListIfNoResultsFoundInServer
     }
 

@@ -12,9 +12,7 @@ object RefuelingUtils : Tech4BytesSerializable(
     ProjectConfig.get_db_sheet_id(),
     "fuel",
     appendInServer = true,
-    appendInLocal = true,
-    cacheObjectType = object : TypeToken<ArrayList<RefuelingModel?>?>() {}.type
-)
+    appendInLocal = true)
 {
         private fun getLatestRecord(useCache: Boolean = true): RefuelingModel {
             val list = get<RefuelingModel>(useCache)

@@ -21,7 +21,7 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
     @Transient var appendInLocal: Boolean
     @Transient var getEmptyListIfEmpty: Boolean
 
-    constructor(scriptURL: String, sheetURL: String, tabname: String, cacheObjectType: Type, appendInServer: Boolean, appendInLocal: Boolean, getEmptyListIfNoResultsFoundInServer: Boolean = false) {
+    constructor(scriptURL: String, sheetURL: String, tabname: String, appendInServer: Boolean, appendInLocal: Boolean, getEmptyListIfNoResultsFoundInServer: Boolean = false) {
         this.scriptURL = scriptURL
         this.sheetURL = sheetURL
         this.tabname = tabname

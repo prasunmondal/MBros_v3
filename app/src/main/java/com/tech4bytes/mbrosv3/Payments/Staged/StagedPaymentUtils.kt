@@ -11,8 +11,7 @@ object StagedPaymentUtils : Tech4BytesSerializable(
     ProjectConfig.get_db_sheet_id(),
     "stagedPayments",
     appendInServer = true,
-    appendInLocal = true,
-    cacheObjectType = object : TypeToken<ArrayList<StagedPaymentsModel>>() {}.type) {
+    appendInLocal = true) {
 
     fun getStagedPayments(name: String, useCache: Boolean = true): StagedPaymentsModel {
         val list = get<StagedPaymentsModel>(useCache).filter { it.name == name }

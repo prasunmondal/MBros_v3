@@ -9,5 +9,4 @@ object DeliverToCustomerDataHandler: Tech4BytesSerializable(
     ProjectConfig.get_db_sheet_id(),
     "deliverOrders",
     appendInServer = true,
-    appendInLocal = true,
-    cacheObjectType = object : TypeToken<ArrayList<DeliverToCustomerDataModel>>() {}.type)
+    appendInLocal = true)

@@ -17,7 +17,6 @@ object SingleAttributedDataUtils: Tech4BytesSerializable (
     "metadata",
     appendInServer = true,
     appendInLocal = true,
-    cacheObjectType = object : TypeToken<ArrayList<SingleAttributedDataModel?>?>() {}.type,
     getEmptyListIfNoResultsFoundInServer = true) {
 
         private var recordsKey = "SingleAttributedMetadata"

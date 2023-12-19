@@ -13,5 +13,5 @@ object UtilClass: Tech4BytesSerializable(
     ProjectConfig.get_db_sheet_id(),
     "testAnd",
     appendInServer = true,
-    appendInLocal = true,
+    appendInLocal = true
 )

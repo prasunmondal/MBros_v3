@@ -63,7 +63,7 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
             .tabName(tabname)
             .build().execute()
 
-        return result.parseToObject(result.getRawResponse(), cacheObjectType)
+        return result.parseToObject(result.getRawResponse())
     }
 
     private fun getFilterName(filterName: String = "default"): String {

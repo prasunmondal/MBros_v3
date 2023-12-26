@@ -5,6 +5,7 @@ import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
+import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.BusinessLogic.Sorter
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
@@ -61,19 +62,29 @@ class CustomerData : java.io.Serializable {
         this.notes = notes
     }
 
+    override fun toString(): String {
+        return "CustomerData(orderId='$orderId', timestamp='$timestamp', name='$name', deliveredPc='$deliveredPc', deliveredKg='$deliveredKg', rate='$rate', prevAmount='$prevAmount', deliveredAmount='$deliveredAmount', totalAmount='$totalAmount', paid='$paid', balanceDue='$balanceDue', avgWt='$avgWt', profit='$profit', profitPercent='$profitPercent')"
+    }
+}
+
+object CustomerDataUtils: Tech4BytesSerializable(
+    ProjectConfig.dBServerScriptURL,
+    ProjectConfig.get_db_finalize_sheet_id(),
+    "deliveries",
+    object: TypeToken<ArrayList<CustomerData>?>() {}.type,
+    appendInServer = true,
+    appendInLocal = true
+) {
     fun getCustomerNames(): HashSet<String> {
         val customerNames: HashSet<String> = hashSetOf()
-        getRecords().forEach {
+        get<CustomerData>().forEach {
             customerNames.add(it.name)
         }
         return customerNames
     }
 
-    override fun toString(): String {
-        return "CustomerData(orderId='$orderId', timestamp='$timestamp', name='$name', deliveredPc='$deliveredPc', deliveredKg='$deliveredKg', rate='$rate', prevAmount='$prevAmount', deliveredAmount='$deliveredAmount', totalAmount='$totalAmount', paid='$paid', balanceDue='$balanceDue', avgWt='$avgWt', profit='$profit', profitPercent='$profitPercent')"
-    }
 
-    companion object {
+
 
         fun spoolDeliveringData() {
             var deliveredData = DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>()
@@ -106,9 +117,9 @@ class CustomerData : java.io.Serializable {
         }
 
         fun getAllLatestRecords(useCache: Boolean = true): MutableList<CustomerData> {
-            val customerRecords = getRecords(useCache)
-            customerRecords.sortBy { it.orderId }
-            customerRecords.reverse()
+            val customerRecords = get<CustomerData>(useCache)
+            customerRecords.sortedBy { it.orderId }
+            customerRecords.reversed()
 
             val addedNames = mutableListOf<String>()
             val latestRecordsList = mutableListOf<CustomerData>()
@@ -122,9 +133,9 @@ class CustomerData : java.io.Serializable {
         }
 
         fun getAllLatestRecordsByAccount(useCache: Boolean = true): MutableList<CustomerData> {
-            val customerRecords = getRecords(useCache)
-            customerRecords.sortBy { it.orderId }
-            customerRecords.reverse()
+            val customerRecords = get<CustomerData>(useCache)
+            customerRecords.sortedBy { it.orderId }
+            customerRecords.reversed()
 
             val addedNames = mutableListOf<String>()
             val latestRecordsList = mutableListOf<CustomerData>()
@@ -135,34 +146,6 @@ class CustomerData : java.io.Serializable {
                 }
             }
             return latestRecordsList
-        }
-
-        private var recordsKey = "customerRecords"
-        fun getRecords(useCache: Boolean = true): ArrayList<CustomerData> {
-            LogMe.log("Getting delivery records")
-            val cacheResults = CentralCache.get<ArrayList<CustomerData>>(AppContexts.get(), recordsKey, useCache)
-            LogMe.log("Getting delivery records: Cache Hit: " + (cacheResults != null))
-            return if (cacheResults != null) {
-                cacheResults
-            } else {
-                val resultFromServer = getRecordsFromServer()
-
-                CentralCache.put(recordsKey, resultFromServer)
-                resultFromServer
-            }
-        }
-
-        private fun getRecordsFromServer(): ArrayList<CustomerData> {
-            val result: GetResponse = Get.builder()
-                .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.get_db_finalize_sheet_id())
-                .tabName(FinalizeConfig.SHEET_FINALIZE_DELIVERIES_TAB_NAME)
-                .build().execute()
-
-            val recordsList = result.parseToObject<CustomerData>(result.getRawResponse(), object : TypeToken<ArrayList<CustomerData>?>() {}.type)
-            recordsList.sortBy { it.orderId }
-            recordsList.reverse()
-            return recordsList
         }
 
         fun getCustomerDefaultRate(name: String): Int {
@@ -188,10 +171,9 @@ class CustomerData : java.io.Serializable {
         }
 
         fun getAllCustomerNames(useCache: Boolean = true): List<String> {
-            return getRecords(useCache).stream()
+            return get<CustomerData>(useCache).stream()
                 .filter { d -> d.name.isNotEmpty() }
                 .map(CustomerData::name)
                 .collect(Collectors.toSet()).toList().sorted()
         }
     }
-}

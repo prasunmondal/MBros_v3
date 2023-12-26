@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.CustomerAddTransactionActivity
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
+import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -33,7 +34,7 @@ class CustomerTransactions : AppCompatActivity() {
         val customerNamesSpinner = findViewById<Spinner>(R.id.ct_customer_names_spinner)
         val adapter = ArrayAdapter(
             this,
-            android.R.layout.simple_spinner_item, CustomerData.getAllCustomerNames()
+            android.R.layout.simple_spinner_item, CustomerDataUtils.getAllCustomerNames()
         )
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -55,7 +56,7 @@ class CustomerTransactions : AppCompatActivity() {
 
     private fun showTransactions(name: String) {
         LogMe.startMethod()
-        val list = CustomerData.getRecords().filter { it.customerAccount == name }
+        val list = CustomerDataUtils.get<CustomerData>().filter { it.customerAccount == name }
         list.forEach {
             LogMe.log(it.toString())
         }

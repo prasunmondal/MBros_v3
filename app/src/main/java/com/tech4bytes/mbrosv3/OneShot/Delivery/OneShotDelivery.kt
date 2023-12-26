@@ -25,6 +25,7 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.De
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
+import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.ProjectConfig
@@ -269,7 +270,7 @@ class OneShotDelivery : AppCompatActivity() {
                 name = it.name,
                 orderedPc = it.orderedPc,
                 orderedKg = it.orderedKg,
-                rate = "${CustomerData.getDeliveryRate(it.name)}",
+                rate = "${CustomerDataUtils.getDeliveryRate(it.name)}",
                 prevDue = CustomerDueData.getLastFinalizedDue(it.name),
                 customerAccount = customerAccount,
                 deliveryStatus = "DELIVERING"
@@ -288,7 +289,7 @@ class OneShotDelivery : AppCompatActivity() {
                 name = it.name,
                 orderedPc = "0",
                 orderedKg = "0",
-                rate = "${CustomerData.getDeliveryRate(it.name)}",
+                rate = "${CustomerDataUtils.getDeliveryRate(it.name)}",
                 customerAccount = customerAccount,
                 prevDue = CustomerDueData.getLastFinalizedDue(it.name),
                 deliveryStatus = "DELIVERING"
@@ -308,7 +309,7 @@ class OneShotDelivery : AppCompatActivity() {
                 name = it.name,
                 orderedPc = "0",
                 orderedKg = "0",
-                rate = "${CustomerData.getDeliveryRate(it.name)}",
+                rate = "${CustomerDataUtils.getDeliveryRate(it.name)}",
                 customerAccount = customerAccount,
                 prevDue = CustomerDueData.getLastFinalizedDue(it.name),
                 deliveryStatus = "DELIVERING"
@@ -332,7 +333,7 @@ class OneShotDelivery : AppCompatActivity() {
             name = name,
             orderedPc = "0",
             orderedKg = "0",
-            rate = "${CustomerData.getDeliveryRate(name)}",
+            rate = "${CustomerDataUtils.getDeliveryRate(name)}",
             prevDue = CustomerDueData.getLastFinalizedDue(name),
             deliveryStatus = "DELIVERING"
         )

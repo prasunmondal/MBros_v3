@@ -11,7 +11,7 @@ class CustomerDueData {
 
         fun getBalance(shouldIncludePostDeliveryUpdates: Boolean = true, includeStagedPayments: Boolean = true): MutableMap<String, Int> {
             val dueMap: MutableMap<String, Int> = mutableMapOf()
-            CustomerData.getAllLatestRecordsByAccount().forEach {
+            CustomerDataUtils.getAllLatestRecordsByAccount().forEach {
                 dueMap[it.customerAccount] = NumberUtils.getIntOrZero(it.balanceDue)
             }
             if (shouldIncludePostDeliveryUpdates) {
@@ -32,7 +32,7 @@ class CustomerDueData {
         }
 
         fun getLastFinalizedDue(name: String, useCache: Boolean = true): String {
-            val customerRecords = CustomerData.getAllLatestRecords(useCache)
+            val customerRecords = CustomerDataUtils.getAllLatestRecords(useCache)
             customerRecords.forEach {
                 if (it.customerAccount == name)
                     return it.balanceDue

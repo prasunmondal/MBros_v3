@@ -5,6 +5,7 @@ import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
+import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
@@ -81,7 +82,7 @@ class DeliveryCalculations {
 
         fun getTotalMarketDue(): Int {
             val dueMap: MutableMap<String, Int> = mutableMapOf()
-            CustomerData.getAllLatestRecords().forEach {
+            CustomerDataUtils.getAllLatestRecords().forEach {
                 dueMap[it.name] = NumberUtils.getIntOrZero(it.balanceDue)
             }
             DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>().forEach {
@@ -97,7 +98,7 @@ class DeliveryCalculations {
 
         fun getPrevMarketDue(): Int {
             var sum = 0
-            CustomerData.getAllLatestRecords().forEach {
+            CustomerDataUtils.getAllLatestRecords().forEach {
                 sum += NumberUtils.getIntOrZero(it.balanceDue)
             }
             return sum

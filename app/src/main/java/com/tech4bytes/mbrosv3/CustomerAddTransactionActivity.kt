@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.*
 import androidx.core.content.ContextCompat
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
+import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Payments.Staged.StagedPay
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
@@ -33,7 +34,7 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
         val customerNamesSpinner = findViewById<Spinner>(R.id.addTransaction_name)
         val adapter = ArrayAdapter(
             this,
-            android.R.layout.simple_spinner_item, CustomerData.getAllCustomerNames(useCache)
+            android.R.layout.simple_spinner_item, CustomerDataUtils.getAllCustomerNames(useCache)
         )
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

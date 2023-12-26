@@ -17,6 +17,7 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.SMSDetails.SendSMSDet
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
+import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Payments.Staged.StagedPaymentUtils
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.SMSUtils
@@ -82,7 +83,7 @@ class OSDDeliveryEntryInfo {
                 }
             }
 
-            rateElement.setText("${CustomerData.getDeliveryRate(value.name)}")
+            rateElement.setText("${CustomerDataUtils.getDeliveryRate(value.name)}")
             fragmentUpdateCustomerWiseRateView(context, value, entry)
 
             val recordContainer = entry.findViewById<CardView>(R.id.one_shot_delivery_fragment_record_container)
@@ -153,7 +154,7 @@ class OSDDeliveryEntryInfo {
 
         fun fragmentUpdateCustomerWiseRateView(context: Context, value: DeliverToCustomerDataModel, entry: View) {
             val rateElement = entry.findViewById<TextInputEditText>(R.id.osd_rate_for_customer)
-            if (getIntOrZero(rateElement.text.toString()) != CustomerData.getCustomerDefaultRate(value.name)) {
+            if (getIntOrZero(rateElement.text.toString()) != CustomerDataUtils.getCustomerDefaultRate(value.name)) {
                 rateElement.setBackgroundColor(ContextCompat.getColor(context, R.color.red))
                 rateElement.setTextColor(ContextCompat.getColor(context, R.color.white))
             } else {
@@ -164,7 +165,7 @@ class OSDDeliveryEntryInfo {
 
         fun updateRates() {
             uiMaps.forEach {
-                val rate = CustomerData.getCustomerDefaultRate(it.key)
+                val rate = CustomerDataUtils.getCustomerDefaultRate(it.key)
                 val rateElement = it.value.findViewById<TextView>(R.id.osd_rate_for_customer)
                 rateElement.text = rate.toString()
             }

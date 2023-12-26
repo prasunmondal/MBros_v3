@@ -23,7 +23,7 @@ import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerConfig
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
-import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrdersUtils
+import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
@@ -257,7 +257,7 @@ class OneShotDelivery : AppCompatActivity() {
 
     private fun populateDeliveryMap() {
         deliveryMapOrderedCustomers = mutableMapOf()
-        val listOfOrderedCustomers = GetCustomerOrdersUtils.getListOfOrderedCustomers()
+        val listOfOrderedCustomers = GetCustomerOrders.getListOfOrderedCustomers()
         listOfOrderedCustomers.forEach {
             var customerAccount = CustomerKYC.get(it.name)!!.customerAccount
             if(customerAccount.isEmpty())
@@ -297,7 +297,7 @@ class OneShotDelivery : AppCompatActivity() {
         }
 
         deliveryMapUnOrderedCustomers = mutableMapOf()
-        val listOfUnOrderedCustomers = GetCustomerOrdersUtils.getListOfUnOrderedCustomers()
+        val listOfUnOrderedCustomers = GetCustomerOrders.getListOfUnOrderedCustomers()
         listOfUnOrderedCustomers.forEach {
             var customerAccount = CustomerKYC.get(it.name)!!.customerAccount
             if(customerAccount.isEmpty())

@@ -32,7 +32,10 @@ class OSMS {
                 .tabName(OSMSConfig.SHEET_TEMPLATE_TAB_NAME)
                 .build().execute()
 
-            return result.parseToObject(result.getRawResponse())
+            return result.parseToObject(
+                result.getRawResponse(),
+                object : TypeToken<ArrayList<OSMSModel>?>() {}.type
+            )
         }
     }
 }

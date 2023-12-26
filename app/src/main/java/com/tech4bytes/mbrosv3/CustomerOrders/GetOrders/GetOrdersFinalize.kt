@@ -21,14 +21,14 @@ import kotlin.math.roundToInt
 
 class GetOrdersFinalize : AppCompatActivity() {
 
-    private lateinit var listOrders: List<GetCustomerOrdersUtils>
+    private lateinit var listOrders: List<GetCustomerOrders>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_get_orders_finalize)
         AppContexts.set(this)
 
-        listOrders = GetCustomerOrdersUtils.get()
+        listOrders = GetCustomerOrders.get()
         LogMe.log(listOrders.toString())
         showList()
         updatePcs()
@@ -43,7 +43,7 @@ class GetOrdersFinalize : AppCompatActivity() {
         }
     }
 
-    private fun addEntry(order: GetCustomerOrdersUtils) {
+    private fun addEntry(order: GetCustomerOrders) {
         val listContainer = findViewById<LinearLayout>(R.id.activity_get_orders_finalize_list_container)
         val layoutInflater = LayoutInflater.from(AppContexts.get())
         val entry = layoutInflater.inflate(R.layout.activity_get_orders_finalize_fragments, null)
@@ -125,7 +125,7 @@ class GetOrdersFinalize : AppCompatActivity() {
     }
 
     private fun localSave() {
-        GetCustomerOrdersUtils.saveToLocal()
+        GetCustomerOrders.saveToLocal()
     }
 
     fun onClickGoToGetOrdersPage(view: View) {

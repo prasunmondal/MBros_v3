@@ -40,7 +40,7 @@ data class SheetCalculator(var is_khata_green: String = ""): java.io.Serializabl
                 .tabName(SHEET_TABNAME)
                 .build().execute()
 
-            val recordsList = result.parseToObject<SheetCalculator>(result.getRawResponse())
+            val recordsList = result.parseToObject<SheetCalculator>(result.getRawResponse(), object : TypeToken<ArrayList<SheetCalculator>?>() {}.type)
             return recordsList[0]
         }
     }

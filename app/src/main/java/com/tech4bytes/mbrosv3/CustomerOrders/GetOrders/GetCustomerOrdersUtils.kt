@@ -17,7 +17,7 @@ import java.util.stream.Collectors
 import kotlin.math.roundToInt
 
 
-data class GetCustomerOrders(
+data class GetCustomerOrdersUtils(
     var id: String = "",
     var timestamp: String = "",
     var name: String = "",
@@ -56,23 +56,23 @@ data class GetCustomerOrders(
 
     companion object {
 
-        private var obj: MutableList<GetCustomerOrders> = mutableListOf()
+        private var obj: MutableList<GetCustomerOrdersUtils> = mutableListOf()
 
-        fun get(useCache: Boolean = true): List<GetCustomerOrders> {
-            val cacheResults = CentralCache.get<ArrayList<GetCustomerOrders>>(AppContexts.get(), CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, useCache)
+        fun get(useCache: Boolean = true): List<GetCustomerOrdersUtils> {
+            val cacheResults = CentralCache.get<ArrayList<GetCustomerOrdersUtils>>(AppContexts.get(), CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, useCache)
 
             obj = if (cacheResults != null) {
                 cacheResults
             } else {
                 val resultFromServer = getCompleteList()
                 CentralCache.put(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, resultFromServer)
-                resultFromServer as MutableList<GetCustomerOrders>
+                resultFromServer as MutableList<GetCustomerOrdersUtils>
             }
             return obj
         }
 
-        fun updateObj(passedObj: GetCustomerOrders) {
-            var toBeRemoved: GetCustomerOrders? = null
+        fun updateObj(passedObj: GetCustomerOrdersUtils) {
+            var toBeRemoved: GetCustomerOrdersUtils? = null
             obj.forEach {
                 if (it.name == passedObj.name) {
                     toBeRemoved = it
@@ -84,8 +84,8 @@ data class GetCustomerOrders(
                 LogMe.log("Updated: $passedObj")
             }
 
-            val nameMappedOrders: MutableMap<String, GetCustomerOrders> = obj.stream()
-                .collect(Collectors.toMap(GetCustomerOrders::name) { v -> v })
+            val nameMappedOrders: MutableMap<String, GetCustomerOrdersUtils> = obj.stream()
+                .collect(Collectors.toMap(GetCustomerOrdersUtils::name) { v -> v })
             LogMe.log(nameMappedOrders.toString())
 
             obj = mutableListOf()
@@ -99,8 +99,8 @@ data class GetCustomerOrders(
             saveToLocal()
         }
 
-        private fun getCompleteList(): List<GetCustomerOrders> {
-            val list: MutableList<GetCustomerOrders> = mutableListOf()
+        private fun getCompleteList(): List<GetCustomerOrdersUtils> {
+            val list: MutableList<GetCustomerOrdersUtils> = mutableListOf()
             val actualOrders = getServerList()
             CustomerKYC.getAllCustomers().forEach { masterList ->
                 var isInOrderList = false
@@ -111,14 +111,14 @@ data class GetCustomerOrders(
                     }
                 }
                 if (!isInOrderList && masterList.isActiveCustomer.toBoolean()) {
-                    list.add(GetCustomerOrders(name = masterList.nameEng))
+                    list.add(GetCustomerOrdersUtils(name = masterList.nameEng))
                 }
             }
             return list
         }
 
-        fun getListOfOrderedCustomers(): List<GetCustomerOrders> {
-            val list: MutableList<GetCustomerOrders> = mutableListOf()
+        fun getListOfOrderedCustomers(): List<GetCustomerOrdersUtils> {
+            val list: MutableList<GetCustomerOrdersUtils> = mutableListOf()
             val actualOrders = getServerList()
             CustomerKYC.getAllCustomers().forEach { masterList ->
                 actualOrders.forEach { orderList ->
@@ -130,8 +130,8 @@ data class GetCustomerOrders(
             return list
         }
 
-        fun getListOfUnOrderedCustomers(): List<GetCustomerOrders> {
-            val list: MutableList<GetCustomerOrders> = mutableListOf()
+        fun getListOfUnOrderedCustomers(): List<GetCustomerOrdersUtils> {
+            val list: MutableList<GetCustomerOrdersUtils> = mutableListOf()
             val actualOrders = getServerList()
             CustomerKYC.getAllCustomers().forEach { masterList ->
                 var isInOrderList = false
@@ -141,7 +141,7 @@ data class GetCustomerOrders(
                     }
                 }
                 if (!isInOrderList && masterList.isActiveCustomer.toBoolean()) {
-                    list.add(GetCustomerOrders(name = masterList.nameEng))
+                    list.add(GetCustomerOrdersUtils(name = masterList.nameEng))
                 }
             }
             return list
@@ -151,7 +151,7 @@ data class GetCustomerOrders(
             return get(useCache).size
         }
 
-        fun getByName(inputName: String): GetCustomerOrders? {
+        fun getByName(inputName: String): GetCustomerOrdersUtils? {
             get().forEach {
                 if (it.name == inputName) {
                     return it
@@ -190,7 +190,7 @@ data class GetCustomerOrders(
             }
         }
 
-        private fun getRecordsForOnlyOrderedCustomers(): MutableList<GetCustomerOrders> {
+        private fun getRecordsForOnlyOrderedCustomers(): MutableList<GetCustomerOrdersUtils> {
             return obj.stream().filter { p -> p.id.isNotEmpty() }.collect(Collectors.toList())
         }
 
@@ -198,15 +198,15 @@ data class GetCustomerOrders(
             saveToLocal(obj)
         }
 
-        fun saveToLocal(obj: MutableList<GetCustomerOrders>) {
+        fun saveToLocal(obj: MutableList<GetCustomerOrdersUtils>) {
             CentralCache.put(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, obj)
         }
 
         fun deleteFromLocal() {
-            CentralCache.put(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, listOf<GetCustomerOrders>())
+            CentralCache.put(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, listOf<GetCustomerOrdersUtils>())
         }
 
-        private fun getFromServer(): List<GetCustomerOrders> {
+        private fun getFromServer(): List<GetCustomerOrdersUtils> {
             // val waitDialog = ProgressDialog.show(AppContexts.get(), "Please Wait", "লোড হচ্ছে", true)
             val result: GetResponse = Get.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
@@ -215,22 +215,19 @@ data class GetCustomerOrders(
                 .build().execute()
 
             // waitDialog!!.dismiss()
-            return result.parseToObject(
-                result.getRawResponse(),
-                object : TypeToken<ArrayList<GetCustomerOrders>?>() {}.type
-            )
+            return result.parseToObject(result.getRawResponse())
         }
 
-        private fun getServerList(useCache: Boolean = true): List<GetCustomerOrders> {
+        private fun getServerList(useCache: Boolean = true): List<GetCustomerOrdersUtils> {
             val getOrdersServerListKey = "getOrdersServerList"
-            val cacheResults = CentralCache.get<ArrayList<GetCustomerOrders>>(AppContexts.get(), getOrdersServerListKey, useCache)
+            val cacheResults = CentralCache.get<ArrayList<GetCustomerOrdersUtils>>(AppContexts.get(), getOrdersServerListKey, useCache)
 
             obj = if (cacheResults != null) {
                 cacheResults
             } else {
                 val resultFromServer = getFromServer()
                 CentralCache.put(getOrdersServerListKey, resultFromServer)
-                resultFromServer as MutableList<GetCustomerOrders>
+                resultFromServer as MutableList<GetCustomerOrdersUtils>
             }
             return obj
         }

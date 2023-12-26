@@ -77,10 +77,7 @@ class CustomerKYC : java.io.Serializable {
                 .build().execute()
 
             // waitDialog!!.dismiss()
-            return result.parseToObject(
-                result.getRawResponse(),
-                object : TypeToken<ArrayList<CustomerKYCModel>?>() {}.type
-            )
+            return result.parseToObject(result.getRawResponse())
         }
     }
 }

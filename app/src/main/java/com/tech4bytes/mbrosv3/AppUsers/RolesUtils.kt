@@ -35,7 +35,7 @@ class RolesUtils {
                 .tabName(Config.SHEET_TAB_NAME)
                 .build().execute()
 
-            val deviceList = result.parseToObject<AppUsersModel>(result.getRawResponse(), object : TypeToken<ArrayList<AppUsersModel>?>() {}.type)
+            val deviceList = result.parseToObject<AppUsersModel>(result.getRawResponse())
             deviceList.sortBy { it.id }
             deviceList.reverse()
 

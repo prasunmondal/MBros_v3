@@ -159,7 +159,7 @@ class CustomerData : java.io.Serializable {
                 .tabName(FinalizeConfig.SHEET_FINALIZE_DELIVERIES_TAB_NAME)
                 .build().execute()
 
-            val recordsList = result.parseToObject<CustomerData>(result.getRawResponse(), object : TypeToken<ArrayList<CustomerData>?>() {}.type)
+            val recordsList = result.parseToObject<CustomerData>(result.getRawResponse())
             recordsList.sortBy { it.orderId }
             recordsList.reverse()
             return recordsList

@@ -38,10 +38,7 @@ class AppConstantsUtil {
                 .tabName(SHEET_TAB_NAME)
                 .build().execute()
 
-            return result.parseToObject(
-                result.getRawResponse(),
-                object : TypeToken<ArrayList<AppConstantModel>>() {}.type
-            )
+            return result.parseToObject(result.getRawResponse())
         }
     }
 }

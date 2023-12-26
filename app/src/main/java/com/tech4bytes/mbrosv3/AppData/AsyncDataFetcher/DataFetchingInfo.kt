@@ -4,7 +4,7 @@ import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
-import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
+import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrdersUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -16,7 +16,7 @@ class DataFetchingInfo {
         fun getDescription(executingMethod: KFunction<Any>): String {
             LogMe.log(executingMethod.toString())
             return when (executingMethod.toString()) {
-                GetCustomerOrders::get.toString() -> "Customer orders"
+                GetCustomerOrdersUtils::get.toString() -> "Customer orders"
                 CustomerKYC::getAllCustomers.toString() -> "Get Customer KYCs"
                 CustomerData::getRecords.toString() -> "Previous delivery reports"
                 SingleAttributedDataUtils::getRecords.toString() -> "Metadata"
@@ -37,7 +37,7 @@ class DataFetchingInfo {
                 -> {
                     executingMethods.add(SingleAttributedDataUtils::getRecords)
                     executingMethods.add(CustomerKYC::getAllCustomers)
-                    executingMethods.add(GetCustomerOrders::get)
+                    executingMethods.add(GetCustomerOrdersUtils::get)
                     executingMethods.add(CustomerData::getRecords)
 ////                    executingMethods.add(DeliverToCustomerDataHandler::get)
                     executingMethods.add(DaySummary::get)
@@ -46,7 +46,7 @@ class DataFetchingInfo {
                 }
                 ActivityAuthEnums.DELIVERY -> {
                     executingMethods.add(CustomerKYC::getAllCustomers)
-                    executingMethods.add(GetCustomerOrders::get)
+                    executingMethods.add(GetCustomerOrdersUtils::get)
 //                    executingMethods.add(DeliverToCustomerDataHandler::get)
                     executingMethods.add(CustomerData::getRecords)
                 }
@@ -58,7 +58,7 @@ class DataFetchingInfo {
                 ActivityAuthEnums.ORDER_COLLECTOR -> {
                     executingMethods.add(SingleAttributedDataUtils::getRecords)
                     executingMethods.add(CustomerKYC::getAllCustomers)
-                    executingMethods.add(GetCustomerOrders::get)
+                    executingMethods.add(GetCustomerOrdersUtils::get)
                     executingMethods.add(CustomerData::getRecords)
                 }
                 ActivityAuthEnums.LOAD_INFORMATION -> {

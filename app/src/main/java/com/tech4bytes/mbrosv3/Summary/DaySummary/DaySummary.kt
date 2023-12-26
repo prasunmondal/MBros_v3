@@ -118,9 +118,7 @@ data class DaySummary(
                 .build().execute()
 
             val parsedResult = result.parseToObject<DaySummary>(
-                result.getRawResponse(),
-                object : TypeToken<ArrayList<DaySummary>?>() {}.type
-            )
+                result.getRawResponse())
 
             return ListUtils.sortListByAttribute(parsedResult, DaySummary::timestamp)
         }

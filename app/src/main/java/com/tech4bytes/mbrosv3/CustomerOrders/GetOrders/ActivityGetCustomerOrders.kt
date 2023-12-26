@@ -140,7 +140,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         val namesList = mutableListOf<String>()
 
         CustomerKYC.get<CustomerKYCModel>().forEach {
-            namesList.add(it.getDisplayName())
+            namesList.add(it.nameEng)
         }
         return namesList
     }

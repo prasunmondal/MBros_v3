@@ -18,12 +18,7 @@ data class CustomerKYCModel(
     var showBalanceView: Boolean,
     var smsNumber: String = "",
     var smsText: String = "",
-) : java.io.Serializable {
-
-    fun getDisplayName(): String {
-        return this.nameEng
-    }
-}
+) : java.io.Serializable
 
 object CustomerKYC : Tech4BytesSerializable(
     ProjectConfig.dBServerScriptURL,

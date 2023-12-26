@@ -23,7 +23,7 @@ class DataFetchingInfo {
 //                DeliverToCustomerDataHandler::get.toString() -> "Current delivery reports"
                 DaySummary::get.toString() -> "Transaction reports"
 //                RefuelingUtils::get<RefuelingModel>.toString() -> "Fuel data"
-                AppConstants::fetchAll.toString() -> "App Constants Data"
+                AppConstants::preFetch.toString() -> "App Constants Data"
                 else -> "Get data"
             }
         }
@@ -42,7 +42,7 @@ class DataFetchingInfo {
 ////                    executingMethods.add(DeliverToCustomerDataHandler::get)
                     executingMethods.add(DaySummary::get)
 //                    executingMethods.add(RefuelingUtils::get)
-                    executingMethods.add(AppConstants::fetchAll)
+                    executingMethods.add(AppConstants::preFetch)
                 }
                 ActivityAuthEnums.DELIVERY -> {
 //                    executingMethods.add(CustomerKYC::get)
@@ -68,11 +68,11 @@ class DataFetchingInfo {
                 ActivityAuthEnums.MONEY_CALCULATOR -> {
                     executingMethods.add(SingleAttributedDataUtils::getRecords)
 //                    executingMethods.add(DeliverToCustomerDataHandler::get)
-                    executingMethods.add(AppConstants::fetchAll)
+                    executingMethods.add(AppConstants::preFetch)
                 }
                 ActivityAuthEnums.SMS_ORDERING -> {
 //                    executingMethods.add(CustomerKYC::get)
-                    executingMethods.add(AppConstants::fetchAll)
+                    executingMethods.add(AppConstants::preFetch)
 //                    executingMethods.add(DeliverToCustomerDataHandler::get)
                     executingMethods.add(CustomerData::getRecords)
                 }

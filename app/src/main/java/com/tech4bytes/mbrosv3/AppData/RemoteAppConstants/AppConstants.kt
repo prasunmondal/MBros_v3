@@ -1,7 +1,6 @@
 package com.tech4bytes.mbrosv3.AppData.RemoteAppConstants
 
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
-import java.lang.reflect.Type
 import java.util.*
 
 enum class AppConstants {
@@ -16,13 +15,13 @@ enum class AppConstants {
     SMS_ORDERING_SHOW_SMS_FOR_N_DAYS;
 
     companion object {
-        fun fetchAll(useCache: Boolean = true) {
-            AppConstantsUtil.getAll(useCache)
+        fun preFetch(useCache: Boolean = true) {
+            AppConstantsUtil.get<AppConstantModel>(useCache)
         }
 
         fun get(constant: AppConstants, useCache: Boolean = true): String {
             LogMe.log("Searching in AppConstants: $constant")
-            val constantList = AppConstantsUtil.getAll(useCache)
+            val constantList = AppConstantsUtil.get<AppConstantModel>(useCache)
             constantList.forEach {
                 if (it.constantName == constant.name) {
                     LogMe.log("Searching in AppConstants: $constant: Successful. Value: ${it.constantValue}")
@@ -35,7 +34,7 @@ enum class AppConstants {
 
         fun get(constant: String, useCache: Boolean = true): String {
             LogMe.log("Searching in AppConstants: $constant")
-            val constantList = AppConstantsUtil.getAll(useCache)
+            val constantList = AppConstantsUtil.get<AppConstantModel>(useCache)
             constantList.forEach {
                 if (it.constantName == constant) {
                     LogMe.log("Searching in AppConstants: $constant: Successful. Value: ${it.constantValue}")

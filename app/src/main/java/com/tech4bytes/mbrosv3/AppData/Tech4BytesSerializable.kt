@@ -8,6 +8,7 @@ import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.extrack.centralCache.utils.ClassDetailsUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
+import java.lang.reflect.Type
 
 
 abstract class Tech4BytesSerializable : java.io.Serializable {
@@ -15,14 +16,16 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
     @Transient var scriptURL: String
     @Transient var sheetURL: String
     @Transient var tabname: String
+    @Transient var cacheObjectType: Type
     @Transient var appendInServer: Boolean
     @Transient var appendInLocal: Boolean
     @Transient var getEmptyListIfEmpty: Boolean
 
-    constructor(scriptURL: String, sheetURL: String, tabname: String, appendInServer: Boolean, appendInLocal: Boolean, getEmptyListIfNoResultsFoundInServer: Boolean = false) {
+    constructor(scriptURL: String, sheetURL: String, tabname: String, cacheObjectType: Type, appendInServer: Boolean, appendInLocal: Boolean, getEmptyListIfNoResultsFoundInServer: Boolean = false) {
         this.scriptURL = scriptURL
         this.sheetURL = sheetURL
         this.tabname = tabname
+        this.cacheObjectType = cacheObjectType
         this.appendInServer = appendInServer
         this.appendInLocal = appendInLocal
         this.getEmptyListIfEmpty = getEmptyListIfNoResultsFoundInServer
@@ -60,7 +63,7 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
             .tabName(tabname)
             .build().execute()
 
-        return result.parseToObject(result.getRawResponse())
+        return result.parseToObject(result.getRawResponse(), cacheObjectType)
     }
 
     private fun getFilterName(filterName: String = "default"): String {

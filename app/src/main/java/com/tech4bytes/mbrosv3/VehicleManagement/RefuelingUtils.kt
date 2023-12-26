@@ -2,6 +2,7 @@ package com.tech4bytes.mbrosv3.VehicleManagement
 
 import com.google.gson.reflect.TypeToken
 import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataModel
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -11,6 +12,7 @@ object RefuelingUtils : Tech4BytesSerializable(
     ProjectConfig.dBServerScriptURL,
     ProjectConfig.get_db_sheet_id(),
     "fuel",
+    object: TypeToken<ArrayList<RefuelingModel>?>() {}.type,
     appendInServer = true,
     appendInLocal = true)
 {

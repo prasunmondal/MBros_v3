@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import com.google.gson.reflect.TypeToken
+import java.lang.reflect.Type
 
 open class APIResponse {
     var responsePayload: String = ""
@@ -27,16 +27,17 @@ open class APIResponse {
         return parser.parse(responsePayload).asJsonObject
     }
 
-    fun <T> parseToObject(jsonString: String?): ArrayList<T> {
+    fun <T> parseToObject(jsonString: String?, type: Type): ArrayList<T> {
         Log.e("parsing to object ", jsonString!!)
-        val arrayLabel = JsonTags.RESPONSE_DATA_CODE
+        var arrayLabel = JsonTags.RESPONSE_DATA_CODE
         var jsonarray: JsonArray? = null
         try {
             jsonarray = getJsonObject()!!.getAsJsonArray(arrayLabel)
         } catch (e: Exception) {
             Log.e("parseJSONObject", "Error while parsing")
         }
-        return GsonBuilder().create().fromJson(jsonarray.toString(), object : TypeToken<ArrayList<T?>?>() {}.type)
+        val result: ArrayList<T> = GsonBuilder().create().fromJson(jsonarray.toString(), type)
+        return result
     }
 
     fun getExceptionMessage(): String {

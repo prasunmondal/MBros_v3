@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.provider.Settings
 import com.google.gson.reflect.TypeToken
 import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
+import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
@@ -15,6 +16,7 @@ object SingleAttributedDataUtils: Tech4BytesSerializable (
     ProjectConfig.dBServerScriptURL,
     ProjectConfig.get_db_sheet_id(),
     "metadata",
+    object: TypeToken<ArrayList<SingleAttributedDataModel>?>() {}.type,
     appendInServer = true,
     appendInLocal = true,
     getEmptyListIfNoResultsFoundInServer = true) {

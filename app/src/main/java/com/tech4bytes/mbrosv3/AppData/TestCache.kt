@@ -1,6 +1,8 @@
 package com.tech4bytes.mbrosv3.AppData
 
 import com.google.gson.reflect.TypeToken
+import com.tech4bytes.mbrosv3.AppUsers.AppUsersModel
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataModel
 import com.tech4bytes.mbrosv3.ProjectConfig
 
 class modelClass: java.io.Serializable {
@@ -12,6 +14,7 @@ object UtilClass: Tech4BytesSerializable(
     ProjectConfig.dBServerScriptURL,
     ProjectConfig.get_db_sheet_id(),
     "testAnd",
+    object: TypeToken<ArrayList<modelClass>?>() {}.type,
     appendInServer = true,
     appendInLocal = true
 )

@@ -25,13 +25,11 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.De
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderModel
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderUtils
-import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.SendInfoTexts.Whatsapp.Whatsapp
-import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts

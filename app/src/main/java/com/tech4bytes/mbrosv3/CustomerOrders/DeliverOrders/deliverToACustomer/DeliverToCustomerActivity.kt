@@ -73,7 +73,7 @@ class DeliverToCustomerActivity : AppCompatActivity() {
         UIUtils.setUIElementValue(totalDueElement, record.totalDue)
         UIUtils.setUIElementValue(paidElement, record.paid)
         UIUtils.setUIElementValue(balanceDueElement, CustomerDueData.getLastFinalizedDue(record.name))
-        UIUtils.setUIElementValue(bengaliNameElement, CustomerKYC.get(record.name)!!.nameBeng)
+        UIUtils.setUIElementValue(bengaliNameElement, CustomerKYC.getByName(record.name)!!.nameBeng)
 
         if (UserRoleUtils.doesHaveRole(ActivityAuthEnums.ADMIN)) {
             UIUtils.setUIElementValue(rate, record.rate)
@@ -81,7 +81,7 @@ class DeliverToCustomerActivity : AppCompatActivity() {
         }
 
         if (record.rate.isEmpty() && (UserRoleUtils.doesHaveRole(ActivityAuthEnums.ADMIN) || UserRoleUtils.doesHaveRole(ActivityAuthEnums.SHOW_RATES_IN_DELIVERY_PAGE))) {
-            UIUtils.setUIElementValue(rate, ("0${SingleAttributedDataUtils.getRecords().finalFarmRate}".toInt() + "0${SingleAttributedDataUtils.getRecords().bufferRate}".toInt() + CustomerKYC.get(record.name)!!.rateDifference.toInt()).toString())
+            UIUtils.setUIElementValue(rate, ("0${SingleAttributedDataUtils.getRecords().finalFarmRate}".toInt() + "0${SingleAttributedDataUtils.getRecords().bufferRate}".toInt() + CustomerKYC.getByName(record.name)!!.rateDifference.toInt()).toString())
             (rate as EditText).setTextColor(ContextCompat.getColor(this, R.color.red))
         }
 

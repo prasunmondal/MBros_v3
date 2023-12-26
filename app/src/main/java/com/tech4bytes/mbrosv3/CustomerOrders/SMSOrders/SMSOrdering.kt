@@ -144,7 +144,7 @@ class SMSOrdering : AppCompatActivity() {
     }
 
     private fun populateCustomerListDropdown() {
-        val sortedList = ListUtils.getAllPossibleValuesList(CustomerKYC.getAllCustomers(), CustomerKYCModel::nameEng).toList()
+        val sortedList = ListUtils.getAllPossibleValuesList(CustomerKYC.get(), CustomerKYCModel::nameEng).toList()
 
         // remove already showing names from dropdown
         val alreadyInUI: List<String> = orders.stream()

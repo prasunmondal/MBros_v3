@@ -95,7 +95,7 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun populateCustomerListDropdown() {
-        val allCustomers = ListUtils.getAllPossibleValuesList(CustomerKYC.getAllCustomers(), CustomerKYCModel::nameEng).toList()
+        val allCustomers = ListUtils.getAllPossibleValuesList(CustomerKYC.get(), CustomerKYCModel::nameEng).toList()
         val customersInUI = ListUtils.getAllPossibleValuesList(deliveryMapOrderedCustomers.values.toList(), DeliverToCustomerDataModel::name).toList()
         val listToShow = CollectionUtils.subtract(allCustomers, customersInUI).toList().sorted()
 
@@ -259,7 +259,7 @@ class OneShotDelivery : AppCompatActivity() {
         deliveryMapOrderedCustomers = mutableMapOf()
         val listOfOrderedCustomers = GetCustomerOrders.getListOfOrderedCustomers()
         listOfOrderedCustomers.forEach {
-            var customerAccount = CustomerKYC.get(it.name)!!.customerAccount
+            var customerAccount = CustomerKYC.getByName(it.name)!!.customerAccount
             if(customerAccount.isEmpty())
                 customerAccount = it.name
 
@@ -279,7 +279,7 @@ class OneShotDelivery : AppCompatActivity() {
         }
 
         DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>().forEach {
-            var customerAccount = CustomerKYC.get(it.name)!!.customerAccount
+            var customerAccount = CustomerKYC.getByName(it.name)!!.customerAccount
             if(customerAccount.isEmpty())
                 customerAccount = it.name
             val deliverCustomersOrders = DeliverToCustomerDataModel(
@@ -299,7 +299,7 @@ class OneShotDelivery : AppCompatActivity() {
         deliveryMapUnOrderedCustomers = mutableMapOf()
         val listOfUnOrderedCustomers = GetCustomerOrders.getListOfUnOrderedCustomers()
         listOfUnOrderedCustomers.forEach {
-            var customerAccount = CustomerKYC.get(it.name)!!.customerAccount
+            var customerAccount = CustomerKYC.getByName(it.name)!!.customerAccount
             if(customerAccount.isEmpty())
                 customerAccount = it.name
             val deliverCustomersOrders = DeliverToCustomerDataModel(

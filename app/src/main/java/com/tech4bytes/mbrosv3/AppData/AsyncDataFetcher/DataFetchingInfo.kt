@@ -17,7 +17,7 @@ class DataFetchingInfo {
             LogMe.log(executingMethod.toString())
             return when (executingMethod.toString()) {
                 GetCustomerOrders::get.toString() -> "Customer orders"
-                CustomerKYC::getAllCustomers.toString() -> "Get Customer KYCs"
+                CustomerKYC::getByName.toString() -> "Get Customer KYCs"
                 CustomerData::getRecords.toString() -> "Previous delivery reports"
                 SingleAttributedDataUtils::getRecords.toString() -> "Metadata"
 //                DeliverToCustomerDataHandler::get.toString() -> "Current delivery reports"
@@ -36,7 +36,7 @@ class DataFetchingInfo {
                 ActivityAuthEnums.ONE_SHOT_DELIVERY,
                 -> {
                     executingMethods.add(SingleAttributedDataUtils::getRecords)
-                    executingMethods.add(CustomerKYC::getAllCustomers)
+//                    executingMethods.add(CustomerKYC::get)
                     executingMethods.add(GetCustomerOrders::get)
                     executingMethods.add(CustomerData::getRecords)
 ////                    executingMethods.add(DeliverToCustomerDataHandler::get)
@@ -45,19 +45,19 @@ class DataFetchingInfo {
                     executingMethods.add(AppConstants::fetchAll)
                 }
                 ActivityAuthEnums.DELIVERY -> {
-                    executingMethods.add(CustomerKYC::getAllCustomers)
+//                    executingMethods.add(CustomerKYC::get)
                     executingMethods.add(GetCustomerOrders::get)
 //                    executingMethods.add(DeliverToCustomerDataHandler::get)
                     executingMethods.add(CustomerData::getRecords)
                 }
                 ActivityAuthEnums.BALANCE_VIEW -> {
-                    executingMethods.add(CustomerKYC::getAllCustomers)
+//                    executingMethods.add(CustomerKYC::get)
                     executingMethods.add(CustomerData::getRecords)
 //                    executingMethods.add(DeliverToCustomerDataHandler::get)
                 }
                 ActivityAuthEnums.ORDER_COLLECTOR -> {
                     executingMethods.add(SingleAttributedDataUtils::getRecords)
-                    executingMethods.add(CustomerKYC::getAllCustomers)
+//                    executingMethods.add(CustomerKYC::get)
                     executingMethods.add(GetCustomerOrders::get)
                     executingMethods.add(CustomerData::getRecords)
                 }
@@ -71,7 +71,7 @@ class DataFetchingInfo {
                     executingMethods.add(AppConstants::fetchAll)
                 }
                 ActivityAuthEnums.SMS_ORDERING -> {
-                    executingMethods.add(CustomerKYC::getAllCustomers)
+//                    executingMethods.add(CustomerKYC::get)
                     executingMethods.add(AppConstants::fetchAll)
 //                    executingMethods.add(DeliverToCustomerDataHandler::get)
                     executingMethods.add(CustomerData::getRecords)

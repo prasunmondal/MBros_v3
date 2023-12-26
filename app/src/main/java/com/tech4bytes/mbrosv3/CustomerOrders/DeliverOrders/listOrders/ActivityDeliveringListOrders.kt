@@ -51,7 +51,7 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
             UIUtils.setUIElementValue(nameElement, order.name)
             UIUtils.setUIElementValue(pcElement, order.orderedPc)
             UIUtils.setUIElementValue(kgElement, order.orderedKg)
-            UIUtils.setUIElementValue(bengaliNameElement, CustomerKYC.get(order.name)!!.nameBeng)
+            UIUtils.setUIElementValue(bengaliNameElement, CustomerKYC.getByName(order.name)!!.nameBeng)
 
             entry.setOnClickListener {
                 goTo_ActivityDeliveringDeliver(order.name)

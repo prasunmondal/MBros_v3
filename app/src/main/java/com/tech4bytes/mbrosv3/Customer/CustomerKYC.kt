@@ -1,11 +1,8 @@
 package com.tech4bytes.mbrosv3.Customer
 
 import com.google.gson.reflect.TypeToken
-import com.prasunmondal.postjsontosheets.clients.get.Get
-import com.prasunmondal.postjsontosheets.clients.get.GetResponse
-import com.tech4bytes.extrack.centralCache.CentralCache
+import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
 import com.tech4bytes.mbrosv3.ProjectConfig
-import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 
 data class CustomerKYCModel(
     var date: String,
@@ -28,24 +25,16 @@ data class CustomerKYCModel(
     }
 }
 
-class CustomerKYC : java.io.Serializable {
-    companion object {
+object CustomerKYC : Tech4BytesSerializable(
+    ProjectConfig.dBServerScriptURL,
+    ProjectConfig.get_db_sheet_id(),
+    "customerDetails",
+    object: TypeToken<ArrayList<CustomerKYCModel>?>() {}.type,
+    appendInServer = true,
+    appendInLocal = true) {
 
-        fun getAllCustomers(useCache: Boolean = true): List<CustomerKYCModel> {
-            val cacheKey = "allCustomersList"
-            val cacheResults = CentralCache.get<ArrayList<CustomerKYCModel>>(AppContexts.get(), cacheKey, useCache)
-
-            return if (cacheResults != null) {
-                cacheResults
-            } else {
-                val resultFromServer = getCustomerListFromServer()
-                CentralCache.put(cacheKey, resultFromServer)
-                resultFromServer
-            }
-        }
-
-        fun get(englishName: String): CustomerKYCModel? {
-            getAllCustomers().forEach {
+        fun getByName(englishName: String): CustomerKYCModel? {
+            get<CustomerKYCModel>().forEach {
                 if (it.nameEng == englishName)
                     return it
             }
@@ -53,7 +42,7 @@ class CustomerKYC : java.io.Serializable {
         }
 
         fun showBalance(engName: String): Boolean {
-            getAllCustomers().forEach {
+            get<CustomerKYCModel>().forEach {
                 if (it.nameEng == engName)
                     return it.showDue.toBoolean()
             }
@@ -61,26 +50,10 @@ class CustomerKYC : java.io.Serializable {
         }
 
         fun getCustomerByEngName(engName: String): CustomerKYCModel? {
-            getAllCustomers().forEach {
+            get<CustomerKYCModel>().forEach {
                 if (it.nameEng == engName)
                     return it
             }
             return null
         }
-
-        private fun getCustomerListFromServer(): List<CustomerKYCModel> {
-            // val waitDialog = ProgressDialog.show(AppContexts.get(), "Please Wait", "লোড হচ্ছে", true)
-            val result: GetResponse = Get.builder()
-                .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.get_db_sheet_id())
-                .tabName(Customer_Config.SHEET_TAB_NAME)
-                .build().execute()
-
-            // waitDialog!!.dismiss()
-            return result.parseToObject(
-                result.getRawResponse(),
-                object : TypeToken<ArrayList<CustomerKYCModel>?>() {}.type
-            )
-        }
-    }
 }

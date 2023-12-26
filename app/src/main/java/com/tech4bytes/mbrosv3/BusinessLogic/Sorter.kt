@@ -10,7 +10,7 @@ import kotlin.reflect.KMutableProperty1
 class Sorter {
     companion object {
         fun sortByNameList(list: List<*>, nameAttribute: KMutableProperty1<*, *>): List<*> {
-            val sortedList = CustomerKYC.getAllCustomers()
+            val sortedList = CustomerKYC.get<CustomerKYCModel>()
             Collections.sort(list,
                 Comparator.comparing { item -> getCustomerIndex(sortedList, item, nameAttribute) })
             return list

@@ -8,6 +8,7 @@ import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
+import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
@@ -90,8 +91,8 @@ data class GetCustomerOrders(
 
             obj = mutableListOf()
 
-            LogMe.log(CustomerKYC.getAllCustomers().toString())
-            CustomerKYC.getAllCustomers().forEach {
+            LogMe.log(CustomerKYC.get<CustomerKYCModel>().toString())
+            CustomerKYC.get<CustomerKYCModel>().forEach {
                 if (it.isActiveCustomer.toBoolean()) {
                     obj.add(nameMappedOrders[it.nameEng]!!)
                 }
@@ -102,7 +103,7 @@ data class GetCustomerOrders(
         private fun getCompleteList(): List<GetCustomerOrders> {
             val list: MutableList<GetCustomerOrders> = mutableListOf()
             val actualOrders = getServerList()
-            CustomerKYC.getAllCustomers().forEach { masterList ->
+            CustomerKYC.get<CustomerKYCModel>().forEach { masterList ->
                 var isInOrderList = false
                 actualOrders.forEach { orderList ->
                     if (masterList.nameEng == orderList.name) {
@@ -120,7 +121,7 @@ data class GetCustomerOrders(
         fun getListOfOrderedCustomers(): List<GetCustomerOrders> {
             val list: MutableList<GetCustomerOrders> = mutableListOf()
             val actualOrders = getServerList()
-            CustomerKYC.getAllCustomers().forEach { masterList ->
+            CustomerKYC.get<CustomerKYCModel>().forEach { masterList ->
                 actualOrders.forEach { orderList ->
                     if (masterList.nameEng == orderList.name) {
                         list.add(orderList)
@@ -133,7 +134,7 @@ data class GetCustomerOrders(
         fun getListOfUnOrderedCustomers(): List<GetCustomerOrders> {
             val list: MutableList<GetCustomerOrders> = mutableListOf()
             val actualOrders = getServerList()
-            CustomerKYC.getAllCustomers().forEach { masterList ->
+            CustomerKYC.get<CustomerKYCModel>().forEach { masterList ->
                 var isInOrderList = false
                 actualOrders.forEach { orderList ->
                     if (masterList.nameEng == orderList.name) {

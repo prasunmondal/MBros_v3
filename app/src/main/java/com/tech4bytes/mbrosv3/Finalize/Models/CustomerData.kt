@@ -166,7 +166,7 @@ class CustomerData : java.io.Serializable {
         }
 
         fun getCustomerDefaultRate(name: String): Int {
-            return SingleAttributedDataUtils.getFinalRateInt() + SingleAttributedDataUtils.getBufferRateInt() + CustomerKYC.get(name)!!.rateDifference.toInt()
+            return SingleAttributedDataUtils.getFinalRateInt() + SingleAttributedDataUtils.getBufferRateInt() + CustomerKYC.getByName(name)!!.rateDifference.toInt()
         }
 
         fun getDeliveryRate(name: String): Int {

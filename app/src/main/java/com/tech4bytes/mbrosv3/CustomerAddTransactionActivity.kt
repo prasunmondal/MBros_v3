@@ -1,11 +1,10 @@
 package com.tech4bytes.mbrosv3
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Payments.Staged.StagedPay
@@ -61,7 +60,7 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
     private fun setCurrentBalance() {
         val uiIndicator = findViewById<TextView>(R.id.addTransaction_currentBalance)
         val name = findViewById<Spinner>(R.id.addTransaction_name).selectedItem.toString()
-        if(name.trim().isEmpty()) {
+        if (name.trim().isEmpty()) {
             runOnUiThread {
                 uiIndicator.text = "Select Customer"
             }
@@ -88,7 +87,7 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
             }
         }
     }
-    
+
     fun onClickSubmitBtn(view: View) {
         val name = findViewById<Spinner>(R.id.addTransaction_name).selectedItem.toString()
         val prevAmount = CustomerDueData.getLastFinalizedDue(name, false)

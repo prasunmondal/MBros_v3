@@ -16,7 +16,6 @@ import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.SMSDetails.SendSMSDetailsUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
-import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Payments.Staged.StagedPaymentUtils
 import com.tech4bytes.mbrosv3.R
@@ -59,7 +58,7 @@ class OSDDeliveryEntryInfo {
                 kgElement.text = NumberUtils.getDoubleOrBlank(deliveryRecord.deliveredKg)
                 paidElement.text = (getIntOrZero(deliveryRecord.paidCash) + getIntOrZero(paidOnlineElement.text.toString())).toString()
                 paidCashElement.text = NumberUtils.getIntOrBlank(deliveryRecord.paidCash)
-                val pcHintText = if(getIntOrZero(deliveryRecord.orderedPc) == 0) "pc" else deliveryRecord.orderedPc
+                val pcHintText = if (getIntOrZero(deliveryRecord.orderedPc) == 0) "pc" else deliveryRecord.orderedPc
                 pcElement.hint = pcHintText
             }
             updatePaidElement(entry)
@@ -186,11 +185,11 @@ class OSDDeliveryEntryInfo {
             val balanceElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
 
             balanceElement.text = getDueBalance(order, entry).toString()
-            if(updateTotals) OneShotDelivery.updateTotals(context)
+            if (updateTotals) OneShotDelivery.updateTotals(context)
             updateDetailedInfo(order, entry)
 
             val pc = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc)
-            if(kg > 0.0) {
+            if (kg > 0.0) {
                 pc.setHintTextColor(ContextCompat.getColor(context, R.color.osd_pc_hint_color_2))
             } else {
                 pc.setHintTextColor(ContextCompat.getColor(context, R.color.osd_pc_hint_color_1))
@@ -228,7 +227,7 @@ class OSDDeliveryEntryInfo {
         private fun getPcForEntry(entry: View): Int {
             var pc = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc).text.toString()
             val kg = NumberUtils.getDoubleOrZero(entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_kg).text.toString())
-            if(pc.isEmpty() &&  kg > 0.0) {
+            if (pc.isEmpty() && kg > 0.0) {
                 pc = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc).hint.toString()
             }
             if (pc.isEmpty())

@@ -18,8 +18,8 @@ import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
-import com.tech4bytes.mbrosv3.Sms.Tech4BytesPermissions
 import com.tech4bytes.mbrosv3.Sms.SmsReader
+import com.tech4bytes.mbrosv3.Sms.Tech4BytesPermissions
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
@@ -78,29 +78,29 @@ class SMSOrdering : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     fun showSMS() {
-            val smsFiltered = SmsReader.getAllSms(this, this, StringUtils.getListFromCSV(AppConstants.get(AppConstants.SMS_ORDER_GET_ORDER_PH_NUMBER)).toTypedArray())
-            val container = findViewById<LinearLayout>(R.id.smsorders_sms_view_container)
+        val smsFiltered = SmsReader.getAllSms(this, this, StringUtils.getListFromCSV(AppConstants.get(AppConstants.SMS_ORDER_GET_ORDER_PH_NUMBER)).toTypedArray())
+        val container = findViewById<LinearLayout>(R.id.smsorders_sms_view_container)
 
+        runOnUiThread {
+            findViewById<TextView>(R.id.smsordering_loading_sms_label).visibility = View.GONE
+        }
+
+        smsFiltered.forEach { sms ->
             runOnUiThread {
-                findViewById<TextView>(R.id.smsordering_loading_sms_label).visibility = View.GONE
-            }
-
-            smsFiltered.forEach { sms ->
-                runOnUiThread {
-                    val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_fragments, null)
-                    entry.findViewById<TextView>(R.id.smsorder_listEntry_receive_number).text = sms.number
-                    entry.findViewById<TextView>(R.id.smsorder_listEntry_text).text = sms.body
-                    entry.findViewById<TextView>(R.id.smsorder_listEntry_date).text = sms.datetime.split(" ")[2]
-                    entry.findViewById<TextView>(R.id.smsorder_listEntry_month).text = sms.datetime.split(" ")[1]
-                    container.addView(entry)
-                    entry.setOnClickListener {
-                        smsToProcess = sms.body
-                        processSMS()
-                        showEntries()
-                        onClickToggleSMSView(entry)
-                    }
+                val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_fragments, null)
+                entry.findViewById<TextView>(R.id.smsorder_listEntry_receive_number).text = sms.number
+                entry.findViewById<TextView>(R.id.smsorder_listEntry_text).text = sms.body
+                entry.findViewById<TextView>(R.id.smsorder_listEntry_date).text = sms.datetime.split(" ")[2]
+                entry.findViewById<TextView>(R.id.smsorder_listEntry_month).text = sms.datetime.split(" ")[1]
+                container.addView(entry)
+                entry.setOnClickListener {
+                    smsToProcess = sms.body
+                    processSMS()
+                    showEntries()
+                    onClickToggleSMSView(entry)
                 }
             }
+        }
     }
 
     private fun processSMS() {
@@ -192,7 +192,7 @@ class SMSOrdering : AppCompatActivity() {
 
                 entry.findViewById<TextView>(R.id.smsorder_listEntry_date).text = orders[j].orderedKg.toString()
                 entry.findViewById<TextView>(R.id.smsorder_listEntry_number).text = orders[j].name
-                if(CustomerKYC.getCustomerByEngName(orders[j].name)!!.customerAccount.trim().isNotEmpty() && orders[j].name != CustomerKYC.getCustomerByEngName(orders[j].name)!!.customerAccount) {
+                if (CustomerKYC.getCustomerByEngName(orders[j].name)!!.customerAccount.trim().isNotEmpty() && orders[j].name != CustomerKYC.getCustomerByEngName(orders[j].name)!!.customerAccount) {
                     entry.findViewById<TextView>(R.id.smsorder_listEntry_amount).text = "+ ${CustomerKYC.getCustomerByEngName(orders[j].name)!!.customerAccount}"
                 } else {
                     entry.findViewById<TextView>(R.id.smsorder_listEntry_amount).text = "$balance"

@@ -19,7 +19,7 @@ class CustomerDueData {
                     dueMap[it.customerAccount] = NumberUtils.getIntOrZero(it.balanceDue)
                 }
             }
-            if(includeStagedPayments) {
+            if (includeStagedPayments) {
                 dueMap.forEach { (key, value) ->
                     dueMap[key] = value - NumberUtils.getIntOrZero(StagedPaymentUtils.getStagedPayments(key).paidAmount)
                 }

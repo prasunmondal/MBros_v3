@@ -8,7 +8,7 @@ import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 
-data class SheetCalculator(var is_khata_green: String = ""): java.io.Serializable {
+data class SheetCalculator(var is_khata_green: String = "") : java.io.Serializable {
 
     companion object {
 

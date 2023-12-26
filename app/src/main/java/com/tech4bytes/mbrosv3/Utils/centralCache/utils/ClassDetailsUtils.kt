@@ -12,7 +12,7 @@ class ClassDetailsUtils {
          */
         fun getCaller(thresholdClass: String = ""): String {
             val parentPackage =
-                if(thresholdClass.isNotEmpty()) thresholdClass
+                if (thresholdClass.isNotEmpty()) thresholdClass
                 else "com.tech4bytes.extrack.centralCache"
 
             var startSearching = false

@@ -1,7 +1,6 @@
 package com.tech4bytes.mbrosv3.Payments.Staged
 
 import com.tech4bytes.mbrosv3.Payments.PaymentsType
-import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 
 data class StagedPaymentsModel(
@@ -13,5 +12,5 @@ data class StagedPaymentsModel(
     var paidAmount: String,
     var newBalance: String,
     var paymentMode: String,
-    var notes: String
-): java.io.Serializable
+    var notes: String,
+) : java.io.Serializable

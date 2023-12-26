@@ -24,7 +24,6 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.De
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderUtils
-import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
@@ -261,7 +260,7 @@ class OneShotDelivery : AppCompatActivity() {
         val listOfOrderedCustomers = GetCustomerOrderUtils.getListOfOrderedCustomers()
         listOfOrderedCustomers.forEach {
             var customerAccount = CustomerKYC.getByName(it.name)!!.customerAccount
-            if(customerAccount.isEmpty())
+            if (customerAccount.isEmpty())
                 customerAccount = it.name
 
             val deliverCustomersOrders = DeliverToCustomerDataModel(
@@ -281,7 +280,7 @@ class OneShotDelivery : AppCompatActivity() {
 
         DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>().forEach {
             var customerAccount = CustomerKYC.getByName(it.name)!!.customerAccount
-            if(customerAccount.isEmpty())
+            if (customerAccount.isEmpty())
                 customerAccount = it.name
             val deliverCustomersOrders = DeliverToCustomerDataModel(
                 id = "${System.currentTimeMillis()}",
@@ -301,7 +300,7 @@ class OneShotDelivery : AppCompatActivity() {
         val listOfUnOrderedCustomers = GetCustomerOrderUtils.getListOfUnOrderedCustomers()
         listOfUnOrderedCustomers.forEach {
             var customerAccount = CustomerKYC.getByName(it.name)!!.customerAccount
-            if(customerAccount.isEmpty())
+            if (customerAccount.isEmpty())
                 customerAccount = it.name
             val deliverCustomersOrders = DeliverToCustomerDataModel(
                 id = "${System.currentTimeMillis()}",
@@ -356,8 +355,6 @@ class OneShotDelivery : AppCompatActivity() {
         }
         updateTotals(this)
     }
-
-
 
 
     private fun showOrders(listOfCustomers: MutableMap<String, DeliverToCustomerDataModel>, container: Int): MutableMap<DeliverToCustomerDataModel, View> {

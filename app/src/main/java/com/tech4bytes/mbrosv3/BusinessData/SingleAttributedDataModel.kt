@@ -1,19 +1,5 @@
 package com.tech4bytes.mbrosv3.BusinessData
 
-import android.annotation.SuppressLint
-import android.provider.Settings
-import com.google.gson.reflect.TypeToken
-import com.prasunmondal.postjsontosheets.clients.get.Get
-import com.prasunmondal.postjsontosheets.clients.get.GetResponse
-import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
-import com.tech4bytes.extrack.centralCache.CentralCache
-import com.tech4bytes.mbrosv3.ProjectConfig
-import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
-import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
-import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
-import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ReflectionUtils
-import kotlin.reflect.KMutableProperty1
-
 data class SingleAttributedDataModel(
     var recordGeneratorDevice: String = "",
     var id: String = "",

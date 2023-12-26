@@ -1,10 +1,7 @@
 package com.tech4bytes.mbrosv3.Finalize.Models
 
 import com.google.gson.reflect.TypeToken
-import com.prasunmondal.postjsontosheets.clients.get.Get
-import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
-import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.BusinessLogic.Sorter
@@ -14,7 +11,6 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.De
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
-import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
@@ -67,11 +63,11 @@ class CustomerData : java.io.Serializable {
     }
 }
 
-object CustomerDataUtils: Tech4BytesSerializable(
+object CustomerDataUtils : Tech4BytesSerializable(
     ProjectConfig.dBServerScriptURL,
     ProjectConfig.get_db_finalize_sheet_id(),
     "deliveries",
-    object: TypeToken<ArrayList<CustomerData>?>() {}.type,
+    object : TypeToken<ArrayList<CustomerData>?>() {}.type,
     appendInServer = true,
     appendInLocal = true
 ) {
@@ -84,96 +80,94 @@ object CustomerDataUtils: Tech4BytesSerializable(
     }
 
 
+    fun spoolDeliveringData() {
+        var deliveredData = DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>()
+        deliveredData = Sorter.sortByNameList(deliveredData, DeliverToCustomerDataModel::name) as List<DeliverToCustomerDataModel>
 
-
-        fun spoolDeliveringData() {
-            var deliveredData = DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>()
-            deliveredData = Sorter.sortByNameList(deliveredData, DeliverToCustomerDataModel::name) as List<DeliverToCustomerDataModel>
-
-            val totalProfit = DaySummary.getDayProfit()
-            LogMe.log("Total Profit: $totalProfit")
-            var actualDeliveredKg = 0.0
-            deliveredData.forEach {
-                actualDeliveredKg += NumberUtils.getDoubleOrZero(it.deliveredKg)
-            }
-            deliveredData.forEach {
-                val profitByCustomer = totalProfit * NumberUtils.getDoubleOrZero(it.deliveredKg) / actualDeliveredKg
-                val profitPercentByCustomer = profitByCustomer / totalProfit * 100
-                LogMe.log("ProfitPerCustomer: Name: ${it.name}: $totalProfit * ${NumberUtils.getDoubleOrZero(it.deliveredKg)} / $actualDeliveredKg = $profitByCustomer")
-
-                it.timestamp = DateUtils.getDateInFormat(Date(it.id.toLong()), "M/d/yyyy")
-                val record = CustomerData(it.id, it.timestamp, it.name, it.deliveredPc, it.deliveredKg, it.rate, it.prevDue, it.todaysAmount, it.totalDue, it.paidCash, it.paidOnline, it.paid, it.customerAccount, it.balanceDue, NumberUtils.roundOff2places(profitByCustomer).toString(), NumberUtils.roundOff2places(profitPercentByCustomer).toString())
-                addToFinalizeSheet(record)
-            }
+        val totalProfit = DaySummary.getDayProfit()
+        LogMe.log("Total Profit: $totalProfit")
+        var actualDeliveredKg = 0.0
+        deliveredData.forEach {
+            actualDeliveredKg += NumberUtils.getDoubleOrZero(it.deliveredKg)
         }
+        deliveredData.forEach {
+            val profitByCustomer = totalProfit * NumberUtils.getDoubleOrZero(it.deliveredKg) / actualDeliveredKg
+            val profitPercentByCustomer = profitByCustomer / totalProfit * 100
+            LogMe.log("ProfitPerCustomer: Name: ${it.name}: $totalProfit * ${NumberUtils.getDoubleOrZero(it.deliveredKg)} / $actualDeliveredKg = $profitByCustomer")
 
-        private fun addToFinalizeSheet(record: CustomerData) {
-            PostObject.builder()
-                .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.get_db_finalize_sheet_id())
-                .tabName(FinalizeConfig.SHEET_FINALIZE_DELIVERIES_TAB_NAME)
-                .dataObject(record as Any)
-                .build().execute()
-        }
-
-        fun getAllLatestRecords(useCache: Boolean = true): MutableList<CustomerData> {
-            val customerRecords = get<CustomerData>(useCache)
-            customerRecords.sortedBy { it.orderId }
-            customerRecords.reversed()
-
-            val addedNames = mutableListOf<String>()
-            val latestRecordsList = mutableListOf<CustomerData>()
-            customerRecords.forEach {
-                if (!addedNames.contains(it.name)) {
-                    latestRecordsList.add(it)
-                    addedNames.add(it.name)
-                }
-            }
-            return latestRecordsList
-        }
-
-        fun getAllLatestRecordsByAccount(useCache: Boolean = true): MutableList<CustomerData> {
-            val customerRecords = get<CustomerData>(useCache)
-            customerRecords.sortedBy { it.orderId }
-            customerRecords.reversed()
-
-            val addedNames = mutableListOf<String>()
-            val latestRecordsList = mutableListOf<CustomerData>()
-            customerRecords.forEach {
-                if (!addedNames.contains(it.customerAccount)) {
-                    latestRecordsList.add(it)
-                    addedNames.add(it.customerAccount)
-                }
-            }
-            return latestRecordsList
-        }
-
-        fun getCustomerDefaultRate(name: String): Int {
-            return SingleAttributedDataUtils.getFinalRateInt() + SingleAttributedDataUtils.getBufferRateInt() + CustomerKYC.getByName(name)!!.rateDifference.toInt()
-        }
-
-        fun getDeliveryRate(name: String): Int {
-            val customerDeliveryRateFromSavedDeliveredData = getCustomerDeliveryRateFromSavedDeliveredData(name)
-
-            return if (customerDeliveryRateFromSavedDeliveredData > 0) customerDeliveryRateFromSavedDeliveredData
-            else getCustomerDefaultRate(name)
-        }
-
-        private fun getCustomerDeliveryRateFromSavedDeliveredData(name: String): Int {
-            return try {
-                when {
-                    NumberUtils.getIntOrZero(DeliverToCustomerActivity.getDeliveryRecord(name)!!.rate) > 0 -> NumberUtils.getIntOrZero(DeliverToCustomerActivity.getDeliveryRecord(name)!!.rate)
-                    else -> 0
-                }
-            } catch (e: NullPointerException) {
-                0
-            }
-        }
-
-        fun getAllCustomerNames(useCache: Boolean = true): List<String> {
-            return get<CustomerData>(useCache).stream()
-                .filter { d -> d.name.isNotEmpty() }
-                .map(CustomerData::name)
-                .collect(Collectors.toSet()).toList().sorted()
+            it.timestamp = DateUtils.getDateInFormat(Date(it.id.toLong()), "M/d/yyyy")
+            val record = CustomerData(it.id, it.timestamp, it.name, it.deliveredPc, it.deliveredKg, it.rate, it.prevDue, it.todaysAmount, it.totalDue, it.paidCash, it.paidOnline, it.paid, it.customerAccount, it.balanceDue, NumberUtils.roundOff2places(profitByCustomer).toString(), NumberUtils.roundOff2places(profitPercentByCustomer).toString())
+            addToFinalizeSheet(record)
         }
     }
+
+    private fun addToFinalizeSheet(record: CustomerData) {
+        PostObject.builder()
+            .scriptId(ProjectConfig.dBServerScriptURL)
+            .sheetId(ProjectConfig.get_db_finalize_sheet_id())
+            .tabName(FinalizeConfig.SHEET_FINALIZE_DELIVERIES_TAB_NAME)
+            .dataObject(record as Any)
+            .build().execute()
+    }
+
+    fun getAllLatestRecords(useCache: Boolean = true): MutableList<CustomerData> {
+        val customerRecords = get<CustomerData>(useCache)
+        customerRecords.sortedBy { it.orderId }
+        customerRecords.reversed()
+
+        val addedNames = mutableListOf<String>()
+        val latestRecordsList = mutableListOf<CustomerData>()
+        customerRecords.forEach {
+            if (!addedNames.contains(it.name)) {
+                latestRecordsList.add(it)
+                addedNames.add(it.name)
+            }
+        }
+        return latestRecordsList
+    }
+
+    fun getAllLatestRecordsByAccount(useCache: Boolean = true): MutableList<CustomerData> {
+        val customerRecords = get<CustomerData>(useCache)
+        customerRecords.sortedBy { it.orderId }
+        customerRecords.reversed()
+
+        val addedNames = mutableListOf<String>()
+        val latestRecordsList = mutableListOf<CustomerData>()
+        customerRecords.forEach {
+            if (!addedNames.contains(it.customerAccount)) {
+                latestRecordsList.add(it)
+                addedNames.add(it.customerAccount)
+            }
+        }
+        return latestRecordsList
+    }
+
+    fun getCustomerDefaultRate(name: String): Int {
+        return SingleAttributedDataUtils.getFinalRateInt() + SingleAttributedDataUtils.getBufferRateInt() + CustomerKYC.getByName(name)!!.rateDifference.toInt()
+    }
+
+    fun getDeliveryRate(name: String): Int {
+        val customerDeliveryRateFromSavedDeliveredData = getCustomerDeliveryRateFromSavedDeliveredData(name)
+
+        return if (customerDeliveryRateFromSavedDeliveredData > 0) customerDeliveryRateFromSavedDeliveredData
+        else getCustomerDefaultRate(name)
+    }
+
+    private fun getCustomerDeliveryRateFromSavedDeliveredData(name: String): Int {
+        return try {
+            when {
+                NumberUtils.getIntOrZero(DeliverToCustomerActivity.getDeliveryRecord(name)!!.rate) > 0 -> NumberUtils.getIntOrZero(DeliverToCustomerActivity.getDeliveryRecord(name)!!.rate)
+                else -> 0
+            }
+        } catch (e: NullPointerException) {
+            0
+        }
+    }
+
+    fun getAllCustomerNames(useCache: Boolean = true): List<String> {
+        return get<CustomerData>(useCache).stream()
+            .filter { d -> d.name.isNotEmpty() }
+            .map(CustomerData::name)
+            .collect(Collectors.toSet()).toList().sorted()
+    }
+}

@@ -66,9 +66,9 @@
 
             <RadioGroup
                 android:id="@+id/addTransaction_txn_type"
-                android:checkedButton="@+id/addTransaction_txn_type_credit"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:checkedButton="@+id/addTransaction_txn_type_credit">
 
                 <RadioButton
                     android:id="@+id/addTransaction_txn_type_credit"
@@ -93,9 +93,9 @@
 
             <RadioGroup
                 android:id="@+id/addTransaction_txn_mode"
-                android:checkedButton="@+id/addTransaction_txn_mode_online"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:checkedButton="@+id/addTransaction_txn_mode_online">
 
                 <RadioButton
                     android:id="@+id/addTransaction_txn_mode_online"

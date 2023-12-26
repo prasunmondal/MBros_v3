@@ -43,7 +43,7 @@
             android:id="@+id/smsorders_sms_view_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/smsordering_loading_sms_label"

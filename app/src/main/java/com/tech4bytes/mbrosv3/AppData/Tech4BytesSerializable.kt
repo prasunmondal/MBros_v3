@@ -13,13 +13,20 @@ import java.lang.reflect.Type
 
 abstract class Tech4BytesSerializable : java.io.Serializable {
 
-    @Transient var scriptURL: String
-    @Transient var sheetURL: String
-    @Transient var tabname: String
-    @Transient var cacheObjectType: Type
-    @Transient var appendInServer: Boolean
-    @Transient var appendInLocal: Boolean
-    @Transient var getEmptyListIfEmpty: Boolean
+    @Transient
+    var scriptURL: String
+    @Transient
+    var sheetURL: String
+    @Transient
+    var tabname: String
+    @Transient
+    var cacheObjectType: Type
+    @Transient
+    var appendInServer: Boolean
+    @Transient
+    var appendInLocal: Boolean
+    @Transient
+    var getEmptyListIfEmpty: Boolean
 
     constructor(scriptURL: String, sheetURL: String, tabname: String, cacheObjectType: Type, appendInServer: Boolean, appendInLocal: Boolean, getEmptyListIfNoResultsFoundInServer: Boolean = false) {
         this.scriptURL = scriptURL
@@ -46,7 +53,7 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
             cacheResults as ArrayList<T>
         } else {
             var dataList = getFromServer<T>()
-            if((getEmptyListIfEmpty || this.getEmptyListIfEmpty) && dataList.isEmpty())
+            if ((getEmptyListIfEmpty || this.getEmptyListIfEmpty) && dataList.isEmpty())
                 return listOf()
             dataList = filterResults(dataList)
             dataList = sortResults(dataList)
@@ -71,11 +78,11 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
         return "$sheetURL/$tabname/$filterName"
     }
 
-    open fun <T: Any> filterResults(list: ArrayList<T>): ArrayList<T> {
+    open fun <T : Any> filterResults(list: ArrayList<T>): ArrayList<T> {
         return list
     }
 
-    open fun <T: Any> sortResults(list: ArrayList<T>): ArrayList<T> {
+    open fun <T : Any> sortResults(list: ArrayList<T>): ArrayList<T> {
         return list
     }
 
@@ -104,22 +111,21 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
      */
     fun <T : Any> saveToLocal(dataObject: T?, cacheKey: String? = getFilterName()) {
         var finalCacheKey = cacheKey
-        if(finalCacheKey == null) {
+        if (finalCacheKey == null) {
             finalCacheKey = getFilterName()
         }
-        if(dataObject == null) {
+        if (dataObject == null) {
             CentralCache.put(finalCacheKey, dataObject)
             return
         }
 
-        val dataToSave = if(appendInLocal) {
+        val dataToSave = if (appendInLocal) {
             var dataList = get<T>() as ArrayList
             dataList.addAll(arrayListOf(dataObject))
             dataList = filterResults(dataList)
             dataList = sortResults(dataList)
             dataList
-        }
-        else {
+        } else {
             dataObject
         }
         CentralCache.put(finalCacheKey, dataToSave)

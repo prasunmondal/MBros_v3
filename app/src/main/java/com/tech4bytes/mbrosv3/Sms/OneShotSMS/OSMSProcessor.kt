@@ -55,17 +55,18 @@ class OSMSProcessor {
             val formattedDate = DateUtils.getDateInFormat("dd/MM/yyyy")
             val replaceMethod = { template: String ->
                 template.replace("<date>", formattedDate)
-                .replace("<name>", deliveryData.name)
-                .replace("<pc>", deliveryData.deliveredPc)
-                .replace("<kg>", deliveryData.deliveredKg)
-                .replace("<paidAmount>", deliveryData.paid)
-                .replace("<rate>", deliveryData.rate)
-                .replace("<balanceAmount>", deliveryData.balanceDue) }
+                    .replace("<name>", deliveryData.name)
+                    .replace("<pc>", deliveryData.deliveredPc)
+                    .replace("<kg>", deliveryData.deliveredKg)
+                    .replace("<paidAmount>", deliveryData.paid)
+                    .replace("<rate>", deliveryData.rate)
+                    .replace("<balanceAmount>", deliveryData.balanceDue)
+            }
 
             LogMe.log(smsDetail.toString() + ": " + replaceMethod(smsDetail.enablement_template))
             val isEnabled = smsDetail.enablement_template.isEmpty()
                     || replaceMethod(smsDetail.enablement_template) != smsDetail.enablement_template
-            if(!isEnabled)
+            if (!isEnabled)
                 return null
 
             val text = replaceMethod(smsDetail.dataTemplate)

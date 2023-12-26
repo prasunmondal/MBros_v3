@@ -24,31 +24,31 @@ object CustomerKYC : Tech4BytesSerializable(
     ProjectConfig.dBServerScriptURL,
     ProjectConfig.get_db_sheet_id(),
     "customerDetails",
-    object: TypeToken<ArrayList<CustomerKYCModel>?>() {}.type,
+    object : TypeToken<ArrayList<CustomerKYCModel>?>() {}.type,
     appendInServer = true,
     appendInLocal = true) {
 
-        fun getByName(englishName: String): CustomerKYCModel? {
-            get<CustomerKYCModel>().forEach {
-                if (it.nameEng == englishName)
-                    return it
-            }
-            return null
+    fun getByName(englishName: String): CustomerKYCModel? {
+        get<CustomerKYCModel>().forEach {
+            if (it.nameEng == englishName)
+                return it
         }
+        return null
+    }
 
-        fun showBalance(engName: String): Boolean {
-            get<CustomerKYCModel>().forEach {
-                if (it.nameEng == engName)
-                    return it.showDue.toBoolean()
-            }
-            return true
+    fun showBalance(engName: String): Boolean {
+        get<CustomerKYCModel>().forEach {
+            if (it.nameEng == engName)
+                return it.showDue.toBoolean()
         }
+        return true
+    }
 
-        fun getCustomerByEngName(engName: String): CustomerKYCModel? {
-            get<CustomerKYCModel>().forEach {
-                if (it.nameEng == engName)
-                    return it
-            }
-            return null
+    fun getCustomerByEngName(engName: String): CustomerKYCModel? {
+        get<CustomerKYCModel>().forEach {
+            if (it.nameEng == engName)
+                return it
         }
+        return null
+    }
 }

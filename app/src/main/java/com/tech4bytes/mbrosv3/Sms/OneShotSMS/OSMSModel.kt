@@ -7,7 +7,7 @@ data class OSMSModel(
     val inputData: String,
     val dataTemplate: String,
     val enablement_template: String,
-    val isEnabled: String
+    val isEnabled: String,
 ) : java.io.Serializable {
 
     override fun toString(): String {

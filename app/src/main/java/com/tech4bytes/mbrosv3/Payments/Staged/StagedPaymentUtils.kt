@@ -2,7 +2,6 @@ package com.tech4bytes.mbrosv3.Payments.Staged
 
 import com.google.gson.reflect.TypeToken
 import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataModel
 import com.tech4bytes.mbrosv3.Payments.PaymentsType
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
@@ -11,7 +10,7 @@ object StagedPaymentUtils : Tech4BytesSerializable(
     ProjectConfig.dBServerScriptURL,
     ProjectConfig.get_db_sheet_id(),
     "stagedPayments",
-    object: TypeToken<ArrayList<StagedPaymentsModel>?>() {}.type,
+    object : TypeToken<ArrayList<StagedPaymentsModel>?>() {}.type,
     appendInServer = true,
     appendInLocal = true) {
 

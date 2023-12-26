@@ -17,7 +17,7 @@ class NumberUtils {
 
         fun getIntOrBlank(input: String): String {
             val t = getIntOrZero(input)
-            if(t == 0)
+            if (t == 0)
                 return ""
             return t.toString()
         }
@@ -32,7 +32,7 @@ class NumberUtils {
 
         fun getDoubleOrBlank(input: String): String {
             val t = getDoubleOrZero(input)
-            if(t == 0.0)
+            if (t == 0.0)
                 return ""
             return t.toString()
         }

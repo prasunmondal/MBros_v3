@@ -70,7 +70,7 @@ class SmsReader {
         fun getSMSFilterQueryForDateFiltering(context: Context): String {
             var noOfDays = NumberUtils.getIntOrZero(AppConstants.get(AppConstants.SMS_ORDERING_SHOW_SMS_FOR_N_DAYS))
 
-            if(noOfDays == 0) {
+            if (noOfDays == 0) {
                 // in case of misconfiguration, take 30 as default
                 noOfDays = 30
                 (context as Activity).runOnUiThread {
@@ -84,7 +84,6 @@ class SmsReader {
             return "date>=" + selectedDate.time
         }
     }
-
 
 
 }

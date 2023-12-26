@@ -23,7 +23,8 @@ import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerCalculations
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
-import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
+import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderModel
+import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
@@ -255,7 +256,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     fun updateDeliveredInfo(useCache: Boolean) {
         val countersDelivered = DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>(useCache)
         val numberOfCustomersDelivered = countersDelivered.size
-        val totalNumberOfCustomers = GetCustomerOrders.getNumberOfCustomersOrdered(useCache)
+        val totalNumberOfCustomers = GetCustomerOrderUtils.getNumberOfCustomersOrdered(useCache)
         val deliveredPc = DeliverToCustomerCalculations.getTotalPcDelivered()
         val deliveredKg = DeliverToCustomerCalculations.getTotalKgDelivered()
         val avgWt = deliveredKg / deliveredPc
@@ -277,7 +278,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     fun updateDashboard(useCache: Boolean) {
         SingleAttributedDataUtils.getRecords(useCache)
         DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>(useCache)
-        GetCustomerOrders.get(useCache)
+        GetCustomerOrderUtils.get<GetCustomerOrderModel>(useCache)
 
         updateLoadInfo(useCache)
         updateDeliveredInfo(useCache)

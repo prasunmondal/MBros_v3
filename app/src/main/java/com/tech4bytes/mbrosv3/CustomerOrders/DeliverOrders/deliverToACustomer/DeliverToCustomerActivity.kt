@@ -16,7 +16,8 @@ import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
-import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
+import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderModel
+import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
@@ -337,7 +338,7 @@ class DeliverToCustomerActivity : AppCompatActivity() {
                 return deliveryObj
             }
 
-            val orderObj: GetCustomerOrders? = GetCustomerOrders.getByName(inputName)
+            val orderObj: GetCustomerOrderModel? = GetCustomerOrderUtils.getByName(inputName)
             if (orderObj != null) {
                 deliveryObj = DeliverToCustomerDataModel(
                     id = "${System.currentTimeMillis()}",

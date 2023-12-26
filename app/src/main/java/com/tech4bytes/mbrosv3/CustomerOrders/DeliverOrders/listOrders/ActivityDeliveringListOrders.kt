@@ -12,7 +12,8 @@ import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerCalculations
-import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrders
+import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderModel
+import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderUtils
 import com.tech4bytes.mbrosv3.Loading.ActivityDeliveringLoad
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
@@ -29,11 +30,11 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
         AppContexts.set(this, this)
         AppUtils.logError()
 
-        showOrders(GetCustomerOrders.getListOfOrderedCustomers(), R.id.activity_delivering_deliver_order_list)
-        showOrders(GetCustomerOrders.getListOfUnOrderedCustomers(), R.id.activity_delivering_deliver_unorder_list)
+        showOrders(GetCustomerOrderUtils.getListOfOrderedCustomers(), R.id.activity_delivering_deliver_order_list)
+        showOrders(GetCustomerOrderUtils.getListOfUnOrderedCustomers(), R.id.activity_delivering_deliver_unorder_list)
     }
 
-    fun showOrders(listOfCustomers: List<GetCustomerOrders>, container: Int) {
+    fun showOrders(listOfCustomers: List<GetCustomerOrderModel>, container: Int) {
         listOfCustomers.forEach { order ->
             LogMe.log(order.toString())
 

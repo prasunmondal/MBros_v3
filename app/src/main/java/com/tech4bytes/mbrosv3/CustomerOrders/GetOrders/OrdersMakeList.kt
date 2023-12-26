@@ -17,14 +17,14 @@ import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 
 class OrdersMakeList : AppCompatActivity() {
 
-    lateinit var listOrders: List<GetCustomerOrders>
+    lateinit var listOrders: List<GetCustomerOrderModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_orders_make_list)
         AppContexts.set(this)
 
-        listOrders = GetCustomerOrders.get()
+        listOrders = GetCustomerOrderUtils.get()
         showList()
     }
 
@@ -36,7 +36,7 @@ class OrdersMakeList : AppCompatActivity() {
         }
     }
 
-    private fun addEntry(order: GetCustomerOrders) {
+    private fun addEntry(order: GetCustomerOrderModel) {
         val listContainer = findViewById<LinearLayout>(R.id.order_make_list_container)
         val layoutInflater = LayoutInflater.from(AppContexts.get())
         val entry = layoutInflater.inflate(R.layout.activity_orders_make_list_fragments, null)
@@ -54,11 +54,11 @@ class OrdersMakeList : AppCompatActivity() {
         listContainer.addView(entry)
     }
 
-    private fun getFinalPc(order: GetCustomerOrders): String {
+    private fun getFinalPc(order: GetCustomerOrderModel): String {
         return if (NumberUtils.getIntOrZero(order.calculatedPc) == 0) order.getEstimatedPc(false) else order.calculatedPc
     }
 
-    private fun getFinalKg(order: GetCustomerOrders): String {
+    private fun getFinalKg(order: GetCustomerOrderModel): String {
         return if (NumberUtils.getIntOrZero(order.calculatedKg) == 0) order.getEstimatedKg(false) else order.calculatedKg
     }
 
@@ -79,13 +79,13 @@ class OrdersMakeList : AppCompatActivity() {
             runOnUiThread {
                 Toast.makeText(this, "Saving Data", Toast.LENGTH_SHORT).show()
             }
-            GetCustomerOrders.deleteAll()
-            GetCustomerOrders.save()
+            GetCustomerOrderUtils.deleteAll()
+            GetCustomerOrderUtils.save()
 
             val metadataObj = SingleAttributedDataUtils.getRecords()
             var totalPc = 0
             var totalKg = 0
-            GetCustomerOrders.getListOfOrderedCustomers().forEach {
+            GetCustomerOrderUtils.getListOfOrderedCustomers().forEach {
                 totalPc += NumberUtils.getIntOrZero(getFinalPc(it))
                 totalKg += NumberUtils.getIntOrZero(getFinalKg(it))
             }

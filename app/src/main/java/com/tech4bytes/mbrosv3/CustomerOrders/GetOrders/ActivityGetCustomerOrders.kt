@@ -28,7 +28,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
 
     lateinit var containerView: View
     var uiEntriesList = mutableListOf<View>()
-    lateinit var listOrders: List<GetCustomerOrders>
+    lateinit var listOrders: List<GetCustomerOrderModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +42,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
     }
 
     private fun initializeUI(reset: Boolean) {
-        listOrders = GetCustomerOrders.get()
+        listOrders = GetCustomerOrderUtils.get<GetCustomerOrderModel>()
         LogMe.log(listOrders.toString())
 
         val avg_wt = findViewById<EditText>(R.id.get_orders_avg_wt34)
@@ -86,7 +86,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         UIUtils.setUIElementValue(LoadModel.getUiElementFromOrderingPage(containerView, LoadModel::requiredPc), pc)
     }
 
-    private fun createEstimatesView(order: GetCustomerOrders) {
+    private fun createEstimatesView(order: GetCustomerOrderModel) {
         val listContainer = findViewById<LinearLayout>(R.id.activity_get_order_estimates__order_list_container)
         val layoutInflater = LayoutInflater.from(AppContexts.get())
         val entry = layoutInflater.inflate(R.layout.activity_get_order_estimates_fragment_customer_order, null)
@@ -99,13 +99,13 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
 
         pcElement.doOnTextChanged { text, start, before, count ->
             order.orderedPc = pcElement.text.toString()
-            GetCustomerOrders.updateObj(order)
+            GetCustomerOrderUtils.updateObj(order)
             updateTotalPc()
         }
 
         kgElement.doOnTextChanged { text, start, before, count ->
             order.orderedKg = kgElement.text.toString()
-            GetCustomerOrders.updateObj(order)
+            GetCustomerOrderUtils.updateObj(order)
             updateTotalKg()
         }
 
@@ -122,7 +122,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
 
     private fun updateTotalKg() {
         var sum = 0
-        GetCustomerOrders.get().forEach {
+        GetCustomerOrderUtils.get<GetCustomerOrderModel>().forEach {
             sum += getJustTheNumber(it.orderedKg)
         }
         UIUtils.setUIElementValue(containerView.findViewById(R.id.activity_get_order_estimates__total_kg), "$sum kg")
@@ -130,7 +130,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
 
     private fun updateTotalPc() {
         var sum = 0
-        GetCustomerOrders.get().forEach {
+        GetCustomerOrderUtils.get<GetCustomerOrderModel>().forEach {
             sum += getJustTheNumber(it.orderedPc)
         }
         UIUtils.setUIElementValue(containerView.findViewById(R.id.activity_get_order_estimates__total_pc), "$sum pc")

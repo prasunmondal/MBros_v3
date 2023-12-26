@@ -8,7 +8,7 @@ import androidx.core.content.ContextCompat
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Payments.Staged.StagedPay
-import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
+import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 
 class CustomerAddTransactionActivity : AppCompatActivity() {
@@ -74,7 +74,7 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
     }
 
     private fun setUICheckFinalization(useCache: Boolean) {
-        val isFinalized = DaySummary.isDayFinalized(useCache)
+        val isFinalized = DaySummaryUtils.isDayFinalized(useCache)
         val uiIndicator = findViewById<TextView>(R.id.addTransaction_finalizedStatus)
 
         runOnUiThread {

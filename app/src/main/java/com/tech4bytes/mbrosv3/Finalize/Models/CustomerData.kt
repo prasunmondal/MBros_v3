@@ -10,7 +10,7 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.De
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.ProjectConfig
-import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
+import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
@@ -84,7 +84,7 @@ object CustomerDataUtils : Tech4BytesSerializable(
         var deliveredData = DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>()
         deliveredData = Sorter.sortByNameList(deliveredData, DeliverToCustomerDataModel::name) as List<DeliverToCustomerDataModel>
 
-        val totalProfit = DaySummary.getDayProfit()
+        val totalProfit = DaySummaryUtils.getDayProfit()
         LogMe.log("Total Profit: $totalProfit")
         var actualDeliveredKg = 0.0
         deliveredData.forEach {

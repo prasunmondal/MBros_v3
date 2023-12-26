@@ -4,7 +4,6 @@ import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
-import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import kotlin.reflect.KFunction
 
@@ -19,7 +18,7 @@ class DataFetchingInfo {
 //                CustomerData::get.toString() -> "Previous delivery reports"
                 SingleAttributedDataUtils::getRecords.toString() -> "Metadata"
 //                DeliverToCustomerDataHandler::get.toString() -> "Current delivery reports"
-                DaySummary::get.toString() -> "Transaction reports"
+//                DaySummary::get.toString() -> "Transaction reports"
 //                RefuelingUtils::get<RefuelingModel>.toString() -> "Fuel data"
                 AppConstants::preFetch.toString() -> "App Constants Data"
                 else -> "Get data"
@@ -38,7 +37,7 @@ class DataFetchingInfo {
 //                    executingMethods.add(GetCustomerOrderUtils::get)
 //                    executingMethods.add(CustomerData::getRecords)
 ////                    executingMethods.add(DeliverToCustomerDataHandler::get)
-                    executingMethods.add(DaySummary::get)
+//                    executingMethods.add(DaySummary::get)
 //                    executingMethods.add(RefuelingUtils::get)
                     executingMethods.add(AppConstants::preFetch)
                 }
@@ -61,7 +60,7 @@ class DataFetchingInfo {
                 }
                 ActivityAuthEnums.LOAD_INFORMATION -> {
                     executingMethods.add(SingleAttributedDataUtils::getRecords, true)
-                    executingMethods.add(DaySummary::get, true)
+//                    executingMethods.add(DaySummary::get, true)
                 }
                 ActivityAuthEnums.MONEY_CALCULATOR -> {
                     executingMethods.add(SingleAttributedDataUtils::getRecords)

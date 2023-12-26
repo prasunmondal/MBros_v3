@@ -5,7 +5,7 @@ import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
-import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
+import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.WeightUtils.WeightUtils
@@ -66,8 +66,8 @@ class DeliveryCalculations {
 
         fun getKmDiff(currentKm: String): Int {
             val currentKm = NumberUtils.getIntOrZero(currentKm)
-            LogMe.log("Prev KM: " + DaySummary.getPrevTripEndKm())
-            val prevKm = DaySummary.getPrevTripEndKm()
+            LogMe.log("Prev KM: " + DaySummaryUtils.getPrevTripEndKm())
+            val prevKm = DaySummaryUtils.getPrevTripEndKm()
             return currentKm - prevKm
         }
 

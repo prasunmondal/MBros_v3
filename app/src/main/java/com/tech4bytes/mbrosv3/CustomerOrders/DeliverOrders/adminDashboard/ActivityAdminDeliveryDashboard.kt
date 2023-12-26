@@ -26,11 +26,13 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.De
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderModel
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
+import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.SendInfoTexts.Whatsapp.Whatsapp
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
+import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
@@ -182,7 +184,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         if (isFinalisedDone != null) {
             return isFinalisedDone!!
         }
-        isFinalisedDone = DaySummary.isDayFinalized(useCache)
+        isFinalisedDone = DaySummaryUtils.isDayFinalized(useCache)
         return isFinalisedDone!!
     }
 
@@ -302,9 +304,9 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
             val deliveryRate = UIUtils.getUIElementValue(deliveryRateElement)
             obj.bufferRate = DeliveryCalculations.getBufferPrice(obj.finalFarmRate, deliveryRate).toString()
             SingleAttributedDataUtils.saveToLocalThenServer(obj)
-            CustomerData.spoolDeliveringData()
+            CustomerDataUtils.spoolDeliveringData()
             RefuelingUtils.spoolRefuelingData()
-            DaySummary.saveToServer()
+            DaySummaryUtils.saveToServer()
             SingleAttributedDataUtils.invalidateCache()
             setStatuses(false)
         }.start()
@@ -324,8 +326,8 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     }
 
     fun setRuntimeUIValues() {
-        LogMe.log("Setting profit element to: ${DaySummary.showDayProfit()}")
-        UIUtils.setUIElementValue(profitElement, DaySummary.showDayProfit())
+        LogMe.log("Setting profit element to: ${DaySummaryUtils.showDayProfit()}")
+        UIUtils.setUIElementValue(profitElement, DaySummaryUtils.showDayProfit())
     }
 
     override fun onBackPressed() {

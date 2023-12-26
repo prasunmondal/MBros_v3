@@ -29,7 +29,7 @@ import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
-import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummary
+import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
@@ -213,7 +213,7 @@ class OneShotDelivery : AppCompatActivity() {
         val kmCostElement = findViewById<TextView>(R.id.osd_km_cost)
 
         val currentKm = NumberUtils.getIntOrZero(currentKmOnUI)
-        val prevKm = DaySummary.getPrevTripEndKm()
+        val prevKm = DaySummaryUtils.getPrevTripEndKm()
         prevKmElement.text = prevKm.toString()
 
         if (currentKm < prevKm) {
@@ -389,7 +389,7 @@ class OneShotDelivery : AppCompatActivity() {
             val profitElement = findViewById<TextView>(R.id.osd_profit)
             val totalDueElement = findViewById<TextView>(R.id.osd_total_due)
 
-            profitElement.text = DaySummary.showDayProfit()
+            profitElement.text = DaySummaryUtils.showDayProfit()
             totalDueElement.text = "---"
         }
         updateTotalDueBalance()

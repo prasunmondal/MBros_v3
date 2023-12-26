@@ -15,16 +15,22 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
 
     @Transient
     var scriptURL: String
+
     @Transient
     var sheetURL: String
+
     @Transient
     var tabname: String
+
     @Transient
     var cacheObjectType: Type
+
     @Transient
     var appendInServer: Boolean
+
     @Transient
     var appendInLocal: Boolean
+
     @Transient
     var getEmptyListIfEmpty: Boolean
 

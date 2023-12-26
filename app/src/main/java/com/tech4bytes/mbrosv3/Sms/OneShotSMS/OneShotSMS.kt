@@ -1,18 +1,13 @@
 package com.tech4bytes.mbrosv3.Sms.OneShotSMS
 
-import android.app.Activity
-import android.content.Context
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.tech4bytes.mbrosv3.R
-import com.tech4bytes.mbrosv3.Sms.SMSPermissions
+import com.tech4bytes.mbrosv3.Sms.Tech4BytesPermissions
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 
 
@@ -27,7 +22,7 @@ class OneShotSMS : AppCompatActivity() {
         supportActionBar!!.hide()
         AppContexts.set(this)
 
-        SMSPermissions.askPermission(this, this)
+        Tech4BytesPermissions.requestSMSPermission(this, this)
 
         container = findViewById(R.id.osms_container)
         Thread {

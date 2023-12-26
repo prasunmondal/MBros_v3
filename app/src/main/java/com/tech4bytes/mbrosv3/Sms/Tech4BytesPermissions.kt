@@ -6,15 +6,13 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 
 
-class SMSPermissions {
+class Tech4BytesPermissions {
     companion object {
 
-        fun askPermission(context: Context, activity: Activity) {
+        fun requestSMSPermission(context: Context, activity: Activity) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (ActivityCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_DENIED) {
                     Log.d("permission", "permission denied to SEND_SMS - requesting it")

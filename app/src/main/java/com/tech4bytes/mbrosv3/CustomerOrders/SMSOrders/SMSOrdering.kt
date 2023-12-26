@@ -18,7 +18,7 @@ import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
-import com.tech4bytes.mbrosv3.Sms.SMSPermissions
+import com.tech4bytes.mbrosv3.Sms.Tech4BytesPermissions
 import com.tech4bytes.mbrosv3.Sms.SmsReader
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -47,8 +47,7 @@ class SMSOrdering : AppCompatActivity() {
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
-        SMSPermissions.askPermission(this, this)
-        SMSPermissions.askPermission(this, this)
+        Tech4BytesPermissions.requestSMSPermission(this, this)
 
         Thread {
             setUpUI()

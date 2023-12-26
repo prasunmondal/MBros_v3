@@ -15,10 +15,10 @@ import java.util.stream.Collectors
 class SmsReader {
 
     companion object {
-        fun getAllSms(context: Context, fromNumbers: Array<String>): MutableList<SMSModel> {
+        fun getAllSms(context: Context, activity: Activity, fromNumbers: Array<String>): MutableList<SMSModel> {
 
-            SMSPermissions.askPermission(context, android.Manifest.permission.SEND_SMS)
-            SMSPermissions.askPermission(context, android.Manifest.permission.READ_SMS)
+            SMSPermissions.askPermission(context, activity)
+            SMSPermissions.askPermission(context, activity)
             val smsList = mutableListOf<SMSModel>()
             val cr: ContentResolver = context.contentResolver
 

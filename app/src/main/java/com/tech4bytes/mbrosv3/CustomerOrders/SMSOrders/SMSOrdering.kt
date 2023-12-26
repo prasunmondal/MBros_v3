@@ -47,8 +47,8 @@ class SMSOrdering : AppCompatActivity() {
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
-        SMSPermissions.askPermission(this, android.Manifest.permission.SEND_SMS)
-        SMSPermissions.askPermission(this, android.Manifest.permission.READ_SMS)
+        SMSPermissions.askPermission(this, this)
+        SMSPermissions.askPermission(this, this)
 
         Thread {
             setUpUI()
@@ -79,7 +79,7 @@ class SMSOrdering : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     fun showSMS() {
-            val smsFiltered = SmsReader.getAllSms(this, StringUtils.getListFromCSV(AppConstants.get(AppConstants.SMS_ORDER_GET_ORDER_PH_NUMBER)).toTypedArray())
+            val smsFiltered = SmsReader.getAllSms(this, this, StringUtils.getListFromCSV(AppConstants.get(AppConstants.SMS_ORDER_GET_ORDER_PH_NUMBER)).toTypedArray())
             val container = findViewById<LinearLayout>(R.id.smsorders_sms_view_container)
 
             runOnUiThread {

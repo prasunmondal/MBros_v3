@@ -1,5 +1,6 @@
 package com.tech4bytes.mbrosv3.AppData
 
+import androidx.annotation.RequiresApi
 import com.prasunmondal.postjsontosheets.clients.delete.Delete
 import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
@@ -11,7 +12,7 @@ import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import java.lang.reflect.Type
 
 
-abstract class Tech4BytesSerializable : java.io.Serializable {
+abstract class Tech4BytesSerializable<T : Any> : java.io.Serializable {
 
     @Transient
     var scriptURL: String
@@ -44,12 +45,12 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
         this.getEmptyListIfEmpty = getEmptyListIfNoResultsFoundInServer
     }
 
-    fun <T : Any> get(useCache: Boolean = true, getEmptyListIfEmpty: Boolean = false, filterName: String = "default"): List<T> {
+    @RequiresApi(34)
+    fun get(useCache: Boolean = true, getEmptyListIfEmpty: Boolean = false, filterName: String = "default"): List<T> {
         val cacheKey = getFilterName(filterName)
         LogMe.log("Getting records")
-
         val cacheResults = try {
-            CentralCache.get<ArrayList<T>>(AppContexts.get(), cacheKey, useCache)
+            CentralCache.get<T>(AppContexts.get(), cacheKey, useCache)
         } catch (ex: ClassCastException) {
             arrayListOf(CentralCache.get<T>(AppContexts.get(), cacheKey, useCache))
         }
@@ -58,7 +59,7 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
         return if (cacheResults != null) {
             cacheResults as ArrayList<T>
         } else {
-            var dataList = getFromServer<T>()
+            var dataList = getFromServer()
             if ((getEmptyListIfEmpty || this.getEmptyListIfEmpty) && dataList.isEmpty())
                 return listOf()
             dataList = filterResults(dataList)
@@ -69,7 +70,7 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
         }
     }
 
-    private fun <T> getFromServer(): ArrayList<T> {
+    private fun getFromServer(): ArrayList<T> {
         val result: GetResponse = Get.builder()
             .scriptId(scriptURL)
             .sheetId(sheetURL)
@@ -106,7 +107,7 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
     *
     *
      */
-    fun <T : Any> saveToServerThenLocal(dataObject: T) {
+    fun saveToServerThenLocal(dataObject: T) {
         saveToServer(dataObject)
         saveToLocal(dataObject)
     }
@@ -115,7 +116,7 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
      * dataObject: Data to save
      * cacheKey: cacheKey used to identify the cache object, pass null to generate the cacheKey
      */
-    fun <T : Any> saveToLocal(dataObject: T?, cacheKey: String? = getFilterName()) {
+    fun saveToLocal(dataObject: Any?, cacheKey: String? = getFilterName()) {
         var finalCacheKey = cacheKey
         if (finalCacheKey == null) {
             finalCacheKey = getFilterName()
@@ -126,8 +127,8 @@ abstract class Tech4BytesSerializable : java.io.Serializable {
         }
 
         val dataToSave = if (appendInLocal) {
-            var dataList = get<T>() as ArrayList
-            dataList.addAll(arrayListOf(dataObject))
+            var dataList = get() as ArrayList
+            dataList.addAll(arrayListOf(dataObject as T))
             dataList = filterResults(dataList)
             dataList = sortResults(dataList)
             dataList

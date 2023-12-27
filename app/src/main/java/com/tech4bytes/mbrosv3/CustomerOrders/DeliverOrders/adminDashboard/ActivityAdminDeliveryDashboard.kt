@@ -190,7 +190,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         if (isResetDone != null) {
             return isResetDone!!
         }
-        isResetDone = DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>(useCache).isEmpty()
+        isResetDone = DeliverToCustomerDataHandler.get(useCache).isEmpty()
         return isResetDone!!
     }
 
@@ -254,7 +254,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     }
 
     fun updateDeliveredInfo(useCache: Boolean) {
-        val countersDelivered = DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>(useCache)
+        val countersDelivered = DeliverToCustomerDataHandler.get(useCache)
         val numberOfCustomersDelivered = countersDelivered.size
         val totalNumberOfCustomers = GetCustomerOrderUtils.getNumberOfCustomersOrdered(useCache)
         val deliveredPc = DeliverToCustomerCalculations.getTotalPcDelivered()
@@ -277,8 +277,8 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
 
     fun updateDashboard(useCache: Boolean) {
         SingleAttributedDataUtils.getRecords(useCache)
-        DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>(useCache)
-        GetCustomerOrderUtils.get<GetCustomerOrderModel>(useCache)
+        DeliverToCustomerDataHandler.get(useCache)
+        GetCustomerOrderUtils.get(useCache)
 
         updateLoadInfo(useCache)
         updateDeliveredInfo(useCache)

@@ -20,7 +20,7 @@ data class CustomerKYCModel(
     var smsText: String = "",
 ) : java.io.Serializable
 
-object CustomerKYC : Tech4BytesSerializable(
+object CustomerKYC : Tech4BytesSerializable<CustomerKYCModel>(
     ProjectConfig.dBServerScriptURL,
     ProjectConfig.get_db_sheet_id(),
     "customerDetails",
@@ -29,7 +29,7 @@ object CustomerKYC : Tech4BytesSerializable(
     appendInLocal = true) {
 
     fun getByName(englishName: String): CustomerKYCModel? {
-        get<CustomerKYCModel>().forEach {
+        get().forEach {
             if (it.nameEng == englishName)
                 return it
         }
@@ -37,7 +37,7 @@ object CustomerKYC : Tech4BytesSerializable(
     }
 
     fun showBalance(engName: String): Boolean {
-        get<CustomerKYCModel>().forEach {
+        get().forEach {
             if (it.nameEng == engName)
                 return it.showDue.toBoolean()
         }
@@ -45,7 +45,7 @@ object CustomerKYC : Tech4BytesSerializable(
     }
 
     fun getCustomerByEngName(engName: String): CustomerKYCModel? {
-        get<CustomerKYCModel>().forEach {
+        get().forEach {
             if (it.nameEng == engName)
                 return it
         }

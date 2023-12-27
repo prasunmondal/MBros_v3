@@ -6,7 +6,7 @@ import com.tech4bytes.mbrosv3.Payments.PaymentsType
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 
-object StagedPaymentUtils : Tech4BytesSerializable(
+object StagedPaymentUtils : Tech4BytesSerializable<StagedPaymentsModel>(
     ProjectConfig.dBServerScriptURL,
     ProjectConfig.get_db_sheet_id(),
     "stagedPayments",
@@ -15,7 +15,7 @@ object StagedPaymentUtils : Tech4BytesSerializable(
     appendInLocal = true) {
 
     fun getStagedPayments(name: String, useCache: Boolean = true): StagedPaymentsModel {
-        val list = get<StagedPaymentsModel>(useCache).filter { it.name == name }
+        val list = get(useCache).filter { it.name == name }
         var sumPaid = 0
         var allNotes = ""
         list.forEach {

@@ -55,7 +55,7 @@ data class GetCustomerOrderModel(
     }
 }
 
-object GetCustomerOrderUtils : Tech4BytesSerializable(
+object GetCustomerOrderUtils : Tech4BytesSerializable<GetCustomerOrderModel>(
     ProjectConfig.dBServerScriptURL,
     ProjectConfig.get_db_sheet_id(),
     "GetOrders",
@@ -84,8 +84,8 @@ object GetCustomerOrderUtils : Tech4BytesSerializable(
 
         obj = mutableListOf()
 
-        LogMe.log(CustomerKYC.get<CustomerKYCModel>().toString())
-        CustomerKYC.get<CustomerKYCModel>().forEach {
+        LogMe.log(CustomerKYC.get().toString())
+        CustomerKYC.get().forEach {
             if (it.isActiveCustomer.toBoolean()) {
                 obj.add(nameMappedOrders[it.nameEng]!!)
             }
@@ -96,7 +96,7 @@ object GetCustomerOrderUtils : Tech4BytesSerializable(
     private fun getCompleteList(): List<GetCustomerOrderModel> {
         val list: MutableList<GetCustomerOrderModel> = mutableListOf()
         val actualOrders = getServerList()
-        CustomerKYC.get<CustomerKYCModel>().forEach { masterList ->
+        CustomerKYC.get().forEach { masterList ->
             var isInOrderList = false
             actualOrders.forEach { orderList ->
                 if (masterList.nameEng == orderList.name) {
@@ -114,7 +114,7 @@ object GetCustomerOrderUtils : Tech4BytesSerializable(
     fun getListOfOrderedCustomers(): List<GetCustomerOrderModel> {
         val list: MutableList<GetCustomerOrderModel> = mutableListOf()
         val actualOrders = getServerList()
-        CustomerKYC.get<CustomerKYCModel>().forEach { masterList ->
+        CustomerKYC.get().forEach { masterList ->
             actualOrders.forEach { orderList ->
                 if (masterList.nameEng == orderList.name) {
                     list.add(orderList)
@@ -127,7 +127,7 @@ object GetCustomerOrderUtils : Tech4BytesSerializable(
     fun getListOfUnOrderedCustomers(): List<GetCustomerOrderModel> {
         val list: MutableList<GetCustomerOrderModel> = mutableListOf()
         val actualOrders = getServerList()
-        CustomerKYC.get<CustomerKYCModel>().forEach { masterList ->
+        CustomerKYC.get().forEach { masterList ->
             var isInOrderList = false
             actualOrders.forEach { orderList ->
                 if (masterList.nameEng == orderList.name) {
@@ -142,11 +142,11 @@ object GetCustomerOrderUtils : Tech4BytesSerializable(
     }
 
     fun getNumberOfCustomersOrdered(useCache: Boolean): Int {
-        return get<GetCustomerOrderModel>(useCache).size
+        return get(useCache).size
     }
 
     fun getByName(inputName: String): GetCustomerOrderModel? {
-        get<GetCustomerOrderModel>().forEach {
+        get().forEach {
             if (it.name == inputName) {
                 return it
             }

@@ -15,7 +15,7 @@ class CustomerDueData {
                 dueMap[it.customerAccount] = NumberUtils.getIntOrZero(it.balanceDue)
             }
             if (shouldIncludePostDeliveryUpdates) {
-                DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>().forEach {
+                DeliverToCustomerDataHandler.get().forEach {
                     dueMap[it.customerAccount] = NumberUtils.getIntOrZero(it.balanceDue)
                 }
             }

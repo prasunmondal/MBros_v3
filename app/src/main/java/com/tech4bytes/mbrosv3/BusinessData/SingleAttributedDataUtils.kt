@@ -11,7 +11,7 @@ import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ReflectionUtils
 import kotlin.reflect.KMutableProperty1
 
-object SingleAttributedDataUtils : Tech4BytesSerializable(
+object SingleAttributedDataUtils : Tech4BytesSerializable<SingleAttributedDataModel>(
     ProjectConfig.dBServerScriptURL,
     ProjectConfig.get_db_sheet_id(),
     "metadata",
@@ -21,7 +21,7 @@ object SingleAttributedDataUtils : Tech4BytesSerializable(
     getEmptyListIfNoResultsFoundInServer = true) {
 
     fun getRecords(useCache: Boolean = true): SingleAttributedDataModel {
-        return get<SingleAttributedDataModel>(useCache)[0]
+        return get(useCache)[0]
     }
 
     fun getBufferRateInt(): Int {

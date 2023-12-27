@@ -63,7 +63,7 @@ class CustomerData : java.io.Serializable {
     }
 }
 
-object CustomerDataUtils : Tech4BytesSerializable(
+object CustomerDataUtils : Tech4BytesSerializable<CustomerData>(
     ProjectConfig.dBServerScriptURL,
     ProjectConfig.get_db_finalize_sheet_id(),
     "deliveries",
@@ -73,7 +73,7 @@ object CustomerDataUtils : Tech4BytesSerializable(
 ) {
     fun getCustomerNames(): HashSet<String> {
         val customerNames: HashSet<String> = hashSetOf()
-        get<CustomerData>().forEach {
+        get().forEach {
             customerNames.add(it.name)
         }
         return customerNames
@@ -81,7 +81,7 @@ object CustomerDataUtils : Tech4BytesSerializable(
 
 
     fun spoolDeliveringData() {
-        var deliveredData = DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>()
+        var deliveredData = DeliverToCustomerDataHandler.get()
         deliveredData = Sorter.sortByNameList(deliveredData, DeliverToCustomerDataModel::name) as List<DeliverToCustomerDataModel>
 
         val totalProfit = DaySummaryUtils.getDayProfit()
@@ -111,7 +111,7 @@ object CustomerDataUtils : Tech4BytesSerializable(
     }
 
     fun getAllLatestRecords(useCache: Boolean = true): MutableList<CustomerData> {
-        val customerRecords = get<CustomerData>(useCache)
+        val customerRecords = get(useCache)
         customerRecords.sortedBy { it.orderId }
         customerRecords.reversed()
 
@@ -127,7 +127,7 @@ object CustomerDataUtils : Tech4BytesSerializable(
     }
 
     fun getAllLatestRecordsByAccount(useCache: Boolean = true): MutableList<CustomerData> {
-        val customerRecords = get<CustomerData>(useCache)
+        val customerRecords = get(useCache)
         customerRecords.sortedBy { it.orderId }
         customerRecords.reversed()
 
@@ -165,7 +165,7 @@ object CustomerDataUtils : Tech4BytesSerializable(
     }
 
     fun getAllCustomerNames(useCache: Boolean = true): List<String> {
-        return get<CustomerData>(useCache).stream()
+        return get(useCache).stream()
             .filter { d -> d.name.isNotEmpty() }
             .map(CustomerData::name)
             .collect(Collectors.toSet()).toList().sorted()

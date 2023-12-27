@@ -5,7 +5,7 @@ import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 class testCall {
 
     fun t() {
-        var t = UtilClass.get<modelClass>(false)
+        var t = UtilClass.get(false)
         LogMe.log("t size: " + t.size)
         t.forEach {
             LogMe.log("1. data: ${it.t1} , ${it.t2}")

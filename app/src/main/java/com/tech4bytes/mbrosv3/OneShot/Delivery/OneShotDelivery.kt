@@ -278,7 +278,7 @@ class OneShotDelivery : AppCompatActivity() {
             deliveryMapOrderedCustomers[it.name] = deliverCustomersOrders
         }
 
-        DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>().forEach {
+        DeliverToCustomerDataHandler.get().forEach {
             var customerAccount = CustomerKYC.getByName(it.name)!!.customerAccount
             if (customerAccount.isEmpty())
                 customerAccount = it.name
@@ -482,7 +482,7 @@ class OneShotDelivery : AppCompatActivity() {
             saveSingleAttributeData()
             saveDeliveryData()
             SingleAttributedDataUtils.getRecords(false)
-            DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>()
+            DeliverToCustomerDataHandler.get()
             runOnUiThread()
             {
                 saveOneSortDeliveryButton.isEnabled = true

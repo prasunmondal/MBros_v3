@@ -8,7 +8,7 @@ class modelClass : java.io.Serializable {
     var t2: String = ""
 }
 
-object UtilClass : Tech4BytesSerializable(
+object UtilClass : Tech4BytesSerializable<modelClass>(
     ProjectConfig.dBServerScriptURL,
     ProjectConfig.get_db_sheet_id(),
     "testAnd",

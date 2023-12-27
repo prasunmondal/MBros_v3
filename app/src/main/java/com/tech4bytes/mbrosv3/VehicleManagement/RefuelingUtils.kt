@@ -7,7 +7,7 @@ import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 
-object RefuelingUtils : Tech4BytesSerializable(
+object RefuelingUtils : Tech4BytesSerializable<RefuelingModel>(
     ProjectConfig.dBServerScriptURL,
     ProjectConfig.get_db_sheet_id(),
     "fuel",
@@ -15,7 +15,7 @@ object RefuelingUtils : Tech4BytesSerializable(
     appendInServer = true,
     appendInLocal = true) {
     private fun getLatestRecord(useCache: Boolean = true): RefuelingModel {
-        val list = get<RefuelingModel>(useCache)
+        val list = get(useCache)
         return list[list.size - 1]
     }
 

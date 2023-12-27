@@ -98,7 +98,7 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
     var map: MutableMap<String, VerifyElements> = mutableMapOf()
 
     private fun showDeliveryData() {
-        var deliveredData = DeliverToCustomerDataHandler.get<DeliverToCustomerDataModel>()
+        var deliveredData = DeliverToCustomerDataHandler.get()
         var count = 0
         var bundlesCount = 0
         deliveredData = ListUtils.sortListByAttribute(deliveredData, DeliverToCustomerDataModel::id)

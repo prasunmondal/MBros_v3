@@ -31,16 +31,12 @@ object RolesUtils : Tech4BytesSerializable<AppUsersModel>(
         if(list.isEmpty())
             return arrayListOf()
 
-        var list2 = list as ArrayList<AppUsersModel?>
-        list2.sortBy { it!!.id }
-        list2.reversed()
+        var list2 = list as List<AppUsersModel?>
+        list2.sortedBy { it!!.id }
+        list2 = list2.reversed()
 
         list2.forEach {
             LogMe.log(it.toString())
-        }
-
-
-        list2.forEach {
             if (getPhoneId() == it!!.device_id) {
                 return arrayListOf(it as T)
             }

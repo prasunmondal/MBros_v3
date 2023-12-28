@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
-import kotlin.reflect.KFunction
+import kotlin.reflect.KClass
 
 class DataFetchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +38,7 @@ class DataFetchActivity : AppCompatActivity() {
     }
 
     private fun fetchData(container: LinearLayout, executingMethods: ExecutingMethods, nextActivity: Class<*>?) {
-        val map: MutableMap<KFunction<Any>, FetchData> = mutableMapOf()
+        val map: MutableMap<KClass<Any>, FetchData> = mutableMapOf()
 
         if (executingMethods.get().isEmpty() && nextActivity != null) {
             goToNextActivity(nextActivity)
@@ -59,10 +59,12 @@ class DataFetchActivity : AppCompatActivity() {
         }
     }
 
-    private fun run(list: MutableMap<KFunction<Any>, FetchData>, key: KFunction<Any>, useCache: Boolean, nextActivity: Class<*>?) { //uiEntry: View, function: (Boolean) -> (Unit)) {
+    private fun run(list: MutableMap<KClass<Any>, FetchData>, key: KClass<Any>, useCache: Boolean, nextActivity: Class<*>?) { //uiEntry: View, function: (Boolean) -> (Unit)) {
         Thread {
             @Suppress("UNCHECKED_CAST")
-            (key as ((Boolean) -> Unit)).invoke(useCache)
+            val method = key::class.java.getMethod("get")
+            method.invoke(useCache)
+
             runOnUiThread {
                 list[key]!!.view.findViewById<TextView>(R.id.fragment_data_fetch_task_name)?.setTextColor(ContextCompat.getColor(this, R.color.delivery_input_valid))
                 list[key]!!.isCompleted = true

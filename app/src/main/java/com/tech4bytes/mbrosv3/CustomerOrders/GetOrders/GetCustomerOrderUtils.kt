@@ -192,15 +192,15 @@ object GetCustomerOrderUtils : Tech4BytesSerializable<GetCustomerOrderModel>(
         saveToLocal(obj)
     }
 
-    fun saveToLocal(obj: MutableList<GetCustomerOrderUtils>) {
+    fun saveToLocal(obj: MutableList<GetCustomerOrderModel>) {
         CentralCache.put(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, obj)
     }
 
     fun deleteFromLocal() {
-        CentralCache.put(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, listOf<GetCustomerOrderUtils>())
+        CentralCache.put(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, listOf<GetCustomerOrderModel>())
     }
 
-    private fun getFromServer(): List<GetCustomerOrderUtils> {
+    private fun getFromServer(): List<GetCustomerOrderModel> {
         // val waitDialog = ProgressDialog.show(AppContexts.get(), "Please Wait", "লোড হচ্ছে", true)
         val result: GetResponse = Get.builder()
             .scriptId(ProjectConfig.dBServerScriptURL)
@@ -211,7 +211,7 @@ object GetCustomerOrderUtils : Tech4BytesSerializable<GetCustomerOrderModel>(
         // waitDialog!!.dismiss()
         return result.parseToObject(
             result.getRawResponse(),
-            object : TypeToken<ArrayList<GetCustomerOrderUtils>?>() {}.type
+            object : TypeToken<ArrayList<GetCustomerOrderModel>?>() {}.type
         )
     }
 

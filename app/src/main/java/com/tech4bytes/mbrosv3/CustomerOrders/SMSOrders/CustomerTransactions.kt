@@ -55,7 +55,7 @@ class CustomerTransactions : AppCompatActivity() {
 
     private fun showTransactions(name: String) {
         LogMe.startMethod()
-        val list = CustomerDataUtils.get<CustomerData>().filter { it.customerAccount == name }
+        val list = CustomerDataUtils.get().filter { it.customerAccount == name }
         list.forEach {
             LogMe.log(it.toString())
         }

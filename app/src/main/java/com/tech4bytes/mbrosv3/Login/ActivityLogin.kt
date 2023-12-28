@@ -39,6 +39,7 @@ import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
+import java.io.File
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -49,6 +50,8 @@ class ActivityLogin : AppCompatActivity() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val dexOutputDir: File = codeCacheDir
+        dexOutputDir.setReadOnly()
         setContentView(R.layout.activity_fullscreen)
         supportActionBar!!.hide()
         AppContexts.set(this)

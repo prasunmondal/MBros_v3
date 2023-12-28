@@ -1,21 +1,20 @@
 package com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher
 
-import java.lang.reflect.Method
-import kotlin.reflect.KClass
+import kotlin.reflect.KFunction
 
-class ExecutingMethods: java.io.Serializable {
-    private var listOfExecutingMethods: MutableMap<KClass<Any>, ExecutingMethodModel> = mutableMapOf()
+class ExecutingMethods : java.io.Serializable {
+    private var listOfExecutingMethods: MutableMap<KFunction<Any>, ExecutingMethodModel> = mutableMapOf()
 
-    fun add(clazz: KClass<Any>, useCache: Boolean = true) {
-        listOfExecutingMethods[clazz] =
+    fun add(executingMethod: KFunction<Any>, useCache: Boolean = true) {
+        listOfExecutingMethods[executingMethod] =
             ExecutingMethodModel(
-                clazz,
-                DataFetchingInfo.getDescription(clazz),
+                executingMethod,
+                DataFetchingInfo.getDescription(executingMethod),
                 useCache
             )
     }
 
-    fun get(): MutableMap<KClass<Any>, ExecutingMethodModel> {
+    fun get(): MutableMap<KFunction<Any>, ExecutingMethodModel> {
         return listOfExecutingMethods
     }
 }

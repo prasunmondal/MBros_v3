@@ -6,7 +6,6 @@ import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -65,10 +64,9 @@ public class IOObjectToFile {
             is.close();
             fis.close();
             return object;
-        } catch (FileNotFoundException e) {
-            LogMe.log("Data not cached in file.");
         } catch (Exception e) {
-            LogMe.log(e, "Error while reading object from file");
+            System.out.println("Error while reading object from file");
+            System.out.println(e);
         }
 
         return null;

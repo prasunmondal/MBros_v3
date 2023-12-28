@@ -34,7 +34,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_get_order_estimates)
         AppContexts.set(this, this)
-        AppUtils.logError()
+        AppUtils.logError(this)
 
         containerView = findViewById<LinearLayout>(R.id.activity_get_order_estimates__parent_view)
         findViewById<LinearLayout>(R.id.activity_get_order_estimates__order_list_container).removeAllViews()

@@ -49,7 +49,7 @@ class DataFetchActivity : AppCompatActivity() {
                 uiEntry = layoutInflater.inflate(R.layout.activity_data_fetch_fragments, null)
                 uiEntry?.findViewById<TextView>(R.id.fragment_data_fetch_task_name)?.text = DataFetchingInfo.getDescription(it.key)
                 container.addView(uiEntry)
-                map[it.key] = FetchData(uiEntry, DataFetchingInfo.getDescription(it.key), it.key, it.value.useCache, false)
+                map[it.key] = FetchData(uiEntry, DataFetchingInfo.getDescription(it.key), it.value.method, it.value.useCache, false)
             }
 
             map.forEach {
@@ -62,7 +62,8 @@ class DataFetchActivity : AppCompatActivity() {
     private fun run(list: MutableMap<KFunction<Any>, FetchData>, key: KFunction<Any>, useCache: Boolean, nextActivity: Class<*>?) { //uiEntry: View, function: (Boolean) -> (Unit)) {
         Thread {
             @Suppress("UNCHECKED_CAST")
-            (key as ((Boolean) -> Unit)).invoke(useCache)
+            list[key]!!.executingMethod.invoke()
+//            (key as ((Boolean) -> Unit)).invoke(useCache)
             runOnUiThread {
                 list[key]!!.view.findViewById<TextView>(R.id.fragment_data_fetch_task_name)?.setTextColor(ContextCompat.getColor(this, R.color.delivery_input_valid))
                 list[key]!!.isCompleted = true

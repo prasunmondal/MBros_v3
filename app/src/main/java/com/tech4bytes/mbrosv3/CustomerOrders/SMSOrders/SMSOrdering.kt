@@ -42,7 +42,7 @@ class SMSOrdering : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_smsordering)
         AppContexts.set(this)
-        AppUtils.logError()
+        AppUtils.logError(this)
         supportActionBar!!.hide()
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)

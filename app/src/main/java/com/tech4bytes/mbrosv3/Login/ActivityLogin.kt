@@ -55,14 +55,14 @@ class ActivityLogin : AppCompatActivity() {
         setContentView(R.layout.activity_fullscreen)
         supportActionBar!!.hide()
         AppContexts.set(this)
-        AppUtils.logError()
+        AppUtils.logError(this)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
-        val roles = RolesUtils.getAppUser()
-        LogMe.log("Got Role: $roles")
         updateAppVerOnUI()
         updateWelcomeDetails()
         Thread {
+            val roles = RolesUtils.getAppUser()
+            LogMe.log("Got Role: $roles")
             val container = findViewById<LinearLayout>(R.id.activity_login_roles_container)
             if (UserRoleUtils.getUserRoles().isEmpty()) {
                 runOnUiThread {

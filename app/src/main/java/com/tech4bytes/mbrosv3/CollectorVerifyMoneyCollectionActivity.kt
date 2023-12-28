@@ -32,7 +32,7 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collector_verify_money_collection)
         AppContexts.set(this, this)
-        AppUtils.logError()
+        AppUtils.logError(this)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         val builder = VmPolicy.Builder()

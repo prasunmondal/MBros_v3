@@ -26,7 +26,7 @@ class ActivityDeliveringLoad : AppCompatActivity() {
         setContentView(R.layout.activity_delivering_load)
         view = findViewById(R.id.activity_delivering_load)
         AppContexts.set(this, this)
-        AppUtils.logError()
+        AppUtils.logError(this)
 
         addListeners()
         showLoadOrderData()

@@ -21,7 +21,7 @@ class ActivityRefueling : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_refueling)
         AppContexts.set(this, this)
-        AppUtils.logError()
+        AppUtils.logError(this)
 
         mainContainer = findViewById<ConstraintLayout>(R.id.activity_refueling_container)
 

@@ -34,7 +34,7 @@ class MoneyCounter : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_money_counter)
         AppContexts.set(this)
-        AppUtils.logError()
+        AppUtils.logError(this)
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 

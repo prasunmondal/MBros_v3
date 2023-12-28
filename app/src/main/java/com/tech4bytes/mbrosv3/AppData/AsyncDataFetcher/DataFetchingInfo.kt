@@ -2,7 +2,6 @@ package com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher
 
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstantsUtil
-import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
@@ -39,50 +38,58 @@ class DataFetchingInfo {
                 ActivityAuthEnums.ADMIN,
                 ActivityAuthEnums.ONE_SHOT_DELIVERY,
                 -> {
-                    executingMethods.add(SingleAttributedDataUtils::get)
-                    executingMethods.add(CustomerKYC::get)
-                    executingMethods.add(GetCustomerOrderUtils::get)
-                    executingMethods.add(CustomerDataUtils::get)
-                    executingMethods.add(DeliverToCustomerDataHandler::get)
-                    executingMethods.add(DaySummaryUtils::get)
-                    executingMethods.add(RefuelingUtils::get)
-                    executingMethods.add(AppConstantsUtil::get)
+                    executingMethods.add(SingleAttributedDataUtils::get, {
+                        LogMe.log("Executing SingleAttributedDataUtils.get()")
+                        listOf()
+//                        SingleAttributedDataUtils.get()
+                    })
+                    executingMethods.add(CustomerKYC::get, {
+                        LogMe.log("Executing CustomerKYC.get()")
+                        listOf()
+//                        CustomerKYC.get()
+                    })
+//                    executingMethods.add(GetCustomerOrderUtils::get)
+//                    executingMethods.add(CustomerDataUtils::get)
+//                    executingMethods.add(DeliverToCustomerDataHandler::get)
+//                    executingMethods.add(DaySummaryUtils::get)
+//                    executingMethods.add(RefuelingUtils::get)
+//                    executingMethods.add(AppConstantsUtil::get)
                 }
-                ActivityAuthEnums.DELIVERY -> {
-                    executingMethods.add(CustomerKYC::get)
-                    executingMethods.add(GetCustomerOrderUtils::get)
-                    executingMethods.add(DeliverToCustomerDataHandler::get)
-                    executingMethods.add(CustomerDataUtils::get)
-                }
-                ActivityAuthEnums.BALANCE_VIEW -> {
-                    executingMethods.add(CustomerKYC::get)
-                    executingMethods.add(CustomerDataUtils::get)
-                    executingMethods.add(DeliverToCustomerDataHandler::get)
-                }
-                ActivityAuthEnums.ORDER_COLLECTOR -> {
-                    executingMethods.add(SingleAttributedDataUtils::getRecords)
-                    executingMethods.add(CustomerKYC::get)
-                    executingMethods.add(GetCustomerOrderUtils::get)
-                    executingMethods.add(CustomerDataUtils::get)
-                }
-                ActivityAuthEnums.LOAD_INFORMATION -> {
-                    executingMethods.add(SingleAttributedDataUtils::getRecords, true)
-                    executingMethods.add(DaySummaryUtils::get, true)
-                }
-                ActivityAuthEnums.MONEY_CALCULATOR -> {
-                    executingMethods.add(SingleAttributedDataUtils::getRecords)
-                    executingMethods.add(DeliverToCustomerDataHandler::get)
-                    executingMethods.add(AppConstants::preFetch)
-                }
-                ActivityAuthEnums.SMS_ORDERING -> {
-                    executingMethods.add(CustomerKYC::get)
-                    executingMethods.add(AppConstants::preFetch)
-                    executingMethods.add(DeliverToCustomerDataHandler::get)
-                    executingMethods.add(CustomerDataUtils::get)
-                }
-                ActivityAuthEnums.CUSTOMER_TRANSACTIONS -> {
-                    executingMethods.add(CustomerDataUtils::get)
-                }
+//                ActivityAuthEnums.DELIVERY -> {
+//                    executingMethods.add(CustomerKYC::get)
+//                    executingMethods.add(GetCustomerOrderUtils::get)
+//                    executingMethods.add(DeliverToCustomerDataHandler::get)
+//                    executingMethods.add(CustomerDataUtils::get)
+//                }
+//                ActivityAuthEnums.BALANCE_VIEW -> {
+//                    executingMethods.add(CustomerKYC::get)
+//                    executingMethods.add(CustomerDataUtils::get)
+//                    executingMethods.add(DeliverToCustomerDataHandler::get)
+//                }
+//                ActivityAuthEnums.ORDER_COLLECTOR -> {
+//                    executingMethods.add(SingleAttributedDataUtils::getRecords)
+//                    executingMethods.add(CustomerKYC::get)
+//                    executingMethods.add(GetCustomerOrderUtils::get)
+//                    executingMethods.add(CustomerDataUtils::get)
+//                }
+//                ActivityAuthEnums.LOAD_INFORMATION -> {
+//                    executingMethods.add(SingleAttributedDataUtils::getRecords, true)
+//                    executingMethods.add(DaySummaryUtils::get, true)
+//                }
+//                ActivityAuthEnums.MONEY_CALCULATOR -> {
+//                    executingMethods.add(SingleAttributedDataUtils::getRecords)
+//                    executingMethods.add(DeliverToCustomerDataHandler::get)
+//                    executingMethods.add(AppConstants::preFetch)
+//                }
+//                ActivityAuthEnums.SMS_ORDERING -> {
+//                    executingMethods.add(CustomerKYC::get)
+//                    executingMethods.add(AppConstants::preFetch)
+//                    executingMethods.add(DeliverToCustomerDataHandler::get)
+//                    executingMethods.add(CustomerDataUtils::get)
+//                }
+//                ActivityAuthEnums.CUSTOMER_TRANSACTIONS -> {
+//                    executingMethods.add(CustomerDataUtils::get)
+//                }
                 else -> {}
             }
             return executingMethods

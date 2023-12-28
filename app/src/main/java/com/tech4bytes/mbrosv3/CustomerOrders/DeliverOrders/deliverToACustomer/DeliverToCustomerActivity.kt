@@ -38,7 +38,7 @@ class DeliverToCustomerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_delivering_deliver)
         AppContexts.set(this, this)
-        AppUtils.logError()
+        AppUtils.logError(this)
         mainView = findViewById(R.id.activity_delivering_deliver_main)
 
         val inputName = intent.extras!!.get("name") as String

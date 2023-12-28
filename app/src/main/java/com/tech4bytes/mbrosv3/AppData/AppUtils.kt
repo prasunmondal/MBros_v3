@@ -1,6 +1,8 @@
 package com.tech4bytes.mbrosv3.AppData
 
+import android.app.Application
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import com.prasunmondal.postjsontosheets.clients.post.raw.PostSequence
@@ -34,7 +36,7 @@ class AppUtils {
             return sb.toString()
         }
 
-        fun logError() {
+        fun logError(context: Context) {
             Thread.setDefaultUncaughtExceptionHandler { thread, e ->
 
                 val str = """
@@ -45,7 +47,7 @@ class AppUtils {
                     ${getStackTrace(e as Exception)}< EXCEPTION END >
                     """.trimIndent()
 
-                Toast.makeText(AppContexts.get(), "Error Occurred. Logging to sheet", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Error Occurred. Logging to sheet", Toast.LENGTH_SHORT).show()
                 PostSequence.builder()
                     .scriptId(ProjectConfig.dBServerScriptURL)
                     .sheetId(ProjectConfig.get_db_sheet_id())

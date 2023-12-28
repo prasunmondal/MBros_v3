@@ -24,7 +24,7 @@ class CustomerTransactions : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_transactions)
         AppContexts.set(this)
-        AppUtils.logError()
+        AppUtils.logError(this)
 
         listCustomerNames()
     }

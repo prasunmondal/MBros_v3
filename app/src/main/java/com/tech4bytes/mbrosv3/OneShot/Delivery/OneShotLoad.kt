@@ -46,7 +46,7 @@ class OneShotLoad : AppCompatActivity() {
         setContentView(R.layout.activity_one_shot_load)
         supportActionBar!!.hide()
         AppContexts.set(this)
-        AppUtils.logError()
+        AppUtils.logError(this)
         initializeVariables()
         initializeUI()
     }

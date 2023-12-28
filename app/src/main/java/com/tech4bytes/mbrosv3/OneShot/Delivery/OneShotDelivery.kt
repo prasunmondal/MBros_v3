@@ -64,7 +64,7 @@ class OneShotDelivery : AppCompatActivity() {
         setContentView(R.layout.activity_one_shot_delivery)
 
         AppContexts.set(this)
-        AppUtils.logError()
+        AppUtils.logError(this)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,

@@ -37,12 +37,7 @@ class CustomerDueData {
         }
 
         fun getLastFinalizedDue(name: String, useCache: Boolean = true): String {
-            val customerRecords = CustomerDataUtils.getAllLatestRecords(useCache)
-            customerRecords.forEach {
-                if (it.customerAccount == name)
-                    return it.balanceDue
-            }
-            return "0"
+            return NumberUtils.getIntOrBlank(getBalance(name, false, false).toString())
         }
     }
 }

@@ -127,9 +127,9 @@ object CustomerDataUtils : Tech4BytesSerializable<CustomerData>(
     }
 
     fun getAllLatestRecordsByAccount(useCache: Boolean = true): MutableList<CustomerData> {
-        val customerRecords = get(useCache)
-        customerRecords.sortedBy { it.orderId }
-        customerRecords.reversed()
+        var customerRecords = get(useCache)
+        customerRecords = customerRecords.sortedBy { it.orderId }
+        customerRecords = customerRecords.reversed()
 
         val addedNames = mutableListOf<String>()
         val latestRecordsList = mutableListOf<CustomerData>()

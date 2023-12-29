@@ -8,8 +8,8 @@ import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 
 
 class CustomerDueData {
-    companion object {
 
+    companion object {
         fun getBalance(shouldIncludePostDeliveryUpdates: Boolean = true, includeStagedPayments: Boolean = true): MutableMap<String, Int> {
             val dueMap: MutableMap<String, Int> = mutableMapOf()
             CustomerDataUtils.getAllLatestRecordsByAccount().forEach {
@@ -36,8 +36,12 @@ class CustomerDueData {
             return getBalance(shouldIncludePostDeliveryUpdates, includeStagedPayments)[name] ?: 0
         }
 
+        var getLastFinalizedDue: MutableMap<String, Int> = mutableMapOf()
         fun getLastFinalizedDue(name: String, useCache: Boolean = true): String {
-            return NumberUtils.getIntOrBlank(getBalance(name, false, false).toString())
+            if(getLastFinalizedDue.isEmpty()) {
+                getLastFinalizedDue = getBalance(false, false)
+            }
+            return NumberUtils.getIntOrZero(getLastFinalizedDue[name].toString()).toString()
         }
     }
 }

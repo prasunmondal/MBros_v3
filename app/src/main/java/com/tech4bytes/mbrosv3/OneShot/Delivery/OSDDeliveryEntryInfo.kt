@@ -53,9 +53,11 @@ class OSDDeliveryEntryInfo {
             balanceElement.text = value.prevDue
             val deliveryRecord = DeliverToCustomerActivity.getDeliveryRecord(value.name)
             paidOnlineElement.text = NumberUtils.getIntOrBlank(StagedPaymentUtils.getStagedPayments(value.name).paidAmount)
+
             if (deliveryRecord != null) {
                 pcElement.setText(NumberUtils.getIntOrBlank(deliveryRecord.deliveredPc))
                 kgElement.text = NumberUtils.getDoubleOrBlank(deliveryRecord.deliveredKg)
+                paidOnlineElement.text = NumberUtils.getIntOrBlank(deliveryRecord.paidOnline)
                 paidElement.text = (getIntOrZero(deliveryRecord.paidCash) + getIntOrZero(paidOnlineElement.text.toString())).toString()
                 paidCashElement.text = NumberUtils.getIntOrBlank(deliveryRecord.paidCash)
                 val pcHintText = if (getIntOrZero(deliveryRecord.orderedPc) == 0) "pc" else deliveryRecord.orderedPc

@@ -10,6 +10,7 @@ import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 class CustomerDueData {
 
     companion object {
+        var getLastFinalizedDue: MutableMap<String, Int> = mutableMapOf()
         fun getBalance(shouldIncludePostDeliveryUpdates: Boolean = true, includeStagedPayments: Boolean = true): MutableMap<String, Int> {
             val dueMap: MutableMap<String, Int> = mutableMapOf()
             CustomerDataUtils.getAllLatestRecordsByAccount().forEach {
@@ -35,8 +36,7 @@ class CustomerDueData {
         fun getBalance(name: String, shouldIncludePostDeliveryUpdates: Boolean = true, includeStagedPayments: Boolean = true): Int {
             return getBalance(shouldIncludePostDeliveryUpdates, includeStagedPayments)[name] ?: 0
         }
-
-        var getLastFinalizedDue: MutableMap<String, Int> = mutableMapOf()
+        
         fun getLastFinalizedDue(name: String, useCache: Boolean = true): String {
             if(getLastFinalizedDue.isEmpty()) {
                 getLastFinalizedDue = getBalance(false, false)

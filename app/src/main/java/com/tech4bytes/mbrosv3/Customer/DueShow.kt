@@ -139,7 +139,7 @@ class DueShow : AppCompatActivity() {
             nameElement.text = it.name
             amountElement.text = currentBalance.toString()
             amountElement.setTextColor(ContextCompat.getColor(this, balanceTextColor))
-            showDeltas(it.name, currentBalance!!, dueChangeElement)
+            showDeltas(it.name, NumberUtils.getIntOrZero(currentBalance.toString()), dueChangeElement)
 
             listContainer.addView(entry)
         }

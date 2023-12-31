@@ -22,7 +22,7 @@ class SMSUtils {
             val SENT = "SMS_SENT"
             val DELIVERED = "SMS_DELIVERED"
 
-            val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) PendingIntent.FLAG_MUTABLE else PendingIntent.FLAG_ONE_SHOT
+            val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) (PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT) else PendingIntent.FLAG_ONE_SHOT
 
             val sentPI = PendingIntent.getBroadcast(AppContexts.get(), 0, Intent(SENT), flag)
             val deliveredPI = PendingIntent.getBroadcast(AppContexts.get(), 0, Intent(DELIVERED), flag)
@@ -69,8 +69,8 @@ class SMSUtils {
                 }
             }
 
-            context.registerReceiver(broadCastReceiver, IntentFilter(SENT))
-            context.registerReceiver(broadCastReceiverDelivered, IntentFilter(DELIVERED))
+//            context.registerReceiver(broadCastReceiver, IntentFilter(SENT))
+//            context.registerReceiver(broadCastReceiverDelivered, IntentFilter(DELIVERED))
             LogMe.log(smsText)
             sms.sendTextMessage(smsNumber, null, smsText, sentPI, deliveredPI)
         }

@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
@@ -255,6 +256,7 @@ class OneShotDelivery : AppCompatActivity() {
         updateRefuelingUIDetails()
     }
 
+    @RequiresApi(34)
     private fun populateDeliveryMap() {
         deliveryMapOrderedCustomers = mutableMapOf()
         val listOfOrderedCustomers = GetCustomerOrderUtils.getListOfOrderedCustomers()
@@ -595,6 +597,13 @@ class OneShotDelivery : AppCompatActivity() {
         allDeliveredRecords.putAll(deliveryMapOrderedCustomers)
         allDeliveredRecords.putAll(deliveryMapUnOrderedCustomers)
 
+        allDeliveredRecords.forEach { (s, deliveryObj) ->
+            val referCalcObj = BalanceReferralCalculations.getTotalDiscountFor(deliveryObj.name)
+            deliveryObj.discount = referCalcObj.transferAmount.toString()
+            deliveryObj.balanceDue = referCalcObj.balanceOfReferered
+            deliveryObj.notes += referCalcObj.message
+        }
+
         // save locally
         allDeliveredRecords.forEach {
             DeliverToCustomerDataHandler.saveToLocal(it.value)
@@ -602,9 +611,9 @@ class OneShotDelivery : AppCompatActivity() {
 
         // save to server
         allDeliveredRecords.forEach {
-            LogMe.log(it.value.name + ":: deliveredKg:" + it.value.deliveredKg)
-            LogMe.log(it.value.name + ":: paid:" + it.value.paid)
-            if (NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0.0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
+//            LogMe.log(it.value.name + ":: deliveredKg:" + it.value.deliveredKg)
+//            LogMe.log(it.value.name + ":: paid:" + it.value.paid)
+            if (shouldRecordThisTransaction(it)) {
                 it.value.deliveryStatus = "DELIVERED"
                 DeliverToCustomerDataHandler.saveToServer(it.value)
                 if (eachStep + 10 < 100) {
@@ -616,6 +625,12 @@ class OneShotDelivery : AppCompatActivity() {
             }
         }
         runOnUiThread { setSaveProgressBar(100) }
+    }
+
+    private fun shouldRecordThisTransaction(it: Map.Entry<String, DeliverToCustomerDataModel>): Boolean {
+        return NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0.0
+                || NumberUtils.getIntOrZero(it.value.paid) > 0
+                || NumberUtils.getIntOrZero(it.value.discount) != 0
     }
 
     fun onClickToggleProfitViewUI(view: View) {

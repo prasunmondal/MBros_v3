@@ -19,5 +19,6 @@ data class DeliverToCustomerDataModel(
     var paid: String = "",
     var balanceDue: String = "",
     var deliveryStatus: String = "",
+    var discount: String = "",
     var notes: String = "",
 ) : java.io.Serializable

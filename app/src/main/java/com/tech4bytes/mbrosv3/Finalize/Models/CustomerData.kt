@@ -36,6 +36,7 @@ class CustomerData : java.io.Serializable {
     var profit = ""
     var profitPercent = ""
     var notes = ""
+    var discount = ""
 
     constructor(orderId: String, timestamp: String, name: String, deliveredPc: String, deliveredKg: String, rate: String, prevAmount: String, deliveredAmount: String, totalAmount: String, paidCash: String, paidOnline: String, paid: String, customerAccount: String, balanceDue: String, profit: String, profitPercent: String, notes: String = "") {
         this.orderId = orderId

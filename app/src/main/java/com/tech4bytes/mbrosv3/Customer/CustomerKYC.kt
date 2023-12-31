@@ -2,6 +2,7 @@ package com.tech4bytes.mbrosv3.Customer
 
 import com.google.gson.reflect.TypeToken
 import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
+import com.tech4bytes.mbrosv3.OneShot.Delivery.ReferralType
 import com.tech4bytes.mbrosv3.ProjectConfig
 
 data class CustomerKYCModel(
@@ -18,6 +19,8 @@ data class CustomerKYCModel(
     var showBalanceView: Boolean,
     var smsNumber: String = "",
     var smsText: String = "",
+    var referralType: ReferralType = ReferralType.NONE,
+    var referralInput: String = ""
 ) : java.io.Serializable
 
 object CustomerKYC : Tech4BytesSerializable<CustomerKYCModel>(

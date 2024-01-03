@@ -10,7 +10,7 @@ class BalanceCalculatingObj {
     var to: String
     var referral_type: ReferralType
     var transferAmount: Int = 0
-    var balanceOfReferered = ""
+    var balanceOfReferered = 0
     var message: String = ""
 
     constructor(from: String, to: String, referral_type: ReferralType, transferAmount: Int) {
@@ -37,24 +37,26 @@ object BalanceReferralCalculations {
 
     val referralBalanceMap: MutableMap<String, BalanceCalculatingObj> = mutableMapOf()
 
-    fun calculate(deliverObjOfCustomer: DeliverToCustomerDataModel): BalanceCalculatingObj {
+    fun calculate(deliverObjOfCustomer: DeliverToCustomerDataModel) {
         val customerDetails = CustomerKYC.getByName(deliverObjOfCustomer.name)!!
         val referralType = customerDetails.referralType
+        if (referralType == ReferralType.NONE)
+            return
         var transferAmount = 0
         val result = BalanceCalculatingObj(deliverObjOfCustomer.name, deliverObjOfCustomer.customerAccount, referralType, transferAmount)
-
+        result.to = customerDetails.customerAccount
 
         when (referralType) {
             ReferralType.NONE -> {
                 transferAmount = 0
-                result.balanceOfReferered = deliverObjOfCustomer.balanceDue
+                result.balanceOfReferered = NumberUtils.getIntOrZero(deliverObjOfCustomer.balanceDue)
             }
             ReferralType.BALANCE_TRANSFER -> {
                 transferAmount = (NumberUtils.getIntOrZero(deliverObjOfCustomer.prevDue)
                         + NumberUtils.getIntOrZero(deliverObjOfCustomer.todaysAmount)
                         - NumberUtils.getIntOrZero(deliverObjOfCustomer.paid))
                 result.message = "Transferred Rs $transferAmount from ${result.from} to ${result.to} for rule ${result.referral_type}."
-                result.balanceOfReferered = "0"
+                result.balanceOfReferered = 0
             }
             ReferralType.CREDIT_PER_KG_SALE -> {
                 LogMe.log("deliverObjOfCustomer.deliveredKg: " + deliverObjOfCustomer.deliveredKg)
@@ -67,13 +69,13 @@ object BalanceReferralCalculations {
                     (NumberUtils.getDoubleOrZero(deliverObjOfCustomer.deliveredKg)
                             * NumberUtils.getIntOrZero(customerDetails.referralInput)).toString()).toString())
                 LogMe.log("transferAmount: " + transferAmount)
-                result.balanceOfReferered = deliverObjOfCustomer.balanceDue
+                result.balanceOfReferered = NumberUtils.getIntOrZero(deliverObjOfCustomer.balanceDue)
                 result.message = "Transferred Rs $transferAmount from ${result.from} to ${result.to} for rule ${result.referral_type}."
             }
         }
         result.transferAmount = transferAmount
         referralBalanceMap.put("${deliverObjOfCustomer.customerAccount} - ${deliverObjOfCustomer.name}", result)
-        return result
+//        return result
     }
 
     fun getTotalDiscountFor(name: String): BalanceCalculatingObj {

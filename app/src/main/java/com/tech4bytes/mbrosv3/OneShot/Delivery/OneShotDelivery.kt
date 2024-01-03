@@ -1,5 +1,6 @@
 package com.tech4bytes.mbrosv3.OneShot.Delivery
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Rect
@@ -60,6 +61,7 @@ class OneShotDelivery : AppCompatActivity() {
     private lateinit var loadAvgWtElement: TextView
 
 
+    @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_one_shot_delivery)
@@ -95,6 +97,7 @@ class OneShotDelivery : AppCompatActivity() {
         }.start()
     }
 
+    @SuppressLint("NewApi")
     private fun populateCustomerListDropdown() {
         val allCustomers = ListUtils.getAllPossibleValuesList(CustomerKYC.get(), CustomerKYCModel::nameEng).toList()
         val customersInUI = ListUtils.getAllPossibleValuesList(deliveryMapOrderedCustomers.values.toList(), DeliverToCustomerDataModel::name).toList()
@@ -280,7 +283,8 @@ class OneShotDelivery : AppCompatActivity() {
             deliveryMapOrderedCustomers[it.name] = deliverCustomersOrders
         }
 
-        DeliverToCustomerDataHandler.get().forEach {
+        val t = DeliverToCustomerDataHandler.get()
+        t.forEach {
             var customerAccount = CustomerKYC.getByName(it.name)!!.customerAccount
             if (customerAccount.isEmpty())
                 customerAccount = it.name
@@ -325,6 +329,7 @@ class OneShotDelivery : AppCompatActivity() {
         val uiFragment = OSDDeliveryEntryInfo.createOrderCard(this, key)
         OSDDeliveryEntryInfo.setListeners(this, key)
         showOrder(key, uiFragment)
+        BalanceReferralCalculations.calculate(key)
     }
 
     private fun addToUnOrderedMap(name: String): DeliverToCustomerDataModel {
@@ -368,6 +373,7 @@ class OneShotDelivery : AppCompatActivity() {
         listOfCustomers.forEach { order ->
             val entry = OSDDeliveryEntryInfo.createOrderCard(this, order.value)
             entryMap[order.value] = entry
+            BalanceReferralCalculations.calculate(order.value)
         }
 
         listOfCustomers.forEach { order ->
@@ -467,6 +473,7 @@ class OneShotDelivery : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("NewApi")
     fun onClickSaveOneShotDeliveryDataBtn(view: View) {
         Thread {
             runOnUiThread()
@@ -600,19 +607,27 @@ class OneShotDelivery : AppCompatActivity() {
         allDeliveredRecords.forEach { (s, deliveryObj) ->
             val referCalcObj = BalanceReferralCalculations.getTotalDiscountFor(deliveryObj.name)
             deliveryObj.discount = referCalcObj.transferAmount.toString()
-            deliveryObj.balanceDue = referCalcObj.balanceOfReferered
+            deliveryObj.balanceDue = (NumberUtils.getIntOrZero(deliveryObj.balanceDue) - referCalcObj.balanceOfReferered).toString()
             deliveryObj.notes += referCalcObj.message
+
+            LogMe.log("wqerty11: " + deliveryObj.toString())
+        }
+
+        val filteredListToSave = filterListToGetDataToSave(allDeliveredRecords)
+
+        filteredListToSave.forEach { (s, deliveryObj) ->
+            LogMe.log("wqerty22: " + deliveryObj.toString())
         }
 
         // save locally
-        allDeliveredRecords.forEach {
-            DeliverToCustomerDataHandler.saveToLocal(it.value)
+        filteredListToSave.forEach {
+            if (shouldRecordThisTransaction(it)) {
+                DeliverToCustomerDataHandler.saveToLocal(it.value)
+            }
         }
 
         // save to server
-        allDeliveredRecords.forEach {
-//            LogMe.log(it.value.name + ":: deliveredKg:" + it.value.deliveredKg)
-//            LogMe.log(it.value.name + ":: paid:" + it.value.paid)
+        filteredListToSave.forEach {
             if (shouldRecordThisTransaction(it)) {
                 it.value.deliveryStatus = "DELIVERED"
                 DeliverToCustomerDataHandler.saveToServer(it.value)
@@ -625,6 +640,10 @@ class OneShotDelivery : AppCompatActivity() {
             }
         }
         runOnUiThread { setSaveProgressBar(100) }
+    }
+
+    private fun filterListToGetDataToSave(map: MutableMap<String, DeliverToCustomerDataModel>): Map<String, DeliverToCustomerDataModel> {
+        return map.filter { x -> shouldRecordThisTransaction(x) }
     }
 
     private fun shouldRecordThisTransaction(it: Map.Entry<String, DeliverToCustomerDataModel>): Boolean {

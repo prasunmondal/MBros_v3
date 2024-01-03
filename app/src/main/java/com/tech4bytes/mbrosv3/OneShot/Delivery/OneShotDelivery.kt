@@ -190,9 +190,6 @@ class OneShotDelivery : AppCompatActivity() {
         refuelingQtyElement.doOnTextChanged { text, start, before, count ->
             updateRefuelingUIDetails()
         }
-
-        val record = SingleAttributedDataUtils.getRecords()
-
     }
 
 
@@ -360,7 +357,7 @@ class OneShotDelivery : AppCompatActivity() {
             OSDDeliveryEntryInfo.updateEntry(this, key, value, false)
             findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).addView(value)
         }
-        updateTotals(this)
+        updateTotals(this, false)
     }
 
 
@@ -413,7 +410,7 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     companion object {
-        fun updateTotals(context: OneShotDelivery) {
+        fun updateTotals(context: OneShotDelivery, needsSave: Boolean = true) {
             val metadataObj = SingleAttributedDataUtils.getRecords()
             val totalPcElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_pc)
             val totalKgElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_kg)
@@ -459,7 +456,9 @@ class OneShotDelivery : AppCompatActivity() {
             totalShortageElement.text = "▼ ${"%.3f".format(shortage)} kg"
             totalCollectedElement.text = "$sumAmountCollected"
             totalBalanceDueElement.text = "$sumBalanceDue"
-            SingleAttributedDataUtils.saveToLocal(metadataObj)
+
+            if(needsSave)
+                SingleAttributedDataUtils.saveToLocal(metadataObj)
 
             context.updateHiddenData()
         }

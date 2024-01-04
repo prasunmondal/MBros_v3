@@ -48,7 +48,7 @@ abstract class Tech4BytesSerializable<T : Any> : java.io.Serializable {
     @RequiresApi(34)
     fun get(useCache: Boolean = true, getEmptyListIfEmpty: Boolean = false, filterName: String = "default"): List<T> {
         val cacheKey = getFilterName(filterName)
-        LogMe.log("Getting records")
+        LogMe.log("Getting records:")
         val cacheResults = try {
             CentralCache.get<T>(AppContexts.get(), cacheKey, useCache)
         } catch (ex: ClassCastException) {

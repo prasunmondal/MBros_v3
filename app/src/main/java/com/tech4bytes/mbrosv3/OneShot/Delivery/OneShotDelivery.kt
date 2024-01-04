@@ -607,7 +607,7 @@ class OneShotDelivery : AppCompatActivity() {
 
         allDeliveredRecords.forEach { (s, deliveryObj) ->
             val referCalcObj = BalanceReferralCalculations.getTotalDiscountFor(deliveryObj.name)
-            deliveryObj.discount = referCalcObj.transferAmount.toString()
+            deliveryObj.adjustments = referCalcObj.transferAmount.toString()
             deliveryObj.balanceDue = (NumberUtils.getIntOrZero(deliveryObj.balanceDue) - referCalcObj.balanceOfReferered).toString()
             deliveryObj.notes += referCalcObj.message
 
@@ -646,7 +646,7 @@ class OneShotDelivery : AppCompatActivity() {
     private fun shouldRecordThisTransaction(it: Map.Entry<String, DeliverToCustomerDataModel>): Boolean {
         return NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0.0
                 || NumberUtils.getIntOrZero(it.value.paid) > 0
-                || NumberUtils.getIntOrZero(it.value.discount) != 0
+                || NumberUtils.getIntOrZero(it.value.adjustments) != 0
     }
 
     fun onClickToggleProfitViewUI(view: View) {

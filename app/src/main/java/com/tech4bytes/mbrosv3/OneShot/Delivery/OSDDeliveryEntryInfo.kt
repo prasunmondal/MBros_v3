@@ -189,7 +189,9 @@ class OSDDeliveryEntryInfo {
 
             val balanceElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
 
-            balanceElement.text = getDueBalance(order, entry).toString()
+            order.balanceDue = getDueBalance(order, entry).toString()
+            balanceElement.text = order.balanceDue
+            BalanceReferralCalculations.calculate(order)
             if (updateTotals) OneShotDelivery.updateTotals(context)
             updateDetailedInfo(order, entry)
 

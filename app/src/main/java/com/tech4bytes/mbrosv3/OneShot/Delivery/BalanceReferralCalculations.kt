@@ -82,11 +82,12 @@ object BalanceReferralCalculations {
     fun getTotalDiscountFor(name: String): BalanceCalculatingObj {
         LogMe.log("Totalling discounts for: $name")
         val result = BalanceCalculatingObj("TOTAL", name, ReferralType.NONE, 0)
+        result.message = ""
         referralBalanceMap.forEach { (key, balanceCalculatingObj) ->
             if(balanceCalculatingObj.to == name) {
                 LogMe.log("--- Selected: $balanceCalculatingObj")
                 result.transferAmount += balanceCalculatingObj.transferAmount
-                result.message = balanceCalculatingObj.message
+                result.message += balanceCalculatingObj.message + "\n"
             } else {
                 LogMe.log("Not Selected: $balanceCalculatingObj")
             }

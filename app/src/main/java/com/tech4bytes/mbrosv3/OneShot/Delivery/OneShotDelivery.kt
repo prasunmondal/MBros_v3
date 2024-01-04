@@ -372,7 +372,6 @@ class OneShotDelivery : AppCompatActivity() {
         listOfCustomers.forEach { order ->
             val entry = OSDDeliveryEntryInfo.createOrderCard(this, order.value)
             entryMap[order.value] = entry
-            BalanceReferralCalculations.calculate(order.value)
         }
 
         listOfCustomers.forEach { order ->

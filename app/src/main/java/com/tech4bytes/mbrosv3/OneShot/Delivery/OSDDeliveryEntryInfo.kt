@@ -63,7 +63,7 @@ class OSDDeliveryEntryInfo {
                 val pcHintText = if (getIntOrZero(deliveryRecord.orderedPc) == 0) "pc" else deliveryRecord.orderedPc
                 pcElement.hint = pcHintText
             }
-            updatePaidElement(entry, value)
+            updatePaidElement(entry)
 
             if (SendSMSDetailsUtils.getSendSMSDetailsNumber(value.name) != null) {
                 sendSMSBtn.visibility = View.VISIBLE
@@ -121,16 +121,14 @@ class OSDDeliveryEntryInfo {
 
             kgElement.doOnTextChanged { text, start, before, count ->
                 updateEntry(context as OneShotDelivery, value, entry)
-                BalanceReferralCalculations.calculate(value)
             }
 
             paidCashElement.doOnTextChanged { text, start, before, count ->
-                updatePaidElement(entry, value)
-                BalanceReferralCalculations.calculate(value)
+                updatePaidElement(entry)
             }
 
             paidOnlineElement.doOnTextChanged { text, start, before, count ->
-                updatePaidElement(entry, value)
+                updatePaidElement(entry)
             }
 
             paidElement.doOnTextChanged { text, start, before, count ->
@@ -147,13 +145,12 @@ class OSDDeliveryEntryInfo {
             }
         }
 
-        private fun updatePaidElement(entry: View, value: DeliverToCustomerDataModel) {
+        private fun updatePaidElement(entry: View) {
             val paidElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid)
             val paidOnlineElement = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidOnline).text.toString()
             val paidCashElement = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidCash).text.toString()
             val totalPaid = getIntOrZero(paidOnlineElement) + getIntOrZero(paidCashElement)
             paidElement.text = NumberUtils.getIntOrBlank(totalPaid.toString())
-            BalanceReferralCalculations.calculate(value)
         }
 
         fun fragmentUpdateCustomerWiseRateView(context: Context, value: DeliverToCustomerDataModel, entry: View) {
@@ -228,7 +225,7 @@ class OSDDeliveryEntryInfo {
 
         private fun getDueBalance(order: DeliverToCustomerDataModel, entry: View): Int {
             val prevBal = order.prevDue
-            return getIntOrZero(prevBal) + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(entry)
+            return getIntOrZero(prevBal) + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(entry) + BalanceReferralCalculations.getTotalDiscountFor(order.name).transferAmount
         }
 
         private fun getPcForEntry(entry: View): Int {

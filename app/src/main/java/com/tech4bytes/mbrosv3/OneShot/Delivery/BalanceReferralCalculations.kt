@@ -38,6 +38,7 @@ object BalanceReferralCalculations {
     val referralBalanceMap: MutableMap<String, BalanceCalculatingObj> = mutableMapOf()
 
     fun calculate(deliverObjOfCustomer: DeliverToCustomerDataModel) {
+        LogMe.log("Calculating Referral Balance: Rs " + deliverObjOfCustomer.name)
         val customerDetails = CustomerKYC.getByName(deliverObjOfCustomer.name)!!
         val referralType = customerDetails.referralType
         if (referralType == ReferralType.NONE)

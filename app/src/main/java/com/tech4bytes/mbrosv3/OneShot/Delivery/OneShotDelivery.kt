@@ -608,7 +608,7 @@ class OneShotDelivery : AppCompatActivity() {
             val referCalcObj = BalanceReferralCalculations.getTotalDiscountFor(deliveryObj.name)
             deliveryObj.adjustments = referCalcObj.transferAmount.toString()
             deliveryObj.balanceDue = (NumberUtils.getIntOrZero(deliveryObj.balanceDue) - referCalcObj.balanceOfReferered).toString()
-            deliveryObj.notes += referCalcObj.message
+            deliveryObj.notes = referCalcObj.message
 
             LogMe.log("wqerty11: " + deliveryObj.toString())
         }

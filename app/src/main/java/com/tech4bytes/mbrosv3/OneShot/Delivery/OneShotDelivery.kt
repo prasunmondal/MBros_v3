@@ -291,6 +291,8 @@ class OneShotDelivery : AppCompatActivity() {
                 name = it.name,
                 orderedPc = "0",
                 orderedKg = "0",
+                deliveredPc = it.deliveredPc,
+                deliveredKg = it.deliveredKg,
                 rate = "${CustomerDataUtils.getDeliveryRate(it.name)}",
                 customerAccount = customerAccount,
                 prevDue = CustomerDueData.getLastFinalizedDue(it.name),
@@ -457,7 +459,7 @@ class OneShotDelivery : AppCompatActivity() {
             totalCollectedElement.text = "$sumAmountCollected"
             totalBalanceDueElement.text = "$sumBalanceDue"
 
-            if(needsSave)
+            if (needsSave)
                 SingleAttributedDataUtils.saveToLocal(metadataObj)
 
             context.updateHiddenData()
@@ -489,7 +491,7 @@ class OneShotDelivery : AppCompatActivity() {
 
             saveSingleAttributeData()
             saveDeliveryData()
-            SingleAttributedDataUtils.getRecords(false)
+            SingleAttributedDataUtils.getRecords()
             DeliverToCustomerDataHandler.get()
             runOnUiThread()
             {
@@ -620,23 +622,19 @@ class OneShotDelivery : AppCompatActivity() {
 
         // save locally
         filteredListToSave.forEach {
-            if (shouldRecordThisTransaction(it)) {
-                DeliverToCustomerDataHandler.saveToLocal(it.value)
-            }
+            DeliverToCustomerDataHandler.saveToLocal(it.value)
         }
 
         // save to server
         filteredListToSave.forEach {
-            if (shouldRecordThisTransaction(it)) {
-                it.value.deliveryStatus = "DELIVERED"
-                DeliverToCustomerDataHandler.saveToServer(it.value)
-                if (eachStep + 10 < 100) {
-                    eachStep += 10
-                } else {
-                    eachStep = 100
-                }
-                runOnUiThread { setSaveProgressBar(eachStep) }
+            it.value.deliveryStatus = "DELIVERED"
+            DeliverToCustomerDataHandler.saveToServer(it.value)
+            if (eachStep + 10 < 100) {
+                eachStep += 10
+            } else {
+                eachStep = 100
             }
+            runOnUiThread { setSaveProgressBar(eachStep) }
         }
         runOnUiThread { setSaveProgressBar(100) }
     }

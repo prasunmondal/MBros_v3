@@ -65,10 +65,11 @@ object BalanceReferralCalculations {
                 LogMe.log("customerDetails.referralInput: " + NumberUtils.getIntOrZero(customerDetails.referralInput))
                 LogMe.log("Total: " + (NumberUtils.getDoubleOrZero(deliverObjOfCustomer.deliveredKg)
                         * NumberUtils.getIntOrZero(customerDetails.referralInput)).toString())
-                transferAmount = NumberUtils.getIntOrZero(NumberUtils.getDoubleOrZero(
-                    (NumberUtils.getDoubleOrZero(deliverObjOfCustomer.deliveredKg)
-                            * NumberUtils.getIntOrZero(customerDetails.referralInput)).toString()).toString())
-                LogMe.log("transferAmount: " + transferAmount)
+                val s1= NumberUtils.getDoubleOrZero(deliverObjOfCustomer.deliveredKg)
+                val s2 = NumberUtils.getIntOrZero(customerDetails.referralInput)
+                val s4 = NumberUtils.getDoubleOrZero((s1 * s2).toString()).toInt()
+                transferAmount = -s4
+                LogMe.log("transferAmount: $transferAmount")
                 result.balanceOfReferered = NumberUtils.getIntOrZero(deliverObjOfCustomer.balanceDue)
                 result.message = "Transferred Rs $transferAmount from ${result.from} to ${result.to} for rule ${result.referral_type}."
             }
@@ -85,7 +86,7 @@ object BalanceReferralCalculations {
             if(balanceCalculatingObj.to == name) {
                 LogMe.log("--- Selected: $balanceCalculatingObj")
                 result.transferAmount += balanceCalculatingObj.transferAmount
-                result.message = "\n${result.message}"
+                result.message = balanceCalculatingObj.message
             } else {
                 LogMe.log("Not Selected: $balanceCalculatingObj")
             }

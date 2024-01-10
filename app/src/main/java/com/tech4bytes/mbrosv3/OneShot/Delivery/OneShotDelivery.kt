@@ -621,6 +621,9 @@ class OneShotDelivery : AppCompatActivity() {
 
         // save locally
         filteredListToSave.forEach {
+            if(it.value.date.isEmpty()) {
+                it.value.date = DateUtils.getDateInFormat("dd/mm/yyyy")
+            }
             DeliverToCustomerDataHandler.saveToLocal(it.value)
         }
 

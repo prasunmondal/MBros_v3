@@ -19,7 +19,16 @@ def getLastGitCommitDate = { ->
         commandLine 'git', 'log', '-1', '--date=format:%Y/%m/%d %T', '--format=%ad'
         standardOutput = stdout
     }
-    return stdout.toString().trim()
+    return stdout.toString().trim() + '_' + getLastGitHash()
+}
+
+def getDateWithoutTime() {
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'log', '-1', '--date=format:%Y.%m.%d', '--format=%ad'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim() //+ getLastGitHash()
 }
 
 android {
@@ -34,6 +43,7 @@ android {
         versionName "${getLastGitCommitDate()} (${getLastGitHash()})"
         buildConfigField "String", "lastGitCommitHash", "\"${getLastGitHash()}\""
         buildConfigField "String", "lastGitCommitDate", "\"${getLastGitCommitDate()}\""
+        setProperty("archivesBaseName", "MBros-${getLastGitHash()}-${getDateWithoutTime()}")
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

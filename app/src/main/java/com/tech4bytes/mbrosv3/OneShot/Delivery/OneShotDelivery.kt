@@ -623,6 +623,12 @@ class OneShotDelivery : AppCompatActivity() {
         filteredListToSave.forEach {
             if(it.value.date.isEmpty()) {
                 it.value.date = DateUtils.getDateInFormat("dd/mm/yyyy")
+
+                it.value.customerAccount = if(CustomerKYC.getByName(it.value.name) == null) {
+                    CustomerKYC.getByName(it.value.name)!!.customerAccount
+                } else {
+                    ""
+                }
             }
             DeliverToCustomerDataHandler.saveToLocal(it.value)
         }

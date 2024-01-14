@@ -622,12 +622,12 @@ class OneShotDelivery : AppCompatActivity() {
         // save locally
         filteredListToSave.forEach {
             if(it.value.date.isEmpty()) {
-                it.value.date = DateUtils.getDateInFormat("dd/mm/yyyy")
+                it.value.date = DateUtils.getDateInFormat("dd/MM/yyyy")
 
-                it.value.customerAccount = if(CustomerKYC.getByName(it.value.name) == null) {
-                    CustomerKYC.getByName(it.value.name)!!.customerAccount
+                it.value.customerAccount = if(CustomerKYC.getByName(it.value.name) == null || CustomerKYC.getByName(it.value.name)!!.customerAccount.isEmpty()) {
+                    it.value.name
                 } else {
-                    ""
+                    CustomerKYC.getByName(it.value.name)!!.customerAccount
                 }
             }
             DeliverToCustomerDataHandler.saveToLocal(it.value)

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -42,7 +43,7 @@
                         android:inputType="number"
                         android:textColor="#EF8886"
                         android:textColorHint="#938C8C"
-                        android:textSize="14sp" />
+                        android:textSize="16sp" />
 
                 </LinearLayout>
 
@@ -57,7 +58,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="00.000"
-                        android:textColor="#787878" />
+                        android:textColor="@color/smso_avg1_grp_text_color"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/textView77"
@@ -72,7 +74,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="00.000"
-                        android:textColor="#787878" />
+                        android:textColor="@color/smso_avg2_grp_text_color" />
 
                 </LinearLayout>
 
@@ -81,12 +83,14 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
                 android:orientation="vertical"
                 android:paddingLeft="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -120,8 +124,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textColor="#9F9E9E"
-                        android:textSize="12sp" />
+                        android:gravity="right"
+                        android:textColor="@color/smso_avg1_grp_text_color"
+                        android:textSize="16sp"
+                        tools:text="00" />
 
                     <TextView
                         android:id="@+id/textView78"
@@ -131,12 +137,12 @@
                         android:textColor="#787878" />
 
                     <TextView
-                        android:id="@+id/textView83"
+                        android:id="@+id/smsorder_listEntry_approx_pc2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="00"
-                        android:textColor="#787878" />
+                        android:textColor="@color/smso_avg2_grp_text_color" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -145,6 +151,7 @@
                 android:id="@+id/smsorder_listEntry_amount"
                 android:layout_width="280dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"

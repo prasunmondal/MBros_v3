@@ -53,7 +53,8 @@ class SMSOrdering : AppCompatActivity() {
             setUpUI()
             populateCustomerListDropdown()
             setUpListeners()
-            showSMS()
+//            showSMS()
+            processSMS()
         }.start()
     }
 
@@ -70,6 +71,11 @@ class SMSOrdering : AppCompatActivity() {
 
     private fun setUpListeners() {
         findViewById<EditText>(R.id.smsorder_avg_wt1).doOnTextChanged { text, start, before, count ->
+            processSMS()
+            showEntries()
+            updateTotal()
+        }
+        findViewById<EditText>(R.id.smsorder_avg_wt2).doOnTextChanged { text, start, before, count ->
             processSMS()
             showEntries()
             updateTotal()
@@ -104,7 +110,8 @@ class SMSOrdering : AppCompatActivity() {
     }
 
     private fun processSMS() {
-        val valueStr = smsToProcess
+//        val valueStr = smsToProcess
+        val valueStr = "3+5+7+8+9+9+6+7+8+8+7"
         val valueArray = valueStr.split("+")
         val namesArray = AppConstants.get(AppConstants.SMS_ORDER_SEQUENCE).split(",")
         val minSize = Math.min(valueArray.size, namesArray.size)
@@ -184,15 +191,12 @@ class SMSOrdering : AppCompatActivity() {
                 entry.findViewById<TextView>(R.id.smsorder_listEntry_calculated_pc).text = orders[j].calculatedPc.toString()
 
                 val finalizedPcView = entry.findViewById<EditText>(R.id.smsorder_listEntry_pc)
-                val estimatedKgView = entry.findViewById<TextView>(R.id.smsorder_listEntry_approx_kg)
                 finalizedPcView.hint = orders[j].orderedPc.toString()
-                val estimatedkg: Double = getAvgWt1() * getPc(entry)
-                estimatedKgView.setText(estimatedkg.toString())
+                showSuggestions(entry, orders[j])
 
                 finalizedPcView.doOnTextChanged { text, start, before, count ->
                     orders[j].orderedPc = NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedPcView))
-                    val estimatedkg: Double = getAvgWt1() * getPc(entry)
-                    estimatedKgView.setText(estimatedkg.toString())
+                    showSuggestions(entry, orders[j])
                     updateTotal()
                 }
 
@@ -235,12 +239,30 @@ class SMSOrdering : AppCompatActivity() {
         totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_amount)?.text = ""
     }
 
+    fun showSuggestions(entry: View, order: SMSOrderModel) {
+        val estimatedKgView1 = entry.findViewById<TextView>(R.id.smsorder_listEntry_approx_kg)
+        val estimatedkg1: Double = getAvgWt1() * getPc(entry)
+        estimatedKgView1.text = NumberUtils.roundOff3places(estimatedkg1).toString()
+
+        val estimatedKgView2 = entry.findViewById<TextView>(R.id.smsorder_listEntry_approx_kg2)
+        val estimatedkg2: Double = NumberUtils.getDoubleOrZero((getAvgWt2() * getPc(entry)).toString())
+        estimatedKgView2.text = estimatedkg2.toString()
+
+        val estimatedPcView2 = entry.findViewById<TextView>(R.id.smsorder_listEntry_approx_pc2)
+        val estimatedPc2: Double = NumberUtils.getDoubleOrZero((order.orderedKg / getAvgWt2()).toString())
+        estimatedPcView2.text = String.format("%.1f", estimatedPc2)
+    }
+
     fun getAvgWt1(): Double {
         return NumberUtils.getDoubleOrZero(findViewById<EditText>(R.id.smsorder_avg_wt1).text.toString())
     }
 
+    fun getAvgWt2(): Double {
+        return NumberUtils.getDoubleOrZero(findViewById<EditText>(R.id.smsorder_avg_wt2).text.toString())
+    }
+
     fun getPc(entry: View): Int {
-        return NumberUtils.getIntOrZero(UIUtils.getTextOrHint(entry.findViewById<TextView>(R.id.smsorder_listEntry_pc)))
+        return NumberUtils.getIntOrZero(UIUtils.getTextOrHint(entry.findViewById(R.id.smsorder_listEntry_pc)))
     }
 
     override fun onBackPressed() {

@@ -184,7 +184,7 @@ class SMSOrdering : AppCompatActivity() {
                 entry.findViewById<TextView>(R.id.smsorder_listEntry_calculated_pc).text = orders[j].calculatedPc.toString()
 
                 val finalizedPcView = entry.findViewById<EditText>(R.id.smsorder_listEntry_pc)
-                val estimatedKgView = entry.findViewById<EditText>(R.id.smsorder_listEntry_approx_kg)
+                val estimatedKgView = entry.findViewById<TextView>(R.id.smsorder_listEntry_approx_kg)
                 finalizedPcView.hint = orders[j].orderedPc.toString()
                 val estimatedkg: Double = getAvgWt1() * NumberUtils.getIntOrZero(finalizedPcView.text.toString())
                 estimatedKgView.setText(estimatedkg.toString())

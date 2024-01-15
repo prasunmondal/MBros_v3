@@ -186,12 +186,12 @@ class SMSOrdering : AppCompatActivity() {
                 val finalizedPcView = entry.findViewById<EditText>(R.id.smsorder_listEntry_pc)
                 val estimatedKgView = entry.findViewById<TextView>(R.id.smsorder_listEntry_approx_kg)
                 finalizedPcView.hint = orders[j].orderedPc.toString()
-                val estimatedkg: Double = getAvgWt1() * NumberUtils.getIntOrZero(finalizedPcView.text.toString())
+                val estimatedkg: Double = getAvgWt1() * getPc(entry)
                 estimatedKgView.setText(estimatedkg.toString())
 
                 finalizedPcView.doOnTextChanged { text, start, before, count ->
                     orders[j].orderedPc = NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedPcView))
-                    val estimatedkg: Double = getAvgWt1() * NumberUtils.getIntOrZero(finalizedPcView.text.toString())
+                    val estimatedkg: Double = getAvgWt1() * getPc(entry)
                     estimatedKgView.setText(estimatedkg.toString())
                     updateTotal()
                 }
@@ -237,6 +237,10 @@ class SMSOrdering : AppCompatActivity() {
 
     fun getAvgWt1(): Double {
         return NumberUtils.getDoubleOrZero(findViewById<EditText>(R.id.smsorder_avg_wt1).text.toString())
+    }
+
+    fun getPc(entry: View): Int {
+        return NumberUtils.getIntOrZero(UIUtils.getTextOrHint(entry.findViewById<TextView>(R.id.smsorder_listEntry_pc)))
     }
 
     override fun onBackPressed() {

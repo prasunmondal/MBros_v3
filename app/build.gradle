@@ -19,7 +19,7 @@ def getLastGitCommitDate = { ->
         commandLine 'git', 'log', '-1', '--date=format:%Y/%m/%d %T', '--format=%ad'
         standardOutput = stdout
     }
-    return stdout.toString().trim() + '_' + getLastGitHash()
+    return stdout.toString().trim()
 }
 
 def getDateWithoutTime() {

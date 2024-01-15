@@ -53,7 +53,7 @@ class SMSOrdering : AppCompatActivity() {
             setUpUI()
             populateCustomerListDropdown()
             setUpListeners()
-//            showSMS()
+            showSMS()
             processSMS()
         }.start()
     }
@@ -110,8 +110,8 @@ class SMSOrdering : AppCompatActivity() {
     }
 
     private fun processSMS() {
-//        val valueStr = smsToProcess
-        val valueStr = "3+5+7+8+9+9+6+7+8+8+7"
+        val valueStr = smsToProcess
+//        val valueStr = "3+5+7+8+9+9+6+7+8+8+7"
         val valueArray = valueStr.split("+")
         val namesArray = AppConstants.get(AppConstants.SMS_ORDER_SEQUENCE).split(",")
         val minSize = Math.min(valueArray.size, namesArray.size)

@@ -18,7 +18,9 @@
             android:id="@+id/linearLayout25"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
+            android:layout_marginBottom="10dp"
+            android:background="#807A7878"
+            android:gravity="bottom"
             android:orientation="vertical"
             android:padding="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -29,13 +31,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="bottom"
                 android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center_vertical"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom"
+                    android:gravity="bottom"
                     android:orientation="horizontal">
 
                     <EditText
@@ -87,7 +90,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:background="@drawable/rounded"
+                android:backgroundTint="#BF201F1F"
+                android:orientation="horizontal"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="3dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -158,6 +165,7 @@
                         android:layout_weight="1"
                         android:text="00.000"
                         android:textColor="@color/smso_avg2_grp_text_color"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>

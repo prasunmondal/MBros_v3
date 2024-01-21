@@ -50,6 +50,8 @@ android {
 
     buildTypes {
         debug {
+            buildConfigField "String", "lastGitCommitHash", "\"${getLastGitHash()}\""
+            buildConfigField "String", "lastGitCommitDate", "\"${getLastGitCommitDate()}\""
             buildConfigField "String", "URL_SEARCH", "\"https://dev-search.example.com\""
         }
         release {

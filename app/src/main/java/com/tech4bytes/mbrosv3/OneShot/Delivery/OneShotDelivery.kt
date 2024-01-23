@@ -565,7 +565,7 @@ class OneShotDelivery : AppCompatActivity() {
 
             if (RefuelingUtils.getKmDifferenceForRefueling(meteredFuelKms.getNumber()!!) > 0) {
                 // add general kms from petrol pump to home, and set the total kms accordingly
-                val refuelingKm = NumberUtils.getIntOrZero(refuelingKmElement.text.toString())
+                val refuelingKm = meteredFuelKms.getNumber()!!
                 val addKmToFuelKmToGetFinalKm =
                     NumberUtils.getIntOrZero(AppConstants.get(AppConstants.ADD_TO_FUELING_KMS_TO_GET_FINAL_KM))
                 meteredKm.setNumber(refuelingKm + addKmToFuelKmToGetFinalKm)

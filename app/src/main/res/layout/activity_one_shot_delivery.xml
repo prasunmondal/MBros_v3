@@ -594,6 +594,7 @@
                                         android:inputType="number"
                                         android:paddingLeft="2dp"
                                         android:paddingRight="20dp"
+                                        android:singleLine="true"
                                         android:textColor="#FBC02D"
                                         android:textColorHint="#8DD8D4D4"
                                         android:textSize="16sp" />

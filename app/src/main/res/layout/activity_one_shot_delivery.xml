@@ -567,10 +567,10 @@
                                         android:id="@+id/one_shot_delivery_trip_end_km_first_part"
                                         android:layout_width="wrap_content"
                                         android:layout_height="35dp"
-                                        android:layout_weight="1"
                                         android:background="#00000000"
                                         android:inputType="number"
                                         android:paddingLeft="10dp"
+                                        android:paddingRight="2dp"
                                         android:textColor="#FBC02D"
                                         android:textColorHint="#8DD8D4D4"
                                         android:textSize="14sp" />
@@ -579,13 +579,12 @@
                                         android:id="@+id/one_shot_delivery_trip_end_km_second_part"
                                         android:layout_width="wrap_content"
                                         android:layout_height="35dp"
-                                        android:layout_weight="1"
                                         android:background="#00000000"
                                         android:inputType="number"
                                         android:paddingLeft="10dp"
                                         android:textColor="#FBC02D"
                                         android:textColorHint="#8DD8D4D4"
-                                        android:textSize="14sp" />
+                                        android:textSize="16sp" />
 
                                 </LinearLayout>
 
@@ -610,7 +609,7 @@
                                         android:paddingLeft="10dp"
                                         android:textColor="#FBC02D"
                                         android:textColorHint="#8DD8D4D4"
-                                        android:textSize="14sp" />
+                                        android:textSize="16sp" />
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -634,7 +633,7 @@
                                         android:paddingLeft="10dp"
                                         android:textColor="#FBC02D"
                                         android:textColorHint="#8DD8D4D4"
-                                        android:textSize="14sp" />
+                                        android:textSize="16sp" />
                                 </LinearLayout>
                             </LinearLayout>
 

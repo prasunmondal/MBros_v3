@@ -32,6 +32,7 @@ import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
+import com.tech4bytes.mbrosv3.Utils.Android.MeteredNumbers
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
@@ -60,6 +61,8 @@ class OneShotDelivery : AppCompatActivity() {
     private lateinit var loadPcElement: EditText
     private lateinit var loadKgElement: EditText
     private lateinit var loadAvgWtElement: TextView
+    private lateinit var meteredKm: MeteredNumbers
+    private lateinit var meteredFuelKms: MeteredNumbers
 
 
     @SuppressLint("NewApi")
@@ -131,8 +134,8 @@ class OneShotDelivery : AppCompatActivity() {
         sidebarIconRefuel = findViewById(R.id.osd_sidebar_icon_refuel)
         sidebarIconOtherExpenses = findViewById(R.id.osd_sidebar_icon_other_expenses)
         refuelContainer = findViewById(R.id.osd_refuel_container)
-        finalKmElementSecondPart = findViewById(R.id.one_shot_delivery_trip_end_km_second_part)
         finalKmElementFirstPart = findViewById(R.id.one_shot_delivery_trip_end_km_first_part)
+        finalKmElementSecondPart = findViewById(R.id.one_shot_delivery_trip_end_km_second_part)
         labourExpensesElement = findViewById(R.id.one_shot_delivery_labour_expenses)
         extraExpensesElement = findViewById(R.id.one_shot_delivery_extra_expenses)
         loadPcElement = findViewById(R.id.one_shot_delivery_pc)
@@ -198,44 +201,22 @@ class OneShotDelivery : AppCompatActivity() {
     private fun initializeOtherExpensesUI() {
         val salaryDivisionElement = findViewById<TextView>(R.id.osd_salary_division)
 
-        val vehicleKmFirstPart: Int = NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().vehicle_finalKm)/1000
-        val vehicleKmSecondPart: Int = NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().vehicle_finalKm)%1000
+        val vehiclePrevKm: Int = NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().vehicle_finalKm)
 
-        UIUtils.setUIElementValue(finalKmElementFirstPart, vehicleKmFirstPart.toString())
-        UIUtils.setUIElementValue(finalKmElementSecondPart, vehicleKmSecondPart.toString())
+        meteredKm = MeteredNumbers(finalKmElementFirstPart, finalKmElementSecondPart, 3)
+        meteredKm.setNumber(vehiclePrevKm)
+        meteredKm.setListeners { updateKmRelatedCosts() }
+
         UIUtils.setUIElementValue(labourExpensesElement, SingleAttributedDataUtils.getRecords().labour_expenses)
         UIUtils.setUIElementValue(extraExpensesElement, SingleAttributedDataUtils.getRecords().extra_expenses)
         UIUtils.setUIElementValue(salaryDivisionElement, SingleAttributedDataUtils.getRecords().salaryDivision.replace("#", "  #  "))
-
-        finalKmElementSecondPart.doOnTextChanged { text, start, before, count ->
-            updateKmRelatedCosts()
-        }
-
-    }
-
-    private fun getFinalKm(): Int? {
-        if(finalKmElementSecondPart.text.length < 3) {
-            return null
-        }
-        return NumberUtils.getIntOrZero(finalKmElementFirstPart.text.toString() + finalKmElementSecondPart.text.toString())
     }
 
     private fun updateKmRelatedCosts() {
-        val kmSecondPart = finalKmElementSecondPart.text.toString()
         val prevKmElement = findViewById<TextView>(R.id.osd_prev_km)
 
         // if second part is not 3 digits, nothing is processed
-        if(kmSecondPart.length < 3) {
-            finalKmElementFirstPart.setText((NumberUtils.getIntOrZero(prevKmElement.text.toString()) / 1000).toString())
-            // mark the second part as error
-            return
-        }
-
-        if(getFinalKm() != null && getFinalKm()!! < NumberUtils.getIntOrZero(prevKmElement.text.toString())) {
-            finalKmElementFirstPart.setText((NumberUtils.getIntOrZero(finalKmElementFirstPart.text.toString()) + 1).toString())
-        }
-
-        val currentKmOnUI = getFinalKm().toString()
+        val currentKmOnUI = meteredKm.getNumber().toString()
 
         val kmDiffElement = findViewById<TextView>(R.id.osd_km_diff)
         val kmCostElement = findViewById<TextView>(R.id.osd_km_cost)
@@ -278,8 +259,7 @@ class OneShotDelivery : AppCompatActivity() {
             val refuelingKm = NumberUtils.getIntOrZero(refuelingKmElement.text.toString())
             val addKmToFuelKmToGetFinalKm = NumberUtils.getIntOrZero(AppConstants.get(AppConstants.ADD_TO_FUELING_KMS_TO_GET_FINAL_KM))
 
-            // TODO: Set only the last 3 digits
-            finalKmElementSecondPart.setText((refuelingKm + addKmToFuelKmToGetFinalKm).toString())
+            meteredKm.setNumber(refuelingKm + addKmToFuelKmToGetFinalKm)
         }
 
         updateRefuelingUIDetails()
@@ -541,7 +521,7 @@ class OneShotDelivery : AppCompatActivity() {
 
     private fun gatherSingleAttributedData() {
         val obj = SingleAttributedDataUtils.getRecords()
-        obj.vehicle_finalKm = getFinalKm().toString()
+        obj.vehicle_finalKm = meteredKm.getNumber().toString()
         obj.labour_expenses = NumberUtils.getIntOrZero(labourExpensesElement.text.toString()).toString()
         obj.extra_expenses = NumberUtils.getIntOrZero(extraExpensesElement.text.toString()).toString()
         obj.actualLoadKg = loadKgElement.text.toString()

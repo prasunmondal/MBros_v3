@@ -134,14 +134,20 @@ class OneShotDelivery : AppCompatActivity() {
         sidebarIconRefuel = findViewById(R.id.osd_sidebar_icon_refuel)
         sidebarIconOtherExpenses = findViewById(R.id.osd_sidebar_icon_other_expenses)
         refuelContainer = findViewById(R.id.osd_refuel_container)
-        finalKmElementFirstPart = findViewById(R.id.one_shot_delivery_trip_end_km_first_part)
-        finalKmElementSecondPart = findViewById(R.id.one_shot_delivery_trip_end_km_second_part)
         labourExpensesElement = findViewById(R.id.one_shot_delivery_labour_expenses)
         extraExpensesElement = findViewById(R.id.one_shot_delivery_extra_expenses)
         loadPcElement = findViewById(R.id.one_shot_delivery_pc)
         loadKgElement = findViewById(R.id.one_shot_delivery_kg)
         loadAvgWtElement = findViewById(R.id.osd_loading_avg_wt)
 
+        val refuelingKmElementPart1 = findViewById<EditText>(R.id.one_shot_delivery_refueling_km_part1)
+        val refuelingKmElementPart2 = findViewById<EditText>(R.id.one_shot_delivery_refueling_km_part2)
+        meteredFuelKms = MeteredNumbers(refuelingKmElementPart1, refuelingKmElementPart2, 3)
+        meteredFuelKms.setListeners {updateRefuelingUIDetails()}
+
+        finalKmElementFirstPart = findViewById(R.id.one_shot_delivery_trip_end_km_first_part)
+        finalKmElementSecondPart = findViewById(R.id.one_shot_delivery_trip_end_km_second_part)
+        meteredKm = MeteredNumbers(finalKmElementFirstPart, finalKmElementSecondPart, 3)
     }
 
     fun onClickSidebarIconRefuel(view: View) {
@@ -174,11 +180,10 @@ class OneShotDelivery : AppCompatActivity() {
         val didRefuelElement = findViewById<Switch>(R.id.one_shot_delivery_did_refuel)
         val didTankFullElement = findViewById<Switch>(R.id.one_shot_delivery_did_fuel_upto_tank_full)
         val refuelingQtyElement = findViewById<EditText>(R.id.one_shot_delivery_fuel_quantity)
-        val refuelingKmElementPart1 = findViewById<EditText>(R.id.one_shot_delivery_refueling_km_part1)
-        val refuelingKmElementPart2 = findViewById<EditText>(R.id.one_shot_delivery_refueling_km_part2)
 
-        meteredFuelKms = MeteredNumbers(refuelingKmElementPart1, refuelingKmElementPart2, 3)
-        meteredFuelKms.setNumber(NumberUtils.getIntOrZero(RefuelingUtils.getPreviousRefuelingKM()))
+        runOnUiThread {
+            meteredFuelKms.setNumber(NumberUtils.getIntOrZero(RefuelingUtils.getPreviousRefuelingKM()))
+        }
 
         OSDLoadInfo.initializeUI(this, loadPcElement, loadKgElement, loadAvgWtElement)
         didRefuelElement.setOnCheckedChangeListener { _, isChecked ->
@@ -196,7 +201,6 @@ class OneShotDelivery : AppCompatActivity() {
         refuelingQtyElement.doOnTextChanged { text, start, before, count ->
             updateRefuelingUIDetails()
         }
-        meteredFuelKms.setListeners {updateRefuelingUIDetails()}
     }
 
 
@@ -205,7 +209,6 @@ class OneShotDelivery : AppCompatActivity() {
 
         val vehiclePrevKm: Int = NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().vehicle_finalKm)
 
-        meteredKm = MeteredNumbers(finalKmElementFirstPart, finalKmElementSecondPart, 3)
         meteredKm.setNumber(vehiclePrevKm)
         meteredKm.setListeners { updateKmRelatedCosts() }
 
@@ -560,10 +563,13 @@ class OneShotDelivery : AppCompatActivity() {
             LogMe.log("KM: " + meteredFuelKms.getNumber())
             LogMe.log("Mileage: " + getMileage())
 
-            // add general kms from petrol pump to home, and set the total kms accordingly
-            val refuelingKm = NumberUtils.getIntOrZero(refuelingKmElement.text.toString())
-            val addKmToFuelKmToGetFinalKm = NumberUtils.getIntOrZero(AppConstants.get(AppConstants.ADD_TO_FUELING_KMS_TO_GET_FINAL_KM))
-            meteredKm.setNumber(refuelingKm + addKmToFuelKmToGetFinalKm)
+            if (RefuelingUtils.getKmDifferenceForRefueling(meteredFuelKms.getNumber()!!) > 0) {
+                // add general kms from petrol pump to home, and set the total kms accordingly
+                val refuelingKm = NumberUtils.getIntOrZero(refuelingKmElement.text.toString())
+                val addKmToFuelKmToGetFinalKm =
+                    NumberUtils.getIntOrZero(AppConstants.get(AppConstants.ADD_TO_FUELING_KMS_TO_GET_FINAL_KM))
+                meteredKm.setNumber(refuelingKm + addKmToFuelKmToGetFinalKm)
+            }
         }
     }
 

@@ -170,10 +170,15 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun initiallizeUI() {
+
         val didRefuelElement = findViewById<Switch>(R.id.one_shot_delivery_did_refuel)
         val didTankFullElement = findViewById<Switch>(R.id.one_shot_delivery_did_fuel_upto_tank_full)
         val refuelingQtyElement = findViewById<EditText>(R.id.one_shot_delivery_fuel_quantity)
-        val refuelingKmElement = findViewById<EditText>(R.id.one_shot_delivery_refueling_km)
+        val refuelingKmElementPart1 = findViewById<EditText>(R.id.one_shot_delivery_refueling_km_part1)
+        val refuelingKmElementPart2 = findViewById<EditText>(R.id.one_shot_delivery_refueling_km_part2)
+
+        meteredFuelKms = MeteredNumbers(refuelingKmElementPart1, refuelingKmElementPart2, 3)
+        meteredFuelKms.setNumber(NumberUtils.getIntOrZero(RefuelingUtils.getPreviousRefuelingKM()))
 
         OSDLoadInfo.initializeUI(this, loadPcElement, loadKgElement, loadAvgWtElement)
         didRefuelElement.setOnCheckedChangeListener { _, isChecked ->
@@ -188,13 +193,10 @@ class OneShotDelivery : AppCompatActivity() {
             updateRefuelingUIDetails()
         }
 
-        refuelingKmElement.doOnTextChanged { text, start, before, count ->
-            updateRefuelingUIDetails()
-        }
-
         refuelingQtyElement.doOnTextChanged { text, start, before, count ->
             updateRefuelingUIDetails()
         }
+        meteredFuelKms.setListeners {updateRefuelingUIDetails()}
     }
 
 
@@ -246,21 +248,12 @@ class OneShotDelivery : AppCompatActivity() {
         val didRefuelElement = findViewById<Switch>(R.id.one_shot_delivery_did_refuel)
         val didTankFullElement = findViewById<Switch>(R.id.one_shot_delivery_did_fuel_upto_tank_full)
         val refuelingQtyElement = findViewById<EditText>(R.id.one_shot_delivery_fuel_quantity)
-        val refuelingKmElement = findViewById<EditText>(R.id.one_shot_delivery_refueling_km)
         val refuelingAmountElement = findViewById<EditText>(R.id.osd_refuel_amount)
 
         UIUtils.setUIElementValue(didRefuelElement, SingleAttributedDataUtils.getRecords().did_refueled)
         UIUtils.setUIElementValue(didTankFullElement, SingleAttributedDataUtils.getRecords().refueling_isFullTank)
         UIUtils.setUIElementValue(refuelingQtyElement, SingleAttributedDataUtils.getRecords().refueling_qty)
-        UIUtils.setUIElementValue(refuelingKmElement, SingleAttributedDataUtils.getRecords().refueling_km)
         UIUtils.setUIElementValue(refuelingAmountElement, SingleAttributedDataUtils.getRecords().refueling_amount)
-
-        refuelingKmElement.doOnTextChanged { text, start, before, count ->
-            val refuelingKm = NumberUtils.getIntOrZero(refuelingKmElement.text.toString())
-            val addKmToFuelKmToGetFinalKm = NumberUtils.getIntOrZero(AppConstants.get(AppConstants.ADD_TO_FUELING_KMS_TO_GET_FINAL_KM))
-
-            meteredKm.setNumber(refuelingKm + addKmToFuelKmToGetFinalKm)
-        }
 
         updateRefuelingUIDetails()
     }
@@ -538,30 +531,46 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun updateRefuelingUIDetails() {
-        val mileageLabel = findViewById<TextView>(R.id.one_shot_delivery_refueling_mileage)
-        val refuelingKmDiffLabel = findViewById<TextView>(R.id.one_shot_delivery_refueling_km_diff)
-        val refuelingKmElement = findViewById<EditText>(R.id.one_shot_delivery_refueling_km)
-        val refuelingDetailsContainer = findViewById<LinearLayout>(R.id.osd_refuel_container)
-        val refuelingKmContainer = findViewById<LinearLayout>(R.id.one_shot_delivery_refueling_km_container)
-        val didTankFullElement = findViewById<Switch>(R.id.one_shot_delivery_did_fuel_upto_tank_full)
-        val didRefuelElement = findViewById<Switch>(R.id.one_shot_delivery_did_refuel)
+        if(meteredFuelKms.getNumber() !=  null) {
+            val mileageLabel = findViewById<TextView>(R.id.one_shot_delivery_refueling_mileage)
+            val refuelingKmDiffLabel =
+                findViewById<TextView>(R.id.one_shot_delivery_refueling_km_diff)
+            val refuelingKmElement =
+                findViewById<EditText>(R.id.one_shot_delivery_refueling_km_part1)
+            val refuelingDetailsContainer = findViewById<LinearLayout>(R.id.osd_refuel_container)
+            val refuelingKmContainer =
+                findViewById<LinearLayout>(R.id.one_shot_delivery_refueling_km_container)
+            val didTankFullElement =
+                findViewById<Switch>(R.id.one_shot_delivery_did_fuel_upto_tank_full)
+            val didRefuelElement = findViewById<Switch>(R.id.one_shot_delivery_did_refuel)
 
-        refuelingDetailsContainer.visibility = if (didRefuelElement.isChecked) View.VISIBLE else View.GONE
-        didTankFullElement.visibility = if (didRefuelElement.isChecked) View.VISIBLE else View.GONE
-        refuelingKmContainer.visibility = if (didTankFullElement.isChecked) View.VISIBLE else View.GONE
+            refuelingDetailsContainer.visibility =
+                if (didRefuelElement.isChecked) View.VISIBLE else View.GONE
+            didTankFullElement.visibility =
+                if (didRefuelElement.isChecked) View.VISIBLE else View.GONE
+            refuelingKmContainer.visibility =
+                if (didTankFullElement.isChecked) View.VISIBLE else View.GONE
 
-        refuelingKmDiffLabel.text = if (didTankFullElement.isChecked) RefuelingUtils.getKmDifferenceForRefueling(refuelingKmElement.text.toString()).toString() else "N/A"
-        mileageLabel.text = if (didTankFullElement.isChecked) getMileage() + " km/L" else "N/A"
+            refuelingKmDiffLabel.text =
+                if (didTankFullElement.isChecked)
+                    RefuelingUtils.getKmDifferenceForRefueling(meteredFuelKms.getNumber()!!).toString()
+                else "N/A"
+            mileageLabel.text = if (didTankFullElement.isChecked) getMileage() + " km/L" else "N/A"
 
-        LogMe.log("KM: " + refuelingKmElement.text.toString())
-        LogMe.log("Mileage: " + getMileage())
+            LogMe.log("KM: " + meteredFuelKms.getNumber())
+            LogMe.log("Mileage: " + getMileage())
+
+            // add general kms from petrol pump to home, and set the total kms accordingly
+            val refuelingKm = NumberUtils.getIntOrZero(refuelingKmElement.text.toString())
+            val addKmToFuelKmToGetFinalKm = NumberUtils.getIntOrZero(AppConstants.get(AppConstants.ADD_TO_FUELING_KMS_TO_GET_FINAL_KM))
+            meteredKm.setNumber(refuelingKm + addKmToFuelKmToGetFinalKm)
+        }
     }
 
     private fun getMileage(): String {
         val refuelingQtyElement = findViewById<EditText>(R.id.one_shot_delivery_fuel_quantity)
-        val refuelingKmElement = findViewById<EditText>(R.id.one_shot_delivery_refueling_km)
 
-        val refuelingKM = refuelingKmElement.text.toString()
+        val refuelingKM = meteredFuelKms.getNumber()!!
         val refuelingQty = refuelingQtyElement.text.toString()
         LogMe.log("Converting String: " + RefuelingUtils.getMileage(refuelingKM, refuelingQty))
         return if (NumberUtils.getDoubleOrZero(refuelingQty) > 0.0)
@@ -585,7 +594,6 @@ class OneShotDelivery : AppCompatActivity() {
             val refuelQtyElement = findViewById<EditText>(R.id.one_shot_delivery_fuel_quantity)
             val refuelAmountElement = findViewById<EditText>(R.id.osd_refuel_amount)
             val didTankFullElement = findViewById<Switch>(R.id.one_shot_delivery_did_fuel_upto_tank_full)
-            val refuelingKmElement = findViewById<EditText>(R.id.one_shot_delivery_refueling_km)
 
             obj.did_refueled = didRefuelElement.isChecked.toString()
             obj.refueling_isFullTank = didTankFullElement.isChecked.toString()
@@ -593,7 +601,7 @@ class OneShotDelivery : AppCompatActivity() {
             obj.refueling_amount = refuelAmountElement.text.toString()
 
             if (didTankFullElement.isChecked) {
-                obj.refueling_km = refuelingKmElement.text.toString()
+                obj.refueling_km = meteredFuelKms.getNumber().toString()
                 obj.refueling_prevKm = RefuelingUtils.getPreviousRefuelingKM()
                 obj.refuel_mileage = getMileage()
             } else {

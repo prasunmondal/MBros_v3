@@ -393,7 +393,18 @@
                                         android:textColor="#D2FFFFFF" />
 
                                     <com.google.android.material.textfield.TextInputEditText
-                                        android:id="@+id/one_shot_delivery_refueling_km"
+                                        android:id="@+id/one_shot_delivery_refueling_km_part1"
+                                        android:layout_width="90dp"
+                                        android:layout_height="35dp"
+                                        android:background="#00000000"
+                                        android:hint="0"
+                                        android:inputType="number"
+                                        android:textColor="#FBC02D"
+                                        android:textColorHint="#8DD8D4D4"
+                                        android:textSize="14sp" />
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/one_shot_delivery_refueling_km_part2"
                                         android:layout_width="90dp"
                                         android:layout_height="35dp"
                                         android:background="#00000000"

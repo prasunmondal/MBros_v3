@@ -23,16 +23,16 @@ object RefuelingUtils : Tech4BytesSerializable<RefuelingModel>(
         return getLatestRecord().refueling_km
     }
 
-    fun getKmDifferenceForRefueling(currentKM: String): Int {
+    fun getKmDifferenceForRefueling(currentKM: Int): Int {
         LogMe.log("Getting km difference: ")
-        LogMe.log("CurrentKM: " + currentKM + " : " + NumberUtils.getIntOrZero(currentKM))
+        LogMe.log("CurrentKM: $currentKM : $currentKM")
         LogMe.log("PrevKM: " + getPreviousRefuelingKM() + " : " + NumberUtils.getIntOrZero(getPreviousRefuelingKM()))
-        LogMe.log("Result: " + (NumberUtils.getIntOrZero(currentKM) - NumberUtils.getIntOrZero(getPreviousRefuelingKM())))
+        LogMe.log("Result: " + (currentKM - NumberUtils.getIntOrZero(getPreviousRefuelingKM())))
 
-        return (NumberUtils.getIntOrZero(currentKM) - NumberUtils.getIntOrZero(getPreviousRefuelingKM()))
+        return currentKM - NumberUtils.getIntOrZero(getPreviousRefuelingKM())
     }
 
-    fun getMileage(currentKm: String, oilQuantity: String): String {
+    fun getMileage(currentKm: Int, oilQuantity: String): String {
         val kmDiff = getKmDifferenceForRefueling(currentKm)
         val oilQty = NumberUtils.getDoubleOrZero(oilQuantity)
         val mileage: Double = kmDiff / oilQty

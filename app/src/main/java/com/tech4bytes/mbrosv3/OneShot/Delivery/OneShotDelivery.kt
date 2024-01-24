@@ -271,7 +271,7 @@ class OneShotDelivery : AppCompatActivity() {
         deliveryMapOrderedCustomers = mutableMapOf()
         val listOfOrderedCustomers = GetCustomerOrderUtils.getListOfOrderedCustomers()
         listOfOrderedCustomers.forEach {
-            var customerAccount = CustomerKYC.getByName(it.name)!!.customerAccount
+            var customerAccount = CustomerKYC.getByName(it.name)!!.referredBy
             if (customerAccount.isEmpty())
                 customerAccount = it.name
 
@@ -292,7 +292,7 @@ class OneShotDelivery : AppCompatActivity() {
 
         val t = DeliverToCustomerDataHandler.get()
         t.forEach {
-            var customerAccount = CustomerKYC.getByName(it.name)!!.customerAccount
+            var customerAccount = CustomerKYC.getByName(it.name)!!.referredBy
             if (customerAccount.isEmpty())
                 customerAccount = it.name
             val deliverCustomersOrders = DeliverToCustomerDataModel(
@@ -314,7 +314,7 @@ class OneShotDelivery : AppCompatActivity() {
         deliveryMapUnOrderedCustomers = mutableMapOf()
         val listOfUnOrderedCustomers = GetCustomerOrderUtils.getListOfUnOrderedCustomers()
         listOfUnOrderedCustomers.forEach {
-            var customerAccount = CustomerKYC.getByName(it.name)!!.customerAccount
+            var customerAccount = CustomerKYC.getByName(it.name)!!.referredBy
             if (customerAccount.isEmpty())
                 customerAccount = it.name
             val deliverCustomersOrders = DeliverToCustomerDataModel(
@@ -684,10 +684,10 @@ class OneShotDelivery : AppCompatActivity() {
             if(it.value.date.isEmpty()) {
                 it.value.date = DateUtils.getDateInFormat("dd/MM/yyyy")
 
-                it.value.customerAccount = if(CustomerKYC.getByName(it.value.name) == null || CustomerKYC.getByName(it.value.name)!!.customerAccount.isEmpty()) {
+                it.value.customerAccount = if(CustomerKYC.getByName(it.value.name) == null || CustomerKYC.getByName(it.value.name)!!.referredBy.isEmpty()) {
                     it.value.name
                 } else {
-                    CustomerKYC.getByName(it.value.name)!!.customerAccount
+                    CustomerKYC.getByName(it.value.name)!!.referredBy
                 }
             }
             DeliverToCustomerDataHandler.saveToLocal(it.value)

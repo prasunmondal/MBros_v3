@@ -45,7 +45,7 @@ object BalanceReferralCalculations {
             return
         var transferAmount = 0
         val result = BalanceCalculatingObj(deliverObjOfCustomer.name, deliverObjOfCustomer.customerAccount, referralType, transferAmount)
-        result.to = customerDetails.customerAccount
+        result.to = customerDetails.referredBy
 
         when (referralType) {
             ReferralType.NONE -> {

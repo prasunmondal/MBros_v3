@@ -15,7 +15,7 @@ data class CustomerKYCModel(
     var showDue: String,
     var rateDifference: String = "",
     var isActiveCustomer: String = "",
-    var customerAccount: String = "",
+    var referredBy: String = "",
     var showBalanceView: Boolean,
     var smsNumber: String = "",
     var smsText: String = "",

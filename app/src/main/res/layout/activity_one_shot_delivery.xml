@@ -898,6 +898,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:hint="pc"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="5dp"
                     android:textColor="#605E5E"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -915,6 +917,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="kg"
+                    android:paddingStart="5dp"
                     android:textColor="#0825C1"
                     android:textSize="15sp"
                     android:textStyle="bold" />

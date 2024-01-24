@@ -39,7 +39,7 @@
     <color name="osd_fuel_rate_not_matching">#81FF4141</color>
     <color name="osd_fuel_rate_matched">#00000000</color>
     <color name="osd_fuel_non_interactive_ok_text_color">#888686</color>
-    <color name="osd_total_bar_incorrect_data_background">#66FF4141</color>
+    <color name="osd_total_bar_incorrect_data_background">#99F44336</color>
 
     <color name="red">#FF4141</color>
     <color name="transparent_red">#81FF4141</color>

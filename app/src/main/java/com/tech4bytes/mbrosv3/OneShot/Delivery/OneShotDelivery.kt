@@ -463,8 +463,10 @@ class OneShotDelivery : AppCompatActivity() {
             totalPcElement.text = "$sumPc"
             if(sumPc != loadedPc) {
                 totalPcElement.setBackgroundColor(ContextCompat.getColor(context, R.color.osd_total_bar_incorrect_data_background))
+                totalPcElement.setTextColor(ContextCompat.getColor(context, R.color.white))
             } else {
                 totalPcElement.setBackgroundColor(0x00000000)
+                totalPcElement.setTextColor(ContextCompat.getColor(context, R.color.osd_total_bar_total_pc_correct_text_color))
             }
 
             totalKgElement.text = "%.3f".format(sumKg)

@@ -747,8 +747,8 @@
                                         android:id="@+id/osd_km_cost"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:paddingLeft="10dp"
-                                        android:text="TextView"
+                                        android:paddingStart="10dp"
+                                        android:text=""
                                         android:textColor="@color/osd_fuel_non_interactive_ok_text_color" />
                                 </LinearLayout>
 

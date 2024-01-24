@@ -459,7 +459,14 @@ class OneShotDelivery : AppCompatActivity() {
             val loadedKg = NumberUtils.getDoubleOrZero(SingleAttributedDataUtils.getRecords().actualLoadKg)
             val shortage = (loadedKg - sumKg) * 100 / loadedKg
 
+            val loadedPc = NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().actualLoadPc)
             totalPcElement.text = "$sumPc"
+            if(sumPc != loadedPc) {
+                totalPcElement.setBackgroundColor(ContextCompat.getColor(context, R.color.osd_total_bar_incorrect_data_background))
+            } else {
+                totalPcElement.setBackgroundColor(0x00000000)
+            }
+
             totalKgElement.text = "%.3f".format(sumKg)
             totalSaleElement.text = "$sumSale"
             metadataObj.daySale = sumSale.toString()

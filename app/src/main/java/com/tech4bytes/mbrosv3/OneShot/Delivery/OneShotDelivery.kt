@@ -182,7 +182,7 @@ class OneShotDelivery : AppCompatActivity() {
         val refuelingQtyElement = findViewById<EditText>(R.id.one_shot_delivery_fuel_quantity)
 
         runOnUiThread {
-            meteredFuelKms.setNumber(NumberUtils.getIntOrZero(RefuelingUtils.getPreviousRefuelingKM()))
+            meteredFuelKms.setNumber(NumberUtils.getIntOrZero(RefuelingUtils.getPreviousRefuelingKM()), true)
         }
 
         OSDLoadInfo.initializeUI(this, loadPcElement, loadKgElement, loadAvgWtElement)
@@ -209,7 +209,7 @@ class OneShotDelivery : AppCompatActivity() {
 
         val vehiclePrevKm: Int = NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().vehicle_finalKm)
 
-        meteredKm.setNumber(vehiclePrevKm)
+        meteredKm.setNumber(vehiclePrevKm, true)
         meteredKm.setListeners { updateKmRelatedCosts() }
 
         UIUtils.setUIElementValue(labourExpensesElement, SingleAttributedDataUtils.getRecords().labour_expenses)
@@ -568,7 +568,7 @@ class OneShotDelivery : AppCompatActivity() {
                 val refuelingKm = meteredFuelKms.getNumber()!!
                 val addKmToFuelKmToGetFinalKm =
                     NumberUtils.getIntOrZero(AppConstants.get(AppConstants.ADD_TO_FUELING_KMS_TO_GET_FINAL_KM))
-                meteredKm.setNumber(refuelingKm + addKmToFuelKmToGetFinalKm)
+                meteredKm.setNumber(refuelingKm + addKmToFuelKmToGetFinalKm, false)
             }
         }
     }

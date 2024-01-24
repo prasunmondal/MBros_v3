@@ -4,14 +4,14 @@ import android.view.View
 import android.widget.EditText
 import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
+import org.apache.commons.lang3.StringUtils
 import java.util.function.Consumer
-import kotlin.math.pow
 
 class MeteredNumbers {
     val firstNumberView: EditText
     val secondNumberView: EditText
     val secondNumberLength: Int
-    var initialValue: Int = 0
+    var startingValue: Int = 0
 
     constructor(firstNumberView: EditText, secondNumberView: EditText, secondNumberLength: Int) {
         this.firstNumberView = firstNumberView
@@ -19,24 +19,25 @@ class MeteredNumbers {
         this.secondNumberLength = secondNumberLength
     }
 
-    private fun getFirstPartOfNumber(number: Int): Int {
-        val exponent: Int = 10.0.pow(secondNumberLength.toDouble()).toInt()
-        val firstPart = (number / exponent).toString()
-        return NumberUtils.getIntOrZero(firstPart)
+    private fun getFirstPartOfNumber(number: Int): String {
+        return StringUtils.left(number.toString(), number.toString().length - secondNumberLength)
+//        val exponent: Int = 10.0.pow(secondNumberLength.toDouble()).toInt()
+//        val firstPart = (number / exponent).toString()
+//        return NumberUtils.getIntOrZero(firstPart).toString()
     }
 
-    private fun getSecondPartOfNumber(number: Int): Int {
-        val exponent: Int = 10.0.pow(secondNumberLength.toDouble()).toInt()
-        val secondPart = (number % exponent).toString()
-        return NumberUtils.getIntOrZero(secondPart)
+    private fun getSecondPartOfNumber(number: Int): String {
+        return StringUtils.right(number.toString(), secondNumberLength)
     }
 
-    fun setNumber(number: Int, secondPartOnChangeListeners: Consumer<View>? = null) {
-        initialValue = number
+    fun setNumber(number: Int, updateStartingValue: Boolean, secondPartOnChangeListeners: Consumer<View>? = null) {
+        if(updateStartingValue)
+            startingValue = number
+
         val firstNumber = getFirstPartOfNumber(number)
         val secondNumber = getSecondPartOfNumber(number)
-        firstNumberView.setText(NumberUtils.getIntOrBlank(firstNumber.toString()))
-        secondNumberView.setText(NumberUtils.getIntOrBlank(secondNumber.toString()))
+        firstNumberView.setText(firstNumber)
+        secondNumberView.setText(secondNumber)
 
         if(secondPartOnChangeListeners != null)
         {
@@ -54,12 +55,12 @@ class MeteredNumbers {
     private fun checkAndUpdateFirstPart() {
         val kmSecondPart = secondNumberView.text.toString()
         if(kmSecondPart.length < secondNumberLength) {
-            firstNumberView.setText(getFirstPartOfNumber(initialValue).toString())
+            firstNumberView.setText(getFirstPartOfNumber(startingValue).toString())
             // mark the second part as error
             return
         }
 
-        if(getNumber() != null && getNumber()!! < initialValue) {
+        if(getNumber() != null && getNumber()!! < startingValue) {
             firstNumberView.setText((NumberUtils.getIntOrZero(firstNumberView.text.toString()) + 1).toString())
         }
     }

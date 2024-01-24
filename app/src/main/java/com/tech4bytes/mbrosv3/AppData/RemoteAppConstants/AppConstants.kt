@@ -12,7 +12,9 @@ enum class AppConstants {
     DELIVERY_BASE_RATE_DIFF,
     ADD_TO_FUELING_KMS_TO_GET_FINAL_KM,
     DUE_SHOW_BALANCE_AVG_DAYS,
-    SMS_ORDERING_SHOW_SMS_FOR_N_DAYS;
+    SMS_ORDERING_SHOW_SMS_FOR_N_DAYS,
+    FUEL_OIL_RATE_UPPER_LIMIT,
+    FUEL_OIL_RATE_LOWER_LIMIT;
 
     companion object {
         fun preFetch(useCache: Boolean = true) {

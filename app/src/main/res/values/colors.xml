@@ -36,6 +36,9 @@
     <color name="osd_single_attribute_rates_hintText_color">#5FBCDD</color>
     <color name="osd_pc_hint_color_1">#5E9A9797</color>
     <color name="osd_pc_hint_color_2">#ACABAB</color>
+    <color name="osd_fuel_rate_not_matching">#81FF4141</color>
+    <color name="osd_fuel_rate_matched">#00000000</color>
+    <color name="osd_fuel_non_interactive_ok_text_color">#888686</color>
 
     <color name="red">#FF4141</color>
     <color name="transparent_red">#81FF4141</color>
@@ -69,5 +72,4 @@
     <!-- SMS ORDERING-->
     <color name="smso_avg1_grp_text_color">#D5ED7575</color>
     <color name="smso_avg2_grp_text_color">#197377</color>
-
 </resources>

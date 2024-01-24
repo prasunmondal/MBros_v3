@@ -519,6 +519,30 @@
                                         android:textColor="#888686" />
                                 </LinearLayout>
 
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="right"
+                                    android:orientation="horizontal"
+                                    android:paddingVertical="10dp">
+
+                                    <TextView
+                                        android:id="@+id/textView42"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="left"
+                                        android:text="Rate: "
+                                        android:textColor="@color/osd_fuel_non_interactive_ok_text_color" />
+
+                                    <TextView
+                                        android:id="@+id/one_shot_delivery_refueling_oil_rate_per_litre"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="90"
+                                        android:textColor="@color/osd_fuel_non_interactive_ok_text_color" />
+                                </LinearLayout>
+
                             </LinearLayout>
                         </LinearLayout>
 
@@ -669,7 +693,7 @@
                                         android:layout_height="wrap_content"
                                         android:gravity="right"
                                         android:text="Prev KM: "
-                                        android:textColor="#888686" />
+                                        android:textColor="@color/osd_fuel_non_interactive_ok_text_color" />
 
                                     <TextView
                                         android:id="@+id/osd_prev_km"
@@ -677,7 +701,7 @@
                                         android:layout_height="wrap_content"
                                         android:paddingLeft="10dp"
                                         android:text="TextView"
-                                        android:textColor="#888686" />
+                                        android:textColor="@color/osd_fuel_non_interactive_ok_text_color" />
 
                                 </LinearLayout>
 
@@ -693,7 +717,7 @@
                                         android:layout_height="wrap_content"
                                         android:gravity="right"
                                         android:text="Diff: "
-                                        android:textColor="#888686" />
+                                        android:textColor="@color/osd_fuel_non_interactive_ok_text_color" />
 
                                     <TextView
                                         android:id="@+id/osd_km_diff"
@@ -701,7 +725,7 @@
                                         android:layout_height="wrap_content"
                                         android:paddingLeft="10dp"
                                         android:text="TextView"
-                                        android:textColor="#888686" />
+                                        android:textColor="@color/osd_fuel_non_interactive_ok_text_color" />
 
                                 </LinearLayout>
 
@@ -717,7 +741,7 @@
                                         android:layout_height="wrap_content"
                                         android:gravity="right"
                                         android:text="Cost: "
-                                        android:textColor="#888686" />
+                                        android:textColor="@color/osd_fuel_non_interactive_ok_text_color" />
 
                                     <TextView
                                         android:id="@+id/osd_km_cost"
@@ -725,7 +749,7 @@
                                         android:layout_height="wrap_content"
                                         android:paddingLeft="10dp"
                                         android:text="TextView"
-                                        android:textColor="#888686" />
+                                        android:textColor="@color/osd_fuel_non_interactive_ok_text_color" />
                                 </LinearLayout>
 
                             </LinearLayout>

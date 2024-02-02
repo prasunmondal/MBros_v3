@@ -132,7 +132,7 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
 
             listContainer.addView(entry)
 
-            if (NumberUtils.getIntOrZero(deliveryEntry.paid) > 0) {
+            if (NumberUtils.getIntOrZero(deliveryEntry.paidCash) > 0) {
                 bundlesCount++
             }
         }

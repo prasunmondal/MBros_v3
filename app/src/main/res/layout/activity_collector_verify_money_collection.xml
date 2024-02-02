@@ -6,45 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".CollectorVerifyMoneyCollectionActivity">
 
-    <LinearLayout
-        android:id="@+id/linearLayout23"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="#000000"
-        android:orientation="horizontal"
-        android:paddingHorizontal="10dp"
-        android:paddingVertical="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/textView61"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/biorhyme"
-            android:text="Mondal Bros."
-            android:textColor="#FBF0D6"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <View
-            android:id="@+id/view3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/textView62"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/biorhyme"
-            android:text="- Money Collection"
-            android:textColor="#884C4638"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
     <ScrollView
         android:id="@+id/scrollView3"
         android:layout_width="match_parent"
@@ -52,10 +13,8 @@
         android:background="@color/verify_delivery_valid"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout20"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout23"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/activity_collector_verify_money_collection_container"

@@ -108,19 +108,23 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
             val listContainer = findViewById<LinearLayout>(R.id.activity_collector_verify_money_collection_container)
             val layoutInflater = LayoutInflater.from(AppContexts.get())
             val entry = layoutInflater.inflate(R.layout.activity_collector_verify_money_collection_entries, null)
-            val amountPaidField = entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_paid_amount)
+            val amountPaidCashField = entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_paid_amount_cash)
+            val amountPaidOnlineField = entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_paid_amount_online)
             entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_customer_seq_no).text = "$count."
             entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_customer_name).text = deliveryEntry.name
             entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_order_pc).text = deliveryEntry.deliveredKg
             entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_order_kg).text = deliveryEntry.deliveredPc
-            amountPaidField.text = deliveryEntry.paid
+            amountPaidCashField.text = deliveryEntry.paidCash
+            if(NumberUtils.getIntOrZero(deliveryEntry.paidOnline) != 0) {
+                amountPaidOnlineField.text = "\uD83C\uDF10 Rs ${deliveryEntry.paidOnline}"
+            }
             entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_total_due_amount).text = deliveryEntry.balanceDue
-            updateColors(entry, NumberUtils.getIntOrZero(amountPaidField.text.toString()), map[deliveryEntry.name]!!.kgPc, map[deliveryEntry.name]!!.paidAmount)
+            updateColors(entry, NumberUtils.getIntOrZero(amountPaidCashField.text.toString()), map[deliveryEntry.name]!!.kgPc, map[deliveryEntry.name]!!.paidAmount)
 
             entry.findViewById<LinearLayout>(R.id.activity_collector_verify_money_collection_fragment_container).setOnClickListener {
                 map[deliveryEntry.name]!!.kgPc = !map[deliveryEntry.name]!!.kgPc
                 map[deliveryEntry.name]!!.paidAmount = !map[deliveryEntry.name]!!.paidAmount
-                updateColors(entry, NumberUtils.getIntOrZero(amountPaidField.text.toString()), map[deliveryEntry.name]!!.kgPc, map[deliveryEntry.name]!!.paidAmount)
+                updateColors(entry, NumberUtils.getIntOrZero(amountPaidCashField.text.toString()), map[deliveryEntry.name]!!.kgPc, map[deliveryEntry.name]!!.paidAmount)
             }
 
             listContainer.addView(entry)

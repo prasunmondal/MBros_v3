@@ -113,22 +113,23 @@
             android:gravity="right|center_vertical"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/activity_collector_verify_money_collection_fragment_kgPc_container"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/activity_collector_verify_money_collection_fragment_paid_amount_cash"
                 android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:gravity="left|center_vertical"
+                android:text="Rs 0"
+                android:textColor="#EDCFA1"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/activity_collector_verify_money_collection_fragment_paid_amount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="left|center_vertical"
-                    android:text="Rs 0"
-                    android:textColor="#EDCFA1"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/activity_collector_verify_money_collection_fragment_paid_amount_online"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textColor="#86EDCFA1" />
+
         </LinearLayout>
 
 

@@ -33,6 +33,9 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_collector_verify_money_collection)
         AppContexts.set(this, this)
         AppUtils.logError(this)
+
+        setContentView(R.layout.activity_fullscreen)
+        supportActionBar!!.hide()
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         val builder = VmPolicy.Builder()

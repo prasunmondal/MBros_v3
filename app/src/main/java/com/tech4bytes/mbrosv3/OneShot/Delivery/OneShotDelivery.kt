@@ -46,7 +46,6 @@ import org.apache.commons.collections4.CollectionUtils
 class OneShotDelivery : AppCompatActivity() {
 
     var deliveryMapOrderedCustomers: MutableMap<String, DeliverToCustomerDataModel> = mutableMapOf()
-    var deliveryMapUnOrderedCustomers: MutableMap<String, DeliverToCustomerDataModel> = mutableMapOf()
     lateinit var saveOneSortDeliveryButton: Button
     lateinit var deleteDeliveryDataButton: Button
     lateinit var sidebarIconLoadDetails: ImageView
@@ -210,7 +209,6 @@ class OneShotDelivery : AppCompatActivity() {
         }
     }
 
-
     private fun initializeOtherExpensesUI() {
         val salaryDivisionElement = findViewById<TextView>(R.id.osd_salary_division)
 
@@ -311,26 +309,26 @@ class OneShotDelivery : AppCompatActivity() {
             deliveryMapOrderedCustomers[it.name] = deliverCustomersOrders
         }
 
-        deliveryMapUnOrderedCustomers = mutableMapOf()
-        val listOfUnOrderedCustomers = GetCustomerOrderUtils.getListOfUnOrderedCustomers()
-        listOfUnOrderedCustomers.forEach {
-            var customerAccount = CustomerKYC.getByName(it.name)!!.referredBy
-            if (customerAccount.isEmpty())
-                customerAccount = it.name
-            val deliverCustomersOrders = DeliverToCustomerDataModel(
-                id = "${System.currentTimeMillis()}",
-                timestamp = DateUtils.getCurrentTimestamp(),
-                name = it.name,
-                orderedPc = "0",
-                orderedKg = "0",
-                rate = "${CustomerDataUtils.getDeliveryRate(it.name)}",
-                customerAccount = customerAccount,
-                prevDue = CustomerDueData.getLastFinalizedDue(it.name),
-                deliveryStatus = "DELIVERING"
-            )
-
-            deliveryMapUnOrderedCustomers[it.name] = deliverCustomersOrders
-        }
+//        deliveryMapUnOrderedCustomers = mutableMapOf()
+//        val listOfUnOrderedCustomers = GetCustomerOrderUtils.getListOfUnOrderedCustomers()
+//        listOfUnOrderedCustomers.forEach {
+//            var customerAccount = CustomerKYC.getByName(it.name)!!.referredBy
+//            if (customerAccount.isEmpty())
+//                customerAccount = it.name
+//            val deliverCustomersOrders = DeliverToCustomerDataModel(
+//                id = "${System.currentTimeMillis()}",
+//                timestamp = DateUtils.getCurrentTimestamp(),
+//                name = it.name,
+//                orderedPc = "0",
+//                orderedKg = "0",
+//                rate = "${CustomerDataUtils.getDeliveryRate(it.name)}",
+//                customerAccount = customerAccount,
+//                prevDue = CustomerDueData.getLastFinalizedDue(it.name),
+//                deliveryStatus = "DELIVERING"
+//            )
+//
+//            deliveryMapOrderedCustomers[it.name] = deliverCustomersOrders
+//        }
     }
 
     private fun addNewCustomer(name: String) {
@@ -352,7 +350,7 @@ class OneShotDelivery : AppCompatActivity() {
             prevDue = CustomerDueData.getLastFinalizedDue(name),
             deliveryStatus = "DELIVERING"
         )
-        deliveryMapUnOrderedCustomers[name] = deliverCustomersOrders
+        deliveryMapOrderedCustomers[name] = deliverCustomersOrders
         return deliverCustomersOrders
     }
 
@@ -442,16 +440,6 @@ class OneShotDelivery : AppCompatActivity() {
                 sumSale += NumberUtils.getIntOrZero(it.value.todaysAmount)
                 sumAmountCollected += NumberUtils.getIntOrZero(it.value.paid)
                 if (NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
-                    sumBalanceDue += NumberUtils.getIntOrZero(it.value.balanceDue)
-                }
-            }
-
-            context.deliveryMapUnOrderedCustomers.forEach {
-                sumPc += NumberUtils.getIntOrZero(it.value.deliveredPc)
-                sumKg += NumberUtils.getDoubleOrZero(it.value.deliveredKg)
-                sumSale += NumberUtils.getIntOrZero(it.value.todaysAmount)
-                sumAmountCollected += NumberUtils.getIntOrZero(it.value.paid)
-                if (NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0.0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
                     sumBalanceDue += NumberUtils.getIntOrZero(it.value.balanceDue)
                 }
             }
@@ -662,22 +650,15 @@ class OneShotDelivery : AppCompatActivity() {
 
         val allDeliveredRecords: MutableMap<String, DeliverToCustomerDataModel> = mutableMapOf()
         allDeliveredRecords.putAll(deliveryMapOrderedCustomers)
-        allDeliveredRecords.putAll(deliveryMapUnOrderedCustomers)
 
         allDeliveredRecords.forEach { (s, deliveryObj) ->
             val referCalcObj = BalanceReferralCalculations.getTotalDiscountFor(deliveryObj.name)
             deliveryObj.adjustments = referCalcObj.transferAmount.toString()
             deliveryObj.balanceDue = (NumberUtils.getIntOrZero(deliveryObj.balanceDue) - referCalcObj.balanceOfReferered).toString()
             deliveryObj.notes = referCalcObj.message
-
-            LogMe.log("wqerty11: " + deliveryObj.toString())
         }
 
         val filteredListToSave = filterListToGetDataToSave(allDeliveredRecords)
-
-        filteredListToSave.forEach { (s, deliveryObj) ->
-            LogMe.log("wqerty22: " + deliveryObj.toString())
-        }
 
         // save locally
         filteredListToSave.forEach {

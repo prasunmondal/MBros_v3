@@ -34,7 +34,7 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
         AppContexts.set(this, this)
         AppUtils.logError(this)
 
-        setContentView(R.layout.activity_fullscreen)
+//        setContentView(R.layout.activity_fullscreen)
         supportActionBar!!.hide()
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 

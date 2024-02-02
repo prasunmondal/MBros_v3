@@ -33,9 +33,6 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_collector_verify_money_collection)
         AppContexts.set(this, this)
         AppUtils.logError(this)
-
-        setContentView(R.layout.activity_fullscreen)
-        supportActionBar!!.hide()
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         val builder = VmPolicy.Builder()
@@ -104,11 +101,11 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
         var deliveredData = DeliverToCustomerDataHandler.get()
         var count = 0
         var bundlesCount = 0
-        val listContainer = findViewById<LinearLayout>(R.id.activity_collector_verify_money_collection_container)
         deliveredData = ListUtils.sortListByAttribute(deliveredData, DeliverToCustomerDataModel::id)
         deliveredData.forEach { deliveryEntry ->
             map[deliveryEntry.name] = VerifyElements()
             count++
+            val listContainer = findViewById<LinearLayout>(R.id.activity_collector_verify_money_collection_container)
             val layoutInflater = LayoutInflater.from(AppContexts.get())
             val entry = layoutInflater.inflate(R.layout.activity_collector_verify_money_collection_entries, null)
             val amountPaidCashField = entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_paid_amount_cash)
@@ -132,7 +129,7 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
 
             listContainer.addView(entry)
 
-            if (NumberUtils.getIntOrZero(deliveryEntry.paidCash) > 0) {
+            if (NumberUtils.getIntOrZero(deliveryEntry.paid) > 0) {
                 bundlesCount++
             }
         }

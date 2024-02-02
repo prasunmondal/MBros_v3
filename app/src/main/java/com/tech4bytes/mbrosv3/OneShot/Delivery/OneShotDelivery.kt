@@ -45,7 +45,7 @@ import org.apache.commons.collections4.CollectionUtils
 
 class OneShotDelivery : AppCompatActivity() {
 
-    var deliveryMapOrderedCustomers: MutableMap<String, DeliverToCustomerDataModel> = mutableMapOf()
+    var deliverRecords: MutableMap<String, DeliverToCustomerDataModel> = mutableMapOf()
     lateinit var saveOneSortDeliveryButton: Button
     lateinit var deleteDeliveryDataButton: Button
     lateinit var sidebarIconLoadDetails: ImageView
@@ -105,7 +105,7 @@ class OneShotDelivery : AppCompatActivity() {
     @SuppressLint("NewApi")
     private fun populateCustomerListDropdown() {
         val allCustomers = ListUtils.getAllPossibleValuesList(CustomerKYC.get(), CustomerKYCModel::nameEng).toList()
-        val customersInUI = ListUtils.getAllPossibleValuesList(deliveryMapOrderedCustomers.values.toList(), DeliverToCustomerDataModel::name).toList()
+        val customersInUI = ListUtils.getAllPossibleValuesList(deliverRecords.values.toList(), DeliverToCustomerDataModel::name).toList()
         val listToShow = CollectionUtils.subtract(allCustomers, customersInUI).toList().sorted()
 
         val uiView = findViewById<AutoCompleteTextView>(R.id.osd_customer_picker)
@@ -266,7 +266,7 @@ class OneShotDelivery : AppCompatActivity() {
 
     @RequiresApi(34)
     private fun populateDeliveryMap() {
-        deliveryMapOrderedCustomers = mutableMapOf()
+        deliverRecords = mutableMapOf()
         val listOfOrderedCustomers = GetCustomerOrderUtils.getListOfOrderedCustomers()
         listOfOrderedCustomers.forEach {
             var customerAccount = CustomerKYC.getByName(it.name)!!.referredBy
@@ -285,7 +285,7 @@ class OneShotDelivery : AppCompatActivity() {
                 deliveryStatus = "DELIVERING"
             )
 
-            deliveryMapOrderedCustomers[it.name] = deliverCustomersOrders
+            deliverRecords[it.name] = deliverCustomersOrders
         }
 
         val t = DeliverToCustomerDataHandler.get()
@@ -306,7 +306,7 @@ class OneShotDelivery : AppCompatActivity() {
                 prevDue = CustomerDueData.getLastFinalizedDue(it.name),
                 deliveryStatus = "DELIVERING"
             )
-            deliveryMapOrderedCustomers[it.name] = deliverCustomersOrders
+            deliverRecords[it.name] = deliverCustomersOrders
         }
 
 //        deliveryMapUnOrderedCustomers = mutableMapOf()
@@ -350,7 +350,7 @@ class OneShotDelivery : AppCompatActivity() {
             prevDue = CustomerDueData.getLastFinalizedDue(name),
             deliveryStatus = "DELIVERING"
         )
-        deliveryMapOrderedCustomers[name] = deliverCustomersOrders
+        deliverRecords[name] = deliverCustomersOrders
         return deliverCustomersOrders
     }
 
@@ -360,7 +360,7 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun showOrders() {
-        var t = showOrders(deliveryMapOrderedCustomers, R.id.one_shot_delivery_ordered_customers_entry_container)
+        var t = showOrders(deliverRecords, R.id.one_shot_delivery_ordered_customers_entry_container)
         findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).removeAllViews()
 
         t.forEach { (key, value) ->
@@ -434,7 +434,7 @@ class OneShotDelivery : AppCompatActivity() {
             var sumAmountCollected = 0
             var sumBalanceDue = 0
 
-            context.deliveryMapOrderedCustomers.forEach {
+            context.deliverRecords.forEach {
                 sumPc += NumberUtils.getIntOrZero(it.value.deliveredPc)
                 sumKg += NumberUtils.getDoubleOrZero(it.value.deliveredKg)
                 sumSale += NumberUtils.getIntOrZero(it.value.todaysAmount)
@@ -649,7 +649,7 @@ class OneShotDelivery : AppCompatActivity() {
         var eachStep = 0
 
         val allDeliveredRecords: MutableMap<String, DeliverToCustomerDataModel> = mutableMapOf()
-        allDeliveredRecords.putAll(deliveryMapOrderedCustomers)
+        allDeliveredRecords.putAll(deliverRecords)
 
         allDeliveredRecords.forEach { (s, deliveryObj) ->
             val referCalcObj = BalanceReferralCalculations.getTotalDiscountFor(deliveryObj.name)

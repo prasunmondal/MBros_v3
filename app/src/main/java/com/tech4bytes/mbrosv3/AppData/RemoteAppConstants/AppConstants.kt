@@ -14,7 +14,8 @@ enum class AppConstants {
     DUE_SHOW_BALANCE_AVG_DAYS,
     SMS_ORDERING_SHOW_SMS_FOR_N_DAYS,
     FUEL_OIL_RATE_UPPER_LIMIT,
-    FUEL_OIL_RATE_LOWER_LIMIT;
+    FUEL_OIL_RATE_LOWER_LIMIT,
+    WEB_PORTAL_URL;
 
     companion object {
         fun preFetch(useCache: Boolean = true) {

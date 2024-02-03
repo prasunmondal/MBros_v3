@@ -1,7 +1,9 @@
 package com.tech4bytes.mbrosv3.Login
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings.Secure
 import android.view.LayoutInflater
@@ -16,6 +18,7 @@ import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetchActivity
 import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetchingInfo
+import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.AppUsers.AppUsersModel
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.UserRoleUtils
@@ -40,6 +43,7 @@ import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import java.io.File
+
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -123,7 +127,33 @@ class ActivityLogin : AppCompatActivity() {
             ActivityAuthEnums.SMS_ORDERING -> ::goToSmsOrderingActivity
             ActivityAuthEnums.SHOW_RATES_IN_DELIVERY_PAGE -> null
             ActivityAuthEnums.CUSTOMER_TRANSACTIONS -> ::goToCustomerTransactions
+            ActivityAuthEnums.WEB_PORTAL -> ::goToWebPortal
             else -> null
+        }
+    }
+
+    private fun goToWebPortal() {
+        val url = AppConstants.get(AppConstants.WEB_PORTAL_URL)
+//        val webpage = Uri.parse(url)
+//        val intent = Intent(Intent.ACTION_VIEW, webpage)
+//        if (intent.resolveActivity(packageManager) != null) {
+//            startActivity(intent)
+//        }
+
+
+//        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse())
+//        startActivity(browserIntent)
+
+        val urlString = url
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(urlString))
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.setPackage("com.android.chrome")
+        try {
+            this.startActivity(intent)
+        } catch (ex: ActivityNotFoundException) {
+            // Chrome browser presumably not installed so allow user to choose instead
+            intent.setPackage(null)
+            this.startActivity(intent)
         }
     }
 

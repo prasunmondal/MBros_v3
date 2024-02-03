@@ -12,7 +12,8 @@ enum class ActivityAuthEnums : java.io.Serializable {
     LOAD_INFORMATION,
     MONEY_CALCULATOR,
     SMS_ORDERING,
-    CUSTOMER_TRANSACTIONS;
+    CUSTOMER_TRANSACTIONS,
+    WEB_PORTAL;
 
     companion object {
         fun getString(enum: ActivityAuthEnums): String? {

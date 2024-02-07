@@ -28,13 +28,14 @@ object EventsUI {
         activity.runOnUiThread {
             events.forEach { event ->
                 val eventDate: Date = DateUtils.getDate(event.eng_date)!!
-                val dateString = DateUtils.getDateInFormat(eventDate, "dd MMM yyyy (E)")
+                val dateString = DateUtils.getDateInFormat(eventDate, "dd MMM")
+                val yearString = DateUtils.getDateInFormat(eventDate, "yyyy")
+                val dayString = DateUtils.getDateInFormat(eventDate, "E")
 
-                val entry = activity.layoutInflater.inflate(
-                    R.layout.activity_sms_ordering_event_fragments,
-                    null
-                )
+                val entry = activity.layoutInflater.inflate(R.layout.activity_sms_ordering_event_fragments, null)
+                entry.findViewById<TextView>(R.id.smsorder_event_year).text = yearString
                 entry.findViewById<TextView>(R.id.smsorder_event_date).text = dateString
+                entry.findViewById<TextView>(R.id.smsorder_event_day_name).text = dayString
                 entry.findViewById<TextView>(R.id.smsorder_event_name).text = event.occassion_name
                 containerView.addView(entry)
             }

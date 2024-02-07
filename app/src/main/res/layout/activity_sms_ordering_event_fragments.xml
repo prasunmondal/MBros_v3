@@ -26,11 +26,32 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
+                android:id="@+id/smsorder_event_year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:paddingRight="10dp"
+                android:text="88"
+                android:textColor="#ABF6B6CE"
+                android:textSize="14sp" />
+
+            <TextView
                 android:id="@+id/smsorder_event_date"
-                android:layout_width="160dp"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:paddingRight="5dp"
+                android:text="88"
+                android:textColor="#F6B6CE"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/smsorder_event_day_name"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:paddingRight="5dp"
+                android:paddingLeft="5dp"
                 android:text="88"
                 android:textColor="#F6B6CE"
                 android:textSize="14sp" />

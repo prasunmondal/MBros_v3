@@ -3,10 +3,12 @@ package com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Typeface
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
@@ -15,6 +17,8 @@ import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.BusinessLogic.Sorter
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
+import com.tech4bytes.mbrosv3.CustomerOrders.Occasions.Events
+import com.tech4bytes.mbrosv3.CustomerOrders.Occasions.EventsUI
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
@@ -23,6 +27,7 @@ import com.tech4bytes.mbrosv3.Sms.Tech4BytesPermissions
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
+import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 import com.tech4bytes.mbrosv3.Utils.T4B.StringUtils
@@ -38,6 +43,7 @@ class SMSOrdering : AppCompatActivity() {
     var orders = mutableListOf<SMSOrderModel>()
     var smsToProcess: String = ""
 
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_smsordering)
@@ -48,6 +54,17 @@ class SMSOrdering : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         Tech4BytesPermissions.requestSMSPermission(this, this)
+
+        val t= Events.getOccasionsInLastNDays(7)
+        t.forEach {
+            LogMe.log(it.toString())
+        }
+        Thread {
+            EventsUI.showEvents(this,
+                findViewById(R.id.smsordering_events_scroll_layout_container),
+                findViewById(R.id.smsordering_events_container),
+                findViewById(R.id.smsordering_toggle_events_view))
+        }.start()
 
         Thread {
             setUpUI()

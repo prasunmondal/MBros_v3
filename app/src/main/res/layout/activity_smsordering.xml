@@ -75,6 +75,28 @@
             android:text="Hide SMS"
             android:textColor="#D5D4D4" />
 
+        <ScrollView
+            android:id="@+id/smsordering_events_scroll_layout_container"
+            android:layout_width="match_parent"
+            android:layout_height="160dp">
+
+            <LinearLayout
+                android:id="@+id/smsordering_events_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"></LinearLayout>
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/smsordering_toggle_events_view"
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:background="#000000"
+            android:gravity="center"
+            android:onClick="onClickToggleSMSView"
+            android:text="Hide Events"
+            android:textColor="#D5D4D4" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -15,7 +15,8 @@ enum class AppConstants {
     SMS_ORDERING_SHOW_SMS_FOR_N_DAYS,
     FUEL_OIL_RATE_UPPER_LIMIT,
     FUEL_OIL_RATE_LOWER_LIMIT,
-    WEB_PORTAL_URL;
+    WEB_PORTAL_URL,
+    EVENTS_SHOW_N_DAYS;
 
     companion object {
         fun preFetch(useCache: Boolean = true) {

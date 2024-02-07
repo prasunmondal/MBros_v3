@@ -19,7 +19,7 @@ object Events: Tech4BytesSerializable<EventsModel>(
 ) {
 
     override fun <T : Any> sortResults(list: ArrayList<T>): ArrayList<T> {
-        return (list as ArrayList<EventsModel>).sortedBy { p -> p.eng_date }.reversed() as ArrayList<T>
+        return (list as ArrayList<EventsModel>).sortedBy { p -> DateUtils.getDate(p.eng_date) }.reversed().reversed() as ArrayList<T>
     }
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     fun getOccasionsInLastNDays(n: Int): List<EventsModel> {

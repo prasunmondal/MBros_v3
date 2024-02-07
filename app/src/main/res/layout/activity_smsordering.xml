@@ -78,7 +78,9 @@
         <ScrollView
             android:id="@+id/smsordering_events_scroll_layout_container"
             android:layout_width="match_parent"
-            android:layout_height="160dp">
+            android:layout_height="160dp"
+            android:visibility="gone"
+            tools:visibility="gone">
 
             <LinearLayout
                 android:id="@+id/smsordering_events_container"

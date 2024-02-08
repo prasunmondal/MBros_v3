@@ -17,24 +17,24 @@ object EventsUI {
     val daysOfEvents = NumberUtils.getIntOrZero(AppConstants.get(AppConstants.EVENTS_SHOW_N_DAYS))
 
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
-    fun showEvents(activity: Activity, mainContainer: LinearLayout) {
+    fun showEvents(activity: Activity, eventsLayout: LinearLayout) {
         if(daysOfEvents <= 0) {
             // if AppConstants.EVENTS_SHOW_N_DAYS == 0 -> hide the events window
-            mainContainer.visibility = View.GONE
+            eventsLayout.visibility = View.GONE
             return
         }
 
-        mainContainer.visibility = View.VISIBLE
-        val layoutContainer = mainContainer.findViewById<ScrollView>(R.id.smsordering_events_scroll_layout_container)
-        val containerView = mainContainer.findViewById<LinearLayout>(R.id.smsordering_events_container)
-        val eventsViewToggle = mainContainer.findViewById<TextView>(R.id.smsordering_toggle_events_view)
+        eventsLayout.visibility = View.VISIBLE
+        val eventsScrollView = eventsLayout.findViewById<ScrollView>(R.id.smsordering_events_scroll_layout_container)
+        val listContainer = eventsLayout.findViewById<LinearLayout>(R.id.smsordering_events_container)
+        val eventsViewToggleBtn = eventsLayout.findViewById<TextView>(R.id.smsordering_toggle_events_view)
 
         val events = Events.getOccasionsInLastNDays(daysOfEvents)
 
-        setEventsDrawerListener(layoutContainer, eventsViewToggle, events)
+        setEventsDrawerListener(eventsScrollView, eventsViewToggleBtn, events)
 
         activity.runOnUiThread {
-            setToggleBtnText(layoutContainer, eventsViewToggle, events)
+            setToggleBtnText(eventsScrollView, eventsViewToggleBtn, events)
         }
 
         activity.runOnUiThread {
@@ -49,36 +49,36 @@ object EventsUI {
                 entry.findViewById<TextView>(R.id.smsorder_event_date).text = dateString
                 entry.findViewById<TextView>(R.id.smsorder_event_day_name).text = dayString
                 entry.findViewById<TextView>(R.id.smsorder_event_name).text = event.occassion_name
-                containerView.addView(entry)
+                listContainer.addView(entry)
             }
         }
     }
 
     fun setEventsDrawerListener(
-        layoutContainer: ScrollView,
-        eventsViewToggle: TextView,
+        eventsScrollView: ScrollView,
+        eventsViewToggleBtn: TextView,
         events: List<EventsModel>
     ) {
-        eventsViewToggle.setOnClickListener {
-            onToggleEventsView(layoutContainer, eventsViewToggle, events)
+        eventsViewToggleBtn.setOnClickListener {
+            onToggleEventsView(eventsScrollView, eventsViewToggleBtn, events)
         }
     }
 
     fun onToggleEventsView(
-        layoutContainer: ScrollView,
-        eventsViewToggle: TextView,
+        eventsScrollView: ScrollView,
+        eventsViewToggleBtn: TextView,
         events: List<EventsModel>
     ) {
-        layoutContainer.visibility = if (layoutContainer.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-        setToggleBtnText(layoutContainer, eventsViewToggle, events)
+        eventsScrollView.visibility = if (eventsScrollView.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        setToggleBtnText(eventsScrollView, eventsViewToggleBtn, events)
     }
 
-    fun setToggleBtnText(layoutContainer: ScrollView,
-                         eventsViewToggle: TextView,
+    fun setToggleBtnText(eventsScrollView: ScrollView,
+                         eventsViewToggleBtn: TextView,
                          events: List<EventsModel>) {
 
         val numberOfEvents = events.size
-        val viewText = if (layoutContainer.visibility == View.VISIBLE) "HIDE EVENTS" else "SHOW EVENTS"
-        eventsViewToggle.text = "$viewText  / $numberOfEvents in $daysOfEvents days"
+        val viewText = if (eventsScrollView.visibility == View.VISIBLE) "HIDE EVENTS" else "SHOW EVENTS"
+        eventsViewToggleBtn.text = "$viewText  / $numberOfEvents in $daysOfEvents days"
     }
 }

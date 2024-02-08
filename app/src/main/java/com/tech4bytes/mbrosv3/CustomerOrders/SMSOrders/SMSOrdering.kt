@@ -17,7 +17,6 @@ import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.BusinessLogic.Sorter
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
-import com.tech4bytes.mbrosv3.CustomerOrders.Occasions.Events
 import com.tech4bytes.mbrosv3.CustomerOrders.Occasions.EventsUI
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
@@ -27,7 +26,6 @@ import com.tech4bytes.mbrosv3.Sms.Tech4BytesPermissions
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
-import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 import com.tech4bytes.mbrosv3.Utils.T4B.StringUtils
@@ -56,7 +54,7 @@ class SMSOrdering : AppCompatActivity() {
         Tech4BytesPermissions.requestSMSPermission(this, this)
 
         Thread {
-            EventsUI.showEvents(this, findViewById(R.id.smsordering_events_main_container))
+            EventsUI.showEvents(this, findViewById(R.id.smsordering_events_layout))
         }.start()
 
         Thread {

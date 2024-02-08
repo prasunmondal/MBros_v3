@@ -55,15 +55,8 @@ class SMSOrdering : AppCompatActivity() {
 
         Tech4BytesPermissions.requestSMSPermission(this, this)
 
-        val t= Events.getOccasionsInLastNDays(7)
-        t.forEach {
-            LogMe.log(it.toString())
-        }
         Thread {
-            EventsUI.showEvents(this,
-                findViewById(R.id.smsordering_events_scroll_layout_container),
-                findViewById(R.id.smsordering_events_container),
-                findViewById(R.id.smsordering_toggle_events_view))
+            EventsUI.showEvents(this, findViewById(R.id.smsordering_events_main_container))
         }.start()
 
         Thread {

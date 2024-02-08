@@ -30,40 +30,36 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/smsorders_sms_view_scroll_container"
+    <LinearLayout
+        android:id="@+id/linearLayout28"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="#6D000000"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout23">
 
-        <LinearLayout
-            android:id="@+id/smsorders_sms_view_container"
+        <ScrollView
+            android:id="@+id/smsorders_sms_view_scroll_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="150dp"
+            android:background="#6D000000">
 
-            <TextView
-                android:id="@+id/smsordering_loading_sms_label"
+            <LinearLayout
+                android:id="@+id/smsorders_sms_view_container"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:gravity="center"
-                android:text="Loading..."
-                android:textColor="@color/hint_text_loading" />
-        </LinearLayout>
-    </ScrollView>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/linearLayout24"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/smsorders_sms_view_scroll_container">
+                <TextView
+                    android:id="@+id/smsordering_loading_sms_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:gravity="center"
+                    android:text="Loading..."
+                    android:textColor="@color/hint_text_loading" />
+            </LinearLayout>
+        </ScrollView>
 
         <TextView
             android:id="@+id/smsordering_toggle_sms_text"
@@ -74,6 +70,16 @@
             android:onClick="onClickToggleSMSView"
             android:text="Hide SMS"
             android:textColor="#D5D4D4" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/smsordering_events_main_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout28">
 
         <ScrollView
             android:id="@+id/smsordering_events_scroll_layout_container"
@@ -98,6 +104,17 @@
             android:onClick="onClickToggleSMSView"
             android:text="Hide Events"
             android:textColor="#D5D4D4" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout24"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout27">
 
         <LinearLayout
             android:layout_width="match_parent"

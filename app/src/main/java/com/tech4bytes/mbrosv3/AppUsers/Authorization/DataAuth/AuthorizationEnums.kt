@@ -5,5 +5,6 @@ enum class AuthorizationEnums : java.io.Serializable {
     SHOW_FARM_RATE,
     SHOW_BUFFER_RATE,
     SHOW_PROFITS,
-    SHOW_HIDDEN_DUES
+    SHOW_HIDDEN_DUES,
+    SHOW_DELIVERY_RATE
 }

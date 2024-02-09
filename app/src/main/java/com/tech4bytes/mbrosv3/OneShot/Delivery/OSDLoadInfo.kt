@@ -9,6 +9,7 @@ import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
+import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.SendInfoTexts.Whatsapp.Whatsapp
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -43,7 +44,7 @@ class OSDLoadInfo {
             }
         }
 
-        fun setListeners(context: OneShotDelivery, loadPcElement: EditText, loadKgElement: EditText, loadAvgWtElement: TextView, loadPriceElement: EditText, loadBufferElement: EditText) {
+        fun setListeners(context: OneShotDelivery, loadPcElement: EditText, loadKgElement: EditText, loadAvgWtElement: TextView, deliveryPriceElement: EditText) {
             val record = SingleAttributedDataUtils.getRecords()
 
             loadPcElement.doOnTextChanged { text, start, before, count ->
@@ -58,14 +59,9 @@ class OSDLoadInfo {
                 OneShotDelivery.updateTotals(context)
             }
 
-            loadPriceElement.doOnTextChanged { text, start, before, count ->
-                record.finalFarmRate = loadPriceElement.text.toString()
-                SingleAttributedDataUtils.saveToLocal(record)
-                OSDDeliveryEntryInfo.updateRates()
-            }
+            deliveryPriceElement.doOnTextChanged { text, start, before, count ->
+                record.bufferRate = DeliveryCalculations.getBufferPrice(record.finalFarmRate, deliveryPriceElement.text.toString()).toString()
 
-            loadBufferElement.doOnTextChanged { text, start, before, count ->
-                record.bufferRate = loadBufferElement.text.toString()
                 SingleAttributedDataUtils.saveToLocal(record)
                 OSDDeliveryEntryInfo.updateRates()
             }
@@ -108,25 +104,16 @@ class OSDLoadInfo {
                 context.findViewById<TextView>(R.id.osd_company_name).text = SingleAttributedDataUtils.getRecords().load_account
             }
 
-            if (AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_FARM_RATE)) {
-                val loadPriceElement = context.findViewById<EditText>(R.id.one_shot_delivery_price)
+            if (AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_DELIVERY_RATE)) {
+                val deliveryPriceElement = context.findViewById<EditText>(R.id.one_shot_delivery_price)
                 context.runOnUiThread {
-                    loadPriceElement.setText(SingleAttributedDataUtils.getRecords().finalFarmRate)
+                    deliveryPriceElement.setText(
+                        DeliveryCalculations.getBaseDeliveryPrice(SingleAttributedDataUtils.getRecords().finalFarmRate, SingleAttributedDataUtils.getRecords().bufferRate).toString()
+                    )
                 }
             } else {
                 context.runOnUiThread {
                     context.findViewById<TextInputLayout>(R.id.osd_farm_rate_container).visibility = View.GONE
-                }
-            }
-
-            if (AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_BUFFER_RATE)) {
-                val loadBufferElement = context.findViewById<EditText>(R.id.one_shot_delivery_buffer)
-                context.runOnUiThread {
-                    loadBufferElement.setText(SingleAttributedDataUtils.getRecords().bufferRate)
-                }
-            } else {
-                context.runOnUiThread {
-                    context.findViewById<TextInputLayout>(R.id.osd_buffer_price_container).visibility = View.GONE
                 }
             }
         }

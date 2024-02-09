@@ -81,9 +81,7 @@ class OneShotDelivery : AppCompatActivity() {
         supportActionBar?.hide()
 
         initializeVariables()
-        val loadPriceElement = findViewById<EditText>(R.id.one_shot_delivery_price)
-        val loadBufferElement = findViewById<EditText>(R.id.one_shot_delivery_buffer)
-
+        val deliveryPriceElement = findViewById<EditText>(R.id.one_shot_delivery_price)
 
         getSMSPermission()
         Thread {
@@ -97,7 +95,7 @@ class OneShotDelivery : AppCompatActivity() {
                 initiallizeRefuelUI()
                 updateKmRelatedCosts()
                 populateCustomerListDropdown()
-                OSDLoadInfo.setListeners(this, loadPcElement, loadKgElement, loadAvgWtElement, loadPriceElement, loadBufferElement)
+                OSDLoadInfo.setListeners(this, loadPcElement, loadKgElement, loadAvgWtElement, deliveryPriceElement)
             }
         }.start()
     }

@@ -56,7 +56,7 @@ class OneShotDelivery : AppCompatActivity() {
     lateinit var scrollview: ScrollView
     private lateinit var finalKmElementSecondPart: EditText
     private lateinit var finalKmElementFirstPart: EditText
-    private lateinit var labourExpensesElement: EditText
+    private lateinit var salaryPaidElement: EditText
     private lateinit var extraExpensesElement: EditText
     private lateinit var loadPcElement: EditText
     private lateinit var loadKgElement: EditText
@@ -133,7 +133,7 @@ class OneShotDelivery : AppCompatActivity() {
         sidebarIconRefuel = findViewById(R.id.osd_sidebar_icon_refuel)
         sidebarIconOtherExpenses = findViewById(R.id.osd_sidebar_icon_other_expenses)
         refuelContainer = findViewById(R.id.osd_refuel_container)
-        labourExpensesElement = findViewById(R.id.one_shot_delivery_labour_expenses)
+        salaryPaidElement = findViewById(R.id.osd_salary_paid)
         extraExpensesElement = findViewById(R.id.one_shot_delivery_extra_expenses)
         loadPcElement = findViewById(R.id.one_shot_delivery_pc)
         loadKgElement = findViewById(R.id.one_shot_delivery_kg)
@@ -215,7 +215,8 @@ class OneShotDelivery : AppCompatActivity() {
         meteredKm.setNumber(vehiclePrevKm, true)
         meteredKm.setListeners { updateKmRelatedCosts() }
 
-        UIUtils.setUIElementValue(labourExpensesElement, SingleAttributedDataUtils.getRecords().labour_expenses)
+        val salaryPaid = NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().labour_expenses) + NumberUtils.getIntOrZero(AppConstants.get(AppConstants.DRIVER_SALARY))
+        UIUtils.setUIElementValue(salaryPaidElement, salaryPaid.toString())
         UIUtils.setUIElementValue(extraExpensesElement, SingleAttributedDataUtils.getRecords().extra_expenses)
         UIUtils.setUIElementValue(salaryDivisionElement, SingleAttributedDataUtils.getRecords().salaryDivision.replace("#", "  #  "))
     }
@@ -517,8 +518,9 @@ class OneShotDelivery : AppCompatActivity() {
 
     private fun gatherSingleAttributedData() {
         val obj = SingleAttributedDataUtils.getRecords()
+        val salaryPaid = (NumberUtils.getIntOrZero(salaryPaidElement.text.toString()) - NumberUtils.getIntOrZero(AppConstants.get(AppConstants.DRIVER_SALARY)))
         obj.vehicle_finalKm = meteredKm.getNumber().toString()
-        obj.labour_expenses = NumberUtils.getIntOrZero(labourExpensesElement.text.toString()).toString()
+        obj.labour_expenses = salaryPaid.toString()
         obj.extra_expenses = NumberUtils.getIntOrZero(extraExpensesElement.text.toString()).toString()
         obj.actualLoadKg = loadKgElement.text.toString()
         obj.actualLoadPc = loadPcElement.text.toString()

@@ -608,11 +608,11 @@
                                         android:id="@+id/textView71"
                                         android:layout_width="90dp"
                                         android:layout_height="wrap_content"
-                                        android:text="Lab"
+                                        android:text="Salary"
                                         android:textColor="#D2FFFFFF" />
 
                                     <com.google.android.material.textfield.TextInputEditText
-                                        android:id="@+id/one_shot_delivery_labour_expenses"
+                                        android:id="@+id/osd_salary_paid"
                                         android:layout_width="match_parent"
                                         android:layout_height="35dp"
                                         android:background="#00000000"

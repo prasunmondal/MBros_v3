@@ -199,6 +199,24 @@ class OSDDeliveryEntryInfo {
                 pc.setHintTextColor(ContextCompat.getColor(context, R.color.osd_pc_hint_color_1))
             }
 
+            updateAutoAdjustmentBalance(order, entry)
+        }
+
+        private fun updateAutoAdjustmentBalance(order: DeliverToCustomerDataModel, entry: View) {
+            val autoAdjustments = BalanceReferralCalculations.getTotalDiscountFor(order.name)
+            val autoAdjustmentLayout: LinearLayout = entry.findViewById(R.id.osd_fragment_auto_adjustments_layout)
+
+            autoAdjustmentLayout.visibility =
+                if(autoAdjustments.transferAmount == 0) { View.GONE }
+                else { View.VISIBLE }
+
+            val autoAdjustmentBalance: TextView = entry.findViewById(R.id.osd_fragment_auto_adjustments)
+            val autoAdjustmentJustification: TextView = entry.findViewById(R.id.osd_fragment_auto_adjustments_justification)
+            val balanceBeforeAdjustmentElement: TextView = entry.findViewById(R.id.osd_fragment_balance_before_adjustments)
+
+            balanceBeforeAdjustmentElement.text = (getIntOrZero(order.balanceDue) - autoAdjustments.transferAmount).toString()
+            autoAdjustmentJustification.text = autoAdjustments.message
+            autoAdjustmentBalance.text = autoAdjustments.transferAmount.toString()
         }
 
         private fun updateDetailedInfo(order: DeliverToCustomerDataModel, entry: View) {

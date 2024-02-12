@@ -4,7 +4,6 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.os.Build
 import android.telephony.SmsManager
 import android.widget.Toast
@@ -72,7 +71,16 @@ class SMSUtils {
 //            context.registerReceiver(broadCastReceiver, IntentFilter(SENT))
 //            context.registerReceiver(broadCastReceiverDelivered, IntentFilter(DELIVERED))
             LogMe.log(smsText)
-            sms.sendTextMessage(smsNumber, null, smsText, sentPI, deliveredPI)
+            try {
+                val smsManager = SmsManager.getDefault()
+                val msgArray = smsManager.divideMessage(smsText)
+                smsManager.sendMultipartTextMessage(smsNumber, null, msgArray, null, null)
+                Toast.makeText(context, "Message Sent", Toast.LENGTH_LONG).show()
+            } catch (ex: Exception) {
+                Toast.makeText(context, ex.message.toString(), Toast.LENGTH_LONG)
+                    .show()
+                ex.printStackTrace()
+            }
         }
     }
 }

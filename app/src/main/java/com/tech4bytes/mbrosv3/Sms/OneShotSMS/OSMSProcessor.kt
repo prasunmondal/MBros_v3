@@ -56,8 +56,10 @@ class OSMSProcessor {
             val replaceMethod = { template: String ->
                 template.replace("<date>", formattedDate)
                     .replace("<name>", deliveryData.name)
+                    .replace("<prevDue>", deliveryData.prevDue)
                     .replace("<pc>", deliveryData.deliveredPc)
                     .replace("<kg>", deliveryData.deliveredKg)
+                    .replace("<todaysAmount>", deliveryData.todaysAmount)
                     .replace("<paidAmount>", deliveryData.paid)
                     .replace("<rate>", deliveryData.rate)
                     .replace("<balanceAmount>", deliveryData.balanceDue)

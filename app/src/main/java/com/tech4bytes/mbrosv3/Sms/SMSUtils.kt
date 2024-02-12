@@ -75,9 +75,8 @@ class SMSUtils {
                 val smsManager = SmsManager.getDefault()
                 val msgArray = smsManager.divideMessage(smsText)
                 smsManager.sendMultipartTextMessage(smsNumber, null, msgArray, null, null)
-                Toast.makeText(context, "Message Sent", Toast.LENGTH_LONG).show()
             } catch (ex: Exception) {
-                Toast.makeText(context, ex.message.toString(), Toast.LENGTH_LONG)
+                Toast.makeText(context, "Error sending sms: "+ ex.message.toString(), Toast.LENGTH_LONG)
                     .show()
                 ex.printStackTrace()
             }

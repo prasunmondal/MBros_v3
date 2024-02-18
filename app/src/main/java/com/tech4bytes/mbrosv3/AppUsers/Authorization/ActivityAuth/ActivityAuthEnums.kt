@@ -13,6 +13,7 @@ enum class ActivityAuthEnums : java.io.Serializable {
     MONEY_CALCULATOR,
     SMS_ORDERING,
     CUSTOMER_TRANSACTIONS,
+    MONEY_DEPOSITS,
     WEB_PORTAL;
 
     companion object {
@@ -29,6 +30,7 @@ enum class ActivityAuthEnums : java.io.Serializable {
                 SMS_ORDERING -> "SMS Orders"
                 CUSTOMER_TRANSACTIONS -> "Customer Transactions"
                 WEB_PORTAL -> "Web Portal"
+                MONEY_DEPOSITS -> "Money Deposits"
                 else -> null
             }
         }

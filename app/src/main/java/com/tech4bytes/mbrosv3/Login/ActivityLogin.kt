@@ -32,6 +32,7 @@ import com.tech4bytes.mbrosv3.Customer.DueShow
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard.ActivityAdminDeliveryDashboard
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
+import com.tech4bytes.mbrosv3.CustomerOrders.MoneyDeposit.MoneyDepositUI
 import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.CustomerTransactions
 import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrdering
 import com.tech4bytes.mbrosv3.MoneyCounter.MoneyCounter
@@ -70,7 +71,8 @@ class ActivityLogin : AppCompatActivity() {
             val container = findViewById<LinearLayout>(R.id.activity_login_roles_container)
             if (UserRoleUtils.getUserRoles().isEmpty()) {
                 runOnUiThread {
-                    Toast.makeText(this, "Registering Device: ${getPhoneId()}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Registering Device: ${getPhoneId()}", Toast.LENGTH_LONG)
+                        .show()
                 }
                 logUnIdentifiedDevice()
             } else {
@@ -82,14 +84,20 @@ class ActivityLogin : AppCompatActivity() {
                     UserRoleUtils.getUserRoles().forEach { role ->
                         if (getRoleAndActivityMapping(role) != null) {
                             val layoutInflater = LayoutInflater.from(AppContexts.get())
-                            val entry = layoutInflater.inflate(R.layout.fragment_activity_login_roles, null)
+                            val entry =
+                                layoutInflater.inflate(R.layout.fragment_activity_login_roles, null)
 
-                            val displayText = if (ActivityAuthEnums.getString(role) == null) role.name else ActivityAuthEnums.getString(role)
-                            entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).text = displayText
+                            val displayText =
+                                if (ActivityAuthEnums.getString(role) == null) role.name else ActivityAuthEnums.getString(
+                                    role
+                                )
+                            entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).text =
+                                displayText
 
-                            entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role).setOnClickListener {
-                                goToHomePageAsPerRole(role)
-                            }
+                            entry.findViewById<TextView>(R.id.fragment_actibity_login_roles_role)
+                                .setOnClickListener {
+                                    goToHomePageAsPerRole(role)
+                                }
                             runOnUiThread {
                                 container.addView(entry)
                             }
@@ -107,7 +115,8 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     private fun updateAppVerOnUI() {
-        findViewById<TextView>(R.id.app_ver_label).text = "App Version: ${BuildConfig.lastGitCommitHash} (${BuildConfig.lastGitCommitDate})"
+        findViewById<TextView>(R.id.app_ver_label).text =
+            "App Version: ${BuildConfig.lastGitCommitHash} (${BuildConfig.lastGitCommitDate})"
     }
 
     private fun getRoleAndActivityMapping(role: ActivityAuthEnums): (() -> Unit)? {
@@ -128,8 +137,13 @@ class ActivityLogin : AppCompatActivity() {
             ActivityAuthEnums.SHOW_RATES_IN_DELIVERY_PAGE -> null
             ActivityAuthEnums.CUSTOMER_TRANSACTIONS -> ::goToCustomerTransactions
             ActivityAuthEnums.WEB_PORTAL -> ::goToWebPortal
+            ActivityAuthEnums.MONEY_DEPOSITS -> ::goToMoneyDeposits
             else -> null
         }
+    }
+
+    private fun goToMoneyDeposits() {
+        goToDataFetchActivity(ActivityAuthEnums.MONEY_DEPOSITS, MoneyDepositUI::class.java)
     }
 
     private fun goToWebPortal() {
@@ -181,7 +195,13 @@ class ActivityLogin : AppCompatActivity() {
         val time = DateUtils.getCurrentTimestamp()
         val id = System.currentTimeMillis().toString()
 
-        val obj = AppUsersModel(id, time, getPhoneId(), ActivityAuthEnums.UNIDENTIFIED.toString(), AuthorizationEnums.NONE.toString())
+        val obj = AppUsersModel(
+            id,
+            time,
+            getPhoneId(),
+            ActivityAuthEnums.UNIDENTIFIED.toString(),
+            AuthorizationEnums.NONE.toString()
+        )
         PostObject.builder()
             .scriptId(ProjectConfig.dBServerScriptURL)
             .sheetId(ProjectConfig.get_db_sheet_id())
@@ -193,11 +213,17 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     private fun goToCollectorRole() {
-        goToDataFetchActivity(ActivityAuthEnums.COLLECTOR, CollectorVerifyMoneyCollectionActivity::class.java)
+        goToDataFetchActivity(
+            ActivityAuthEnums.COLLECTOR,
+            CollectorVerifyMoneyCollectionActivity::class.java
+        )
     }
 
     private fun goToGetOrdersPage() {
-        goToDataFetchActivity(ActivityAuthEnums.ORDER_COLLECTOR, ActivityGetCustomerOrders::class.java)
+        goToDataFetchActivity(
+            ActivityAuthEnums.ORDER_COLLECTOR,
+            ActivityGetCustomerOrders::class.java
+        )
     }
 
     private fun goToDeliveringDeliverPage() {
@@ -209,7 +235,10 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     private fun goToCustomerTransactions() {
-        goToDataFetchActivity(ActivityAuthEnums.CUSTOMER_TRANSACTIONS, CustomerTransactions::class.java)
+        goToDataFetchActivity(
+            ActivityAuthEnums.CUSTOMER_TRANSACTIONS,
+            CustomerTransactions::class.java
+        )
     }
 
     private fun goToDataFetchActivity(currentActivity: ActivityAuthEnums, nextActivity: Class<*>) {

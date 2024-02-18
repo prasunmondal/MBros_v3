@@ -38,7 +38,7 @@
         android:background="@drawable/background2"
         android:orientation="horizontal"
         android:padding="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/menu_refreshBtn"
+        app:layout_constraintBottom_toBottomOf="@+id/app_ver_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout23">
@@ -87,7 +87,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:paddingLeft="28dp"
-            android:paddingTop="20dp">
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp">
 
             <ScrollView
                 android:layout_width="match_parent"

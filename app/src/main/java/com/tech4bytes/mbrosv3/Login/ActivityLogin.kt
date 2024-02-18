@@ -32,7 +32,7 @@ import com.tech4bytes.mbrosv3.Customer.DueShow
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard.ActivityAdminDeliveryDashboard
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
-import com.tech4bytes.mbrosv3.CustomerOrders.MoneyDeposit.MoneyDepositUI
+import com.tech4bytes.mbrosv3.CustomerOrders.MoneyDeposit.CustomerDeposit.CustomerMoneyDepositUI
 import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.CustomerTransactions
 import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrdering
 import com.tech4bytes.mbrosv3.MoneyCounter.MoneyCounter
@@ -143,7 +143,7 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     private fun goToMoneyDeposits() {
-        goToDataFetchActivity(ActivityAuthEnums.MONEY_DEPOSITS, MoneyDepositUI::class.java)
+        goToDataFetchActivity(ActivityAuthEnums.MONEY_DEPOSITS, CustomerMoneyDepositUI::class.java)
     }
 
     private fun goToWebPortal() {

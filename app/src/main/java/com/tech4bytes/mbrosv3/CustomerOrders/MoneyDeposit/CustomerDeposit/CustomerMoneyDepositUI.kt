@@ -1,11 +1,10 @@
-package com.tech4bytes.mbrosv3.CustomerOrders.MoneyDeposit
+package com.tech4bytes.mbrosv3.CustomerOrders.MoneyDeposit.CustomerDeposit
 
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -17,7 +16,7 @@ import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 import java.util.stream.Collectors
 
-class MoneyDepositUI : AppCompatActivity() {
+class CustomerMoneyDepositUI : AppCompatActivity() {
 
     lateinit var beneficiaryView: AutoCompleteTextView
     lateinit var paymentModeView: AutoCompleteTextView
@@ -30,7 +29,7 @@ class MoneyDepositUI : AppCompatActivity() {
         setContentView(R.layout.activity_money_deposit)
 
         initiallizeUIVariables()
-        val allTransactionRecords = MoneyDeposit.get(false)
+        val allTransactionRecords = CustomerMoneyDeposit.get(false)
         populateBeneficiary(allTransactionRecords)
     }
 
@@ -42,9 +41,9 @@ class MoneyDepositUI : AppCompatActivity() {
         creditAmountView = findViewById(R.id.md_credit_amount)
     }
 
-    private fun populateBeneficiary(allTransactionRecords: List<MoneyDepositModel>) {
+    private fun populateBeneficiary(allTransactionRecords: List<CustomerMoneyDepositModel>) {
         var beneficiaryList: List<String> = allTransactionRecords.stream()
-            .map(MoneyDepositModel::beneficiary)
+            .map(CustomerMoneyDepositModel::beneficiary)
             .collect(Collectors.toList())
 
         if(beneficiaryList.isEmpty())
@@ -59,10 +58,10 @@ class MoneyDepositUI : AppCompatActivity() {
         }
     }
 
-    private fun populatePaymentMode(allTransactionRecords: List<MoneyDepositModel>) {
+    private fun populatePaymentMode(allTransactionRecords: List<CustomerMoneyDepositModel>) {
         var paymentModeList: List<String> = allTransactionRecords.stream()
             .filter { p -> p.beneficiary == beneficiaryView.text.toString()}
-            .map(MoneyDepositModel::mode)
+            .map(CustomerMoneyDepositModel::mode)
             .collect(Collectors.toList())
 
         if(paymentModeList.isEmpty())
@@ -76,9 +75,9 @@ class MoneyDepositUI : AppCompatActivity() {
         }
     }
 
-    private fun populateDebitAccount(allTransactionRecords: List<MoneyDepositModel>) {
+    private fun populateDebitAccount(allTransactionRecords: List<CustomerMoneyDepositModel>) {
         var debitAccountList: List<String> = allTransactionRecords.stream()
-            .map(MoneyDepositModel::debitAccount)
+            .map(CustomerMoneyDepositModel::debitAccount)
             .collect(Collectors.toList())
         if(debitAccountList.isEmpty())
             return
@@ -92,9 +91,9 @@ class MoneyDepositUI : AppCompatActivity() {
         }
     }
 
-    private fun populateCreditAccount(allTransactionRecords: List<MoneyDepositModel>) {
+    private fun populateCreditAccount(allTransactionRecords: List<CustomerMoneyDepositModel>) {
         var creditAccountList: List<String> = allTransactionRecords.stream()
-            .map(MoneyDepositModel::creditAccount)
+            .map(CustomerMoneyDepositModel::creditAccount)
             .collect(Collectors.toList())
         if(creditAccountList.isEmpty())
             return
@@ -108,10 +107,10 @@ class MoneyDepositUI : AppCompatActivity() {
         }
     }
 
-    private fun populateHandOverTo(allTransactionRecords: List<MoneyDepositModel>) {
+    private fun populateHandOverTo(allTransactionRecords: List<CustomerMoneyDepositModel>) {
         var handoverToOptionsList: List<String> = allTransactionRecords.stream()
             .filter { p -> p.beneficiary == beneficiaryView.text.toString()}
-            .map(MoneyDepositModel::handOverTo)
+            .map(CustomerMoneyDepositModel::handOverTo)
             .collect(Collectors.toList())
         if(handoverToOptionsList.isEmpty())
             return
@@ -122,7 +121,7 @@ class MoneyDepositUI : AppCompatActivity() {
     }
 
     fun onClickSave(view: View) {
-        val newObj = MoneyDepositModel(
+        val newObj = CustomerMoneyDepositModel(
             id = System.currentTimeMillis().toString(),
             beneficiary = beneficiaryView.text.toString(),
             mode = paymentModeView.text.toString(),
@@ -137,7 +136,7 @@ class MoneyDepositUI : AppCompatActivity() {
         val saveBtn = findViewById<TextView>(R.id.md_save_button)
         Thread {
             saveBtn.text = "Saving Data..."
-            MoneyDeposit.saveToServerThenLocal(newObj)
+            CustomerMoneyDeposit.saveToServerThenLocal(newObj)
             saveBtn.text = "Save"
         }.start()
 

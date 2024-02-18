@@ -1,8 +1,8 @@
-package com.tech4bytes.mbrosv3.CustomerOrders.MoneyDeposit
+package com.tech4bytes.mbrosv3.CustomerOrders.MoneyDeposit.CustomerDeposit
 
 import java.io.Serializable
 
-data class MoneyDepositModel(
+data class CustomerMoneyDepositModel(
     val id: String,
     val beneficiary: String,
     val mode: String,

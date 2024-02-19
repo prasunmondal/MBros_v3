@@ -5,256 +5,263 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background2"
-    tools:context=".CustomerOrders.MoneyDeposit.CustomerDeposit.CustomerMoneyDepositUI">
+    tools:context=".CustomerOrders.MoneyDeposit.CustomerMoneyDepositUI">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
         android:paddingHorizontal="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView67"
+        app:layout_constraintBottom_toTopOf="@+id/md_save_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
+            android:id="@+id/md_customer_deposits"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="10dp">
-
-            <TextView
-                android:id="@+id/textView54"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/bai_jamjuree_medium"
-                android:text="Beneficiary"
-                android:textColor="@color/osl_ui_attribute_label_text_color"
-                android:textSize="13sp" />
-
-            <AutoCompleteTextView
-                android:id="@+id/md_beneficiary"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_weight="1"
-                android:completionThreshold="0"
-                android:imeOptions="actionNext"
-                android:inputType="textNoSuggestions"
-                android:textColor="@color/osl_ui_attribute_value_text_color"
-                android:textSize="14sp"
-                tools:ignore="TouchTargetSizeCheck" />
-
-        </LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical"></LinearLayout>
 
         <LinearLayout
+            android:id="@+id/md_company_deposits"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="10dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView55"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/bai_jamjuree_medium"
-                android:text="Mode"
-                android:textColor="@color/osl_ui_attribute_label_text_color"
-                android:textSize="13sp" />
+                android:orientation="horizontal"
+                android:paddingVertical="10dp">
 
-            <AutoCompleteTextView
-                android:id="@+id/md_transfer_mode"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_weight="1"
-                android:completionThreshold="0"
-                android:imeOptions="actionNext"
-                android:inputType="textNoSuggestions"
-                android:textColor="@color/osl_ui_attribute_value_text_color"
-                android:textSize="14sp"
-                tools:ignore="TouchTargetSizeCheck" />
+                <TextView
+                    android:id="@+id/textView54"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/bai_jamjuree_medium"
+                    android:text="Beneficiary"
+                    android:textColor="@color/osl_ui_attribute_label_text_color"
+                    android:textSize="13sp" />
 
-        </LinearLayout>
+                <AutoCompleteTextView
+                    android:id="@+id/md_beneficiary"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_weight="1"
+                    android:completionThreshold="0"
+                    android:imeOptions="actionNext"
+                    android:inputType="textNoSuggestions"
+                    android:textColor="@color/osl_ui_attribute_value_text_color"
+                    android:textSize="14sp"
+                    tools:ignore="TouchTargetSizeCheck" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="10dp">
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/bai_jamjuree_medium"
-                android:text="Debit Account"
-                android:textColor="@color/osl_ui_attribute_label_text_color"
-                android:textSize="13sp" />
-
-            <AutoCompleteTextView
-                android:id="@+id/md_debit_account"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_weight="1"
-                android:completionThreshold="0"
-                android:imeOptions="actionNext"
-                android:inputType="textNoSuggestions"
-                android:textColor="@color/osl_ui_attribute_value_text_color"
-                android:textSize="14sp"
-                tools:ignore="TouchTargetSizeCheck" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="10dp">
-
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/bai_jamjuree_medium"
-                android:text="Credit Account"
-                android:textColor="@color/osl_ui_attribute_label_text_color"
-                android:textSize="13sp" />
+                android:orientation="horizontal"
+                android:paddingVertical="10dp">
 
-            <AutoCompleteTextView
-                android:id="@+id/md_credit_account"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_weight="1"
-                android:completionThreshold="0"
-                android:imeOptions="actionNext"
-                android:inputType="textNoSuggestions"
-                android:textColor="@color/osl_ui_attribute_value_text_color"
-                android:textSize="14sp"
-                tools:ignore="TouchTargetSizeCheck" />
+                <TextView
+                    android:id="@+id/textView55"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/bai_jamjuree_medium"
+                    android:text="Mode"
+                    android:textColor="@color/osl_ui_attribute_label_text_color"
+                    android:textSize="13sp" />
 
-        </LinearLayout>
+                <AutoCompleteTextView
+                    android:id="@+id/md_transfer_mode"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_weight="1"
+                    android:completionThreshold="0"
+                    android:imeOptions="actionNext"
+                    android:inputType="textNoSuggestions"
+                    android:textColor="@color/osl_ui_attribute_value_text_color"
+                    android:textSize="14sp"
+                    tools:ignore="TouchTargetSizeCheck" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="10dp">
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/bai_jamjuree_medium"
-                android:text="Credit Amount"
-                android:textColor="@color/osl_ui_attribute_label_text_color"
-                android:textSize="13sp" />
-
-            <EditText
-                android:id="@+id/md_credit_amount"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_weight="1"
-                android:completionThreshold="0"
-                android:imeOptions="actionNext"
-                android:inputType="textNoSuggestions"
-                android:textColor="@color/osl_ui_attribute_value_text_color"
-                android:textSize="14sp"
-                tools:ignore="TouchTargetSizeCheck" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="10dp">
-
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/bai_jamjuree_medium"
-                android:text="Debit Amount"
-                android:textColor="@color/osl_ui_attribute_label_text_color"
-                android:textSize="13sp" />
+                android:orientation="horizontal"
+                android:paddingVertical="10dp">
 
-            <EditText
-                android:id="@+id/md_debit_amount"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_weight="1"
-                android:completionThreshold="0"
-                android:imeOptions="actionNext"
-                android:inputType="textNoSuggestions"
-                android:textColor="@color/osl_ui_attribute_value_text_color"
-                android:textSize="14sp"
-                tools:ignore="TouchTargetSizeCheck" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/bai_jamjuree_medium"
+                    android:text="Debit Account"
+                    android:textColor="@color/osl_ui_attribute_label_text_color"
+                    android:textSize="13sp" />
 
-        </LinearLayout>
+                <AutoCompleteTextView
+                    android:id="@+id/md_debit_account"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_weight="1"
+                    android:completionThreshold="0"
+                    android:imeOptions="actionNext"
+                    android:inputType="textNoSuggestions"
+                    android:textColor="@color/osl_ui_attribute_value_text_color"
+                    android:textSize="14sp"
+                    tools:ignore="TouchTargetSizeCheck" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="10dp">
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/bai_jamjuree_medium"
-                android:text="Handover to"
-                android:textColor="@color/osl_ui_attribute_label_text_color"
-                android:textSize="13sp" />
-
-            <AutoCompleteTextView
-                android:id="@+id/md_handover_to"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_weight="1"
-                android:completionThreshold="0"
-                android:imeOptions="actionNext"
-                android:inputType="textNoSuggestions"
-                android:textColor="@color/osl_ui_attribute_value_text_color"
-                android:textSize="14sp"
-                tools:ignore="TouchTargetSizeCheck" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingVertical="10dp">
-
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:fontFamily="@font/bai_jamjuree_medium"
-                android:text="Notes"
-                android:textColor="@color/osl_ui_attribute_label_text_color"
-                android:textSize="13sp" />
+                android:orientation="horizontal"
+                android:paddingVertical="10dp">
 
-            <EditText
-                android:id="@+id/md_notes"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/bai_jamjuree_medium"
+                    android:text="Credit Account"
+                    android:textColor="@color/osl_ui_attribute_label_text_color"
+                    android:textSize="13sp" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/md_credit_account"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_weight="1"
+                    android:completionThreshold="0"
+                    android:imeOptions="actionNext"
+                    android:inputType="textNoSuggestions"
+                    android:textColor="@color/osl_ui_attribute_value_text_color"
+                    android:textSize="14sp"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_weight="1"
-                android:completionThreshold="0"
-                android:imeOptions="actionNext"
-                android:inputType="textNoSuggestions"
-                android:textColor="@color/osl_ui_attribute_value_text_color"
-                android:textSize="14sp"
-                tools:ignore="TouchTargetSizeCheck" />
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingVertical="10dp">
 
-        <View
-            android:id="@+id/view3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/bai_jamjuree_medium"
+                    android:text="Credit Amount"
+                    android:textColor="@color/osl_ui_attribute_label_text_color"
+                    android:textSize="13sp" />
+
+                <EditText
+                    android:id="@+id/md_credit_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_weight="1"
+                    android:completionThreshold="0"
+                    android:imeOptions="actionNext"
+                    android:inputType="textNoSuggestions"
+                    android:textColor="@color/osl_ui_attribute_value_text_color"
+                    android:textSize="14sp"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingVertical="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/bai_jamjuree_medium"
+                    android:text="Debit Amount"
+                    android:textColor="@color/osl_ui_attribute_label_text_color"
+                    android:textSize="13sp" />
+
+                <EditText
+                    android:id="@+id/md_debit_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_weight="1"
+                    android:completionThreshold="0"
+                    android:imeOptions="actionNext"
+                    android:inputType="textNoSuggestions"
+                    android:textColor="@color/osl_ui_attribute_value_text_color"
+                    android:textSize="14sp"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingVertical="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/bai_jamjuree_medium"
+                    android:text="Handover to"
+                    android:textColor="@color/osl_ui_attribute_label_text_color"
+                    android:textSize="13sp" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/md_handover_to"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_weight="1"
+                    android:completionThreshold="0"
+                    android:imeOptions="actionNext"
+                    android:inputType="textNoSuggestions"
+                    android:textColor="@color/osl_ui_attribute_value_text_color"
+                    android:textSize="14sp"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingVertical="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/bai_jamjuree_medium"
+                    android:text="Notes"
+                    android:textColor="@color/osl_ui_attribute_label_text_color"
+                    android:textSize="13sp" />
+
+                <EditText
+                    android:id="@+id/md_notes"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_weight="1"
+                    android:completionThreshold="0"
+                    android:imeOptions="actionNext"
+                    android:inputType="textNoSuggestions"
+                    android:textColor="@color/osl_ui_attribute_value_text_color"
+                    android:textSize="14sp"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 

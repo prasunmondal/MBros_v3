@@ -32,6 +32,7 @@ class CustomerMoneyDepositUI : AppCompatActivity() {
 
         initiallizeUIVariables()
         val allTransactionRecords = CustomerMoneyDeposit.get(false)
+        setListeners(allTransactionRecords)
         populateBeneficiary(allTransactionRecords)
     }
 
@@ -43,6 +44,21 @@ class CustomerMoneyDepositUI : AppCompatActivity() {
         creditAmountView = findViewById(R.id.md_credit_amount)
     }
 
+    private fun setListeners(allTransactionRecords: List<CustomerMoneyDepositModel>) {
+        beneficiaryView.doOnTextChanged { text, start, before, count ->
+            populatePaymentMode(allTransactionRecords)
+        }
+        paymentModeView.doOnTextChanged { text, start, before, count ->
+            populateDebitAccount(allTransactionRecords)
+        }
+        debitAccountListView.doOnTextChanged { text, start, before, count ->
+            populateCreditAccount(allTransactionRecords)
+        }
+        creditAccountView.doOnTextChanged { text, start, before, count ->
+            populateHandOverTo(allTransactionRecords)
+        }
+    }
+
     private fun populateBeneficiary(allTransactionRecords: List<CustomerMoneyDepositModel>) {
         var beneficiaryList: List<String> = allTransactionRecords.stream()
             .map(CustomerMoneyDepositModel::beneficiary)
@@ -52,12 +68,7 @@ class CustomerMoneyDepositUI : AppCompatActivity() {
             return
 
         beneficiaryList = ListUtils.removeDuplicates(beneficiaryList)
-
         populateEditText(beneficiaryList, beneficiaryView, SingleAttributedDataUtils.getRecords().load_account)
-
-        beneficiaryView.doOnTextChanged { text, start, before, count ->
-            populatePaymentMode(allTransactionRecords)
-        }
     }
 
     private fun populatePaymentMode(allTransactionRecords: List<CustomerMoneyDepositModel>) {
@@ -71,10 +82,6 @@ class CustomerMoneyDepositUI : AppCompatActivity() {
 
         paymentModeList = ListUtils.removeDuplicates(paymentModeList)
         populateEditText(paymentModeList, paymentModeView, paymentModeList[0])
-
-        paymentModeView.doOnTextChanged { text, start, before, count ->
-            populateDebitAccount(allTransactionRecords)
-        }
     }
 
     private fun populateDebitAccount(allTransactionRecords: List<CustomerMoneyDepositModel>) {
@@ -85,12 +92,7 @@ class CustomerMoneyDepositUI : AppCompatActivity() {
             return
 
         debitAccountList = ListUtils.removeDuplicates(debitAccountList)
-        val debitAccountListView = findViewById<AutoCompleteTextView>(R.id.md_debit_account)
         populateEditText(debitAccountList, debitAccountListView, debitAccountList[0])
-
-        debitAccountListView.doOnTextChanged { text, start, before, count ->
-            populateCreditAccount(allTransactionRecords)
-        }
     }
 
     private fun populateCreditAccount(allTransactionRecords: List<CustomerMoneyDepositModel>) {
@@ -101,12 +103,7 @@ class CustomerMoneyDepositUI : AppCompatActivity() {
             return
 
         creditAccountList = ListUtils.removeDuplicates(creditAccountList)
-        val creditAccountView = findViewById<AutoCompleteTextView>(R.id.md_credit_account)
         populateEditText(creditAccountList, creditAccountView, creditAccountList[0])
-
-        creditAccountView.doOnTextChanged { text, start, before, count ->
-            populateHandOverTo(allTransactionRecords)
-        }
     }
 
     private fun populateHandOverTo(allTransactionRecords: List<CustomerMoneyDepositModel>) {

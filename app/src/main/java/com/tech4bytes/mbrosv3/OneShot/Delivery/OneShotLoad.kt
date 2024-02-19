@@ -83,7 +83,7 @@ class OneShotLoad : AppCompatActivity() {
         finalFarmRate = findViewById(R.id.osl_final_farm_rate)
         inHandCash = findViewById(R.id.one_shot_load_extra_expense_provided)
         companyLabel2 = findViewById(R.id.osl_label_company_name_2)
-        companyBranch2 = findViewById(R.id.md_beneficiary)
+        companyBranch2 = findViewById(R.id.osl_label_branch_name_2)
         companyArea2 = findViewById(R.id.osl_label_area_name_2)
         companyAccount2 = findViewById(R.id.osl_label_money_account_name_2)
         labour2 = findViewById(R.id.addLabour2)

@@ -37,11 +37,11 @@ class CustomerMoneyDepositUI : AppCompatActivity() {
     }
 
     private fun initiallizeUIVariables() {
-        beneficiaryView = findViewById(R.id.md_beneficiary)
-        paymentModeView = findViewById(R.id.md_transfer_mode)
-        debitAccountListView = findViewById(R.id.md_debit_account)
-        creditAccountView = findViewById(R.id.md_credit_account)
-        creditAmountView = findViewById(R.id.md_credit_amount)
+        beneficiaryView = findViewById(R.id.md_company_beneficiary)
+        paymentModeView = findViewById(R.id.md_company_transfer_mode)
+        debitAccountListView = findViewById(R.id.md_company_debit_account)
+        creditAccountView = findViewById(R.id.md_company_credit_account)
+        creditAmountView = findViewById(R.id.md_company_credit_amount)
     }
 
     private fun setListeners(allTransactionRecords: List<CustomerMoneyDepositModel>) {
@@ -115,7 +115,7 @@ class CustomerMoneyDepositUI : AppCompatActivity() {
             return
 
         handoverToOptionsList = ListUtils.removeDuplicates(handoverToOptionsList)
-        val handoverToListView = findViewById<AutoCompleteTextView>(R.id.md_handover_to)
+        val handoverToListView = findViewById<AutoCompleteTextView>(R.id.md_company_handover_to)
         populateEditText(handoverToOptionsList, handoverToListView, handoverToOptionsList[0])
     }
 
@@ -126,10 +126,10 @@ class CustomerMoneyDepositUI : AppCompatActivity() {
             mode = paymentModeView.text.toString(),
             debitAccount = debitAccountListView.text.toString(),
             creditAccount = creditAccountView.text.toString(),
-            debitAmount = findViewById<EditText>(R.id.md_debit_amount).text.toString(),
+            debitAmount = findViewById<EditText>(R.id.md_company_debit_amount).text.toString(),
             creditAmount = creditAmountView.text.toString(),
-            handOverTo = findViewById<EditText>(R.id.md_handover_to).text.toString(),
-            notes = findViewById<EditText>(R.id.md_notes).text.toString()
+            handOverTo = findViewById<EditText>(R.id.md_company_handover_to).text.toString(),
+            notes = findViewById<EditText>(R.id.md_company_notes).text.toString()
         )
 
         val saveBtn = findViewById<TextView>(R.id.md_save_button)

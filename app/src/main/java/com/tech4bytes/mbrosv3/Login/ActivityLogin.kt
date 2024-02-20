@@ -42,7 +42,6 @@ import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotLoad
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
-import com.tech4bytes.mbrosv3.Utils.ContactsUtils.Contacts
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -68,7 +67,8 @@ class ActivityLogin : AppCompatActivity() {
 
         updateAppVerOnUI()
 
-        getAllPermissions()
+        getAllPermissions(listOf(android.Manifest.permission.READ_CONTACTS,android.Manifest.permission.SEND_SMS))
+
         updateWelcomeDetails()
         Thread {
             val roles = RolesUtils.getAppUser()
@@ -113,9 +113,19 @@ class ActivityLogin : AppCompatActivity() {
         }.start()
     }
 
-    private fun getAllPermissions() {
-        getReadContactsPermission()
-        getSMSPermission()
+    private fun didGetAllPermissions(permissionsList: List<String>): Boolean {
+        permissionsList.forEach {
+            if(checkSelfPermission(it) == PackageManager.PERMISSION_DENIED) {
+                return false
+            }
+        }
+        return true
+    }
+    private fun getAllPermissions(permissionsList: List<String>) {
+        while (didGetAllPermissions(permissionsList)) {
+            getReadContactsPermission()
+            getSMSPermission()
+        }
     }
 
     private fun getReadContactsPermission() {

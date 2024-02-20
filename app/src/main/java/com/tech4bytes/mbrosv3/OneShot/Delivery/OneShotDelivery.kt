@@ -83,7 +83,6 @@ class OneShotDelivery : AppCompatActivity() {
         initializeVariables()
         val deliveryPriceElement = findViewById<EditText>(R.id.one_shot_delivery_price)
 
-        getSMSPermission()
         Thread {
             populateDeliveryMap()
             OSDLoadInfo.updateSingleAttributedDataOnUI(this, loadPcElement, loadKgElement)

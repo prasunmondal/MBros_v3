@@ -16,20 +16,20 @@ object Contacts {
         ContactsContract.CommonDataKinds.Phone.NUMBER
     )
 
-    fun getContactByName(name: String): Contact? {
+    fun getNumberByName(name: String, returnValueIfNotFound: String? = null): String? {
         contactList.forEach {
             if (it.name == name)
-                return it
+                return it.phoneNumber
         }
-        return null
+        return returnValueIfNotFound
     }
 
-    fun getContactByNumber(number: String): Contact? {
+    fun getNameByNumber(number: String, returnValueIfNotFound: String? = null): String? {
         contactList.forEach {
             if (it.phoneNumber == number)
-                return it
+                return it.name
         }
-        return null
+        return returnValueIfNotFound
     }
 
     fun getContactList(context: Context) {

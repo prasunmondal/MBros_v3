@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.Tech4BytesPermissions
+import com.tech4bytes.mbrosv3.Utils.ContactsUtils.Contacts
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 
 
@@ -26,6 +27,7 @@ class OneShotSMS : AppCompatActivity() {
 
         container = findViewById(R.id.osms_container)
         Thread {
+            Contacts.getContactList(this)
             smsList = getSMSList()
             runOnUiThread {
                 showMessages()
@@ -41,7 +43,7 @@ class OneShotSMS : AppCompatActivity() {
             val uiEntry = layoutInflater.inflate(R.layout.activity_one_shot_sms_entry_fragment, null)
             val contentUI = uiEntry.findViewById<CheckBox>(R.id.osms_entry_sms_content)
 
-            val text = "${msg.number} (${msg.medium})\n\n${msg.text}"
+            val text = "${Contacts.getContactByNumber(msg.number)} - ${msg.number} (${msg.medium})\n\n${msg.text}"
             contentUI.text = text
             contentUI.isChecked = msg.isEnabled
 

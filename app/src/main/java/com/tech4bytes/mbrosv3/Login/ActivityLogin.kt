@@ -40,6 +40,7 @@ import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotLoad
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
+import com.tech4bytes.mbrosv3.Utils.ContactsUtils.Contacts
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -62,6 +63,15 @@ class ActivityLogin : AppCompatActivity() {
         AppContexts.set(this)
         AppUtils.logError(this)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+        var str = ""
+        LogMe.log("Showing contacts")
+        Contacts.getContactList(this)
+        Contacts.contactList.forEach {
+            str += it.name + ": " + it.phoneNumber + "\n"
+            LogMe.log("show contact: " + it.toString())
+        }
+        Toast.makeText(this, str, Toast.LENGTH_SHORT).show()
 
         updateAppVerOnUI()
         updateWelcomeDetails()

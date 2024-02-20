@@ -67,7 +67,11 @@ class ActivityLogin : AppCompatActivity() {
 
         updateAppVerOnUI()
 
-        askPermissions(listOf(android.Manifest.permission.READ_CONTACTS,android.Manifest.permission.SEND_SMS))
+        askPermissions(listOf(
+            android.Manifest.permission.READ_CONTACTS,
+            android.Manifest.permission.SEND_SMS,
+            android.Manifest.permission.READ_SMS
+        ))
 
         updateWelcomeDetails()
         Thread {

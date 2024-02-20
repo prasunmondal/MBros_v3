@@ -30,10 +30,12 @@ class CustomerMoneyDepositUI : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_money_deposit)
 
-        initiallizeUIVariables()
-        val allTransactionRecords = CustomerMoneyDeposit.get(false)
-        setListeners(allTransactionRecords)
-        populateBeneficiary(allTransactionRecords)
+        Thread {
+            initiallizeUIVariables()
+            val allTransactionRecords = CustomerMoneyDeposit.get(false)
+            setListeners(allTransactionRecords)
+            populateBeneficiary(allTransactionRecords)
+        }.start()
     }
 
     private fun initiallizeUIVariables() {
@@ -134,9 +136,13 @@ class CustomerMoneyDepositUI : AppCompatActivity() {
 
         val saveBtn = findViewById<TextView>(R.id.md_save_button)
         Thread {
-            saveBtn.text = "Saving Data..."
+            runOnUiThread {
+                saveBtn.text = "Saving Data..."
+            }
             CustomerMoneyDeposit.saveToServerThenLocal(newObj)
-            saveBtn.text = "Save"
+            runOnUiThread {
+                saveBtn.text = "Save"
+            }
         }.start()
 
     }
@@ -146,14 +152,17 @@ class CustomerMoneyDepositUI : AppCompatActivity() {
         val optionSet = list.filter{p -> true}.toMutableSet()
         val sortedList = optionSet.sorted()
         LogMe.log(sortedList.toString())
-        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.template_dropdown_entry, sortedList)
-        uiView.setAdapter(adapter)
-        uiView.setOnTouchListener { _, _ ->
-            uiView.showDropDown()
-            uiView.requestFocus()
-            false
+        runOnUiThread {
+            val adapter: ArrayAdapter<String> =
+                ArrayAdapter<String>(this, R.layout.template_dropdown_entry, sortedList)
+            uiView.setAdapter(adapter)
+            uiView.setOnTouchListener { _, _ ->
+                uiView.showDropDown()
+                uiView.requestFocus()
+                false
+            }
+            uiView.setText(selectedValue, false)
+            uiView.threshold = 0
         }
-        uiView.setText(selectedValue, false)
-        uiView.threshold = 0
     }
 }

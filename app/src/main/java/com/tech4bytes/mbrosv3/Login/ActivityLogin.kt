@@ -67,7 +67,7 @@ class ActivityLogin : AppCompatActivity() {
 
         updateAppVerOnUI()
 
-        getAllPermissions(listOf(android.Manifest.permission.READ_CONTACTS,android.Manifest.permission.SEND_SMS))
+        askPermissions(listOf(android.Manifest.permission.READ_CONTACTS,android.Manifest.permission.SEND_SMS))
 
         updateWelcomeDetails()
         Thread {
@@ -113,28 +113,25 @@ class ActivityLogin : AppCompatActivity() {
         }.start()
     }
 
-    private fun didGetAllPermissions(permissionsList: List<String>): Boolean {
+    private fun getPendingPermissions(permissionsList: List<String>): MutableList<String> {
+        var pendingPermissions = mutableListOf<String>()
         permissionsList.forEach {
             if(checkSelfPermission(it) == PackageManager.PERMISSION_DENIED) {
-                return false
+                pendingPermissions.add(it)
             }
         }
-        return true
+        return pendingPermissions
     }
-    private fun getAllPermissions(permissionsList: List<String>) {
-        while (didGetAllPermissions(permissionsList)) {
-            getReadContactsPermission()
-            getSMSPermission()
-        }
+    private fun askPermissions(permissionsList: List<String>) {
+        if(getPendingPermissions(permissionsList).isNotEmpty())
+            getReadContactsPermission(permissionsList)
     }
 
-    private fun getReadContactsPermission() {
+    private fun getReadContactsPermission(permissionsList: List<String>) {
         val PERMISSION_REQUEST_CODE = 101
-        if (checkSelfPermission(android.Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_DENIED) {
-            Log.d("permission", "permission denied to SEND_SMS - requesting it")
-            val permissions = arrayOf(android.Manifest.permission.READ_CONTACTS)
-            requestPermissions(permissions, PERMISSION_REQUEST_CODE)
-        }
+        Log.d("permission", "permission denied to SEND_SMS - requesting it")
+        val permissions = permissionsList.toTypedArray()
+        requestPermissions(permissions, PERMISSION_REQUEST_CODE)
     }
 
     private fun getSMSPermission() {

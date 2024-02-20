@@ -51,9 +51,11 @@
                     android:layout_height="35dp"
                     android:layout_weight="1"
                     android:completionThreshold="0"
+                    android:hint="Loading..."
                     android:imeOptions="actionNext"
                     android:inputType="textNoSuggestions"
                     android:textColor="@color/osl_ui_attribute_value_text_color"
+                    android:textColorHint="#2F2F2F"
                     android:textSize="14sp"
                     tools:ignore="TouchTargetSizeCheck" />
 

@@ -3,9 +3,11 @@ package com.tech4bytes.mbrosv3.Login
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings.Secure
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
@@ -65,6 +67,8 @@ class ActivityLogin : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         updateAppVerOnUI()
+
+        getAllPermissions()
         updateWelcomeDetails()
         Thread {
             val roles = RolesUtils.getAppUser()
@@ -109,6 +113,28 @@ class ActivityLogin : AppCompatActivity() {
         }.start()
     }
 
+    private fun getAllPermissions() {
+        getReadContactsPermission()
+        getSMSPermission()
+    }
+
+    private fun getReadContactsPermission() {
+        val PERMISSION_REQUEST_CODE = 101
+        if (checkSelfPermission(android.Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_DENIED) {
+            Log.d("permission", "permission denied to SEND_SMS - requesting it")
+            val permissions = arrayOf(android.Manifest.permission.READ_CONTACTS)
+            requestPermissions(permissions, PERMISSION_REQUEST_CODE)
+        }
+    }
+
+    private fun getSMSPermission() {
+        val PERMISSION_REQUEST_CODE = 123
+        if (checkSelfPermission(android.Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_DENIED) {
+            Log.d("permission", "permission denied to SEND_SMS - requesting it")
+            val permissions = arrayOf(android.Manifest.permission.SEND_SMS)
+            requestPermissions(permissions, PERMISSION_REQUEST_CODE)
+        }
+    }
     private fun updateWelcomeDetails() {
         findViewById<TextView>(R.id.welcome_date).text = DateUtils.getCurrentDate("dd")
         findViewById<TextView>(R.id.welcome_month).text = DateUtils.getCurrentDate("MMMM")

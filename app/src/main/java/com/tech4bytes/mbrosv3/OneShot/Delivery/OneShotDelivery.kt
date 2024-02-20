@@ -387,15 +387,6 @@ class OneShotDelivery : AppCompatActivity() {
         return entryMap
     }
 
-    private fun getSMSPermission() {
-        val PERMISSION_REQUEST_CODE = 123
-        if (checkSelfPermission(android.Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_DENIED) {
-            Log.d("permission", "permission denied to SEND_SMS - requesting it")
-            val permissions = arrayOf(android.Manifest.permission.SEND_SMS)
-            requestPermissions(permissions, PERMISSION_REQUEST_CODE)
-        }
-    }
-
     private fun updateHiddenData() {
         val profitViewContainer = findViewById<LinearLayout>(R.id.osd_profit_details_container)
         if (profitViewContainer.visibility == View.VISIBLE) {

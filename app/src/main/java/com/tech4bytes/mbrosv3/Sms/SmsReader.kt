@@ -17,8 +17,6 @@ class SmsReader {
     companion object {
         fun getAllSms(context: Context, activity: Activity, fromNumbers: Array<String>): MutableList<SMSModel> {
 
-            Tech4BytesPermissions.requestSMSPermission(context, activity)
-            Tech4BytesPermissions.requestSMSPermission(context, activity)
             val smsList = mutableListOf<SMSModel>()
             val cr: ContentResolver = context.contentResolver
 

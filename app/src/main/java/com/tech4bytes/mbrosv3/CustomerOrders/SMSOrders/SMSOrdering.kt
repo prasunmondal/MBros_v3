@@ -22,7 +22,6 @@ import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.SmsReader
-import com.tech4bytes.mbrosv3.Sms.Tech4BytesPermissions
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
@@ -50,8 +49,6 @@ class SMSOrdering : AppCompatActivity() {
         supportActionBar!!.hide()
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-
-        Tech4BytesPermissions.requestSMSPermission(this, this)
 
         Thread {
             EventsUI.showEvents(this, findViewById(R.id.smsordering_events_layout))

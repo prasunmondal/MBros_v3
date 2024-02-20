@@ -64,15 +64,6 @@ class ActivityLogin : AppCompatActivity() {
         AppUtils.logError(this)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
-        var str = ""
-        LogMe.log("Showing contacts")
-        Contacts.getContactList(this)
-        Contacts.contactList.forEach {
-            str += it.name + ": " + it.phoneNumber + "\n"
-            LogMe.log("show contact: " + it.toString())
-        }
-        Toast.makeText(this, str, Toast.LENGTH_SHORT).show()
-
         updateAppVerOnUI()
         updateWelcomeDetails()
         Thread {

@@ -65,14 +65,15 @@ class OneShotSMS : AppCompatActivity() {
         val smsList: MutableList<SMS> = mutableListOf()
         OSMS.get().forEach {
             if (it.isEnabled.toBoolean()) {
-                val smsResult: SMS? = when (it.communicationType) {
+                val smsResult: List<SMS>? = when (it.communicationType) {
                     "DELIVERY_SMS" -> OSMSProcessor.sendDeliverySMS(it)
                     "DAY_SUMMARY" -> OSMSProcessor.sendDaySummary(it)
                     "LOAD_DETAILS" -> OSMSProcessor.sendLoadDetails(it)
+                    "BULK_DELIVERY_SMS" -> OSMSProcessor.sendBulkDeliverySMS(it)
                     else -> null
                 }
                 if (smsResult != null)
-                    smsList.add(smsResult)
+                    smsList.addAll(smsResult)
             }
         }
         return smsList

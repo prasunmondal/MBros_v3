@@ -13,7 +13,7 @@ class OSMSProcessor {
 
     companion object {
 
-        fun sendLoadDetails(smsDetail: OSMSModel): SMS? {
+        fun sendLoadDetails(smsDetail: OSMSModel): List<SMS>? {
             val metadata = SingleAttributedDataUtils.getRecords()
             if (smsDetail.inputData.equals(metadata.load_account, true)) {
                 val templateToSendInfo = smsDetail.dataTemplate
@@ -25,13 +25,13 @@ class OSMSProcessor {
                     .replace("<loadKg>", SingleAttributedDataUtils.getRecords().actualLoadKg)
                     .replace("<loadCompanyName>", metadata.load_companyName)
 
-                return SMS(smsDetail.platform, smsDetail.sendTo, text)
+                return listOf(SMS(smsDetail.platform, smsDetail.sendTo, text))
             } else {
                 return null
             }
         }
 
-        fun sendDaySummary(smsDetail: OSMSModel): SMS {
+        fun sendDaySummary(smsDetail: OSMSModel): List<SMS>? {
             val metadata = SingleAttributedDataUtils.getRecords()
             val templateToSendInfo = smsDetail.dataTemplate
 
@@ -43,10 +43,10 @@ class OSMSProcessor {
                 .replace("<shortage>", DeliveryCalculations.getShortage(metadata.actualLoadKg, DeliveryCalculations.getTotalDeliveredKg().toString()).toString())
                 .replace("<km>", DeliveryCalculations.getKmDiff(metadata.vehicle_finalKm).toString())
 
-            return SMS(smsDetail.platform, smsDetail.sendTo, text)
+            return listOf(SMS(smsDetail.platform, smsDetail.sendTo, text))
         }
 
-        fun sendDeliverySMS(smsDetail: OSMSModel): SMS? {
+        fun sendDeliverySMS(smsDetail: OSMSModel): List<SMS>? {
             LogMe.log(smsDetail.toString())
 
             // if delivery data is not available for the customer, send null - no communication required
@@ -66,13 +66,12 @@ class OSMSProcessor {
             }
 
             LogMe.log(smsDetail.toString() + ": " + replaceMethod(smsDetail.enablement_template))
-            val isEnabled = smsDetail.enablement_template.isEmpty()
-                    || replaceMethod(smsDetail.enablement_template) != smsDetail.enablement_template
+            val isEnabled = deliveryData.balanceDue.isNotEmpty()
             if (!isEnabled)
                 return null
 
             val text = replaceMethod(smsDetail.dataTemplate)
-            return SMS(smsDetail.platform, smsDetail.sendTo, text)
+            return listOf(SMS(smsDetail.platform, smsDetail.sendTo, text))
         }
 
         fun sendViaDesiredMedium(medium: String, number: String, text: String) {
@@ -80,6 +79,44 @@ class OSMSProcessor {
                 "SMS" -> SMSUtils.sendSMS(AppContexts.get(), text, number)
                 "WHATSAPP" -> Whatsapp.sendMessage(AppContexts.get(), number, text)
             }
+        }
+
+        fun sendBulkDeliverySMS(smsDetail: OSMSModel): List<SMS>? {
+            LogMe.log(smsDetail.toString())
+
+            val entries = smsDetail.inputData.split(",")
+            val list: MutableList<SMS> = mutableListOf()
+
+            entries.forEach {entry ->
+                val customerName =  entry.trim().split(":")[0].trim()
+                val customerNumber =  entry.trim().split(":")[1].trim()
+                // if delivery data is not available for the customer, send null - no communication required
+                val deliveryData = DeliverToCustomerActivity.getDeliveryRecord(customerName)
+
+
+                if(deliveryData!=null && deliveryData.balanceDue.isNotEmpty()) {
+                    val formattedDate = DateUtils.getDateInFormat("dd/MM/yyyy")
+                    val replaceMethod = { template: String ->
+                        template.replace("<date>", formattedDate)
+                            .replace("<name>", deliveryData.name)
+                            .replace("<prevDue>", deliveryData.prevDue)
+                            .replace("<pc>", deliveryData.deliveredPc)
+                            .replace("<kg>", deliveryData.deliveredKg)
+                            .replace("<todaysAmount>", deliveryData.todaysAmount)
+                            .replace("<paidAmount>", deliveryData.paid)
+                            .replace("<rate>", deliveryData.rate)
+                            .replace("<balanceAmount>", deliveryData.balanceDue)
+                    }
+
+                    LogMe.log(smsDetail.toString() + ": " + replaceMethod(smsDetail.enablement_template))
+                    val text = replaceMethod(smsDetail.dataTemplate)
+                    list.add(SMS(smsDetail.platform, customerNumber, text))
+                }
+            }
+
+            if(list.isEmpty())
+                return null
+            return list
         }
     }
 }

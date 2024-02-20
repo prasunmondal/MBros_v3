@@ -62,63 +62,68 @@ class CustomerMoneyDepositUI : AppCompatActivity() {
     }
 
     private fun populateBeneficiary(allTransactionRecords: List<CustomerMoneyDepositModel>) {
-        var beneficiaryList: List<String> = allTransactionRecords.stream()
-            .map(CustomerMoneyDepositModel::beneficiary)
-            .collect(Collectors.toList())
+        Thread {
+            var beneficiaryList: List<String> = allTransactionRecords.stream()
+                .map(CustomerMoneyDepositModel::beneficiary)
+                .collect(Collectors.toList())
 
-        if(beneficiaryList.isEmpty())
-            return
-
-        beneficiaryList = ListUtils.removeDuplicates(beneficiaryList)
-        populateEditText(beneficiaryList, beneficiaryView, SingleAttributedDataUtils.getRecords().load_account)
+            if (beneficiaryList.isNotEmpty()) {
+                beneficiaryList = ListUtils.removeDuplicates(beneficiaryList)
+                populateEditText(beneficiaryList, beneficiaryView, SingleAttributedDataUtils.getRecords().load_account)
+            }
+        }.start()
     }
 
     private fun populatePaymentMode(allTransactionRecords: List<CustomerMoneyDepositModel>) {
-        var paymentModeList: List<String> = allTransactionRecords.stream()
-            .filter { p -> p.beneficiary == beneficiaryView.text.toString()}
-            .map(CustomerMoneyDepositModel::mode)
-            .collect(Collectors.toList())
+        Thread {
+            var paymentModeList: List<String> = allTransactionRecords.stream()
+                .filter { p -> p.beneficiary == beneficiaryView.text.toString() }
+                .map(CustomerMoneyDepositModel::mode)
+                .collect(Collectors.toList())
 
-        if(paymentModeList.isEmpty())
-            return
-
-        paymentModeList = ListUtils.removeDuplicates(paymentModeList)
-        populateEditText(paymentModeList, paymentModeView, paymentModeList[0])
+            if (paymentModeList.isNotEmpty()) {
+                paymentModeList = ListUtils.removeDuplicates(paymentModeList)
+                populateEditText(paymentModeList, paymentModeView, paymentModeList[0])
+            }
+        }.start()
     }
 
     private fun populateDebitAccount(allTransactionRecords: List<CustomerMoneyDepositModel>) {
-        var debitAccountList: List<String> = allTransactionRecords.stream()
-            .map(CustomerMoneyDepositModel::debitAccount)
-            .collect(Collectors.toList())
-        if(debitAccountList.isEmpty())
-            return
-
-        debitAccountList = ListUtils.removeDuplicates(debitAccountList)
-        populateEditText(debitAccountList, debitAccountListView, debitAccountList[0])
+        Thread {
+            var debitAccountList: List<String> = allTransactionRecords.stream()
+                .map(CustomerMoneyDepositModel::debitAccount)
+                .collect(Collectors.toList())
+            if (debitAccountList.isNotEmpty()) {
+                debitAccountList = ListUtils.removeDuplicates(debitAccountList)
+                populateEditText(debitAccountList, debitAccountListView, debitAccountList[0])
+            }
+        }
     }
 
     private fun populateCreditAccount(allTransactionRecords: List<CustomerMoneyDepositModel>) {
-        var creditAccountList: List<String> = allTransactionRecords.stream()
-            .map(CustomerMoneyDepositModel::creditAccount)
-            .collect(Collectors.toList())
-        if(creditAccountList.isEmpty())
-            return
-
-        creditAccountList = ListUtils.removeDuplicates(creditAccountList)
-        populateEditText(creditAccountList, creditAccountView, creditAccountList[0])
+        Thread {
+            var creditAccountList: List<String> = allTransactionRecords.stream()
+                .map(CustomerMoneyDepositModel::creditAccount)
+                .collect(Collectors.toList())
+            if (creditAccountList.isNotEmpty()) {
+                creditAccountList = ListUtils.removeDuplicates(creditAccountList)
+                populateEditText(creditAccountList, creditAccountView, creditAccountList[0])
+            }
+        }
     }
 
     private fun populateHandOverTo(allTransactionRecords: List<CustomerMoneyDepositModel>) {
-        var handoverToOptionsList: List<String> = allTransactionRecords.stream()
-            .filter { p -> p.beneficiary == beneficiaryView.text.toString()}
-            .map(CustomerMoneyDepositModel::handOverTo)
-            .collect(Collectors.toList())
-        if(handoverToOptionsList.isEmpty())
-            return
-
-        handoverToOptionsList = ListUtils.removeDuplicates(handoverToOptionsList)
-        val handoverToListView = findViewById<AutoCompleteTextView>(R.id.md_company_handover_to)
-        populateEditText(handoverToOptionsList, handoverToListView, handoverToOptionsList[0])
+        Thread {
+            var handoverToOptionsList: List<String> = allTransactionRecords.stream()
+                .filter { p -> p.beneficiary == beneficiaryView.text.toString() }
+                .map(CustomerMoneyDepositModel::handOverTo)
+                .collect(Collectors.toList())
+            if (handoverToOptionsList.isNotEmpty()) {
+                handoverToOptionsList = ListUtils.removeDuplicates(handoverToOptionsList)
+                val handoverToListView = findViewById<AutoCompleteTextView>(R.id.md_company_handover_to)
+                populateEditText(handoverToOptionsList, handoverToListView, handoverToOptionsList[0])
+            }
+        }
     }
 
     fun onClickSave(view: View) {

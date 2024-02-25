@@ -32,8 +32,8 @@ object Contacts {
         return returnValueIfNotFound
     }
 
-    fun getContactList(context: Context) {
-        if (contactList.isNotEmpty())
+    fun getContactList(context: Context, useCache: Boolean = true) {
+        if (useCache && contactList.isNotEmpty())
             return
 
         val cr: ContentResolver = context.contentResolver

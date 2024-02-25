@@ -1,7 +1,6 @@
 package com.tech4bytes.mbrosv3.Sms.OneShotSMS
 
 import android.os.Bundle
-import android.telephony.SmsMessage
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
@@ -9,8 +8,8 @@ import android.widget.AutoCompleteTextView
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageButton
 import com.tech4bytes.mbrosv3.R
-import com.tech4bytes.mbrosv3.Sms.SMSModel
 import com.tech4bytes.mbrosv3.Utils.ContactsUtils.Contacts
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -22,6 +21,7 @@ class OneShotSMS : AppCompatActivity() {
     private lateinit var container: LinearLayout
     private lateinit var smsList: MutableList<SMS>
     private lateinit var communication_type_selector: AutoCompleteTextView
+    private lateinit var refreshBtn: AppCompatImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,36 +31,49 @@ class OneShotSMS : AppCompatActivity() {
 
         container = findViewById(R.id.osms_container)
         communication_type_selector = findViewById(R.id.comcentre_communication_type)
+        refreshBtn = findViewById(R.id.msg_cntr_refresh_btn)
 
         Thread {
-            initializeCommunicationSelector()
-            Contacts.getContactList(this)
-            selectCommunication()
+            initializeListeners()
+            processAndShowMessages()
         }.start()
     }
 
-    private fun initializeCommunicationSelector() {
+    private fun initializeListeners() {
+        refreshBtn.setOnClickListener {
+            processAndShowMessages(false)
+        }
+    }
+    fun processAndShowMessages(useCache: Boolean = true) {
+        OSMS.get(useCache)
+        val selectedType = initializeCommunicationSelector()
+        Contacts.getContactList(this, false)
+        selectCommunication(selectedType)
+    }
+
+    private fun initializeCommunicationSelector(): String {
         val communicationSelectorOptions = getCommunicationSelectorOptions()
 
         val adapter: ArrayAdapter<String> =
             ArrayAdapter<String>(this, R.layout.template_dropdown_entry, communicationSelectorOptions)
         runOnUiThread {
             communication_type_selector.setAdapter(adapter)
+            communication_type_selector.setText(communicationSelectorOptions[0], false)
+            communication_type_selector.threshold = 0
             communication_type_selector.setOnTouchListener { _, _ ->
                 communication_type_selector.showDropDown()
                 communication_type_selector.requestFocus()
                 false
             }
-            communication_type_selector.setText(communicationSelectorOptions[0], false)
-            communication_type_selector.threshold = 0
         }
         communication_type_selector.setOnItemClickListener { adapterView, view, i, l ->
-            selectCommunication()
+            selectCommunication(communication_type_selector.text.toString())
         }
+        return communicationSelectorOptions[0]
     }
 
-    private fun selectCommunication() {
-        val selectedCommunications = communication_type_selector.text.toString()
+    private fun selectCommunication(selectedCommunications: String) {
+//        val finalSelectedCommunication = selectedCommunications ?: communication_type_selector.text.toString()
         smsList = getSMSList(selectedCommunications)
         runOnUiThread {
             showMessages()

@@ -7,7 +7,7 @@ import kotlin.reflect.KMutableProperty1
 
 class ListUtils {
     companion object {
-        fun sortListByFrequency(list: Array<String>): Array<String> {
+        fun sortListByFrequency(list: List<String>): List<String> {
             val elementCountMap: MutableMap<String, Int> = LinkedHashMap()
 
             for (i in 0 until list.size) {
@@ -24,7 +24,7 @@ class ListUtils {
                 elementCountMap.toList().sortedBy { (_, value) -> value }.reversed().toMap()
             LogMe.log("Frequency Map")
             LogMe.log("" + result)
-            return ArrayList(result.keys).toTypedArray()
+            return ArrayList(result.keys)
         }
 
         fun <T> sortListByAttribute(records: List<T>, attribute: KMutableProperty1<T, String>): MutableList<T> {

@@ -1,6 +1,7 @@
 package com.tech4bytes.mbrosv3.Sms.OneShotSMS
 
 data class OSMSModel(
+    val commReceiverCategory: String,
     val platform: String,
     val sendTo: String,
     val communicationType: String,

@@ -279,7 +279,7 @@ class OneShotDelivery : AppCompatActivity() {
                 orderedKg = it.orderedKg,
                 rate = "${CustomerDataUtils.getDeliveryRate(it.name)}",
                 prevDue = CustomerDueData.getLastFinalizedDue(it.name),
-                customerAccount = customerAccount,
+                customerAccount = it.name,
                 deliveryStatus = "DELIVERING"
             )
 
@@ -300,7 +300,7 @@ class OneShotDelivery : AppCompatActivity() {
                 deliveredPc = it.deliveredPc,
                 deliveredKg = it.deliveredKg,
                 rate = "${CustomerDataUtils.getDeliveryRate(it.name)}",
-                customerAccount = customerAccount,
+                customerAccount = it.name,
                 prevDue = CustomerDueData.getLastFinalizedDue(it.name),
                 deliveryStatus = "DELIVERING"
             )
@@ -655,11 +655,12 @@ class OneShotDelivery : AppCompatActivity() {
             if(it.value.date.isEmpty()) {
                 it.value.date = DateUtils.getDateInFormat("dd/MM/yyyy")
 
-                it.value.customerAccount = if(CustomerKYC.getByName(it.value.name) == null || CustomerKYC.getByName(it.value.name)!!.referredBy.isEmpty()) {
-                    it.value.name
-                } else {
-                    CustomerKYC.getByName(it.value.name)!!.referredBy
-                }
+                it.value.customerAccount = it.value.name
+//                if(CustomerKYC.getByName(it.value.name) == null || CustomerKYC.getByName(it.value.name)!!.referredBy.isEmpty()) {
+//                    it.value.name
+//                } else {
+//                    CustomerKYC.getByName(it.value.name)!!.referredBy
+//                }
             }
             DeliverToCustomerDataHandler.saveToLocal(it.value)
         }

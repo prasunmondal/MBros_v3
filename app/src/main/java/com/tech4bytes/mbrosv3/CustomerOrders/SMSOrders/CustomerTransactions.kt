@@ -55,7 +55,7 @@ class CustomerTransactions : AppCompatActivity() {
 
     private fun showTransactions(name: String) {
         LogMe.startMethod()
-        val list = CustomerDataUtils.get().filter { it.customerAccount == name }.sortedBy { it.orderId }.reversed()
+        val list = CustomerDataUtils.get().filter { it.customerAccount == name || it.name == name }.sortedBy { it.orderId }.reversed()
         list.forEach {
             LogMe.log(it.toString())
         }

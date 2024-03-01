@@ -3,7 +3,7 @@ package com.tech4bytes.mbrosv3
 class ProjectConfig {
     companion object {
         private const val isTestEnv = false
-        const val dBServerScriptURL = "https://script.google.com/macros/s/AKfycbx1flxEcbHuTPIorKgaVF-WUbnGv3qGAfmQF67liZxNpReslzumXpWVDEgrplEHhiehiA/exec"
+        const val dBServerScriptURL = "https://script.google.com/macros/s/AKfycbwj0gNRrV-Z4fznqASXYq7_KR_E0ZHSKA4364OhPLRAGUO23pJ-Z_l60YS39CkWP948Ow/exec"
 
         private const val DB_FINALIZE_SHEET_ID = "11TA2pPlxqajVwkPEigNMPNfsV-12CExxmySk1OMw_v8"
         private const val DB_SHEET_ID = "1X6HriHjIE0XfAblDlE7Uf5a8JTHu00kW2SWvTFKL78w"

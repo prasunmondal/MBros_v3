@@ -12,6 +12,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
+import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.SMSDetails.SendSMSDetailsUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
@@ -36,15 +38,20 @@ class OSDDeliveryEntryInfo {
             val entry = layoutInflater.inflate(R.layout.activity_one_shot_delivery_fragment, null)
 
             val nameElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_name)
-            val rateElementContainer = entry.findViewById<TextInputLayout>(R.id.osd_rate_for_customer_container)
+            val rateElementContainer =
+                entry.findViewById<TextInputLayout>(R.id.osd_rate_for_customer_container)
             val rateElement = entry.findViewById<TextInputEditText>(R.id.osd_rate_for_customer)
             val pcElement = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_pc)
             val kgElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_kg)
-            val paidCashElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paidCash)
-            val paidOnlineElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paidOnline)
+            val paidCashElement =
+                entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paidCash)
+            val paidOnlineElement =
+                entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paidOnline)
             val paidElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid)
-            val balanceElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
-            val moreDetailsContainer = entry.findViewById<LinearLayout>(R.id.one_shot_delivery_fragment_more_details_container)
+            val balanceElement =
+                entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
+            val moreDetailsContainer =
+                entry.findViewById<LinearLayout>(R.id.one_shot_delivery_fragment_more_details_container)
             val sendSMSBtn = entry.findViewById<TextView>(R.id.osd_fragment_send_details)
             rateElementContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
 
@@ -52,15 +59,18 @@ class OSDDeliveryEntryInfo {
             nameElement.text = value.name
             balanceElement.text = value.prevDue
             val deliveryRecord = DeliverToCustomerActivity.getDeliveryRecord(value.name)
-            paidOnlineElement.text = NumberUtils.getIntOrBlank(StagedPaymentUtils.getStagedPayments(value.name).paidAmount)
+            paidOnlineElement.text =
+                NumberUtils.getIntOrBlank(StagedPaymentUtils.getStagedPayments(value.name).paidAmount)
 
             if (deliveryRecord != null) {
                 pcElement.setText(NumberUtils.getIntOrBlank(deliveryRecord.deliveredPc))
                 kgElement.text = NumberUtils.getDoubleOrBlank(deliveryRecord.deliveredKg)
                 paidOnlineElement.text = NumberUtils.getIntOrBlank(deliveryRecord.paidOnline)
-                paidElement.text = (getIntOrZero(deliveryRecord.paidCash) + getIntOrZero(paidOnlineElement.text.toString())).toString()
+                paidElement.text =
+                    (getIntOrZero(deliveryRecord.paidCash) + getIntOrZero(paidOnlineElement.text.toString())).toString()
                 paidCashElement.text = NumberUtils.getIntOrBlank(deliveryRecord.paidCash)
-                val pcHintText = if (getIntOrZero(deliveryRecord.orderedPc) == 0) "pc" else deliveryRecord.orderedPc
+                val pcHintText =
+                    if (getIntOrZero(deliveryRecord.orderedPc) == 0) "pc" else deliveryRecord.orderedPc
                 pcElement.hint = pcHintText
             }
             updatePaidElement(entry)
@@ -87,10 +97,13 @@ class OSDDeliveryEntryInfo {
             rateElement.setText("${CustomerDataUtils.getDeliveryRate(value.name)}")
             fragmentUpdateCustomerWiseRateView(context, value, entry)
 
-            val recordContainer = entry.findViewById<CardView>(R.id.one_shot_delivery_fragment_record_container)
-            var cardColor = ContextCompat.getColor(context, R.color.one_shot_delivery_odd_card_color)
+            val recordContainer =
+                entry.findViewById<CardView>(R.id.one_shot_delivery_fragment_record_container)
+            var cardColor =
+                ContextCompat.getColor(context, R.color.one_shot_delivery_odd_card_color)
             if (entrynumber % 2 == 0) {
-                cardColor = ContextCompat.getColor(context, R.color.one_shot_delivery_even_card_color)
+                cardColor =
+                    ContextCompat.getColor(context, R.color.one_shot_delivery_even_card_color)
             }
             entrynumber++
             recordContainer.setBackgroundColor(cardColor)
@@ -105,10 +118,14 @@ class OSDDeliveryEntryInfo {
             val pcElement = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_pc)
             val kgElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_kg)
             val paidElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid)
-            val balanceElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
-            val moreDetailsContainer = entry.findViewById<LinearLayout>(R.id.one_shot_delivery_fragment_more_details_container)
-            val paidOnlineElement = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidOnline)
-            val paidCashElement = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidCash)
+            val balanceElement =
+                entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
+            val moreDetailsContainer =
+                entry.findViewById<LinearLayout>(R.id.one_shot_delivery_fragment_more_details_container)
+            val paidOnlineElement =
+                entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidOnline)
+            val paidCashElement =
+                entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidCash)
 
             rateElement.doOnTextChanged { text, start, before, count ->
                 updateEntry(context as OneShotDelivery, value, entry)
@@ -117,10 +134,12 @@ class OSDDeliveryEntryInfo {
 
             pcElement.doOnTextChanged { text, start, before, count ->
                 updateEntry(context as OneShotDelivery, value, entry)
+                updateAvgKg(entry)
             }
 
             kgElement.doOnTextChanged { text, start, before, count ->
                 updateEntry(context as OneShotDelivery, value, entry)
+                updateAvgKg(entry)
             }
 
             paidCashElement.doOnTextChanged { text, start, before, count ->
@@ -145,17 +164,38 @@ class OSDDeliveryEntryInfo {
             }
         }
 
+        private fun updateAvgKg(entry: View) {
+            if (AuthorizationUtils.isAuthorized(AuthorizationEnums.OSD_SHOW_DELIVERY_AVG_WT)) {
+                val kg = getKgForEntry(entry)
+                val pc = getPcForEntry(entry)
+                var avgKg = ""
+                if (kg > 0.0 && pc != 0) {
+                    avgKg = NumberUtils.roundOff3places((kg / pc)).toString()
+                }
+                entry.findViewById<TextView>(R.id.osd_entry_avg_kg).text = avgKg
+            }
+        }
+
         private fun updatePaidElement(entry: View) {
             val paidElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid)
-            val paidOnlineElement = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidOnline).text.toString()
-            val paidCashElement = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidCash).text.toString()
+            val paidOnlineElement =
+                entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidOnline).text.toString()
+            val paidCashElement =
+                entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidCash).text.toString()
             val totalPaid = getIntOrZero(paidOnlineElement) + getIntOrZero(paidCashElement)
             paidElement.text = NumberUtils.getIntOrBlank(totalPaid.toString())
         }
 
-        fun fragmentUpdateCustomerWiseRateView(context: Context, value: DeliverToCustomerDataModel, entry: View) {
+        fun fragmentUpdateCustomerWiseRateView(
+            context: Context,
+            value: DeliverToCustomerDataModel,
+            entry: View
+        ) {
             val rateElement = entry.findViewById<TextInputEditText>(R.id.osd_rate_for_customer)
-            if (getIntOrZero(rateElement.text.toString()) != CustomerDataUtils.getCustomerDefaultRate(value.name)) {
+            if (getIntOrZero(rateElement.text.toString()) != CustomerDataUtils.getCustomerDefaultRate(
+                    value.name
+                )
+            ) {
                 rateElement.setBackgroundColor(ContextCompat.getColor(context, R.color.red))
                 rateElement.setTextColor(ContextCompat.getColor(context, R.color.white))
             } else {
@@ -172,19 +212,31 @@ class OSDDeliveryEntryInfo {
             }
         }
 
-        fun updateEntry(context: OneShotDelivery, order: DeliverToCustomerDataModel, entry: View, updateTotals: Boolean = true) {
+        fun updateEntry(
+            context: OneShotDelivery,
+            order: DeliverToCustomerDataModel,
+            entry: View,
+            updateTotals: Boolean = true
+        ) {
             val kg = getKgForEntry(entry)
             order.deliveredKg = kg.toString()
             order.deliveredPc = getPcForEntry(entry).toString()
             order.todaysAmount = getTodaysSaleAmountForEntry(entry).toString()
             order.paid = getPaidAmountForEntry(entry).toString()
-            order.paidCash = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidCash).text.toString()
-            order.paidOnline = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidOnline).text.toString()
+            order.paidCash =
+                entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidCash).text.toString()
+            order.paidOnline =
+                entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidOnline).text.toString()
             order.rate = getRateForEntry(entry).toString()
             order.totalDue = "${getIntOrZero(order.prevDue) + getTodaysSaleAmountForEntry(entry)}"
-            order.balanceDue = "${getIntOrZero(order.prevDue) + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(entry)}"
+            order.balanceDue = "${
+                getIntOrZero(order.prevDue) + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(
+                    entry
+                )
+            }"
 
-            val balanceElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
+            val balanceElement =
+                entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
 
             order.balanceDue = getDueBalance(order, entry).toString()
             balanceElement.text = order.balanceDue
@@ -204,32 +256,48 @@ class OSDDeliveryEntryInfo {
 
         private fun updateAutoAdjustmentBalance(order: DeliverToCustomerDataModel, entry: View) {
             val autoAdjustments = BalanceReferralCalculations.getTotalDiscountFor(order.name)
-            val autoAdjustmentLayout: LinearLayout = entry.findViewById(R.id.osd_fragment_auto_adjustments_layout)
+            val autoAdjustmentLayout: LinearLayout =
+                entry.findViewById(R.id.osd_fragment_auto_adjustments_layout)
 
             autoAdjustmentLayout.visibility =
-                if(autoAdjustments.transferAmount == 0) { View.GONE }
-                else { View.VISIBLE }
+                if (autoAdjustments.transferAmount == 0) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
 
-            val autoAdjustmentBalance: TextView = entry.findViewById(R.id.osd_fragment_auto_adjustments)
-            val autoAdjustmentJustification: TextView = entry.findViewById(R.id.osd_fragment_auto_adjustments_justification)
-            val balanceBeforeAdjustmentElement: TextView = entry.findViewById(R.id.osd_fragment_balance_before_adjustments)
+            val autoAdjustmentBalance: TextView =
+                entry.findViewById(R.id.osd_fragment_auto_adjustments)
+            val autoAdjustmentJustification: TextView =
+                entry.findViewById(R.id.osd_fragment_auto_adjustments_justification)
+            val balanceBeforeAdjustmentElement: TextView =
+                entry.findViewById(R.id.osd_fragment_balance_before_adjustments)
 
-            balanceBeforeAdjustmentElement.text = (getIntOrZero(order.balanceDue) - autoAdjustments.transferAmount).toString()
+            balanceBeforeAdjustmentElement.text =
+                (getIntOrZero(order.balanceDue) - autoAdjustments.transferAmount).toString()
             autoAdjustmentJustification.text = autoAdjustments.message
             autoAdjustmentBalance.text = autoAdjustments.transferAmount.toString()
         }
 
         private fun updateDetailedInfo(order: DeliverToCustomerDataModel, entry: View) {
-            val container = entry.findViewById<LinearLayout>(R.id.one_shot_delivery_fragment_more_details_container)
+            val container =
+                entry.findViewById<LinearLayout>(R.id.one_shot_delivery_fragment_more_details_container)
 
             if (container.visibility == View.VISIBLE) {
-                val prevDue = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_prev_due)
-                val kg = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_kg)
-                val rate = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_rate)
-                val todaysSale = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_sale_total)
-                val total = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_total_due)
-                val paid = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_paid_amount)
-                val balanceDue = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_balance_due)
+                val prevDue =
+                    entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_prev_due)
+                val kg =
+                    entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_kg)
+                val rate =
+                    entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_rate)
+                val todaysSale =
+                    entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_sale_total)
+                val total =
+                    entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_total_due)
+                val paid =
+                    entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_paid_amount)
+                val balanceDue =
+                    entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_balance_due)
 
                 prevDue.text = "₹ ${order.prevDue}"
                 kg.text = "${order.deliveredKg} kg"
@@ -243,14 +311,19 @@ class OSDDeliveryEntryInfo {
 
         private fun getDueBalance(order: DeliverToCustomerDataModel, entry: View): Int {
             val prevBal = order.prevDue
-            return getIntOrZero(prevBal) + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(entry) + BalanceReferralCalculations.getTotalDiscountFor(order.name).transferAmount
+            return getIntOrZero(prevBal) + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(
+                entry
+            ) + BalanceReferralCalculations.getTotalDiscountFor(order.name).transferAmount
         }
 
         private fun getPcForEntry(entry: View): Int {
-            var pc = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc).text.toString()
-            val kg = NumberUtils.getDoubleOrZero(entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_kg).text.toString())
+            var pc =
+                entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc).text.toString()
+            val kg =
+                NumberUtils.getDoubleOrZero(entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_kg).text.toString())
             if (pc.isEmpty() && kg > 0.0) {
-                pc = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc).hint.toString()
+                pc =
+                    entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc).hint.toString()
             }
             if (pc.isEmpty())
                 return 0
@@ -258,14 +331,16 @@ class OSDDeliveryEntryInfo {
         }
 
         private fun getKgForEntry(entry: View): Double {
-            val kg = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_kg).text.toString()
+            val kg =
+                entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_kg).text.toString()
             if (kg.isEmpty())
                 return 0.0
             return NumberUtils.getDoubleOrZero(kg)
         }
 
         private fun getPaidAmountForEntry(entry: View): Int {
-            val paid = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid).text.toString()
+            val paid =
+                entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid).text.toString()
             if (paid.isEmpty())
                 return 0
             return paid.toInt()

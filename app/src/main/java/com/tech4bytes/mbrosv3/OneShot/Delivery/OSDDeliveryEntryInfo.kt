@@ -170,14 +170,14 @@ class OSDDeliveryEntryInfo {
             }
         }
 
-        private fun updateAvgKg(entry: View) {
+        fun updateAvgKg(entry: View) {
             Thread {
                 if (AuthorizationUtils.isAuthorized(AuthorizationEnums.OSD_SHOW_DELIVERY_AVG_WT)) {
                     val kg = getKgForEntry(entry)
                     val pc = getPcForEntry(entry)
                     var avgKg = ""
                     if (kg > 0.0 && pc != 0) {
-                        avgKg = NumberUtils.roundOff3places((kg / pc)).toString()
+                        avgKg = NumberUtils.roundOff3places((kg / pc)).toString() + " kg/pc"
                     }
                     activity.runOnUiThread {
                         entry.findViewById<TextView>(R.id.osd_entry_avg_kg).text = avgKg

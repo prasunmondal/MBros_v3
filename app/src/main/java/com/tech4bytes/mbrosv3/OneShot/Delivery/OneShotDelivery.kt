@@ -355,6 +355,7 @@ class OneShotDelivery : AppCompatActivity() {
 
     private fun showOrder(key: DeliverToCustomerDataModel, value: View) {
         OSDDeliveryEntryInfo.updateEntry(this, key, value)
+        OSDDeliveryEntryInfo.updateAvgKg(value)
         findViewById<LinearLayout>(R.id.one_shot_delivery_unordered_customers_entry_container).addView(value)
     }
 
@@ -364,6 +365,7 @@ class OneShotDelivery : AppCompatActivity() {
 
         t.forEach { (key, value) ->
             OSDDeliveryEntryInfo.updateEntry(this, key, value, false)
+            OSDDeliveryEntryInfo.updateAvgKg(value)
             findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).addView(value)
         }
         updateTotals(this, false)

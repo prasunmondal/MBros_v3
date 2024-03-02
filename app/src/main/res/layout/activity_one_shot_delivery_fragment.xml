@@ -168,7 +168,7 @@
                         android:id="@+id/osd_entry_avg_kg"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="50dp"
+                        android:layout_marginStart="20dp"
                         android:textColor="#AFACAC" />
 
                     <TextView

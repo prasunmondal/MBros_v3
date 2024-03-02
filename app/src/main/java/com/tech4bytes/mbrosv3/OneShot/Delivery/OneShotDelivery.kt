@@ -73,6 +73,7 @@ class OneShotDelivery : AppCompatActivity() {
 
         AppContexts.set(this)
         AppUtils.logError(this)
+        OSDDeliveryEntryInfo.setActivityContext(this)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,

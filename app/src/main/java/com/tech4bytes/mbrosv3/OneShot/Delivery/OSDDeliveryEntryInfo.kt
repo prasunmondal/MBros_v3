@@ -1,5 +1,6 @@
 package com.tech4bytes.mbrosv3.OneShot.Delivery
 
+import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -31,6 +32,11 @@ class OSDDeliveryEntryInfo {
 
     companion object {
         var uiMaps: MutableMap<String, View> = mutableMapOf()
+        lateinit var activity: Activity
+
+        fun setActivityContext(_activity: Activity) {
+            activity = _activity
+        }
 
         var entrynumber = 1
         fun createOrderCard(context: Context, value: DeliverToCustomerDataModel): View {
@@ -165,15 +171,19 @@ class OSDDeliveryEntryInfo {
         }
 
         private fun updateAvgKg(entry: View) {
-            if (AuthorizationUtils.isAuthorized(AuthorizationEnums.OSD_SHOW_DELIVERY_AVG_WT)) {
-                val kg = getKgForEntry(entry)
-                val pc = getPcForEntry(entry)
-                var avgKg = ""
-                if (kg > 0.0 && pc != 0) {
-                    avgKg = NumberUtils.roundOff3places((kg / pc)).toString()
+            Thread {
+                if (AuthorizationUtils.isAuthorized(AuthorizationEnums.OSD_SHOW_DELIVERY_AVG_WT)) {
+                    val kg = getKgForEntry(entry)
+                    val pc = getPcForEntry(entry)
+                    var avgKg = ""
+                    if (kg > 0.0 && pc != 0) {
+                        avgKg = NumberUtils.roundOff3places((kg / pc)).toString()
+                    }
+                    activity.runOnUiThread {
+                        entry.findViewById<TextView>(R.id.osd_entry_avg_kg).text = avgKg
+                    }
                 }
-                entry.findViewById<TextView>(R.id.osd_entry_avg_kg).text = avgKg
-            }
+            }.start()
         }
 
         private fun updatePaidElement(entry: View) {

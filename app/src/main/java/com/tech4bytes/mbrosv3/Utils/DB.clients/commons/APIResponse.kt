@@ -7,6 +7,7 @@ import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstantModel
+import java.lang.NullPointerException
 import java.lang.reflect.Type
 
 open class APIResponse {
@@ -33,12 +34,16 @@ open class APIResponse {
         Log.e("parsing to object ", jsonString!!)
         var arrayLabel = JsonTags.RESPONSE_DATA_CODE
         var jsonarray: JsonArray? = null
+        var result = arrayListOf<T>()
         try {
             jsonarray = getJsonObject()!!.getAsJsonArray(arrayLabel)
+            result = GsonBuilder().create().fromJson(jsonarray.toString(), type)
+        } catch (e: NullPointerException) {
+            Log.e("parseJSONObject", "No value fetched")
         } catch (e: Exception) {
             Log.e("parseJSONObject", "Error while parsing")
         }
-        val result: ArrayList<T> = GsonBuilder().create().fromJson(jsonarray.toString(), type)
+
         return result
     }
 

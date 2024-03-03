@@ -130,10 +130,10 @@ class MoneyCounter : AppCompatActivity() {
                 "\n Cash Deductions : -  ₹ $deductedCash" +
                 "\n Cash Additions    : + ₹ $addedCash" +
                 "\n ----------------------------------------------------"+
-                "\n               TOTAL    : + ₹ $aimingAmount" +
+                "\n               TOTAL     :  ₹ $aimingAmount" +
                 "\n"+
                 "\n"+
-                "\n Online Deposits   :  (x)   ₹ ${DeliverToCustomerCalculations.getTotalAmountPaidOnlineTodayByCustomers()}"
+                "\n Online Deposits   :    ₹ ${DeliverToCustomerCalculations.getTotalAmountPaidOnlineTodayByCustomers()}"
     }
 
     fun getAimingAmountFromUI(): Int {

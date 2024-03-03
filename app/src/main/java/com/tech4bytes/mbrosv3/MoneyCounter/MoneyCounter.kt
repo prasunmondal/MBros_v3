@@ -121,13 +121,15 @@ class MoneyCounter : AppCompatActivity() {
         addedCash: Int,
         fuelExpense: Int
     ): String {
-        return    " Cash Received   : + ₹ $amountReceivedInCash" +
-                "\n Extra Cash Given: + ₹ $cashGivenForExtraExpenses" +
-                "\n Extra Expense   : - ₹ $extraExpenses" +
-                "\n Labour Expense  : - ₹ $labourExpenses" +
-                "\n Fuel Expense    : - ₹ $fuelExpense" +
+        return    " Cash Received     : + ₹ $amountReceivedInCash" +
+                "\n Extra Cash Given : + ₹ $cashGivenForExtraExpenses" +
+                "\n Extra Expense      : - ₹ $extraExpenses" +
+                "\n Labour Expense   : - ₹ $labourExpenses" +
+                "\n Fuel Expense        : - ₹ $fuelExpense" +
                 "\n Cash Deductions : - ₹ $deductedCash" +
-                "\n Cash Additions  : + ₹ $addedCash"
+                "\n Cash Additions    : + ₹ $addedCash" +
+                "\n"+
+                "\n Online Deposits   :  (x)   ₹ ${DeliverToCustomerCalculations.getTotalAmountPaidInCashTodayByCustomers()}"
     }
 
     fun getAimingAmountFromUI(): Int {

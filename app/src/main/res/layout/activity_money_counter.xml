@@ -36,6 +36,13 @@
                 android:textColor="#09C4DD" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <ImageView
+            android:id="@+id/mc_view_details_btn"
+            android:layout_width="30dp"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="5dp"
+            app:srcCompat="@android:drawable/ic_menu_info_details" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.WindowManager
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -22,11 +23,13 @@ import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import kotlin.math.abs
 
+
 class MoneyCounter : AppCompatActivity() {
 
     private val availableDenominations: List<Int> = listOf(2000, 500, 200, 100, 50, 20, 10)
     private lateinit var deductedCashField: EditText
     private lateinit var addedCashField: EditText
+    private lateinit var viewDetailsBtn: ImageView
     private val mapOfNotesToAmount: MutableMap<Int, Int> = mutableMapOf()
     private val rupeePrefix = "₹"
 
@@ -46,10 +49,13 @@ class MoneyCounter : AppCompatActivity() {
         deductedCashField = findViewById(R.id.mc_deducted_amount)
         addedCashField = findViewById(R.id.mc_added_amount)
         val aimingAmountField = findViewById<EditText>(R.id.mc_aiming_amount)
+        viewDetailsBtn = findViewById(R.id.mc_view_details_btn)
 
         deductedCashField.addTextChangedListener { setAimingAmount() }
         addedCashField.addTextChangedListener { setAimingAmount() }
         aimingAmountField.addTextChangedListener { updateSuccessColors() }
+
+        viewDetailsBtn.tooltipText = "Not populated"
 
         setAimingAmount()
         availableDenominations.forEach {
@@ -71,7 +77,7 @@ class MoneyCounter : AppCompatActivity() {
 
     private fun setAimingAmount() {
         val aimingAmountField = findViewById<EditText>(R.id.mc_aiming_amount)
-        val totalAmountPaidByCustomer = DeliverToCustomerCalculations.getTotalAmountPaidInCashTodayByCustomers()
+        val amountReceivedInCash = DeliverToCustomerCalculations.getTotalAmountPaidInCashTodayByCustomers()
         val extraExpenses = NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().extra_expenses)
         val cashGivenForExtraExpenses = NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().extra_cash_given)
         val labourExpenses = NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().labour_expenses) + NumberUtils.getIntOrZero(AppConstants.get(AppConstants.DRIVER_SALARY))
@@ -83,7 +89,7 @@ class MoneyCounter : AppCompatActivity() {
             else 0
 
         val aimingAmount = (
-                totalAmountPaidByCustomer
+                amountReceivedInCash
                         + (cashGivenForExtraExpenses - extraExpenses)
                         - labourExpenses
                         - deductedCash
@@ -91,6 +97,37 @@ class MoneyCounter : AppCompatActivity() {
                         - fuelExpense
                 )
         aimingAmountField.setText(aimingAmount.toString())
+
+        val tooltipText = getTransactionDetailsText(amountReceivedInCash, cashGivenForExtraExpenses, extraExpenses, labourExpenses, deductedCash, addedCash, fuelExpense)
+        viewDetailsBtn.setOnClickListener {
+            showTransactionDetails(tooltipText)
+        }
+    }
+
+    fun showTransactionDetails(tooltipText: String) {
+        val builder1: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(AppContexts.get())
+        builder1.setMessage(tooltipText)
+        builder1.setCancelable(true)
+
+        val alert11: android.app.AlertDialog? = builder1.create()
+        alert11!!.show()
+    }
+    fun getTransactionDetailsText(
+        amountReceivedInCash: Int,
+        cashGivenForExtraExpenses: Int,
+        extraExpenses: Int,
+        labourExpenses: Int,
+        deductedCash: Int,
+        addedCash: Int,
+        fuelExpense: Int
+    ): String {
+        return "Cash Received: $amountReceivedInCash" +
+                "\n Extra Cash Given: +$cashGivenForExtraExpenses" +
+                "\n Extra Expense: -$extraExpenses" +
+                "\n Labour Expense: -$labourExpenses" +
+                "\n Fuel Expense: -$fuelExpense" +
+                "\n Cash Deductions: -$deductedCash" +
+                "\n Cash Additions: +$addedCash"
     }
 
     fun getAimingAmountFromUI(): Int {

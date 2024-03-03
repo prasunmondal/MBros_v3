@@ -71,7 +71,7 @@ class MoneyCounter : AppCompatActivity() {
 
     private fun setAimingAmount() {
         val aimingAmountField = findViewById<EditText>(R.id.mc_aiming_amount)
-        val totalAmountPaidByCustomer = DeliverToCustomerCalculations.getTotalAmountPaidTodayByCustomers()
+        val totalAmountPaidByCustomer = DeliverToCustomerCalculations.getTotalAmountPaidInCashTodayByCustomers()
         val extraExpenses = NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().extra_expenses)
         val cashGivenForExtraExpenses = NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().extra_cash_given)
         val labourExpenses = NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().labour_expenses) + NumberUtils.getIntOrZero(AppConstants.get(AppConstants.DRIVER_SALARY))

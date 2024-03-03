@@ -39,6 +39,22 @@ class DeliverToCustomerCalculations {
             return sum
         }
 
+        fun getTotalAmountPaidInCashTodayByCustomers(): Int {
+            var sum = 0
+            DeliverToCustomerDataHandler.get().forEach {
+                sum += NumberUtils.getIntOrZero(it.paidCash)
+            }
+            return sum
+        }
+
+        fun getTotalAmountPaidOnlineTodayByCustomers(): Int {
+            var sum = 0
+            DeliverToCustomerDataHandler.get().forEach {
+                sum += NumberUtils.getIntOrZero(it.paidOnline)
+            }
+            return sum
+        }
+
         fun filterToOnlyLatest(resultFromServer: List<DeliverToCustomerDataModel>): List<DeliverToCustomerDataModel> {
             val sorted = ListUtils.sortListByAttribute(resultFromServer, DeliverToCustomerDataModel::id).reversed()
             val map = mutableMapOf<String, DeliverToCustomerDataModel>()

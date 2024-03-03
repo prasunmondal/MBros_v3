@@ -98,7 +98,7 @@ class MoneyCounter : AppCompatActivity() {
                 )
         aimingAmountField.setText(aimingAmount.toString())
 
-        val tooltipText = getTransactionDetailsText(amountReceivedInCash, cashGivenForExtraExpenses, extraExpenses, labourExpenses, deductedCash, addedCash, fuelExpense)
+        val tooltipText = getTransactionDetailsText(aimingAmount, amountReceivedInCash, cashGivenForExtraExpenses, extraExpenses, labourExpenses, deductedCash, addedCash, fuelExpense)
         viewDetailsBtn.setOnClickListener {
             showTransactionDetails(tooltipText)
         }
@@ -113,6 +113,7 @@ class MoneyCounter : AppCompatActivity() {
         alert11!!.show()
     }
     fun getTransactionDetailsText(
+        aimingAmount: Int,
         amountReceivedInCash: Int,
         cashGivenForExtraExpenses: Int,
         extraExpenses: Int,
@@ -123,13 +124,16 @@ class MoneyCounter : AppCompatActivity() {
     ): String {
         return    " Cash Received     : + ₹ $amountReceivedInCash" +
                 "\n Extra Cash Given : + ₹ $cashGivenForExtraExpenses" +
-                "\n Extra Expense      : - ₹ $extraExpenses" +
-                "\n Labour Expense   : - ₹ $labourExpenses" +
-                "\n Fuel Expense        : - ₹ $fuelExpense" +
-                "\n Cash Deductions : - ₹ $deductedCash" +
+                "\n Extra Expense      : -  ₹ $extraExpenses" +
+                "\n Labour Expense   : -  ₹ $labourExpenses" +
+                "\n Fuel Expense        : -  ₹ $fuelExpense" +
+                "\n Cash Deductions : -  ₹ $deductedCash" +
                 "\n Cash Additions    : + ₹ $addedCash" +
+                "\n ----------------------------------------------------"+
+                "\n               TOTAL    : + ₹ $aimingAmount" +
                 "\n"+
-                "\n Online Deposits   :  (x)   ₹ ${DeliverToCustomerCalculations.getTotalAmountPaidInCashTodayByCustomers()}"
+                "\n"+
+                "\n Online Deposits   :  (x)   ₹ ${DeliverToCustomerCalculations.getTotalAmountPaidOnlineTodayByCustomers()}"
     }
 
     fun getAimingAmountFromUI(): Int {

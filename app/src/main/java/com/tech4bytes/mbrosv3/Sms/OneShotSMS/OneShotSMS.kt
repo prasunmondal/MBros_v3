@@ -137,7 +137,8 @@ class OneShotSMS : AppCompatActivity() {
                     "DELIVERY_SMS" -> OSMSProcessor.sendDeliverySMS(it)
                     "DAY_SUMMARY" -> OSMSProcessor.sendDaySummary(it)
                     "LOAD_DETAILS" -> OSMSProcessor.sendLoadDetails(it)
-                    "BULK_DELIVERY_SMS" -> OSMSProcessor.sendBulkDeliverySMS(it)
+                    "DELIVERY_SMS_ONLY_NON_ZERO_KG" -> OSMSProcessor.deliverySMSToNonZeroKgCustomers(it)
+                    "DELIVERY_SMS_ONLY_PAYMENT" -> OSMSProcessor.deliverySMSToOnlyPaymentCustomers(it)
                     else -> null
                 }
                 if (smsResult != null)

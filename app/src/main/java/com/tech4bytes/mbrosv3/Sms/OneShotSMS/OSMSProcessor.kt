@@ -3,11 +3,13 @@ package com.tech4bytes.mbrosv3.Sms.OneShotSMS
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerCalculations
 import com.tech4bytes.mbrosv3.SendInfoTexts.Whatsapp.Whatsapp
 import com.tech4bytes.mbrosv3.Sms.SMSUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
+import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 
 class OSMSProcessor {
 
@@ -81,10 +83,10 @@ class OSMSProcessor {
             }
         }
 
-        fun sendBulkDeliverySMS(smsDetail: OSMSModel): List<SMS>? {
+        fun deliverySMSToNonZeroKgCustomers(smsDetail: OSMSModel): List<SMS>? {
             LogMe.log(smsDetail.toString())
 
-            val entries = smsDetail.inputData.split(",")
+            val entries = smsDetail.sendTo.split(",")
             val list: MutableList<SMS> = mutableListOf()
 
             entries.forEach {entry ->
@@ -93,8 +95,46 @@ class OSMSProcessor {
                 // if delivery data is not available for the customer, send null - no communication required
                 val deliveryData = DeliverToCustomerActivity.getDeliveryRecord(customerName)
 
+                if(deliveryData!=null && NumberUtils.getDoubleOrZero(deliveryData.deliveredKg)>0.0) {
+                    val formattedDate = DateUtils.getDateInFormat("dd/MM/yyyy")
+                    val replaceMethod = { template: String ->
+                        template.replace("<date>", formattedDate)
+                            .replace("<name>", deliveryData.name)
+                            .replace("<prevDue>", deliveryData.prevDue)
+                            .replace("<pc>", deliveryData.deliveredPc)
+                            .replace("<kg>", deliveryData.deliveredKg)
+                            .replace("<todaysAmount>", deliveryData.todaysAmount)
+                            .replace("<paidAmount>", deliveryData.paid)
+                            .replace("<rate>", deliveryData.rate)
+                            .replace("<balanceAmount>", deliveryData.balanceDue)
+                    }
 
-                if(deliveryData!=null && deliveryData.balanceDue.isNotEmpty()) {
+                    LogMe.log(smsDetail.toString() + ": " + replaceMethod(smsDetail.enablement_template))
+                    val text = replaceMethod(smsDetail.dataTemplate)
+                    list.add(SMS(smsDetail.platform, customerNumber, text))
+                }
+            }
+
+            if(list.isEmpty())
+                return null
+            return list
+        }
+
+        fun deliverySMSToOnlyPaymentCustomers(smsDetail: OSMSModel): List<SMS>? {
+            LogMe.log(smsDetail.toString())
+
+            val entries = smsDetail.sendTo.split(",")
+            val list: MutableList<SMS> = mutableListOf()
+
+            entries.forEach {entry ->
+                val customerName =  entry.trim().split(":")[0].trim()
+                val customerNumber =  entry.trim().split(":")[1].trim()
+                // if delivery data is not available for the customer, send null - no communication required
+                val deliveryData = DeliverToCustomerActivity.getDeliveryRecord(customerName)
+
+                if(deliveryData!=null
+                    && NumberUtils.getDoubleOrZero(deliveryData.deliveredKg)==0.0
+                    && NumberUtils.getDoubleOrZero(deliveryData.paid) > 0) {
                     val formattedDate = DateUtils.getDateInFormat("dd/MM/yyyy")
                     val replaceMethod = { template: String ->
                         template.replace("<date>", formattedDate)

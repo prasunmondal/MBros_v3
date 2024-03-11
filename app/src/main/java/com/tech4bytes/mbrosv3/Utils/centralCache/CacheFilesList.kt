@@ -17,7 +17,7 @@ class CacheFilesList : java.io.Serializable {
                     cacheFilesFileName
                 ) as MutableList<String>
             } catch (e: Exception) {
-                LogMe.log(e)
+                LogMe.log("Couldn't read file: $cacheFilesFileName")
                 mutableListOf()
             }
             return list

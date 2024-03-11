@@ -5,6 +5,7 @@ import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
+import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
@@ -142,7 +143,8 @@ object DaySummaryUtils {
     }
 
     fun kmCost(): Int {
-        return (NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().vehicle_finalKm) - getPrevTripEndKm()) * 12
+        return (NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().vehicle_finalKm) - getPrevTripEndKm()) *
+                NumberUtils.getIntOrZero(AppConstants.get(AppConstants.CAR_RATE_PER_KM))
     }
 
     fun getLabourCost(): Int {

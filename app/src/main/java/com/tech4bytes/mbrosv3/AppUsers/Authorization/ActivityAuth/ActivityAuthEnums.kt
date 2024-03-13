@@ -7,7 +7,6 @@ enum class ActivityAuthEnums : java.io.Serializable {
     UNIDENTIFIED,
     ORDER_COLLECTOR,
     BALANCE_VIEW,
-    SHOW_RATES_IN_DELIVERY_PAGE,
     ONE_SHOT_DELIVERY,
     LOAD_INFORMATION,
     MONEY_CALCULATOR,

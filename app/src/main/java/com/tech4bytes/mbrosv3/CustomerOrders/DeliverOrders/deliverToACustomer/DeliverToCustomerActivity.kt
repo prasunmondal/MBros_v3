@@ -81,7 +81,7 @@ class DeliverToCustomerActivity : AppCompatActivity() {
             UIUtils.setUIElementValue(todaysAmountElement, record.todaysAmount)
         }
 
-        if (record.rate.isEmpty() && (UserRoleUtils.doesHaveRole(ActivityAuthEnums.ADMIN) || UserRoleUtils.doesHaveRole(ActivityAuthEnums.SHOW_RATES_IN_DELIVERY_PAGE))) {
+        if (record.rate.isEmpty() && (UserRoleUtils.doesHaveRole(ActivityAuthEnums.ADMIN) || AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_DELIVERY_RATE))) {
             UIUtils.setUIElementValue(rate, ("0${SingleAttributedDataUtils.getRecords().finalFarmRate}".toInt() + "0${SingleAttributedDataUtils.getRecords().bufferRate}".toInt() + CustomerKYC.getByName(record.name)!!.rateDifference.toInt()).toString())
             (rate as EditText).setTextColor(ContextCompat.getColor(this, R.color.red))
         }

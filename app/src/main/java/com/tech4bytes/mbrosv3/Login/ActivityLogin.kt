@@ -172,7 +172,6 @@ class ActivityLogin : AppCompatActivity() {
             ActivityAuthEnums.LOAD_INFORMATION -> ::goToOneShotLoadDetailsPage
             ActivityAuthEnums.MONEY_CALCULATOR -> ::goToMoneyCalculatorPage
             ActivityAuthEnums.SMS_ORDERING -> ::goToSmsOrderingActivity
-            ActivityAuthEnums.SHOW_RATES_IN_DELIVERY_PAGE -> null
             ActivityAuthEnums.CUSTOMER_TRANSACTIONS -> ::goToCustomerTransactions
             ActivityAuthEnums.WEB_PORTAL -> ::goToWebPortal
             ActivityAuthEnums.MONEY_DEPOSITS -> ::goToMoneyDeposits

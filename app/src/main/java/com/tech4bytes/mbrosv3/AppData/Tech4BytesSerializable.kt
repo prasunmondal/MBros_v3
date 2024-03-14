@@ -70,6 +70,18 @@ abstract class Tech4BytesSerializable<T : Any> : java.io.Serializable {
         }
     }
 
+    fun isDataAvailable(filterName: String = "default"): Boolean {
+        val useCache = true
+        val cacheKey = getFilterName(filterName)
+        LogMe.log("Getting records: " + cacheKey)
+        val cacheResults = try {
+            CentralCache.get<T>(AppContexts.get(), cacheKey, useCache)
+        } catch (ex: ClassCastException) {
+            arrayListOf(CentralCache.get<T>(AppContexts.get(), cacheKey, useCache))
+        }
+        return cacheResults != null
+    }
+
     private fun getFromServer(): ArrayList<T> {
         val result: GetResponse = Get.builder()
             .scriptId(scriptURL)

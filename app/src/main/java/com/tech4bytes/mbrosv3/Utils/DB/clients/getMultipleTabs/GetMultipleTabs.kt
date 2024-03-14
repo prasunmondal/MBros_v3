@@ -4,6 +4,7 @@ import com.prasunmondal.postjsontosheets.clients.commons.APICalls
 import com.prasunmondal.postjsontosheets.clients.commons.ExecutePostCalls
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
+import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import org.json.JSONObject
 import java.io.Serializable
 import java.net.URL
@@ -47,6 +48,11 @@ class GetMultipleTabs : APICalls, GetMultipleTabsFlow, GetMultipleTabsFlow.Scrip
     }
 
     private fun fetchAllMultipleTabs(): GetMultipleTabsResponse {
+
+        if(isAllDataAvailable()) {
+            return GetMultipleTabsResponse("OK")
+        }
+
         val scriptUrl = URL(this.scriptURL)
         val postDataParams = JSONObject()
         postDataParams.put("opCode", "FETCH_ALL_MULTIPLE_TABS")
@@ -65,6 +71,16 @@ class GetMultipleTabs : APICalls, GetMultipleTabsFlow, GetMultipleTabsFlow.Scrip
             }
         }
         return GetMultipleTabsResponse(response).getObject()
+    }
+
+    private fun isAllDataAvailable(): Boolean {
+        this.classesToFetch.forEach {
+            val t = it.isDataAvailable()
+            LogMe.log("Data Available: " + it.tabname + " - $t")
+            if(t == false)
+                return false
+        }
+        return true
     }
 
     private fun getTabsFromClassesToFetch(): String {

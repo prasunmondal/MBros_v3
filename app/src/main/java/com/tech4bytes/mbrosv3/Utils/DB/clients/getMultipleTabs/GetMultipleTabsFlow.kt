@@ -1,7 +1,8 @@
 package com.tech4bytes.mbrosv3.Utils.DB.clients.getMultipleTabs
 
+import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
+import java.io.Serializable
 import java.util.function.Consumer
-import kotlin.reflect.KFunction
 
 interface GetMultipleTabsFlow {
 
@@ -14,11 +15,7 @@ interface GetMultipleTabsFlow {
     }
 
     interface TabNameBuilder {
-        fun tabName(tabName: String): SheetClassMapBuilder
-    }
-
-    interface SheetClassMapBuilder {
-        fun SheetClassMapBuilder(sheetClassMap: MutableMap<String, KFunction<Any>>): FinalRequestBuilder
+        fun classesToFetch(tabName: List<Tech4BytesSerializable<out Serializable>>): FinalRequestBuilder
     }
 
     interface FinalRequestBuilder {

@@ -7,11 +7,18 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
+import com.tech4bytes.mbrosv3.Customer.CustomerKYC
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
+import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
+import com.tech4bytes.mbrosv3.Sms.OneShotSMS.OSMS
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.DB.clients.getMultipleTabs.GetMultipleTabs
 import kotlin.reflect.KFunction
 
 class DataFetchActivity : AppCompatActivity() {
@@ -61,6 +68,39 @@ class DataFetchActivity : AppCompatActivity() {
 
     private fun run(list: MutableMap<KFunction<Any>, FetchData>, key: KFunction<Any>, useCache: Boolean, nextActivity: Class<*>?) { //uiEntry: View, function: (Boolean) -> (Unit)) {
         Thread {
+
+
+
+            runOnUiThread {
+                Toast.makeText(AppContexts.get(), "Fetching all data", Toast.LENGTH_SHORT).show()
+            }
+
+                val sheetClassMap: MutableMap<String, KFunction<Any>> = mutableMapOf()
+                sheetClassMap["metadata"] = SingleAttributedDataUtils::parseAndSaveToCache
+                sheetClassMap["customerDetails"] = CustomerKYC::parseAndSaveToCache
+//            sheetClassMap["deliveries"] = CustomerData::parseAndSaveToLocal
+                sheetClassMap["DeliverOrders"] = DeliverToCustomerDataHandler::parseAndSaveToCache
+
+                GetMultipleTabs.builder().scriptId("https://script.google.com/macros/s/AKfycbyVdzZW7Bg5-tAFM4_LfWfBozea-OPyFQQrHMGkNJiqXBsEyMZXNlG-QbX5aF5VXABPZQ/exec")
+                    .sheetId("1X6HriHjIE0XfAblDlE7Uf5a8JTHu00kW2SWvTFKL78w")
+                    .tabName("metadata,customerDetails,DeliverOrders")
+                    .SheetClassMapBuilder(sheetClassMap)
+                    .build()
+                    .execute()
+
+//                GetMultipleTabs.builder().scriptId("https://script.google.com/macros/s/AKfycbyVdzZW7Bg5-tAFM4_LfWfBozea-OPyFQQrHMGkNJiqXBsEyMZXNlG-QbX5aF5VXABPZQ/exec")
+//                    .sheetId("1X6HriHjIE0XfAblDlE7Uf5a8JTHu00kW2SWvTFKL78w")
+//                    .tabName("smsModel,metadata")
+//                    .SheetClassMapBuilder(sheetClassMap)
+//                    .build()
+//                    .execute()
+            runOnUiThread {
+                Toast.makeText(AppContexts.get(), "Fetching all data complete", Toast.LENGTH_SHORT).show()
+            }
+
+
+
+
             @Suppress("UNCHECKED_CAST")
             list[key]!!.executingMethod.invoke()
 //            (key as ((Boolean) -> Unit)).invoke(useCache)

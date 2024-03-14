@@ -71,7 +71,7 @@ class GetMultipleTabs: APICalls, GetMultipleTabsFlow, GetMultipleTabsFlow.Script
         val resultsMap = GetMultipleTabsResponse(response).getParsedList()
         resultsMap.forEach {
             LogMe.log("Converting ${it.key} to object: ${resultsMap[it.key]}")
-            (sheetClassMap[it.key] as ((String, GetResponse) -> Unit)).invoke(it.key, GetResponse(resultsMap[it.key]!!))
+            (sheetClassMap[it.key] as ((GetResponse) -> Unit)).invoke(GetResponse(resultsMap[it.key]!!))
         }
         return GetMultipleTabsResponse(response).getObject()
     }

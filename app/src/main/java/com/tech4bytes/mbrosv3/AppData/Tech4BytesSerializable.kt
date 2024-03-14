@@ -48,7 +48,7 @@ abstract class Tech4BytesSerializable<T : Any> : java.io.Serializable {
     @RequiresApi(34)
     fun get(useCache: Boolean = true, getEmptyListIfEmpty: Boolean = false, filterName: String = "default"): List<T> {
         val cacheKey = getFilterName(filterName)
-        LogMe.log("Getting records:")
+        LogMe.log("Getting records: " + cacheKey)
         val cacheResults = try {
             CentralCache.get<T>(AppContexts.get(), cacheKey, useCache)
         } catch (ex: ClassCastException) {
@@ -80,8 +80,19 @@ abstract class Tech4BytesSerializable<T : Any> : java.io.Serializable {
         return result.parseToObject(result.getRawResponse(), cacheObjectType)
     }
 
+    fun parseAndSaveToCache(response: GetResponse) {
+        val cacheKey = getFilterName()
+        val parsedData: ArrayList<T> = response.parseToObject(response.getRawResponse(), cacheObjectType)
+        CentralCache.put(cacheKey, parsedData)
+        LogMe.log("Put Complete")
+        LogMe.log("filterName: $cacheKey")
+        parsedData.forEach {
+            LogMe.log(it.toString())
+        }
+    }
+
     private fun getFilterName(filterName: String = "default"): String {
-        var callerClassName = ClassDetailsUtils.getCaller(ClassDetailsUtils.getCaller())
+//        var callerClassName = ClassDetailsUtils.getCaller(ClassDetailsUtils.getCaller())
         return "$sheetURL/$tabname/$filterName"
     }
 

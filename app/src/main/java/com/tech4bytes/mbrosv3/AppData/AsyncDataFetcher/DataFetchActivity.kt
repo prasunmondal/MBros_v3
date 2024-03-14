@@ -11,15 +11,21 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
+import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstantsUtil
 import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
+import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderUtils
+import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
+import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
+import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.DB.clients.getMultipleTabs.GetMultipleTabs
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
+import com.tech4bytes.mbrosv3.VehicleManagement.RefuelingUtils
 import kotlin.reflect.KFunction
 
 class DataFetchActivity : AppCompatActivity() {
@@ -60,6 +66,19 @@ class DataFetchActivity : AppCompatActivity() {
                 map[it.key] = FetchData(uiEntry, DataFetchingInfo.getDescription(it.key), it.value.method, it.value.useCache, false)
             }
 
+            GetMultipleTabs.builder().scriptId(ProjectConfig.dBServerScriptURL)
+                .sheetId(ProjectConfig.get_db_sheet_id())
+                .classesToFetch(listOf(CustomerKYC, GetCustomerOrderUtils, DeliverToCustomerDataHandler, RefuelingUtils, AppConstantsUtil,
+                    SingleAttributedDataUtils, CustomerKYC, DeliverToCustomerDataHandler))
+                .build()
+                .execute()
+
+            GetMultipleTabs.builder().scriptId(ProjectConfig.dBServerScriptURL)
+                .sheetId(ProjectConfig.get_db_finalize_sheet_id())
+                .classesToFetch(listOf(CustomerDataUtils))
+                .build()
+                .execute()
+
             map.forEach {
                 @Suppress("UNCHECKED_CAST")
                 run(map, it.key, it.value.useCache, nextActivity)
@@ -69,26 +88,6 @@ class DataFetchActivity : AppCompatActivity() {
 
     private fun run(list: MutableMap<KFunction<Any>, FetchData>, key: KFunction<Any>, useCache: Boolean, nextActivity: Class<*>?) { //uiEntry: View, function: (Boolean) -> (Unit)) {
         Thread {
-
-
-
-            runOnUiThread {
-                Toast.makeText(AppContexts.get(), "Fetching all data", Toast.LENGTH_SHORT).show()
-            }
-
-                GetMultipleTabs.builder().scriptId("https://script.google.com/macros/s/AKfycbyVdzZW7Bg5-tAFM4_LfWfBozea-OPyFQQrHMGkNJiqXBsEyMZXNlG-QbX5aF5VXABPZQ/exec")
-                    .sheetId("1X6HriHjIE0XfAblDlE7Uf5a8JTHu00kW2SWvTFKL78w")
-                    .classesToFetch(listOf(SingleAttributedDataUtils, CustomerKYC, DeliverToCustomerDataHandler))
-                    .build()
-                    .execute()
-
-            runOnUiThread {
-                Toast.makeText(AppContexts.get(), "Fetching all data complete", Toast.LENGTH_SHORT).show()
-            }
-
-
-
-
             @Suppress("UNCHECKED_CAST")
             list[key]!!.executingMethod.invoke()
 //            (key as ((Boolean) -> Unit)).invoke(useCache)

@@ -19,6 +19,7 @@ import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
+import com.tech4bytes.mbrosv3.Payments.Staged.StagedPaymentUtils
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
@@ -78,7 +79,8 @@ class DataFetchActivity : AppCompatActivity() {
                             AppConstantsUtil,
                             SingleAttributedDataUtils,
                             CustomerKYC,
-                            DeliverToCustomerDataHandler
+                            DeliverToCustomerDataHandler,
+                            StagedPaymentUtils
                         )
                     )
                     .build()

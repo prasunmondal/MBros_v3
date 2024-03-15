@@ -90,7 +90,7 @@ object GetCustomerOrderUtils : Tech4BytesSerializable<GetCustomerOrderModel>(
                 obj.add(nameMappedOrders[it.nameEng]!!)
             }
         }
-        GetCustomerOrderUtils.saveToLocal()
+        saveToLocal()
     }
 
     private fun getCompleteList(): List<GetCustomerOrderModel> {

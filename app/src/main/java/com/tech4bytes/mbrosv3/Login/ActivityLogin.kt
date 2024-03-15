@@ -295,7 +295,9 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     fun showToastConnectToAdmin() {
-        Toast.makeText(this, "Device Registration Pending. Connect Admin", Toast.LENGTH_LONG).show()
+        runOnUiThread {
+            Toast.makeText(AppContexts.get(), "Device Registration Pending. Connect Admin", Toast.LENGTH_LONG).show()
+        }
         CentralCache.invalidateFullCache()
     }
 

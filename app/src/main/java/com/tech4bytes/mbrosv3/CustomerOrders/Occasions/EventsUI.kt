@@ -16,7 +16,6 @@ import java.util.Date
 object EventsUI {
     val daysOfEvents = NumberUtils.getIntOrZero(AppConstants.get(AppConstants.EVENTS_SHOW_N_DAYS))
 
-    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     fun showEvents(activity: Activity, eventsLayout: LinearLayout) {
         if(daysOfEvents <= 0) {
             // if AppConstants.EVENTS_SHOW_N_DAYS == 0 -> hide the events window

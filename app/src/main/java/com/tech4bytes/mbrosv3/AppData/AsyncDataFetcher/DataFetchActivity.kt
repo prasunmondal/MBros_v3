@@ -66,23 +66,35 @@ class DataFetchActivity : AppCompatActivity() {
                 map[it.key] = FetchData(uiEntry, DataFetchingInfo.getDescription(it.key), it.value.method, it.value.useCache, false)
             }
 
-            GetMultipleTabs.builder().scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.get_db_sheet_id())
-                .classesToFetch(listOf(CustomerKYC, GetCustomerOrderUtils, DeliverToCustomerDataHandler, RefuelingUtils, AppConstantsUtil,
-                    SingleAttributedDataUtils, CustomerKYC, DeliverToCustomerDataHandler))
-                .build()
-                .execute()
+            Thread {
+                GetMultipleTabs.builder().scriptId(ProjectConfig.dBServerScriptURL)
+                    .sheetId(ProjectConfig.get_db_sheet_id())
+                    .classesToFetch(
+                        listOf(
+                            CustomerKYC,
+                            GetCustomerOrderUtils,
+                            DeliverToCustomerDataHandler,
+                            RefuelingUtils,
+                            AppConstantsUtil,
+                            SingleAttributedDataUtils,
+                            CustomerKYC,
+                            DeliverToCustomerDataHandler
+                        )
+                    )
+                    .build()
+                    .execute()
 
-            GetMultipleTabs.builder().scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.get_db_finalize_sheet_id())
-                .classesToFetch(listOf(CustomerDataUtils))
-                .build()
-                .execute()
+                GetMultipleTabs.builder().scriptId(ProjectConfig.dBServerScriptURL)
+                    .sheetId(ProjectConfig.get_db_finalize_sheet_id())
+                    .classesToFetch(listOf(CustomerDataUtils))
+                    .build()
+                    .execute()
 
-            map.forEach {
-                @Suppress("UNCHECKED_CAST")
-                run(map, it.key, it.value.useCache, nextActivity)
-            }
+                map.forEach {
+                    @Suppress("UNCHECKED_CAST")
+                    run(map, it.key, it.value.useCache, nextActivity)
+                }
+            }.start()
         }
     }
 

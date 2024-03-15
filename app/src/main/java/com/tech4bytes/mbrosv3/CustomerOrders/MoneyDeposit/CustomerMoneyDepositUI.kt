@@ -25,7 +25,7 @@ class CustomerMoneyDepositUI : AppCompatActivity() {
     lateinit var debitAccountListView: AutoCompleteTextView
     lateinit var creditAccountView: AutoCompleteTextView
     lateinit var creditAmountView: EditText
-    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_money_deposit)

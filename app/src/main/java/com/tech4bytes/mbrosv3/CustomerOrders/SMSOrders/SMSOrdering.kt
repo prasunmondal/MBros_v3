@@ -40,7 +40,6 @@ class SMSOrdering : AppCompatActivity() {
     var orders = mutableListOf<SMSOrderModel>()
     var smsToProcess: String = ""
 
-    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_smsordering)

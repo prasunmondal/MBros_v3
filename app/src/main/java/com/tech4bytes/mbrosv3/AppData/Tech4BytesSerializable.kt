@@ -1,6 +1,8 @@
 package com.tech4bytes.mbrosv3.AppData
 
+import android.os.Build
 import androidx.annotation.RequiresApi
+import com.prasunmondal.postjsontosheets.clients.commons.APIResponse
 import com.prasunmondal.postjsontosheets.clients.delete.Delete
 import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
@@ -57,17 +59,21 @@ abstract class Tech4BytesSerializable<T : Any> : java.io.Serializable {
 
         LogMe.log("Getting delivery records: Cache Hit: " + (cacheResults != null))
         return if (cacheResults != null) {
-            cacheResults as ArrayList<T>
+            cacheResults as List<T>
         } else {
-            var dataList = getFromServer()
-            if ((getEmptyListIfEmpty || this.getEmptyListIfEmpty) && dataList.isEmpty())
-                return listOf()
-            dataList = filterResults(dataList)
-            dataList = sortResults(dataList)
-
-            CentralCache.put(cacheKey, dataList)
-            dataList
+            val parsedResponse = parseNGetResponse(getFromServer())
+            CentralCache.put(cacheKey, parsedResponse)
+            parsedResponse
         }
+    }
+
+    fun parseNGetResponse(rawResponse: GetResponse): List<T> {
+        var parsedResponse = rawResponse.parseToObject<T>(rawResponse.getRawResponse(), cacheObjectType)
+        if ((getEmptyListIfEmpty || this.getEmptyListIfEmpty) && parsedResponse.isEmpty())
+            return listOf()
+        parsedResponse = filterResults(parsedResponse)
+        parsedResponse = sortResults(parsedResponse)
+        return parsedResponse
     }
 
     fun isDataAvailable(filterName: String = "default"): Boolean {
@@ -82,19 +88,19 @@ abstract class Tech4BytesSerializable<T : Any> : java.io.Serializable {
         return cacheResults != null
     }
 
-    private fun getFromServer(): ArrayList<T> {
+    private fun getFromServer(): GetResponse {
         val result: GetResponse = Get.builder()
             .scriptId(scriptURL)
             .sheetId(sheetURL)
             .tabName(tabname)
             .build().execute()
 
-        return result.parseToObject(result.getRawResponse(), cacheObjectType)
+        return result
     }
 
     fun parseAndSaveToCache(response: GetResponse) {
         val cacheKey = getFilterName()
-        val parsedData: ArrayList<T> = response.parseToObject(response.getRawResponse(), cacheObjectType)
+        val parsedData = parseNGetResponse(response)
         CentralCache.put(cacheKey, parsedData)
         LogMe.log("Put Complete")
         LogMe.log("filterName: $cacheKey")

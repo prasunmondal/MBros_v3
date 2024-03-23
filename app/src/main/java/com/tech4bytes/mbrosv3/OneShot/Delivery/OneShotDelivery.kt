@@ -90,11 +90,7 @@ class OneShotDelivery : AppCompatActivity() {
             RefuelUI.initiallizeRefuelUI(this, findViewById(R.id.osd_scroll_to_element_refuel))
             runOnUiThread {
                 showOrders()
-
-//                initializeOtherExpensesUI()
                 OSDLoadInfo.updateRelatedFields_LoadPcKg(loadPcElement, loadKgElement, loadAvgWtElement)
-
-//                updateKmRelatedCosts()
                 populateCustomerListDropdown()
                 OSDLoadInfo.setListeners(this, loadPcElement, loadKgElement, loadAvgWtElement, deliveryPriceElement)
             }

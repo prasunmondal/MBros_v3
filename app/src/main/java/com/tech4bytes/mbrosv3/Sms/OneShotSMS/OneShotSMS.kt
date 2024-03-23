@@ -84,8 +84,10 @@ class OneShotSMS : AppCompatActivity() {
         var result = mutableListOf<String>()
         val smsRawList = OSMS.get()
         smsRawList.forEach { sms ->
+            if(sms.isAuthorized()) {
             sms.commReceiverCategory.split(",").forEach { commType ->
                 result.add(commType)
+            }
             }
         }
         return ListUtils.sortListByFrequency(result)
@@ -132,7 +134,7 @@ class OneShotSMS : AppCompatActivity() {
                 LogMe.log("..$r..")
             }
 
-            if (it.isEnabled.toBoolean() && getIndividualCommType(it).contains(selectedCommunications)) {
+            if (it.isAuthorized() && it.isMsgEnabled(it) && getIndividualCommType(it).contains(selectedCommunications)) {
                 val smsResult: List<SMS>? = when (it.communicationType) {
                     "DELIVERY_SMS" -> OSMSProcessor.sendDeliverySMS(it)
                     "DAY_SUMMARY" -> OSMSProcessor.sendDaySummary(it)

@@ -523,6 +523,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/osd_scroll_to_element_car_expenses"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">

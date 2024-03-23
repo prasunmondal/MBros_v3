@@ -1,5 +1,6 @@
 package com.tech4bytes.mbrosv3.Utils.Android
 
+import android.app.Activity
 import android.view.View
 import android.widget.EditText
 import androidx.core.widget.doOnTextChanged
@@ -30,14 +31,16 @@ class MeteredNumbers {
         return StringUtils.right(number.toString(), secondNumberLength)
     }
 
-    fun setNumber(number: Int, updateStartingValue: Boolean, secondPartOnChangeListeners: Consumer<View>? = null) {
+    fun setNumber(activity: Activity, number: Int, updateStartingValue: Boolean, secondPartOnChangeListeners: Consumer<View>? = null) {
         if(updateStartingValue)
             startingValue = number
 
         val firstNumber = getFirstPartOfNumber(number)
         val secondNumber = getSecondPartOfNumber(number)
-        firstNumberView.setText(firstNumber)
-        secondNumberView.setText(secondNumber)
+        activity.runOnUiThread {
+            firstNumberView.setText(firstNumber)
+            secondNumberView.setText(secondNumber)
+        }
 
         if(secondPartOnChangeListeners != null)
         {

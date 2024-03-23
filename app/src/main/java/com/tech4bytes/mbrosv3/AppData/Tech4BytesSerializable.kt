@@ -104,9 +104,9 @@ abstract class Tech4BytesSerializable<T : Any> : java.io.Serializable {
         CentralCache.put(cacheKey, parsedData)
         LogMe.log("Put Complete")
         LogMe.log("filterName: $cacheKey")
-        parsedData.forEach {
-            LogMe.log(it.toString())
-        }
+//        parsedData.forEach {
+//            LogMe.log(it.toString())
+//        }
     }
 
     private fun getFilterName(filterName: String = "default"): String {

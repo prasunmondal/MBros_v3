@@ -68,29 +68,29 @@ class DataFetchActivity : AppCompatActivity() {
             }
 
             Thread {
-                GetMultipleTabs.builder().scriptId(ProjectConfig.dBServerScriptURL)
-                    .sheetId(ProjectConfig.get_db_sheet_id())
-                    .classesToFetch(
-                        listOf(
-                            CustomerKYC,
-                            GetCustomerOrderUtils,
-                            DeliverToCustomerDataHandler,
-                            RefuelingUtils,
-                            AppConstantsUtil,
-                            SingleAttributedDataUtils,
-                            CustomerKYC,
-                            DeliverToCustomerDataHandler,
-                            StagedPaymentUtils
-                        )
-                    )
-                    .build()
-                    .execute()
-
-                GetMultipleTabs.builder().scriptId(ProjectConfig.dBServerScriptURL)
-                    .sheetId(ProjectConfig.get_db_finalize_sheet_id())
-                    .classesToFetch(listOf(CustomerDataUtils))
-                    .build()
-                    .execute()
+//                GetMultipleTabs.builder().scriptId(ProjectConfig.dBServerScriptURL)
+//                    .sheetId(ProjectConfig.get_db_sheet_id())
+//                    .classesToFetch(
+//                        listOf(
+//                            CustomerKYC,
+//                            GetCustomerOrderUtils,
+//                            DeliverToCustomerDataHandler,
+//                            RefuelingUtils,
+//                            AppConstantsUtil,
+//                            SingleAttributedDataUtils,
+//                            CustomerKYC,
+//                            DeliverToCustomerDataHandler,
+//                            StagedPaymentUtils
+//                        )
+//                    )
+//                    .build()
+//                    .execute()
+//
+//                GetMultipleTabs.builder().scriptId(ProjectConfig.dBServerScriptURL)
+//                    .sheetId(ProjectConfig.get_db_finalize_sheet_id())
+//                    .classesToFetch(listOf(CustomerDataUtils))
+//                    .build()
+//                    .execute()
 
                 map.forEach {
                     @Suppress("UNCHECKED_CAST")

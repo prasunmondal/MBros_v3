@@ -100,14 +100,28 @@
         </LinearLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="onClickSendSMS"
-        android:text="Send SMS"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickSendSMS"
+            android:text="Send SMS" />
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClickPopulateOtherExpenses"
+            android:text="Send SMS" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

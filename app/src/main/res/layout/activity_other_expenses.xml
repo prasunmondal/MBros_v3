@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background2"
+    tools:context=".Sms.OneShotSMS.OtherExpensesActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/osd_scroll_to_element_refuel">
+
+        <TextView
+            android:id="@+id/osd_scroll_label_other_expenses"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="#1B0E00"
+            android:fontFamily="monospace"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="Other Expenses"
+            android:textColor="#FBC02D" />
+
+        <LinearLayout
+            android:id="@+id/osd_other_expenses_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#40F57C00"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:paddingVertical="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView70"
+                            android:layout_width="90dp"
+                            android:layout_height="wrap_content"
+                            android:text="End KM"
+                            android:textColor="#D2FFFFFF" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/one_shot_delivery_trip_end_km_first_part"
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:background="#00000000"
+                            android:inputType="number"
+                            android:paddingStart="10dp"
+                            android:textColor="#B3FBC02D"
+                            android:textColorHint="#8DD8D4D4"
+                            android:textSize="14sp" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/one_shot_delivery_trip_end_km_second_part"
+                            android:layout_width="0dp"
+                            android:layout_height="35dp"
+                            android:layout_weight="1"
+                            android:background="#00000000"
+                            android:inputType="number"
+                            android:paddingStart="2dp"
+                            android:paddingEnd="10dp"
+                            android:singleLine="true"
+                            android:textColor="#FBC02D"
+                            android:textColorHint="#8DD8D4D4"
+                            android:textSize="16sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView71"
+                            android:layout_width="90dp"
+                            android:layout_height="wrap_content"
+                            android:text="Salary"
+                            android:textColor="#D2FFFFFF" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/osd_salary_paid"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:background="#00000000"
+                            android:inputType="number"
+                            android:paddingLeft="10dp"
+                            android:textColor="#FBC02D"
+                            android:textColorHint="#8DD8D4D4"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView74"
+                            android:layout_width="90dp"
+                            android:layout_height="wrap_content"
+                            android:text="Extra Expense"
+                            android:textColor="#D2FFFFFF" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/one_shot_delivery_extra_expenses"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:background="#00000000"
+                            android:inputType="number"
+                            android:paddingLeft="10dp"
+                            android:textColor="#FBC02D"
+                            android:textColorHint="#8DD8D4D4"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:paddingVertical="5dp">
+
+                        <TextView
+                            android:id="@+id/textView36"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="Prev KM: "
+                            android:textColor="@color/osd_fuel_non_interactive_ok_text_color" />
+
+                        <TextView
+                            android:id="@+id/osd_prev_km"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="10dp"
+                            android:text="TextView"
+                            android:textColor="@color/osd_fuel_non_interactive_ok_text_color" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:paddingVertical="5dp">
+
+                        <TextView
+                            android:id="@+id/textView43"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="Diff: "
+                            android:textColor="@color/osd_fuel_non_interactive_ok_text_color" />
+
+                        <TextView
+                            android:id="@+id/osd_km_diff"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="10dp"
+                            android:text="TextView"
+                            android:textColor="@color/osd_fuel_non_interactive_ok_text_color" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:paddingVertical="5dp">
+
+                        <TextView
+                            android:id="@+id/textView48"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:text="Cost: "
+                            android:textColor="@color/osd_fuel_non_interactive_ok_text_color" />
+
+                        <TextView
+                            android:id="@+id/osd_km_cost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="10dp"
+                            android:text=""
+                            android:textColor="@color/osd_fuel_non_interactive_ok_text_color" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="10dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/osd_single_attribute_rates_background_color"
+                    android:hint="Lab"
+                    android:maxEms="10"
+                    android:minEms="10"
+                    android:textColor="@color/osd_single_attribute_rates_hintText_color"
+                    android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
+                    app:hintTextColor="@color/osl_data_status_fresh_light">
+
+                    <!--this is the actual edit text which takes the input-->
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Extra"
+                    android:maxEms="10"
+                    android:minEms="10"
+                    android:textColorHint="@color/osd_single_attribute_rates_hintText_color"
+                    app:hintTextColor="@color/osl_data_status_fresh_light">
+
+                    <!--this is the actual edit text which takes the input-->
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#000A0F"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingTop="5dp">
+
+                <TextView
+                    android:id="@+id/textView60"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Salary: "
+                    android:textColor="#7AFFA000" />
+
+                <TextView
+                    android:id="@+id/osd_salary_division"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingStart="10dp"
+                    android:text="Salary Division"
+                    android:textColor="#7AFFA000" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/osd_scroll_to_element_refuel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView65">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:background="#120000"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/osd_scroll_label_refuel"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:fontFamily="monospace"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="Refuel"
+                android:textColor="#FBC02D" />
+
+            <Switch
+                android:id="@+id/one_shot_delivery_did_refuel"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingRight="20dp"
+                android:singleLine="true"
+                android:textColor="@color/osd_single_attribute_rates_hintText_color" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/osd_refuel_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#39750404"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="5dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:foregroundGravity="left"
+                        android:gravity="left"
+                        android:orientation="horizontal"
+                        android:paddingVertical="10dp">
+
+                        <Switch
+                            android:id="@+id/one_shot_delivery_did_fuel_upto_tank_full"
+                            android:layout_width="140dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:checked="true"
+                            android:foregroundGravity="left"
+                            android:gravity="left"
+                            android:text="Full Tank?"
+                            android:textColor="#D2FFFFFF" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/one_shot_delivery_refueling_km_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingVertical="10dp">
+
+                        <TextView
+                            android:layout_width="90dp"
+                            android:layout_height="wrap_content"
+                            android:text="Fuel KM"
+                            android:textColor="#D2FFFFFF" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/one_shot_delivery_refueling_km_part1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:background="#00000000"
+                            android:inputType="number"
+                            android:textColor="#B3FBC02D"
+                            android:textColorHint="#8DD8D4D4"
+                            android:textSize="14sp" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/one_shot_delivery_refueling_km_part2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:background="#00000000"
+                            android:hint="0"
+                            android:inputType="number"
+                            android:paddingLeft="2dp"
+                            android:paddingRight="20dp"
+                            android:textColor="#FBC02D"
+                            android:textColorHint="#8DD8D4D4"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingVertical="10dp">
+
+                        <TextView
+                            android:layout_width="90dp"
+                            android:layout_height="wrap_content"
+                            android:text="Quantity (L)"
+                            android:textColor="#D2FFFFFF" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/one_shot_delivery_fuel_quantity"
+                            android:layout_width="90dp"
+                            android:layout_height="35dp"
+                            android:background="#00000000"
+                            android:hint="00.000"
+                            android:inputType="numberDecimal"
+                            android:textColor="#FBC02D"
+                            android:textColorHint="#8DD8D4D4"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingVertical="10dp">
+
+                        <TextView
+                            android:layout_width="90dp"
+                            android:layout_height="wrap_content"
+                            android:text="Amount (Rs)"
+                            android:textColor="#D2FFFFFF" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/osd_refuel_amount"
+                            android:layout_width="90dp"
+                            android:layout_height="35dp"
+                            android:background="#00000000"
+                            android:hint="Rs"
+                            android:inputType="number"
+                            android:textColor="#FBC02D"
+                            android:textColorHint="#8DD8D4D4"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingVertical="10dp">
+
+                        <TextView
+                            android:id="@+id/textView38"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Refueling KM: "
+                            android:textColor="#888686" />
+
+                        <TextView
+                            android:id="@+id/one_shot_delivery_refueling_km_diff"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:hint="Loading..."
+                            android:textColor="#888686" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:orientation="horizontal"
+                        android:paddingVertical="10dp">
+
+                        <TextView
+                            android:id="@+id/textView40"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="left"
+                            android:text="Mileage: "
+                            android:textColor="#888686" />
+
+                        <TextView
+                            android:id="@+id/one_shot_delivery_refueling_mileage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="90"
+                            android:textColor="#888686" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:orientation="horizontal"
+                        android:paddingVertical="10dp">
+
+                        <TextView
+                            android:id="@+id/textView42"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="left"
+                            android:text="Rate: "
+                            android:textColor="@color/osd_fuel_non_interactive_ok_text_color" />
+
+                        <TextView
+                            android:id="@+id/one_shot_delivery_refueling_oil_rate_per_litre"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="90"
+                            android:textColor="@color/osd_fuel_non_interactive_ok_text_color" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView65"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#201F1F"
+        android:padding="10dp"
+        android:text="Other Expenses"
+        android:textColor="#FFC107"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

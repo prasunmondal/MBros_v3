@@ -1,5 +1,6 @@
 package com.tech4bytes.mbrosv3.Sms.OneShotSMS
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.CheckBox
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
+import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.ContactsUtils.Contacts
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -123,6 +125,11 @@ class OneShotSMS : AppCompatActivity() {
                 OSMSProcessor.sendViaDesiredMedium(it.medium, it.number, it.text)
             }
         }
+    }
+
+    fun onClickPopulateOtherExpenses(view: View) {
+        val switchActivityIntent = Intent(this, OtherExpensesActivity::class.java)
+        startActivity(switchActivityIntent)
     }
 
     private fun getSMSList(selectedCommunications: String): MutableList<SMS> {

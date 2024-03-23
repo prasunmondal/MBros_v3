@@ -42,7 +42,7 @@ class RefuelUI {
                 val obj = SingleAttributedDataUtils.getRecords()
                 obj.did_refueled = isChecked.toString()
                 SingleAttributedDataUtils.saveToLocal(obj)
-                updateRefuelingUIDetails(activity, uiContainer.findViewById(R.id.osd_scroll_to_element_refuel))
+                updateRefuelingUIDetails(activity, uiContainer)
             }
 
             didTankFullElement.setOnCheckedChangeListener { _, isChecked ->
@@ -278,6 +278,11 @@ class RefuelUI {
         fun getSalaryPaid(uiFinalKmContainer: LinearLayout):Int {
             val salaryPaidElement = uiFinalKmContainer.findViewById<EditText>(R.id.osd_salary_paid)
             return NumberUtils.getIntOrZero(salaryPaidElement.text.toString())
+        }
+
+        fun getExtraExpenses(uiFinalKmContainer: LinearLayout): Int {
+            val extraExpensesElement = uiFinalKmContainer.findViewById<EditText>(R.id.one_shot_delivery_extra_expenses)
+            return NumberUtils.getIntOrZero(extraExpensesElement.text.toString())
         }
     }
 }

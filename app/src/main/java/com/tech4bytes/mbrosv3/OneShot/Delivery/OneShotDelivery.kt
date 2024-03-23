@@ -421,7 +421,7 @@ class OneShotDelivery : AppCompatActivity() {
         val salaryPaid = RefuelUI.getSalaryPaid(findViewById(R.id.osd_scroll_to_element_car_expenses)) - NumberUtils.getIntOrZero(AppConstants.get(AppConstants.DRIVER_SALARY))
         obj.vehicle_finalKm = RefuelUI.getFinalKm()
         obj.labour_expenses = salaryPaid.toString()
-        obj.extra_expenses = NumberUtils.getIntOrZero(extraExpensesElement.text.toString()).toString()
+        obj.extra_expenses = RefuelUI.getExtraExpenses(findViewById(R.id.osd_scroll_to_element_car_expenses)).toString()
         obj.actualLoadKg = loadKgElement.text.toString()
         obj.actualLoadPc = loadPcElement.text.toString()
 

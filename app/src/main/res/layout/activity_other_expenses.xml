@@ -8,12 +8,13 @@
     tools:context=".Sms.OneShotSMS.OtherExpensesActivity">
 
     <LinearLayout
+        android:id="@+id/oe_final_km_elements_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/osd_scroll_to_element_refuel">
+        app:layout_constraintTop_toBottomOf="@+id/oe_refuel_elements_container">
 
         <TextView
             android:id="@+id/osd_scroll_label_other_expenses"
@@ -288,7 +289,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/osd_scroll_to_element_refuel"
+        android:id="@+id/oe_refuel_elements_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"

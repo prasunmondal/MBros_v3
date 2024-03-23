@@ -284,5 +284,14 @@ class RefuelUI {
             val extraExpensesElement = uiFinalKmContainer.findViewById<EditText>(R.id.one_shot_delivery_extra_expenses)
             return NumberUtils.getIntOrZero(extraExpensesElement.text.toString())
         }
+
+        fun saveDataFromThisUI(uiFinalKmContainer: LinearLayout, uiContainer: LinearLayout) {
+            val obj = SingleAttributedDataUtils.getRecords()
+            val salaryPaid = getSalaryPaid(uiFinalKmContainer) - NumberUtils.getIntOrZero(AppConstants.get(AppConstants.DRIVER_SALARY))
+            obj.vehicle_finalKm = getFinalKm()
+            obj.labour_expenses = salaryPaid.toString()
+            obj.extra_expenses = getExtraExpenses(uiFinalKmContainer).toString()
+
+        }
     }
 }

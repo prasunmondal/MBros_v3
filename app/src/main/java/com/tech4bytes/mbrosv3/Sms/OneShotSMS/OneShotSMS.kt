@@ -1,5 +1,6 @@
 package com.tech4bytes.mbrosv3.Sms.OneShotSMS
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,9 +9,12 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.CheckBox
 import android.widget.LinearLayout
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
-import com.tech4bytes.mbrosv3.Login.ActivityLogin
+import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetchActivity
+import com.tech4bytes.mbrosv3.MoneyCounter.MoneyCounter
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.ContactsUtils.Contacts
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -120,11 +124,23 @@ class OneShotSMS : AppCompatActivity() {
         return oSmsModel.commReceiverCategory.split(",")
     }
     fun onClickSendSMS(view: View) {
-        smsList.forEach {
-            if (it.isEnabled) {
-                OSMSProcessor.sendViaDesiredMedium(it.medium, it.number, it.text)
+        AlertDialog.Builder(this)
+            .setTitle("Send Messages?")
+            .setMessage("Sending ${smsList.size} messages? \nR U Sure?")
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .setPositiveButton(android.R.string.yes) { dialog, whichButton ->
+                Toast.makeText(
+                    this,
+                    "",
+                    Toast.LENGTH_SHORT
+                ).show()
+                smsList.forEach {
+                    if (it.isEnabled) {
+                        OSMSProcessor.sendViaDesiredMedium(it.medium, it.number, it.text)
+                    }
+                }
             }
-        }
+            .setNegativeButton(android.R.string.no, null).show()
     }
 
     private fun getSMSList(selectedCommunications: String): MutableList<SMS> {
@@ -153,5 +169,9 @@ class OneShotSMS : AppCompatActivity() {
             LogMe.log(sms.toString())
         }
         return smsList
+    }
+
+    fun goToCountMoney() {
+        startActivity(Intent(this, MoneyCounter::class.java))
     }
 }

@@ -101,7 +101,7 @@
             android:layout_weight="1"
             android:gravity="right|center_vertical"
             android:onClick="onClickPopulateOtherExpenses"
-            android:text="Next > "
+            android:text="Get Other Data >"
             android:textColor="#C8BE95"
             android:textSize="16sp"
             android:textStyle="bold" />

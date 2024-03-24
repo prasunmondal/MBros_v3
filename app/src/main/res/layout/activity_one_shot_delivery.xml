@@ -803,38 +803,50 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/osd_scroll_to_element_other_expenses"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:layout_height="45dp"
+                    android:layout_marginTop="20dp"
+                    android:background="#2C2C2C"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
 
-                    <Button
-                        android:id="@+id/osd_delete_delivery_data"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                    <TextView
+                        android:id="@+id/osd_reset_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="1dp"
                         android:layout_weight="1"
+                        android:background="@color/black"
+                        android:gravity="center"
                         android:onClick="onClickDeleteDeliveryDataBtn"
-                        android:text="Delete" />
+                        android:text="Delete"
+                        android:textColor="#F4F1F1" />
 
-                    <Button
-                        android:id="@+id/one_shot_delivery_save_data_btn"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                    <TextView
+                        android:id="@+id/osd_save_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="1dp"
                         android:layout_weight="1"
+                        android:background="@color/black"
+                        android:gravity="center"
                         android:onClick="onClickSaveOneShotDeliveryDataBtn"
-                        android:text="Save" />
+                        android:text="Save"
+                        android:textColor="#F4F1F1" />
 
-                    <Button
-                        android:id="@+id/osd_goToMoneyVerification"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                    <TextView
+                        android:id="@+id/osd_check_money_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="1dp"
                         android:layout_weight="1"
+                        android:background="@color/black"
+                        android:gravity="center"
                         android:onClick="onClickGoToMoneyVerification"
-                        android:text="Money Check" />
-
+                        android:text="Check Money >"
+                        android:textColor="#F4F1F1" />
                 </LinearLayout>
 
             </LinearLayout>

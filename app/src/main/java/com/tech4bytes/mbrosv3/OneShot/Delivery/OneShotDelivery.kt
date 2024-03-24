@@ -47,8 +47,8 @@ import org.apache.commons.collections4.CollectionUtils
 class OneShotDelivery : AppCompatActivity() {
 
     var deliverRecords: MutableMap<String, DeliverToCustomerDataModel> = mutableMapOf()
-    lateinit var saveOneSortDeliveryButton: Button
-    lateinit var deleteDeliveryDataButton: Button
+    lateinit var saveOneSortDeliveryButton: TextView
+    lateinit var deleteDeliveryDataButton: TextView
     lateinit var sidebarIconLoadDetails: ImageView
     lateinit var sidebarIconDelivery: ImageView
     lateinit var sidebarIconRefuel: ImageView
@@ -123,8 +123,8 @@ class OneShotDelivery : AppCompatActivity() {
 
     private fun initializeVariables() {
         refuelUIObj = RefuelUI(this, findViewById(R.id.osd_scroll_to_element_car_expenses), findViewById(R.id.osd_scroll_to_element_refuel))
-        saveOneSortDeliveryButton = findViewById(R.id.one_shot_delivery_save_data_btn)
-        deleteDeliveryDataButton = findViewById(R.id.osd_delete_delivery_data)
+        saveOneSortDeliveryButton = findViewById(R.id.osd_save_btn)
+        deleteDeliveryDataButton = findViewById(R.id.osd_reset_btn)
         scrollview = findViewById(R.id.osd_scrollview)
         sidebarIconDelivery = findViewById(R.id.osd_sidebar_icon_delivery)
         sidebarIconLoadDetails = findViewById(R.id.osd_sidebar_icon_load_details)
@@ -136,19 +136,19 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     fun onClickSidebarIconRefuel(view: View) {
-        scrollToRow(scrollview, findViewById(R.id.osd_scrollview_child), findViewById<LinearLayout>(R.id.osd_scroll_to_element_refuel))
+//        scrollToRow(scrollview, findViewById(R.id.osd_scrollview_child), findViewById<LinearLayout>(R.id.osd_scroll_to_element_refuel))
     }
 
     fun onClickSidebarIconDeliveryEntries(view: View) {
-        scrollToRow(scrollview, findViewById(R.id.osd_scrollview_child), findViewById<LinearLayout>(R.id.osd_scroll_label_deliveries))
+//        scrollToRow(scrollview, findViewById(R.id.osd_scrollview_child), findViewById<LinearLayout>(R.id.osd_scroll_label_deliveries))
     }
 
     fun onClickSidebarIconLoadInfo(view: View) {
-        scrollToRow(scrollview, findViewById(R.id.osd_scrollview_child), findViewById<LinearLayout>(R.id.osd_scroll_label_load_info))
+//        scrollToRow(scrollview, findViewById(R.id.osd_scrollview_child), findViewById<LinearLayout>(R.id.osd_scroll_label_load_info))
     }
 
     fun onClickSidebarIconOtherExpenses(view: View) {
-        scrollToRow(scrollview, findViewById(R.id.osd_scrollview_child), findViewById<LinearLayout>(R.id.osd_scroll_to_element_other_expenses))
+//        scrollToRow(scrollview, findViewById(R.id.osd_scrollview_child), findViewById<LinearLayout>(R.id.osd_scroll_to_element_other_expenses))
     }
 
     private fun scrollToRow(scrollView: ScrollView, linearLayout: View, textViewToShow: View) {

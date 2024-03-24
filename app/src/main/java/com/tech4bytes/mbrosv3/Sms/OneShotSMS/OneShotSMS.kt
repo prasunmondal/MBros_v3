@@ -174,4 +174,6 @@ class OneShotSMS : AppCompatActivity() {
     fun goToCountMoney() {
         startActivity(Intent(this, MoneyCounter::class.java))
     }
+
+    fun goToCountMoney(view: View) {}
 }

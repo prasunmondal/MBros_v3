@@ -53,12 +53,12 @@ class OneShotDelivery : AppCompatActivity() {
     lateinit var sidebarIconDelivery: ImageView
     lateinit var sidebarIconRefuel: ImageView
     lateinit var sidebarIconOtherExpenses: ImageView
-    lateinit var refuelContainer: LinearLayout
     lateinit var scrollview: ScrollView
     private lateinit var extraExpensesElement: EditText
     private lateinit var loadPcElement: EditText
     private lateinit var loadKgElement: EditText
     private lateinit var loadAvgWtElement: TextView
+    private lateinit var refuelUIObj: RefuelUI
 
 
 //    private lateinit var refuelQtyElement: EditText
@@ -86,8 +86,8 @@ class OneShotDelivery : AppCompatActivity() {
             populateDeliveryMap()
             OSDLoadInfo.updateSingleAttributedDataOnUI(this, loadPcElement, loadKgElement)
             initiallizeUI()
-            RefuelUI.initializeFinalKm(this, findViewById(R.id.osd_scroll_to_element_car_expenses))
-            RefuelUI.initiallizeRefuelUI(this, findViewById(R.id.osd_scroll_to_element_refuel))
+            refuelUIObj.initializeFinalKm()
+            refuelUIObj.initiallizeRefuelUI()
             runOnUiThread {
                 showOrders()
                 OSDLoadInfo.updateRelatedFields_LoadPcKg(loadPcElement, loadKgElement, loadAvgWtElement)
@@ -122,6 +122,7 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun initializeVariables() {
+        refuelUIObj = RefuelUI(this, findViewById(R.id.osd_scroll_to_element_car_expenses), findViewById(R.id.osd_scroll_to_element_refuel))
         saveOneSortDeliveryButton = findViewById(R.id.one_shot_delivery_save_data_btn)
         deleteDeliveryDataButton = findViewById(R.id.osd_delete_delivery_data)
         scrollview = findViewById(R.id.osd_scrollview)
@@ -129,7 +130,6 @@ class OneShotDelivery : AppCompatActivity() {
         sidebarIconLoadDetails = findViewById(R.id.osd_sidebar_icon_load_details)
         sidebarIconRefuel = findViewById(R.id.osd_sidebar_icon_refuel)
         sidebarIconOtherExpenses = findViewById(R.id.osd_sidebar_icon_other_expenses)
-        refuelContainer = findViewById(R.id.osd_refuel_container)
         loadPcElement = findViewById(R.id.one_shot_delivery_pc)
         loadKgElement = findViewById(R.id.one_shot_delivery_kg)
         loadAvgWtElement = findViewById(R.id.osd_loading_avg_wt)
@@ -391,11 +391,12 @@ class OneShotDelivery : AppCompatActivity() {
             }
 
             gatherSingleAttributedData()
-            RefuelUI.gatherFuelData(findViewById(R.id.osd_scroll_to_element_refuel))
+
             DeliverToCustomerDataHandler.deleteData()
 
             saveSingleAttributeData()
             saveDeliveryData()
+            refuelUIObj.saveFuelData()
             SingleAttributedDataUtils.getRecords()
             DeliverToCustomerDataHandler.get()
             runOnUiThread()
@@ -418,13 +419,12 @@ class OneShotDelivery : AppCompatActivity() {
 
     private fun gatherSingleAttributedData() {
         val obj = SingleAttributedDataUtils.getRecords()
-        val salaryPaid = RefuelUI.getSalaryPaid(findViewById(R.id.osd_scroll_to_element_car_expenses)) - NumberUtils.getIntOrZero(AppConstants.get(AppConstants.DRIVER_SALARY))
-        obj.vehicle_finalKm = RefuelUI.getFinalKm()
+        val salaryPaid = refuelUIObj.getSalaryPaid(findViewById(R.id.osd_scroll_to_element_car_expenses)) - NumberUtils.getIntOrZero(AppConstants.get(AppConstants.DRIVER_SALARY))
+        obj.vehicle_finalKm = refuelUIObj.getFinalKm()
         obj.labour_expenses = salaryPaid.toString()
-        obj.extra_expenses = RefuelUI.getExtraExpenses(findViewById(R.id.osd_scroll_to_element_car_expenses)).toString()
+        obj.extra_expenses = refuelUIObj.getExtraExpenses(findViewById(R.id.osd_scroll_to_element_car_expenses)).toString()
         obj.actualLoadKg = loadKgElement.text.toString()
         obj.actualLoadPc = loadPcElement.text.toString()
-
         SingleAttributedDataUtils.saveToLocal(obj)
     }
 
@@ -454,13 +454,7 @@ class OneShotDelivery : AppCompatActivity() {
         filteredListToSave.forEach {
             if(it.value.date.isEmpty()) {
                 it.value.date = DateUtils.getDateInFormat("dd/MM/yyyy")
-
                 it.value.customerAccount = it.value.name
-//                if(CustomerKYC.getByName(it.value.name) == null || CustomerKYC.getByName(it.value.name)!!.referredBy.isEmpty()) {
-//                    it.value.name
-//                } else {
-//                    CustomerKYC.getByName(it.value.name)!!.referredBy
-//                }
             }
             DeliverToCustomerDataHandler.saveToLocal(it.value)
         }

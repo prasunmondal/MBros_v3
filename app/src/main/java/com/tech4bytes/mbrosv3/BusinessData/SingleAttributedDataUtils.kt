@@ -20,6 +20,15 @@ object SingleAttributedDataUtils : Tech4BytesSerializable<SingleAttributedDataMo
     appendInLocal = true,
     getEmptyListIfNoResultsFoundInServer = true) {
 
+    override fun <T : Any> sortResults(list: ArrayList<T>): ArrayList<T> {
+        ListUtils.sortListByAttribute(list as ArrayList<SingleAttributedDataModel>, SingleAttributedDataModel::id)
+        list.sortBy { it.id }
+        list.reverse()
+        val t: ArrayList<SingleAttributedDataModel> = arrayListOf()
+        t.add(list[0])
+        return t as ArrayList<T>
+    }
+
     fun getRecords(useCache: Boolean = true): SingleAttributedDataModel {
         return get(useCache)[0]
     }
@@ -40,15 +49,6 @@ object SingleAttributedDataUtils : Tech4BytesSerializable<SingleAttributedDataMo
         val obj = getRecords()
         ReflectionUtils.setAttribute(obj, kMutableProperty, value)
         saveToLocal(obj)
-    }
-
-    override fun <T : Any> sortResults(list: ArrayList<T>): ArrayList<T> {
-        ListUtils.sortListByAttribute(list as ArrayList<SingleAttributedDataModel>, SingleAttributedDataModel::id)
-        list.sortBy { it.id }
-        list.reverse()
-        val t: ArrayList<SingleAttributedDataModel> = arrayListOf()
-        t.add(list[0])
-        return t as ArrayList<T>
     }
 
     fun saveToLocal(obj: SingleAttributedDataModel?) {

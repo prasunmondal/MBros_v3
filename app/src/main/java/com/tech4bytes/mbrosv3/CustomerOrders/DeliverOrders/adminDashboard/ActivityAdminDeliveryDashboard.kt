@@ -305,7 +305,6 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
             CustomerDataUtils.spoolDeliveringData()
             RefuelingUtils.spoolRefuelingData()
             DaySummaryUtils.saveToServer()
-            SingleAttributedDataUtils.invalidateCache()
             setStatuses(false)
         }.start()
     }

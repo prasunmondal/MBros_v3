@@ -281,7 +281,8 @@
                     android:id="@+id/osd_scroll_to_element_refuel"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -526,7 +527,8 @@
                     android:id="@+id/osd_scroll_to_element_car_expenses"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/osd_scroll_label_other_expenses"

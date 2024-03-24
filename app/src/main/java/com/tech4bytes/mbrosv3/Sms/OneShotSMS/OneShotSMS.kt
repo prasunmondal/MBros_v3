@@ -127,11 +127,6 @@ class OneShotSMS : AppCompatActivity() {
         }
     }
 
-    fun onClickPopulateOtherExpenses(view: View) {
-        val switchActivityIntent = Intent(this, OtherExpensesActivity::class.java)
-        startActivity(switchActivityIntent)
-    }
-
     private fun getSMSList(selectedCommunications: String): MutableList<SMS> {
         LogMe.log("Getting messages for type: $selectedCommunications")
         val smsList: MutableList<SMS> = mutableListOf()

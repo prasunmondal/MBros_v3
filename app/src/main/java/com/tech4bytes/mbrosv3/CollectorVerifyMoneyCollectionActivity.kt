@@ -20,6 +20,7 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.De
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.Sms.OneShotSMS.OneShotSMS
+import com.tech4bytes.mbrosv3.Sms.OneShotSMS.OtherExpensesActivity
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
@@ -175,8 +176,8 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
 //        }.start()
 //    }
 
-    fun goToSendSMSPage(view: View) {
-        val switchActivityIntent = Intent(this, OneShotSMS::class.java)
+    fun onClickPopulateOtherExpenses(view: View) {
+        val switchActivityIntent = Intent(this, OtherExpensesActivity::class.java)
         startActivity(switchActivityIntent)
     }
 }

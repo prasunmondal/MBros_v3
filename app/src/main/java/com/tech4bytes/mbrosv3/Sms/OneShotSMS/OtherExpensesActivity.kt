@@ -1,5 +1,6 @@
 package com.tech4bytes.mbrosv3.Sms.OneShotSMS
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -50,5 +51,10 @@ class OtherExpensesActivity : AppCompatActivity() {
                 saveBtn.isEnabled = true
             }
         }.start()
+    }
+
+    fun goToSendSMSPage(view: View) {
+        val switchActivityIntent = Intent(this, OneShotSMS::class.java)
+        startActivity(switchActivityIntent)
     }
 }

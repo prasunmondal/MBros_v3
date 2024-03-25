@@ -49,8 +49,8 @@ data class DaySummary(
     var trip_end_km: String = "",
     var other_expenses_note: String = "",
     var other_expense_amount: String = "",
-
-    ) : java.io.Serializable {}
+    var police: String = "",
+    var police_breakdown: String = "") : java.io.Serializable
 
 object DaySummaryUtils {
 
@@ -108,6 +108,8 @@ object DaySummaryUtils {
         daySummaryObj.other_expenses_note = ""
         daySummaryObj.other_expense_amount = ""
         daySummaryObj.profit = getDayProfit().toString()
+        daySummaryObj.police = metadata.police
+        daySummaryObj.police_breakdown = metadata.police_breakdown
 
         return daySummaryObj
     }

@@ -332,6 +332,13 @@ class RefuelUI(
         obj.vehicle_finalKm = getFinalKm()
         obj.labour_expenses = salaryPaid.toString()
         obj.extra_expenses = getExtraExpenses(uiFinalKmContainer).toString()
+        obj.police_breakdown = uiFinalKmContainer.findViewById<EditText>(R.id.osd_police_breakdown).text.toString()
+
+        var sum = 0
+        obj.police_breakdown.split("-").forEach {
+            sum += NumberUtils.getIntOrZero(it.trim())
+        }
+        obj.police = sum.toString()
         SingleAttributedDataUtils.saveToLocal(obj)
     }
     fun saveDataFromThisUI(saveToServer: Boolean = true) {

@@ -35,4 +35,6 @@ data class SingleAttributedDataModel(
     var smsOrderSequence: String = "",
     var numberOfPeopleTakingSalary: String = "",
     var salaryDivision: String = "",
+    var police: String = "",
+    var police_breakdown: String = ""
 ) : java.io.Serializable

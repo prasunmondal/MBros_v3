@@ -240,7 +240,7 @@ class RefuelUI(
                 salaryDivisionElement,
                 singleAttributedDataUtils.salaryDivision.replace("#", "  #  ")
             )
-            uiContainer.findViewById<EditText>(R.id.osd_police_breakdown).setText(singleAttributedDataUtils.police_breakdown)
+            uiFinalKmContainer.findViewById<EditText>(R.id.osd_police_breakdown).setText(singleAttributedDataUtils.police_breakdown)
         }
     }
 

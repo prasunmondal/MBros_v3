@@ -124,9 +124,11 @@ class OneShotSMS : AppCompatActivity() {
         return oSmsModel.commReceiverCategory.split(",")
     }
     fun onClickSendSMS(view: View) {
+        val numberOfSMSToSend = smsList.stream().filter{ it.isEnabled }.count()
+
         AlertDialog.Builder(this)
             .setTitle("Send Messages?")
-            .setMessage("Sending ${smsList.size} messages? \nR U Sure?")
+            .setMessage("Sending $numberOfSMSToSend messages? \nR U Sure?")
             .setIcon(android.R.drawable.ic_dialog_alert)
             .setPositiveButton(android.R.string.yes) { dialog, whichButton ->
                 Toast.makeText(

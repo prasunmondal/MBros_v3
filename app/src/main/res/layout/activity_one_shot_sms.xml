@@ -101,30 +101,6 @@
     </ScrollView>
 
     <LinearLayout
-        android:id="@+id/linearLayout29"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Send SMS" />
-
-        <!--        <Button-->
-        <!--            android:id="@+id/button5"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_weight="1"-->
-        <!--            android:onClick="onClickPopulateOtherExpenses"-->
-        <!--            android:text="Add Expenses" />-->
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/linearLayout30"
         android:layout_width="match_parent"
         android:layout_height="40dp"

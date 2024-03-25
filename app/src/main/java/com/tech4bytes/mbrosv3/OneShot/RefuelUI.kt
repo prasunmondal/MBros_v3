@@ -219,6 +219,7 @@ class RefuelUI(
             uiFinalKmContainer.findViewById<TextView>(R.id.osd_salary_division)
         val vehiclePrevKm: Int =
             NumberUtils.getIntOrZero(singleAttributedDataUtils.vehicle_finalKm)
+        val policeBreakdown = uiFinalKmContainer.findViewById<EditText>(R.id.osd_police_breakdown)
 
         meteredKm.setNumber(context as Activity, vehiclePrevKm, true)
         meteredKm.setListeners {
@@ -240,7 +241,7 @@ class RefuelUI(
                 salaryDivisionElement,
                 singleAttributedDataUtils.salaryDivision.replace("#", "  #  ")
             )
-            uiFinalKmContainer.findViewById<EditText>(R.id.osd_police_breakdown).setText(singleAttributedDataUtils.police_breakdown)
+            UIUtils.setUIElementValue(policeBreakdown, singleAttributedDataUtils.police_breakdown)
         }
     }
 

@@ -650,6 +650,44 @@
                                         android:textColorHint="#8DD8D4D4"
                                         android:textSize="16sp" />
                                 </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="90dp"
+                                        android:layout_height="wrap_content"
+                                        android:paddingTop="15dp"
+                                        android:text="Polices"
+                                        android:textColor="#D2FFFFFF" />
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical">
+
+                                        <com.google.android.material.textfield.TextInputEditText
+                                            android:id="@+id/osd_police_breakdown"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="35dp"
+                                            android:background="#00000000"
+                                            android:inputType="phone"
+                                            android:paddingLeft="10dp"
+                                            android:textColor="#FBC02D"
+                                            android:textColorHint="#8DD8D4D4"
+                                            android:textSize="16sp" />
+
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:text="Ex: 100-50"
+                                            android:textColor="@color/osd_fuel_non_interactive_ok_text_color" />
+
+                                    </LinearLayout>
+
+                                </LinearLayout>
                             </LinearLayout>
 
                             <LinearLayout

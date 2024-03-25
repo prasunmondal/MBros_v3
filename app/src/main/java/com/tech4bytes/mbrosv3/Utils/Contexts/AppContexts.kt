@@ -29,7 +29,7 @@ class AppContexts {
                     contextResult = context
             }
             if (contextResult == null) {
-                getCaller(true)
+                getCaller()
                 contextResult = contexts[contexts.keys.first()]!!.applicationContext
             }
             return contextResult!!

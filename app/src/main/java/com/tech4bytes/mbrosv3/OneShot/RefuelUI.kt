@@ -205,6 +205,7 @@ class RefuelUI(
 
     // kms
     fun initializeFinalKm() {
+        val singleAttributedDataUtils = SingleAttributedDataUtils.getRecords()
         val salaryPaidElement = uiFinalKmContainer.findViewById<EditText>(R.id.osd_salary_paid)
         val extraExpensesElement =
             uiFinalKmContainer.findViewById<EditText>(R.id.one_shot_delivery_extra_expenses)
@@ -216,9 +217,8 @@ class RefuelUI(
 
         val salaryDivisionElement =
             uiFinalKmContainer.findViewById<TextView>(R.id.osd_salary_division)
-
         val vehiclePrevKm: Int =
-            NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().vehicle_finalKm)
+            NumberUtils.getIntOrZero(singleAttributedDataUtils.vehicle_finalKm)
 
         meteredKm.setNumber(context as Activity, vehiclePrevKm, true)
         meteredKm.setListeners {
@@ -226,7 +226,7 @@ class RefuelUI(
         }
 
         val salaryPaid =
-            NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().labour_expenses) + NumberUtils.getIntOrZero(
+            NumberUtils.getIntOrZero(singleAttributedDataUtils.labour_expenses) + NumberUtils.getIntOrZero(
                 AppConstants.get(AppConstants.DRIVER_SALARY)
             )
 
@@ -234,12 +234,13 @@ class RefuelUI(
             UIUtils.setUIElementValue(salaryPaidElement, salaryPaid.toString())
             UIUtils.setUIElementValue(
                 extraExpensesElement,
-                SingleAttributedDataUtils.getRecords().extra_expenses
+                singleAttributedDataUtils.extra_expenses
             )
             UIUtils.setUIElementValue(
                 salaryDivisionElement,
-                SingleAttributedDataUtils.getRecords().salaryDivision.replace("#", "  #  ")
+                singleAttributedDataUtils.salaryDivision.replace("#", "  #  ")
             )
+            uiContainer.findViewById<EditText>(R.id.osd_police_breakdown).setText(singleAttributedDataUtils.police_breakdown)
         }
     }
 

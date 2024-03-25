@@ -12,6 +12,7 @@ class Configuration {
 
     enum class DATA_STORING_TYPE {
         SINGLE_FILE, // puts all record in a single file
-        CLASS_FILES // creates a file for every class
+        CLASS_FILES, // creates a file for every class
+        CACHE_KEY
     }
 }

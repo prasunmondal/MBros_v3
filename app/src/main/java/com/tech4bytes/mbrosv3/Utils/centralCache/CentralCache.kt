@@ -17,23 +17,23 @@ class CentralCache {
     // Map of filenames, and (contents with key)
     var cache: MutableMap<String, MutableMap<String, CacheModel>> = hashMapOf()
 
-    private fun saveCacheDataToFile() {
-        LogMe.log("Saving cache data - File: ${getFileName()}")
+    private fun saveCacheDataToFile(cacheKey: String) {
+        LogMe.log("Saving cache data - File: ${getFileName(cacheKey)}")
         val writeObj = IOObjectToFile()
-        writeObj.WriteObjectToFile(AppContexts.get(), getFileName(), cache)
+        writeObj.WriteObjectToFile(AppContexts.get(), getFileName(cacheKey), cache)
     }
 
-    private fun getCacheDataFromFile(context: Context): MutableMap<String, MutableMap<String, CacheModel>> {
+    private fun getCacheDataFromFile(context: Context, cacheKey: String): MutableMap<String, MutableMap<String, CacheModel>> {
         return try {
             val readObj = IOObjectToFile()
             val result = readObj.ReadObjectFromFile(
                 context,
-                getFileName()
+                getFileName(cacheKey)
             ) as MutableMap<String, MutableMap<String, CacheModel>>
-            LogMe.log("Reading records from file: ${getFileName()}: Successful")
+            LogMe.log("Reading records from file: ${getFileName(cacheKey)}: Successful")
             result
         } catch (e: Exception) {
-            LogMe.log("Reading records from file: ${getFileName()}: Failed")
+            LogMe.log("Reading records from file: ${getFileName(cacheKey)}: Failed")
             mutableMapOf()
         }
     }
@@ -42,10 +42,13 @@ class CentralCache {
 
         private var centralCache = CentralCache()
 
-        private fun getFileName(): String {
-            return "CentralCache:" + if (Configuration.configs.storagePatternType == Configuration.DATA_STORING_TYPE.CLASS_FILES) {
+        private fun getFileName(cacheKey: String): String {
+            return "CentralCache-" + if (Configuration.configs.storagePatternType == Configuration.DATA_STORING_TYPE.CLASS_FILES) {
                 CacheUtils.getClassKey()
-            } else {
+            } else if (Configuration.configs.storagePatternType == Configuration.DATA_STORING_TYPE.CACHE_KEY) {
+                cacheKey.replace("/","-")
+            }
+            else {
                 "data.dat"
             }
         }
@@ -71,13 +74,13 @@ class CentralCache {
                     LogMe.log("Data Expired (key:$cacheObjectKey)")
                     LogMe.log("Deleting cache data")
                     centralCache.cache[cacheClassKey]!!.remove(cacheObjectKey)
-                    centralCache.saveCacheDataToFile()
+                    centralCache.saveCacheDataToFile(cacheObjectKey)
                     return null
                 }
                 return cacheObj.content as T
             }
 
-            centralCache.cache = centralCache.getCacheDataFromFile(context)
+            centralCache.cache = centralCache.getCacheDataFromFile(context, cacheObjectKey)
             classElements = centralCache.cache[cacheClassKey]
             if (classElements != null && classElements.containsKey(cacheObjectKey)) {
                 LogMe.log("Cache Hit (key:$cacheObjectKey)- File")
@@ -86,7 +89,7 @@ class CentralCache {
                     LogMe.log("Data Expired (key:$cacheObjectKey)- Local Memory")
                     LogMe.log("Deleting cache data")
                     centralCache.cache[cacheClassKey]!!.remove(cacheObjectKey)
-                    centralCache.saveCacheDataToFile()
+                    centralCache.saveCacheDataToFile(cacheObjectKey)
                     return null
                 }
                 return cacheObj.content as T
@@ -113,12 +116,13 @@ class CentralCache {
         fun <T> put(key: String, data: T) {
             val cacheClassKey = CacheUtils.getClassKey()
             val cacheKey = CacheUtils.getCacheKey(key)
+            LogMe.log("Putting data to Cache - key: $cacheKey")
             val presentData = centralCache.cache[cacheClassKey]
             if (presentData == null) {
                 centralCache.cache[cacheClassKey] = hashMapOf()
             }
             centralCache.cache[cacheClassKey]!![cacheKey] = CacheModel(data as Any?)
-            centralCache.saveCacheDataToFile()
+            centralCache.saveCacheDataToFile(cacheKey)
             CacheFilesList.addToCacheFilesList(cacheClassKey)
         }
 
@@ -138,14 +142,14 @@ class CentralCache {
             CacheFilesList.clearCacheFilesList()
         }
 
-        fun invalidateClassCache() {
+        fun invalidateClassCache(cacheKey: String) {
             centralCache.cache[CacheUtils.getClassKey()] = hashMapOf()
-            centralCache.saveCacheDataToFile()
+            centralCache.saveCacheDataToFile(cacheKey)
         }
 
-        fun <T : Any> invalidateClassCache(clazz: KClass<T>) {
+        fun <T : Any> invalidateClassCache(clazz: KClass<T>, cacheKey: String) {
             centralCache.cache[ClassDetailsUtils.getClassName(clazz)] = hashMapOf()
-            centralCache.saveCacheDataToFile()
+            centralCache.saveCacheDataToFile(cacheKey)
         }
     }
 }

@@ -40,7 +40,7 @@ public class IOObjectToFile {
         }
     }
 
-    public void WriteObjectToFile(Context context, String fileName, Object object) throws IOException {
+    public synchronized void WriteObjectToFile(Context context, String fileName, Object object) throws IOException {
         LogMe.log("Writing to file: " + fileName);
         try {
             FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);

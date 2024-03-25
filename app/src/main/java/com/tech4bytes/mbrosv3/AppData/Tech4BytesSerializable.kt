@@ -89,6 +89,7 @@ abstract class Tech4BytesSerializable<T : Any> : java.io.Serializable {
     }
 
     private fun getFromServer(): GetResponse {
+        LogMe.log("Expensive Operation - get data from server: $sheetURL - $tabname")
         val result: GetResponse = Get.builder()
             .scriptId(scriptURL)
             .sheetId(sheetURL)
@@ -146,6 +147,7 @@ abstract class Tech4BytesSerializable<T : Any> : java.io.Serializable {
      * cacheKey: cacheKey used to identify the cache object, pass null to generate the cacheKey
      */
     fun saveToLocal(dataObject: Any?, cacheKey: String? = getFilterName()) {
+        LogMe.log("Expensive Operation - saving data to local: $cacheKey")
         var finalCacheKey = cacheKey
         if (finalCacheKey == null) {
             finalCacheKey = getFilterName()
@@ -168,6 +170,7 @@ abstract class Tech4BytesSerializable<T : Any> : java.io.Serializable {
     }
 
     fun <T> saveToServer(obj: T) {
+        LogMe.log("Expensive Operation - saving data to server: $sheetURL - $tabname")
         if (!appendInServer) {
             deleteDataFromServer()
         }

@@ -147,8 +147,11 @@ abstract class Tech4BytesSerializable<T : Any> : java.io.Serializable {
      * cacheKey: cacheKey used to identify the cache object, pass null to generate the cacheKey
      */
     fun saveToLocal(dataObject: Any?, cacheKey: String? = getFilterName()) {
-        LogMe.log("Expensive Operation - saving data to local: $cacheKey")
         var finalCacheKey = cacheKey
+        if(cacheKey == null) {
+            finalCacheKey = getFilterName()
+        }
+        LogMe.log("Expensive Operation - saving data to local: $finalCacheKey")
         if (finalCacheKey == null) {
             finalCacheKey = getFilterName()
         }

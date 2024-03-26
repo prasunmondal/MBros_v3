@@ -392,7 +392,7 @@ class OneShotDelivery : AppCompatActivity() {
 
             gatherSingleAttributedData()
 
-            DeliverToCustomerDataHandler.deleteData()
+//            DeliverToCustomerDataHandler.deleteData()
 
             saveSingleAttributeData()
             saveDeliveryData()

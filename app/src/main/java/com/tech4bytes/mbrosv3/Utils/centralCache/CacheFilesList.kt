@@ -23,11 +23,11 @@ class CacheFilesList : java.io.Serializable {
             return list
         }
 
-        fun addToCacheFilesList(classKey: String) {
+        fun addToCacheFilesList(filename: String) {
             val list = getCacheFilesList()
-            if (list.contains(classKey))
+            if (list.contains(filename))
                 return
-            list.add("CentralCache:$classKey")
+            list.add(filename)
             val writeObj = IOObjectToFile()
             writeObj.WriteObjectToFile(AppContexts.get(), cacheFilesFileName, list)
         }

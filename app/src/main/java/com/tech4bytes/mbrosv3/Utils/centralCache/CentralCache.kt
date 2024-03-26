@@ -19,8 +19,10 @@ class CentralCache {
 
     private fun saveCacheDataToFile(cacheKey: String) {
         LogMe.log("Saving cache data - File: ${getFileName(cacheKey)}")
+        val filename = getFileName(cacheKey)
         val writeObj = IOObjectToFile()
-        writeObj.WriteObjectToFile(AppContexts.get(), getFileName(cacheKey), cache)
+        writeObj.WriteObjectToFile(AppContexts.get(), filename, cache)
+        CacheFilesList.addToCacheFilesList(filename)
     }
 
     private fun getCacheDataFromFile(context: Context, cacheKey: String): MutableMap<String, MutableMap<String, CacheModel>> {
@@ -123,7 +125,6 @@ class CentralCache {
             }
             centralCache.cache[cacheClassKey]!![cacheKey] = CacheModel(data as Any?)
             centralCache.saveCacheDataToFile(cacheKey)
-            CacheFilesList.addToCacheFilesList(cacheClassKey)
         }
 
         fun <T> putNGet(key: String, data: T): T {

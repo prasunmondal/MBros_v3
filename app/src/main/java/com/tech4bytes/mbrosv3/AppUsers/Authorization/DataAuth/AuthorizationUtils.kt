@@ -27,7 +27,7 @@ class AuthorizationUtils {
                     listOfRoles.add(AuthorizationEnums.valueOf(auth.trim()))
                     LogMe.log(AuthorizationEnums.valueOf(auth.trim()).toString())
                 } catch (e: IllegalArgumentException) {
-                    LogMe.log("Auth failed to convert to enum: " + auth.trim())
+                    LogMe.log("Enum conversion failed. Saved as String.: " + auth.trim())
                 }
             }
             return listOfRoles

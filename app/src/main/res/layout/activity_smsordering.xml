@@ -157,6 +157,14 @@
                 android:paddingHorizontal="10dp"
                 android:textColorHint="#494848" />
 
+            <Switch
+                android:id="@+id/smsorder_toggle_view_switch"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="View"
+                android:textColor="#A4A295" />
+
         </LinearLayout>
 
         <LinearLayout

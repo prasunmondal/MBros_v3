@@ -1,5 +1,7 @@
 package com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstantsUtil
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
@@ -8,6 +10,7 @@ import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
+import com.tech4bytes.mbrosv3.Payments.Staged.StagedPaymentUtils
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.VehicleManagement.RefuelingUtils
@@ -27,10 +30,12 @@ class DataFetchingInfo {
                 DaySummaryUtils::get.toString() -> "Transaction reports"
                 RefuelingUtils::get.toString() -> "Fuel data"
                 AppConstantsUtil::get.toString() -> "App Constants Data"
+                StagedPaymentUtils::get.toString() -> "Staged Payments"
                 else -> "Get data"
             }
         }
 
+        @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
         fun get(activity: ActivityAuthEnums): ExecutingMethods {
             val executingMethods = ExecutingMethods()
 
@@ -46,6 +51,7 @@ class DataFetchingInfo {
                     executingMethods.add(DaySummaryUtils::get, {DaySummaryUtils.get()})
                     executingMethods.add(RefuelingUtils::get, {RefuelingUtils.get()})
                     executingMethods.add(AppConstantsUtil::get, {AppConstantsUtil.get()})
+                    executingMethods.add(StagedPaymentUtils::get, {StagedPaymentUtils.get()})
                 }
                 ActivityAuthEnums.DELIVERY -> {
                     executingMethods.add(CustomerKYC::get, {CustomerKYC.get()})

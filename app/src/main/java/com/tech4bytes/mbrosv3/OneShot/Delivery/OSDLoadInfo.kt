@@ -27,7 +27,7 @@ class OSDLoadInfo {
             val isSendLoadInfoEnabled = numberToSendInfo.isNotEmpty() && templateToSendInfo.isNotEmpty()
 
             if (!isSendLoadInfoEnabled) {
-                LogMe.log("Send load info disabled. Either '$numberToSendInfo' or '$templateToSendInfo' is not configured")
+                LogMe.log("Send load info disabled. Either numberToSendInfo or templateToSendInfo is not configured")
             } else {
                 LogMe.log("Send load info enabled.")
             }

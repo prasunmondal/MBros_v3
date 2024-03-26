@@ -2,6 +2,7 @@ package com.tech4bytes.mbrosv3.OneShot.Delivery
 
 import android.view.View
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.widget.doOnTextChanged
 import com.google.android.material.textfield.TextInputLayout
@@ -113,7 +114,7 @@ class OSDLoadInfo {
                 }
             } else {
                 context.runOnUiThread {
-                    context.findViewById<TextInputLayout>(R.id.osd_farm_rate_container).visibility = View.GONE
+                    context.findViewById<LinearLayout>(R.id.osd_farm_rate_container).visibility = View.GONE
                 }
             }
         }

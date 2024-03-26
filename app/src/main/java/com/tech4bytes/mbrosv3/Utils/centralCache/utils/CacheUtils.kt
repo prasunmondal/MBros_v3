@@ -7,8 +7,8 @@ class CacheUtils {
             return ClassDetailsUtils.getCaller() + "/" + key
         }
 
-        fun getClassKey(): String {
-            return ClassDetailsUtils.getCaller()
+        fun getClassKey(thresholdClass: String = ""): String {
+            return ClassDetailsUtils.getCaller(thresholdClass)
         }
     }
 }

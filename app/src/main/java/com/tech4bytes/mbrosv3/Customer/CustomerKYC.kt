@@ -20,7 +20,8 @@ data class CustomerKYCModel(
     var smsNumber: String = "",
     var smsText: String = "",
     var referralType: ReferralType = ReferralType.NONE,
-    var referralInput: String = ""
+    var referralInput: String = "",
+    var leftHandBalance: String = ""
 ) : java.io.Serializable
 
 object CustomerKYC : Tech4BytesSerializable<CustomerKYCModel>(

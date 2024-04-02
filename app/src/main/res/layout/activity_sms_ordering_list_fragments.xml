@@ -86,7 +86,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/smsorder_fragments_suggestion_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="5dp"

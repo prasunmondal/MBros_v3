@@ -121,7 +121,7 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
             if(NumberUtils.getIntOrZero(deliveryEntry.paidOnline) != 0) {
                 amountPaidOnlineField.text = "\uD83C\uDF10 Rs ${deliveryEntry.paidOnline}"
             }
-            entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_total_due_amount).text = deliveryEntry.khataDue
+            entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_total_due_amount).text = deliveryEntry.khataBalance
             initiallizeColors(entry, NumberUtils.getIntOrZero(amountPaidCashField.text.toString()), map[deliveryEntry.name]!!.kgPc, map[deliveryEntry.name]!!.paidAmount)
             doneCounter = 0
 

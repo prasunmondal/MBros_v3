@@ -25,7 +25,7 @@ class CustomerData : java.io.Serializable {
     var deliveredKg = ""
     var rate = ""
     var prevAmount = ""
-    var deliveredAmount = ""
+    var deliverAmount = ""
     var totalAmount = ""
     var paidCash = ""
     var paidOnline = ""
@@ -54,13 +54,13 @@ class CustomerData : java.io.Serializable {
         this.deliveredKg = deliveryObj.deliveredKg
         this.rate = deliveryObj.rate
         this.prevAmount = deliveryObj.prevDue
-        this.deliveredAmount = deliveryObj.todaysAmount
-        this.khataDue = deliveryObj.khataDue
+        this.deliverAmount = deliveryObj.deliverAmount
+        this.khataDue = deliveryObj.khataBalance
         this.paidCash = deliveryObj.paidCash
         this.paidOnline = deliveryObj.paidOnline
         this.paid = deliveryObj.paid
         this.customerAccount = deliveryObj.customerAccount
-        this.khataBalance = deliveryObj.khataDue
+        this.khataBalance = deliveryObj.khataBalance
         this.otherBalances = deliveryObj.otherBalances
         this.totalBalance = deliveryObj.totalBalance
         this.avgWt = NumberUtils.roundOff3places(deliveredKg.toDouble() / deliveredPc.toInt()).toString()
@@ -70,7 +70,7 @@ class CustomerData : java.io.Serializable {
     }
 
     override fun toString(): String {
-        return "CustomerData(orderId='$orderId', timestamp='$timestamp', name='$name', deliveredPc='$deliveredPc', deliveredKg='$deliveredKg', rate='$rate', prevAmount='$prevAmount', deliveredAmount='$deliveredAmount', totalAmount='$totalAmount', paid='$paid', balanceDue='$khataBalance', avgWt='$avgWt', profit='$profit', profitPercent='$profitPercent')"
+        return "CustomerData(orderId='$orderId', timestamp='$timestamp', name='$name', deliveredPc='$deliveredPc', deliveredKg='$deliveredKg', rate='$rate', prevAmount='$prevAmount', deliveredAmount='$deliverAmount', totalAmount='$totalAmount', paid='$paid', balanceDue='$khataBalance', avgWt='$avgWt', profit='$profit', profitPercent='$profitPercent')"
     }
 }
 

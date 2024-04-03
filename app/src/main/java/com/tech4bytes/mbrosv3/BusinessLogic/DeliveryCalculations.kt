@@ -25,7 +25,7 @@ class DeliveryCalculations {
         fun getDaySaleAmount(): Int {
             var sum = 0
             DeliverToCustomerDataHandler.get().forEach {
-                sum += NumberUtils.getIntOrZero(it.todaysAmount)
+                sum += NumberUtils.getIntOrZero(it.deliverAmount)
             }
             return sum
         }

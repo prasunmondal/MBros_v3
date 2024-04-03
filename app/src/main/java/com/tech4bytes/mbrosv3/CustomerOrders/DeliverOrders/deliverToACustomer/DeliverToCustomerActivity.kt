@@ -58,9 +58,9 @@ class DeliverToCustomerActivity : AppCompatActivity() {
         val deliveredPcElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::deliveredPc)!!
         val deliveredKgElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::deliveredKg)!!
         val rate = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::rate)!!
-        val todaysAmountElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::todaysAmount)!!
+        val todaysAmountElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::deliverAmount)!!
         val prevDueElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::prevDue)!!
-        val totalDueElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::khataDue)!!
+        val totalDueElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::khataBalance)!!
         val paidElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::paid)!!
         val balanceDueElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::totalBalance)!!
         val bengaliNameElement = findViewById<TextView>(R.id.activity_delivering_deliver_bengali_name)
@@ -71,14 +71,14 @@ class DeliverToCustomerActivity : AppCompatActivity() {
         UIUtils.setUIElementValue(orderedKgElement, record.orderedKg.ifEmpty { "--" })
         UIUtils.setUIElementValue(deliveredPcElement, record.deliveredPc)
         UIUtils.setUIElementValue(deliveredKgElement, record.deliveredKg)
-        UIUtils.setUIElementValue(totalDueElement, record.khataDue)
+        UIUtils.setUIElementValue(totalDueElement, record.khataBalance)
         UIUtils.setUIElementValue(paidElement, record.paid)
         UIUtils.setUIElementValue(balanceDueElement, CustomerDueData.getLastFinalizedDue(record.name))
         UIUtils.setUIElementValue(bengaliNameElement, CustomerKYC.getByName(record.name)!!.nameBeng)
 
         if (UserRoleUtils.doesHaveRole(ActivityAuthEnums.ADMIN)) {
             UIUtils.setUIElementValue(rate, record.rate)
-            UIUtils.setUIElementValue(todaysAmountElement, record.todaysAmount)
+            UIUtils.setUIElementValue(todaysAmountElement, record.deliverAmount)
         }
 
         if (record.rate.isEmpty() && (UserRoleUtils.doesHaveRole(ActivityAuthEnums.ADMIN) || AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_DELIVERY_RATE))) {
@@ -212,8 +212,8 @@ class DeliverToCustomerActivity : AppCompatActivity() {
     private fun reCalculateNUpdateValues() {
         val name = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::name)!!
 
-        val todaysAmountElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::todaysAmount)!!
-        val totalDueElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::khataDue)!!
+        val todaysAmountElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::deliverAmount)!!
+        val totalDueElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::khataBalance)!!
         val balanceDueElement = getUiElementFromDeliveringPage(mainView, DeliverToCustomerDataModel::totalBalance)!!
 
         // do not update UI if show balances is false
@@ -274,8 +274,8 @@ class DeliverToCustomerActivity : AppCompatActivity() {
         record.id = System.currentTimeMillis().toString()
         record.timestamp = DateUtils.getCurrentTimestamp()
         record.deliveryStatus = "DELIVERED"
-        record.todaysAmount = "${calculateTodaysAmount()}"
-        record.khataDue = "${calculateTotalAmount()}"
+        record.deliverAmount = "${calculateTodaysAmount()}"
+        record.khataBalance = "${calculateTotalAmount()}"
         record.totalBalance = "${calculateBalanceDue()}"
 
         val saveBtnElement = findViewById<Button>(R.id.activity_delivering_deliver_submit_btn)
@@ -323,9 +323,9 @@ class DeliverToCustomerActivity : AppCompatActivity() {
                 DeliverToCustomerDataModel::orderedKg -> view.findViewById<TextView>(R.id.activity_delivering_deliver_ordered_kg)
                 DeliverToCustomerDataModel::deliveredPc -> view.findViewById<TextView>(R.id.activity_delivering_deliver_delivering_pc)
                 DeliverToCustomerDataModel::deliveredKg -> view.findViewById<TextView>(R.id.activity_delivering_deliver_delivering_kg)
-                DeliverToCustomerDataModel::todaysAmount -> view.findViewById<TextView>(R.id.activity_delivering_deliver_todays_amount)
+                DeliverToCustomerDataModel::deliverAmount -> view.findViewById<TextView>(R.id.activity_delivering_deliver_todays_amount)
                 DeliverToCustomerDataModel::prevDue -> view.findViewById<TextView>(R.id.activity_delivering_deliver_prev_due)
-                DeliverToCustomerDataModel::khataDue -> view.findViewById<TextView>(R.id.activity_delivering_deliver_all_total)
+                DeliverToCustomerDataModel::khataBalance -> view.findViewById<TextView>(R.id.activity_delivering_deliver_all_total)
                 DeliverToCustomerDataModel::paid -> view.findViewById<TextView>(R.id.activity_delivering_deliver_paid)
                 DeliverToCustomerDataModel::totalBalance -> view.findViewById<TextView>(R.id.activity_delivering_deliver_balance_due)
                 else -> null

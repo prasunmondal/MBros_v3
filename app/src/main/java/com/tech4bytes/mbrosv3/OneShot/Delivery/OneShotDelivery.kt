@@ -300,7 +300,7 @@ class OneShotDelivery : AppCompatActivity() {
             context.deliverRecords.forEach {
                 sumPc += NumberUtils.getIntOrZero(it.value.deliveredPc)
                 sumKg += NumberUtils.getDoubleOrZero(it.value.deliveredKg)
-                sumSale += NumberUtils.getIntOrZero(it.value.todaysAmount)
+                sumSale += NumberUtils.getIntOrZero(it.value.deliverAmount)
                 sumAmountCollected += NumberUtils.getIntOrZero(it.value.paid)
                 if (NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
                     sumBalanceDue += NumberUtils.getIntOrZero(it.value.totalBalance)

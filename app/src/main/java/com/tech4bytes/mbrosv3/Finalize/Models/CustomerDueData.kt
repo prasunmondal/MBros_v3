@@ -18,7 +18,7 @@ class CustomerDueData {
             }
             if (shouldIncludePostDeliveryUpdates) {
                 DeliverToCustomerDataHandler.get().forEach {
-                    dueMap[it.customerAccount] = NumberUtils.getIntOrZero(it.totalBalance)
+                    dueMap[it.customerAccount] = NumberUtils.getIntOrZero(it.khataBalance)
                 }
             }
             if (includeStagedPayments) {

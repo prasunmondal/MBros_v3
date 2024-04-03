@@ -54,7 +54,7 @@ object BalanceReferralCalculations {
             }
             ReferralType.BALANCE_TRANSFER -> {
                 transferAmount = (NumberUtils.getIntOrZero(deliverObjOfCustomer.prevDue)
-                        + NumberUtils.getIntOrZero(deliverObjOfCustomer.todaysAmount)
+                        + NumberUtils.getIntOrZero(deliverObjOfCustomer.deliverAmount)
                         - NumberUtils.getIntOrZero(deliverObjOfCustomer.paid))
                 result.message = "Transferred Rs $transferAmount from ${result.from} to ${result.to} for rule ${result.referral_type}."
                 result.balanceOfReferered = 0

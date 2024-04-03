@@ -72,7 +72,7 @@ class CustomerTransactions : AppCompatActivity() {
                 entry.findViewById<TextView>(R.id.ct_name).text = it.name
                 entry.findViewById<TextView>(R.id.ct_pc).text = it.deliveredPc
                 entry.findViewById<TextView>(R.id.ct_kg).text = it.deliveredKg
-                entry.findViewById<TextView>(R.id.ct_debit).text = it.deliveredAmount
+                entry.findViewById<TextView>(R.id.ct_debit).text = it.deliverAmount
                 entry.findViewById<TextView>(R.id.ct_credit).text = it.paid
                 entry.findViewById<TextView>(R.id.ct_balance).text = it.khataBalance
 

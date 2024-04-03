@@ -233,14 +233,14 @@ class OSDDeliveryEntryInfo {
             val khataDueBalance = getDueBalance(order, entry)
             order.deliveredKg = kg.toString()
             order.deliveredPc = getPcForEntry(entry).toString()
-            order.todaysAmount = getTodaysSaleAmountForEntry(entry).toString()
+            order.deliverAmount = getTodaysSaleAmountForEntry(entry).toString()
             order.paid = getPaidAmountForEntry(entry).toString()
             order.paidCash =
                 entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidCash).text.toString()
             order.paidOnline =
                 entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidOnline).text.toString()
             order.rate = getRateForEntry(entry).toString()
-            order.khataDue = khataDueBalance.toString()
+            order.khataBalance = khataDueBalance.toString()
             order.otherBalances = otherBalances.toString()
 
             order.totalBalance = (khataDueBalance + otherBalances).toString()
@@ -317,8 +317,8 @@ class OSDDeliveryEntryInfo {
                 prevDue.text = "₹ ${order.prevDue}"
                 kg.text = "${order.deliveredKg} kg"
                 rate.text = "₹ ${order.rate}"
-                todaysSale.text = "₹ ${order.todaysAmount}"
-                total.text = "₹ ${order.khataDue}"
+                todaysSale.text = "₹ ${order.deliverAmount}"
+                total.text = "₹ ${order.khataBalance}"
                 paid.text = "₹ ${order.paid}"
                 balanceDue.text = "₹ ${order.totalBalance}"
             }

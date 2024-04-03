@@ -10,10 +10,10 @@ data class DeliverToCustomerDataModel(
     var deliveredPc: String = "",
     var deliveredKg: String = "",
     var rate: String = "",
-    var todaysAmount: String = "",
+    var deliverAmount: String = "",
     var customerAccount: String = "",
     var prevDue: String = "",
-    var khataDue: String = "",
+    var khataBalance: String = "",
     var paidCash: String = "",
     var paidOnline: String = "",
     var paid: String = "",
@@ -25,6 +25,6 @@ data class DeliverToCustomerDataModel(
 ) : java.io.Serializable {
 
     override fun toString(): String {
-        return "DeliverToCustomerDataModel(id='$id', date='$date', timestamp='$timestamp', name='$name', orderedPc='$orderedPc', orderedKg='$orderedKg', deliveredPc='$deliveredPc', deliveredKg='$deliveredKg', rate='$rate', todaysAmount='$todaysAmount', customerAccount='$customerAccount', prevDue='$prevDue', totalDue='$khataDue', paidCash='$paidCash', paidOnline='$paidOnline', paid='$paid', balanceDue='$totalBalance', deliveryStatus='$deliveryStatus', discount='$adjustments', notes='$notes')"
+        return "DeliverToCustomerDataModel(id='$id', date='$date', timestamp='$timestamp', name='$name', orderedPc='$orderedPc', orderedKg='$orderedKg', deliveredPc='$deliveredPc', deliveredKg='$deliveredKg', rate='$rate', todaysAmount='$deliverAmount', customerAccount='$customerAccount', prevDue='$prevDue', totalDue='$khataBalance', paidCash='$paidCash', paidOnline='$paidOnline', paid='$paid', balanceDue='$totalBalance', deliveryStatus='$deliveryStatus', discount='$adjustments', notes='$notes')"
     }
 }

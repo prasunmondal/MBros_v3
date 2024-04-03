@@ -2,10 +2,8 @@ package com.tech4bytes.mbrosv3.OneShot.Delivery
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
@@ -13,13 +11,10 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.widget.doOnTextChanged
 import com.prasunmondal.postjsontosheets.clients.delete.Delete
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataModel
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
-import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
@@ -34,11 +29,8 @@ import com.tech4bytes.mbrosv3.OneShot.RefuelUI
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
-import com.tech4bytes.mbrosv3.Utils.Android.MeteredNumbers
-import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
-import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 import com.tech4bytes.mbrosv3.VehicleManagement.RefuelingUtils
@@ -135,21 +127,21 @@ class OneShotDelivery : AppCompatActivity() {
         loadAvgWtElement = findViewById(R.id.osd_loading_avg_wt)
     }
 
-    fun onClickSidebarIconRefuel(view: View) {
+//    fun onClickSidebarIconRefuel(view: View) {
 //        scrollToRow(scrollview, findViewById(R.id.osd_scrollview_child), findViewById<LinearLayout>(R.id.osd_scroll_to_element_refuel))
-    }
-
-    fun onClickSidebarIconDeliveryEntries(view: View) {
+//    }
+//
+//    fun onClickSidebarIconDeliveryEntries(view: View) {
 //        scrollToRow(scrollview, findViewById(R.id.osd_scrollview_child), findViewById<LinearLayout>(R.id.osd_scroll_label_deliveries))
-    }
-
-    fun onClickSidebarIconLoadInfo(view: View) {
+//    }
+//
+//    fun onClickSidebarIconLoadInfo(view: View) {
 //        scrollToRow(scrollview, findViewById(R.id.osd_scrollview_child), findViewById<LinearLayout>(R.id.osd_scroll_label_load_info))
-    }
-
-    fun onClickSidebarIconOtherExpenses(view: View) {
+//    }
+//
+//    fun onClickSidebarIconOtherExpenses(view: View) {
 //        scrollToRow(scrollview, findViewById(R.id.osd_scrollview_child), findViewById<LinearLayout>(R.id.osd_scroll_to_element_other_expenses))
-    }
+//    }
 
     private fun scrollToRow(scrollView: ScrollView, linearLayout: View, textViewToShow: View) {
         val delay: Long = 100 //delay to let finish with possible modifications to ScrollView
@@ -161,14 +153,8 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun initiallizeUI() {
-
-
         OSDLoadInfo.initializeUI(this, loadPcElement, loadKgElement, loadAvgWtElement)
     }
-
-//    private fun initializeOtherExpensesUI() {
-//
-//    }
 
     @RequiresApi(34)
     private fun populateDeliveryMap() {
@@ -214,27 +200,6 @@ class OneShotDelivery : AppCompatActivity() {
             )
             deliverRecords[it.name] = deliverCustomersOrders
         }
-
-//        deliveryMapUnOrderedCustomers = mutableMapOf()
-//        val listOfUnOrderedCustomers = GetCustomerOrderUtils.getListOfUnOrderedCustomers()
-//        listOfUnOrderedCustomers.forEach {
-//            var customerAccount = CustomerKYC.getByName(it.name)!!.referredBy
-//            if (customerAccount.isEmpty())
-//                customerAccount = it.name
-//            val deliverCustomersOrders = DeliverToCustomerDataModel(
-//                id = "${System.currentTimeMillis()}",
-//                timestamp = DateUtils.getCurrentTimestamp(),
-//                name = it.name,
-//                orderedPc = "0",
-//                orderedKg = "0",
-//                rate = "${CustomerDataUtils.getDeliveryRate(it.name)}",
-//                customerAccount = customerAccount,
-//                prevDue = CustomerDueData.getLastFinalizedDue(it.name),
-//                deliveryStatus = "DELIVERING"
-//            )
-//
-//            deliveryMapOrderedCustomers[it.name] = deliverCustomersOrders
-//        }
     }
 
     private fun addNewCustomer(name: String) {

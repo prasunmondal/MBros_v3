@@ -2,7 +2,6 @@ package com.tech4bytes.mbrosv3.Finalize.Models
 
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.Payments.Staged.StagedPaymentUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
@@ -38,8 +37,8 @@ class CustomerDueData {
             return getBalance(shouldIncludePostDeliveryUpdates, includeStagedPayments)[name] ?: 0
         }
 
-        fun getBalanceExceptLeftHandBalance(name: String, shouldIncludePostDeliveryUpdates: Boolean = true, includeStagedPayments: Boolean = true): Int {
-            return getBalance(name, shouldIncludePostDeliveryUpdates, includeStagedPayments) - NumberUtils.getIntOrZero(CustomerKYC.getByName(name)!!.leftHandBalance)
+        fun getBalanceIncludingLeftHandBalance(name: String, shouldIncludePostDeliveryUpdates: Boolean = true, includeStagedPayments: Boolean = true): Int {
+            return getBalance(name, shouldIncludePostDeliveryUpdates, includeStagedPayments) + NumberUtils.getIntOrZero(CustomerKYC.getByName(name)!!.leftHandBalance)
         }
         
         fun getLastFinalizedDue(name: String, useCache: Boolean = true): String {

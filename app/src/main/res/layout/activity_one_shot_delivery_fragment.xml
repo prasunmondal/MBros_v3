@@ -414,8 +414,7 @@
                             android:gravity="right"
                             android:text="Page Due:"
                             android:textColor="#A3FBC02D"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/one_shot_delivery_fragment_more_details_container_balance_due"
@@ -425,8 +424,7 @@
                             android:paddingLeft="5dp"
                             android:text="balance_due"
                             android:textColor="#A3FBC02D"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textSize="16sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -446,7 +444,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="Lefthand Balance:"
+                            android:text="Other Balances"
                             android:textColor="#AFACAC" />
 
                         <TextView
@@ -471,7 +469,8 @@
                             android:layout_weight="1"
                             android:gravity="right"
                             android:text="Final Total:"
-                            android:textColor="#AFACAC" />
+                            android:textColor="#F18484"
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/osd_total_balance_including_lh"
@@ -480,7 +479,7 @@
                             android:gravity="right"
                             android:paddingLeft="5dp"
                             android:text="0"
-                            android:textColor="#AFACAC"
+                            android:textColor="#F18484"
                             android:textSize="16sp" />
                     </LinearLayout>
 

@@ -43,6 +43,8 @@ class OSMSProcessor {
                 .replace("<loadKg>", metadata.actualLoadKg)
                 .replace("<shortage>", DeliveryCalculations.getShortage(metadata.actualLoadKg, DeliveryCalculations.getTotalDeliveredKg().toString()).toString())
                 .replace("<km>", DeliveryCalculations.getKmDiff(metadata.vehicle_finalKm).toString())
+                    .replace("<policeBreakdown>", metadata.police_breakdown)
+                .replace("<labourExpense>", SingleAttributedDataUtils.getExtraExpenseExcludingPolice(metadata).toString())
 
             return listOf(SMS(smsDetail.platform, smsDetail.sendTo, text))
         }
@@ -63,8 +65,8 @@ class OSMSProcessor {
                     .replace("<todaysAmount>", deliveryData.todaysAmount)
                     .replace("<paidAmount>", deliveryData.paid)
                     .replace("<rate>", deliveryData.rate)
-                    .replace("<balanceAmountIncludingLH>", deliveryData.khataDue)
-                    .replace("<balanceAmountExcludingLH>", deliveryData.totalBalance)
+                    .replace("<balanceIncludingOtherBalances>", deliveryData.totalBalance)
+                    .replace("<balanceExcludingOtherBalances>", deliveryData.totalBalance)
             }
 
             LogMe.log(smsDetail.toString() + ": " + replaceMethod(smsDetail.enablement_template))
@@ -106,7 +108,8 @@ class OSMSProcessor {
                             .replace("<todaysAmount>", deliveryData.todaysAmount)
                             .replace("<paidAmount>", deliveryData.paid)
                             .replace("<rate>", deliveryData.rate)
-                            .replace("<balanceAmount>", deliveryData.totalBalance)
+                            .replace("<balanceIncludingOtherBalances>", deliveryData.totalBalance)
+                            .replace("<balanceExcludingOtherBalances>", deliveryData.totalBalance)
                     }
 
                     LogMe.log(smsDetail.toString() + ": " + replaceMethod(smsDetail.enablement_template))
@@ -145,7 +148,8 @@ class OSMSProcessor {
                             .replace("<todaysAmount>", deliveryData.todaysAmount)
                             .replace("<paidAmount>", deliveryData.paid)
                             .replace("<rate>", deliveryData.rate)
-                            .replace("<balanceAmount>", deliveryData.totalBalance)
+                            .replace("<balanceIncludingOtherBalances>", deliveryData.totalBalance)
+                            .replace("<balanceExcludingOtherBalances>", deliveryData.totalBalance)
                     }
 
                     LogMe.log(smsDetail.toString() + ": " + replaceMethod(smsDetail.enablement_template))

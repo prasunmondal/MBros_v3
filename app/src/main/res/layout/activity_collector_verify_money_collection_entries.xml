@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="1dp"
-        android:background="@color/verify_delivery_not_valid"
+        android:background="@color/verify_delivery_valid"
         android:foregroundGravity="center_vertical"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -26,7 +26,6 @@
             android:layout_height="match_parent"
             android:layout_gravity="left|center_vertical"
             android:gravity="left|center_vertical"
-            android:hint="0."
             android:textColor="#8DACC6"
             android:textSize="12sp" />
 

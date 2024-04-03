@@ -7,6 +7,7 @@ import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
+import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ReflectionUtils
 import kotlin.reflect.KMutableProperty1
@@ -70,5 +71,9 @@ object SingleAttributedDataUtils : Tech4BytesSerializable<SingleAttributedDataMo
 
     fun invalidateCache() {
         saveToLocal(null)
+    }
+
+    fun getExtraExpenseExcludingPolice(obj: SingleAttributedDataModel): Int {
+        return NumberUtils.getIntOrZero(obj.extra_expenses) - NumberUtils.getIntOrZero(obj.police)
     }
 }

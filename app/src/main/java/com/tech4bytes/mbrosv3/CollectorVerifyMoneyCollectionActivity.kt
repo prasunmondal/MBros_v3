@@ -28,6 +28,8 @@ import java.io.File
 
 
 class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
+
+    var doneCounter = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collector_verify_money_collection)
@@ -102,18 +104,16 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
 
     private fun showDeliveryData() {
         var deliveredData = DeliverToCustomerDataHandler.get()
-        var count = 0
         var bundlesCount = 0
+
         val listContainer = findViewById<LinearLayout>(R.id.activity_collector_verify_money_collection_container)
         deliveredData = ListUtils.sortListByAttribute(deliveredData, DeliverToCustomerDataModel::id)
         deliveredData.forEach { deliveryEntry ->
             map[deliveryEntry.name] = VerifyElements()
-            count++
             val layoutInflater = LayoutInflater.from(AppContexts.get())
             val entry = layoutInflater.inflate(R.layout.activity_collector_verify_money_collection_entries, null)
             val amountPaidCashField = entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_paid_amount_cash)
             val amountPaidOnlineField = entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_paid_amount_online)
-            entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_customer_seq_no).text = "$count."
             entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_customer_name).text = deliveryEntry.name
             entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_order_pc).text = deliveryEntry.deliveredKg
             entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_order_kg).text = deliveryEntry.deliveredPc
@@ -121,8 +121,9 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
             if(NumberUtils.getIntOrZero(deliveryEntry.paidOnline) != 0) {
                 amountPaidOnlineField.text = "\uD83C\uDF10 Rs ${deliveryEntry.paidOnline}"
             }
-            entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_total_due_amount).text = deliveryEntry.totalBalance
-            updateColors(entry, NumberUtils.getIntOrZero(amountPaidCashField.text.toString()), map[deliveryEntry.name]!!.kgPc, map[deliveryEntry.name]!!.paidAmount)
+            entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_total_due_amount).text = deliveryEntry.khataDue
+            initiallizeColors(entry, NumberUtils.getIntOrZero(amountPaidCashField.text.toString()), map[deliveryEntry.name]!!.kgPc, map[deliveryEntry.name]!!.paidAmount)
+            doneCounter = 0
 
             entry.findViewById<LinearLayout>(R.id.activity_collector_verify_money_collection_fragment_container).setOnClickListener {
                 map[deliveryEntry.name]!!.kgPc = !map[deliveryEntry.name]!!.kgPc
@@ -145,11 +146,30 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
         bundles.text = bundlesCount.toString()
     }
 
-    private fun updateColors(entry: View, paidAmount: Int, isKgPcVerified: Boolean, isPaidAmountVerified: Boolean) {
-        if (paidAmount == 0 || (isKgPcVerified && isPaidAmountVerified)) {
+    private fun initiallizeColors(entry: View, paidAmount: Int, isKgPcVerified: Boolean, isPaidAmountVerified: Boolean) {
+        if(paidAmount == 0) {
+            return
+        }
+        if (isKgPcVerified && isPaidAmountVerified) {
             entry.findViewById<LinearLayout>(R.id.activity_collector_verify_money_collection_fragment_container)
                 .setBackgroundColor(ContextCompat.getColor(this, R.color.verify_delivery_valid))
         } else {
+            entry.findViewById<LinearLayout>(R.id.activity_collector_verify_money_collection_fragment_container)
+                .setBackgroundColor(ContextCompat.getColor(this, R.color.verify_delivery_not_valid))
+        }
+    }
+
+    private fun updateColors(entry: View, paidAmount: Int, isKgPcVerified: Boolean, isPaidAmountVerified: Boolean) {
+        if(paidAmount == 0) {
+            return
+        }
+        if (isKgPcVerified && isPaidAmountVerified) {
+            entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_customer_seq_no).text = "${++doneCounter}"
+            entry.findViewById<LinearLayout>(R.id.activity_collector_verify_money_collection_fragment_container)
+                .setBackgroundColor(ContextCompat.getColor(this, R.color.verify_delivery_valid))
+        } else {
+            entry.findViewById<TextView>(R.id.activity_collector_verify_money_collection_fragment_customer_seq_no).text = ""
+            --doneCounter
             entry.findViewById<LinearLayout>(R.id.activity_collector_verify_money_collection_fragment_container)
                 .setBackgroundColor(ContextCompat.getColor(this, R.color.verify_delivery_not_valid))
         }

@@ -412,8 +412,10 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="Balance Due:"
-                            android:textColor="#AFACAC" />
+                            android:text="Page Due:"
+                            android:textColor="#AFACAC"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/one_shot_delivery_fragment_more_details_container_balance_due"
@@ -423,8 +425,66 @@
                             android:paddingLeft="5dp"
                             android:text="balance_due"
                             android:textColor="#AFACAC"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="10dp"
+                        android:background="#018787"
+                        android:orientation="horizontal"></LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="Lefthand Balance:"
+                            android:textColor="#AFACAC" />
+
+                        <TextView
+                            android:id="@+id/osd_lh_balance"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:paddingLeft="5dp"
+                            android:text="0"
+                            android:textColor="#AFACAC"
                             android:textSize="16sp" />
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="Final Total:"
+                            android:textColor="#AFACAC" />
+
+                        <TextView
+                            android:id="@+id/osd_total_balance_including_lh"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:paddingLeft="5dp"
+                            android:text="0"
+                            android:textColor="#AFACAC"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+
 
                 </LinearLayout>
 

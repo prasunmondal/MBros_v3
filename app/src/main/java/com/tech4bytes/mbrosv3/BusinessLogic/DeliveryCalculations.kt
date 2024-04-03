@@ -3,7 +3,6 @@ package com.tech4bytes.mbrosv3.BusinessLogic
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -82,10 +81,10 @@ class DeliveryCalculations {
         fun getTotalMarketDue(): Int {
             val dueMap: MutableMap<String, Int> = mutableMapOf()
             CustomerDataUtils.getAllLatestRecords().forEach {
-                dueMap[it.name] = NumberUtils.getIntOrZero(it.balanceDue)
+                dueMap[it.name] = NumberUtils.getIntOrZero(it.khataBalance)
             }
             DeliverToCustomerDataHandler.get().forEach {
-                dueMap[it.name] = NumberUtils.getIntOrZero(it.balanceDue)
+                dueMap[it.name] = NumberUtils.getIntOrZero(it.totalBalance)
             }
 
             var sum = 0
@@ -98,7 +97,7 @@ class DeliveryCalculations {
         fun getPrevMarketDue(): Int {
             var sum = 0
             CustomerDataUtils.getAllLatestRecords().forEach {
-                sum += NumberUtils.getIntOrZero(it.balanceDue)
+                sum += NumberUtils.getIntOrZero(it.khataBalance)
             }
             return sum
         }

@@ -70,14 +70,14 @@ class DueShow : AppCompatActivity() {
             // return the avg of the records found within the time range
             return listSorted
                 .filter { t -> isRecordInTimeRange(t, startingTime, endingTime) }
-                .stream().mapToInt { i -> i.balanceDue.toInt() }
+                .stream().mapToInt { i -> i.khataBalance.toInt() }
                 .average().asDouble.toInt()
         } catch (e: NoSuchElementException) {
             return try {
                 // No records found within the time range. Returning last data found earlier to the time range
                 listSorted
                     .filter { t -> LocalDateTime.parse(t.timestamp.replace("Z", "")).isBefore(startingTime) }
-                    .stream().findFirst().get().balanceDue.toInt()
+                    .stream().findFirst().get().khataBalance.toInt()
             } catch (e: NoSuchElementException) {
                 // No records found within the time range and earlier to it. Returning zero
                 0
@@ -93,7 +93,7 @@ class DueShow : AppCompatActivity() {
     }
 
     fun shouldShow(customerData: CustomerData): Boolean {
-        if (NumberUtils.getIntOrZero(customerData.balanceDue) != 0)
+        if (NumberUtils.getIntOrZero(customerData.khataBalance) != 0)
             return true
         if (CustomerKYC.getCustomerByEngName(customerData.name) == null)
             return false

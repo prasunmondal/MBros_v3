@@ -229,6 +229,8 @@ class OSDDeliveryEntryInfo {
             updateTotals: Boolean = true
         ) {
             val kg = getKgForEntry(entry)
+            val otherBalances = getIntOrZero(CustomerKYC.getByName(order.name)!!.otherBalances)
+            val khataDueBalance = getDueBalance(order, entry)
             order.deliveredKg = kg.toString()
             order.deliveredPc = getPcForEntry(entry).toString()
             order.todaysAmount = getTodaysSaleAmountForEntry(entry).toString()
@@ -238,18 +240,21 @@ class OSDDeliveryEntryInfo {
             order.paidOnline =
                 entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidOnline).text.toString()
             order.rate = getRateForEntry(entry).toString()
-            order.totalDue = "${getIntOrZero(order.prevDue) + getTodaysSaleAmountForEntry(entry)}"
-            order.balanceDue = "${
-                getIntOrZero(order.prevDue) + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(
-                    entry
-                )
-            }"
+            order.khataDue = khataDueBalance.toString()
+            order.otherBalances = otherBalances.toString()
 
-            val balanceElement =
+            order.totalBalance = (khataDueBalance + otherBalances).toString()
+
+            val balanceElementBeforeLHDeduction =
                 entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
+            val lhBalanceElement = entry.findViewById<TextView>(R.id.osd_lh_balance)
+            val finalTotalBalanceDue = entry.findViewById<TextView>(R.id.osd_total_balance_including_lh)
 
-            order.balanceDue = getDueBalance(order, entry).toString()
-            balanceElement.text = order.balanceDue
+
+            balanceElementBeforeLHDeduction.text = "$khataDueBalance"
+            lhBalanceElement.text = "$otherBalances"
+            finalTotalBalanceDue.text = "${khataDueBalance + otherBalances}"
+
             BalanceReferralCalculations.calculate(order)
             if (updateTotals) OneShotDelivery.updateTotals(context)
             updateDetailedInfo(order, entry)
@@ -284,7 +289,7 @@ class OSDDeliveryEntryInfo {
                 entry.findViewById(R.id.osd_fragment_balance_before_adjustments)
 
             balanceBeforeAdjustmentElement.text =
-                (getIntOrZero(order.balanceDue) - autoAdjustments.transferAmount).toString()
+                (getIntOrZero(order.totalBalance) - autoAdjustments.transferAmount).toString()
             autoAdjustmentJustification.text = autoAdjustments.message
             autoAdjustmentBalance.text = autoAdjustments.transferAmount.toString()
         }
@@ -313,9 +318,9 @@ class OSDDeliveryEntryInfo {
                 kg.text = "${order.deliveredKg} kg"
                 rate.text = "₹ ${order.rate}"
                 todaysSale.text = "₹ ${order.todaysAmount}"
-                total.text = "₹ ${order.totalDue}"
+                total.text = "₹ ${order.khataDue}"
                 paid.text = "₹ ${order.paid}"
-                balanceDue.text = "₹ ${order.balanceDue}"
+                balanceDue.text = "₹ ${order.totalBalance}"
             }
         }
 
@@ -323,7 +328,7 @@ class OSDDeliveryEntryInfo {
             val prevBal = order.prevDue
             return getIntOrZero(prevBal) + getTodaysSaleAmountForEntry(entry) - getPaidAmountForEntry(
                 entry
-            ) + BalanceReferralCalculations.getTotalDiscountFor(order.name).transferAmount
+            )
         }
 
         private fun getPcForEntry(entry: View): Int {

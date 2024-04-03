@@ -3,7 +3,6 @@ package com.tech4bytes.mbrosv3.Sms.OneShotSMS
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerCalculations
 import com.tech4bytes.mbrosv3.SendInfoTexts.Whatsapp.Whatsapp
 import com.tech4bytes.mbrosv3.Sms.SMSUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
@@ -64,11 +63,12 @@ class OSMSProcessor {
                     .replace("<todaysAmount>", deliveryData.todaysAmount)
                     .replace("<paidAmount>", deliveryData.paid)
                     .replace("<rate>", deliveryData.rate)
-                    .replace("<balanceAmount>", deliveryData.balanceDue)
+                    .replace("<balanceAmountIncludingLH>", deliveryData.khataDue)
+                    .replace("<balanceAmountExcludingLH>", deliveryData.totalBalance)
             }
 
             LogMe.log(smsDetail.toString() + ": " + replaceMethod(smsDetail.enablement_template))
-            val isEnabled = deliveryData.balanceDue.isNotEmpty()
+            val isEnabled = deliveryData.totalBalance.isNotEmpty()
             if (!isEnabled)
                 return null
 
@@ -106,7 +106,7 @@ class OSMSProcessor {
                             .replace("<todaysAmount>", deliveryData.todaysAmount)
                             .replace("<paidAmount>", deliveryData.paid)
                             .replace("<rate>", deliveryData.rate)
-                            .replace("<balanceAmount>", deliveryData.balanceDue)
+                            .replace("<balanceAmount>", deliveryData.totalBalance)
                     }
 
                     LogMe.log(smsDetail.toString() + ": " + replaceMethod(smsDetail.enablement_template))
@@ -145,7 +145,7 @@ class OSMSProcessor {
                             .replace("<todaysAmount>", deliveryData.todaysAmount)
                             .replace("<paidAmount>", deliveryData.paid)
                             .replace("<rate>", deliveryData.rate)
-                            .replace("<balanceAmount>", deliveryData.balanceDue)
+                            .replace("<balanceAmount>", deliveryData.totalBalance)
                     }
 
                     LogMe.log(smsDetail.toString() + ": " + replaceMethod(smsDetail.enablement_template))

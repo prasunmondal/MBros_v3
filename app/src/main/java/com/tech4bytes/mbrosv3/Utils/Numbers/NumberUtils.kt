@@ -7,9 +7,9 @@ import java.text.DecimalFormat
 class NumberUtils {
     companion object {
 
-        fun getIntOrZero(input: String): Int {
+        fun getIntOrZero(input: String?): Int {
             return try {
-                input.toInt()
+                input!!.toInt()
             } catch (e: Exception) {
                 0
             }

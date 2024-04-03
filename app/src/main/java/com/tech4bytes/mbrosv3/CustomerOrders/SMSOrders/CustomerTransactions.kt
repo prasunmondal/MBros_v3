@@ -10,7 +10,6 @@ import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AppCompatActivity
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.CustomerAddTransactionActivity
-import com.tech4bytes.mbrosv3.Finalize.Models.CustomerData
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
@@ -75,7 +74,7 @@ class CustomerTransactions : AppCompatActivity() {
                 entry.findViewById<TextView>(R.id.ct_kg).text = it.deliveredKg
                 entry.findViewById<TextView>(R.id.ct_debit).text = it.deliveredAmount
                 entry.findViewById<TextView>(R.id.ct_credit).text = it.paid
-                entry.findViewById<TextView>(R.id.ct_balance).text = it.balanceDue
+                entry.findViewById<TextView>(R.id.ct_balance).text = it.khataBalance
 
                 runOnUiThread {
                     listContainer.addView(entry)

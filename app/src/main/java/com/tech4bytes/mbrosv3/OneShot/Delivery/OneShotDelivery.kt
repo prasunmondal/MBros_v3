@@ -33,7 +33,6 @@ import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
-import com.tech4bytes.mbrosv3.VehicleManagement.RefuelingUtils
 import org.apache.commons.collections4.CollectionUtils
 
 class OneShotDelivery : AppCompatActivity() {
@@ -304,7 +303,7 @@ class OneShotDelivery : AppCompatActivity() {
                 sumSale += NumberUtils.getIntOrZero(it.value.todaysAmount)
                 sumAmountCollected += NumberUtils.getIntOrZero(it.value.paid)
                 if (NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
-                    sumBalanceDue += NumberUtils.getIntOrZero(it.value.balanceDue)
+                    sumBalanceDue += NumberUtils.getIntOrZero(it.value.totalBalance)
                 }
             }
 
@@ -409,7 +408,7 @@ class OneShotDelivery : AppCompatActivity() {
         allDeliveredRecords.forEach { (s, deliveryObj) ->
             val referCalcObj = BalanceReferralCalculations.getTotalDiscountFor(deliveryObj.name)
             deliveryObj.adjustments = referCalcObj.transferAmount.toString()
-            deliveryObj.balanceDue = (NumberUtils.getIntOrZero(deliveryObj.balanceDue) - referCalcObj.balanceOfReferered).toString()
+            deliveryObj.totalBalance = (NumberUtils.getIntOrZero(deliveryObj.totalBalance) - referCalcObj.balanceOfReferered).toString()
             deliveryObj.notes = referCalcObj.message
         }
 

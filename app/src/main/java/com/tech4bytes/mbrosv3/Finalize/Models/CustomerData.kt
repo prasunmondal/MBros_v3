@@ -31,36 +31,46 @@ class CustomerData : java.io.Serializable {
     var paidOnline = ""
     var paid = ""
     var customerAccount = ""
-    var balanceDue = ""
+    var khataBalance = ""
     var avgWt = ""
     var profit = ""
     var profitPercent = ""
     var notes = ""
     var discount = ""
+    var otherBalances = ""
+    var totalBalance = ""
+    var khataDue = ""
 
-    constructor(orderId: String, timestamp: String, name: String, deliveredPc: String, deliveredKg: String, rate: String, prevAmount: String, deliveredAmount: String, totalAmount: String, paidCash: String, paidOnline: String, paid: String, customerAccount: String, balanceDue: String, profit: String, profitPercent: String, notes: String = "") {
-        this.orderId = orderId
-        this.timestamp = timestamp
-        this.name = name
-        this.deliveredPc = deliveredPc
-        this.deliveredKg = deliveredKg
-        this.rate = rate
-        this.prevAmount = prevAmount
-        this.deliveredAmount = deliveredAmount
-        this.totalAmount = totalAmount
-        this.paidCash = paidCash
-        this.paidOnline = paidOnline
-        this.paid = paid
-        this.customerAccount = customerAccount
-        this.balanceDue = balanceDue
+    constructor(deliveryObj: DeliverToCustomerDataModel, totalProfit: Double, totalKgsDelivered: Int) {
+
+        val profitByCustomer = totalProfit * NumberUtils.getDoubleOrZero(deliveryObj.deliveredKg) / totalKgsDelivered
+        val profitPercentByCustomer = profitByCustomer / totalProfit * 100
+        LogMe.log("ProfitPerCustomer: Name: ${deliveryObj.name}: $totalProfit * ${NumberUtils.getDoubleOrZero(deliveryObj.deliveredKg)} / $totalKgsDelivered = $profitByCustomer")
+
+        this.orderId = deliveryObj.id
+        this.timestamp = deliveryObj.timestamp
+        this.name = deliveryObj.name
+        this.deliveredPc = deliveryObj.deliveredPc
+        this.deliveredKg = deliveryObj.deliveredKg
+        this.rate = deliveryObj.rate
+        this.prevAmount = deliveryObj.prevDue
+        this.deliveredAmount = deliveryObj.todaysAmount
+        this.khataDue = deliveryObj.khataDue
+        this.paidCash = deliveryObj.paidCash
+        this.paidOnline = deliveryObj.paidOnline
+        this.paid = deliveryObj.paid
+        this.customerAccount = deliveryObj.customerAccount
+        this.khataBalance = deliveryObj.khataDue
+        this.otherBalances = deliveryObj.otherBalances
+        this.totalBalance = deliveryObj.totalBalance
         this.avgWt = NumberUtils.roundOff3places(deliveredKg.toDouble() / deliveredPc.toInt()).toString()
-        this.profit = profit
-        this.profitPercent = profitPercent
-        this.notes = notes
+        this.profit = NumberUtils.roundOff2places(profitByCustomer).toString()
+        this.profitPercent = NumberUtils.roundOff2places(profitPercentByCustomer).toString()
+        this.notes = deliveryObj.notes
     }
 
     override fun toString(): String {
-        return "CustomerData(orderId='$orderId', timestamp='$timestamp', name='$name', deliveredPc='$deliveredPc', deliveredKg='$deliveredKg', rate='$rate', prevAmount='$prevAmount', deliveredAmount='$deliveredAmount', totalAmount='$totalAmount', paid='$paid', balanceDue='$balanceDue', avgWt='$avgWt', profit='$profit', profitPercent='$profitPercent')"
+        return "CustomerData(orderId='$orderId', timestamp='$timestamp', name='$name', deliveredPc='$deliveredPc', deliveredKg='$deliveredKg', rate='$rate', prevAmount='$prevAmount', deliveredAmount='$deliveredAmount', totalAmount='$totalAmount', paid='$paid', balanceDue='$khataBalance', avgWt='$avgWt', profit='$profit', profitPercent='$profitPercent')"
     }
 }
 
@@ -92,12 +102,8 @@ object CustomerDataUtils : Tech4BytesSerializable<CustomerData>(
             actualDeliveredKg += NumberUtils.getDoubleOrZero(it.deliveredKg)
         }
         deliveredData.forEach {
-            val profitByCustomer = totalProfit * NumberUtils.getDoubleOrZero(it.deliveredKg) / actualDeliveredKg
-            val profitPercentByCustomer = profitByCustomer / totalProfit * 100
-            LogMe.log("ProfitPerCustomer: Name: ${it.name}: $totalProfit * ${NumberUtils.getDoubleOrZero(it.deliveredKg)} / $actualDeliveredKg = $profitByCustomer")
-
             it.timestamp = DateUtils.getDateInFormat(Date(it.id.toLong()), "M/d/yyyy")
-            val record = CustomerData(it.id, it.timestamp, it.name, it.deliveredPc, it.deliveredKg, it.rate, it.prevDue, it.todaysAmount, it.totalDue, it.paidCash, it.paidOnline, it.paid, it.customerAccount, it.balanceDue, NumberUtils.roundOff2places(profitByCustomer).toString(), NumberUtils.roundOff2places(profitPercentByCustomer).toString())
+            val record = CustomerData(it, actualDeliveredKg, totalProfit)
             addToFinalizeSheet(record)
         }
     }

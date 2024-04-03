@@ -14,11 +14,11 @@ class CustomerDueData {
         fun getBalance(shouldIncludePostDeliveryUpdates: Boolean = true, includeStagedPayments: Boolean = true): MutableMap<String, Int> {
             val dueMap: MutableMap<String, Int> = mutableMapOf()
             CustomerDataUtils.getAllLatestRecordsByAccount().forEach {
-                dueMap[it.customerAccount] = NumberUtils.getIntOrZero(it.balanceDue)
+                dueMap[it.customerAccount] = NumberUtils.getIntOrZero(it.khataBalance)
             }
             if (shouldIncludePostDeliveryUpdates) {
                 DeliverToCustomerDataHandler.get().forEach {
-                    dueMap[it.customerAccount] = NumberUtils.getIntOrZero(it.balanceDue)
+                    dueMap[it.customerAccount] = NumberUtils.getIntOrZero(it.totalBalance)
                 }
             }
             if (includeStagedPayments) {
@@ -38,7 +38,7 @@ class CustomerDueData {
         }
 
         fun getBalanceIncludingLeftHandBalance(name: String, shouldIncludePostDeliveryUpdates: Boolean = true, includeStagedPayments: Boolean = true): Int {
-            return getBalance(name, shouldIncludePostDeliveryUpdates, includeStagedPayments) + NumberUtils.getIntOrZero(CustomerKYC.getByName(name)!!.leftHandBalance)
+            return getBalance(name, shouldIncludePostDeliveryUpdates, includeStagedPayments) + NumberUtils.getIntOrZero(CustomerKYC.getByName(name)!!.otherBalances)
         }
         
         fun getLastFinalizedDue(name: String, useCache: Boolean = true): String {

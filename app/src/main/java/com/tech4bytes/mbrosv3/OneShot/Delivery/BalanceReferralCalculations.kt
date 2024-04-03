@@ -50,7 +50,7 @@ object BalanceReferralCalculations {
         when (referralType) {
             ReferralType.NONE -> {
                 transferAmount = 0
-                result.balanceOfReferered = NumberUtils.getIntOrZero(deliverObjOfCustomer.balanceDue)
+                result.balanceOfReferered = NumberUtils.getIntOrZero(deliverObjOfCustomer.totalBalance)
             }
             ReferralType.BALANCE_TRANSFER -> {
                 transferAmount = (NumberUtils.getIntOrZero(deliverObjOfCustomer.prevDue)
@@ -71,7 +71,7 @@ object BalanceReferralCalculations {
                 val s4 = NumberUtils.getDoubleOrZero((s1 * s2).toString()).toInt()
                 transferAmount = -s4
                 LogMe.log("transferAmount: $transferAmount")
-                result.balanceOfReferered = NumberUtils.getIntOrZero(deliverObjOfCustomer.balanceDue)
+                result.balanceOfReferered = NumberUtils.getIntOrZero(deliverObjOfCustomer.totalBalance)
                 result.message = "Transferred Rs $transferAmount from ${result.from} to ${result.to} for rule ${result.referral_type}."
             }
         }

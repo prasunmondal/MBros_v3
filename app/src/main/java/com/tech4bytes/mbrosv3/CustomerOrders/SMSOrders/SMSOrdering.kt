@@ -190,7 +190,7 @@ class SMSOrdering : AppCompatActivity() {
         orders = Sorter.sortByNameList(orders, SMSOrderModel::name) as MutableList<SMSOrderModel>
         for (j in 0 until orders.size) {
             runOnUiThread {
-                val balance = CustomerDueData.getBalanceExceptLeftHandBalance(orders[j].name)
+                val balance = CustomerDueData.getBalance(orders[j].name)
                 val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_list_fragments, null)
                 entry.findViewById<TextView>(R.id.smsorder_listEntry_calculated_pc).text = orders[j].calculatedPc.toString()
 

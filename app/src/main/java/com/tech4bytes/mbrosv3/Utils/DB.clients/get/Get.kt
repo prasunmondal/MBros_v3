@@ -2,6 +2,7 @@ package com.prasunmondal.postjsontosheets.clients.get
 
 import com.prasunmondal.postjsontosheets.clients.commons.APICalls
 import com.prasunmondal.postjsontosheets.clients.commons.ExecutePostCalls
+import com.tech4bytes.mbrosv3.Utils.DB.clients.get.ByQuery.GetByQuery
 import org.json.JSONObject
 import java.net.URL
 import java.util.function.Consumer
@@ -9,10 +10,12 @@ import java.util.function.Consumer
 class Get() : APICalls, GetFlow, GetFlow.ScriptIdBuilder,
     GetFlow.SheetIdBuilder,
     GetFlow.TabNameBuilder,
-    GetFlow.FinalRequestBuilder {
+    GetFlow.FinalRequestBuilder,
+    GetFlow.ReadyToRun {
     private lateinit var scriptURL: String
     private lateinit var sheetId: String
     private lateinit var tabName: String
+    private var query: String? = null
     private var onCompletion: Consumer<GetResponse>? = null
     private var conditionAndColumn = ""
     private var conditionAndValue = ""
@@ -37,6 +40,10 @@ class Get() : APICalls, GetFlow, GetFlow.ScriptIdBuilder,
     override fun postCompletion(onCompletion: Consumer<GetResponse>?): GetFlow.FinalRequestBuilder {
         this.onCompletion = onCompletion
         return this
+    }
+
+    fun query(query: String) {
+        this.query = query
     }
 
     override fun conditionAnd(
@@ -82,12 +89,18 @@ class Get() : APICalls, GetFlow, GetFlow.ScriptIdBuilder,
     }
 
     override fun execute(): GetResponse {
-        if (conditionOrColumn.isEmpty() && conditionAndColumn.isEmpty())
-            return fetchAll()
+        return if(query != null && query!!.isNotEmpty()) {
+            GetByQuery.builder().scriptId(scriptURL)
+                .sheetId(sheetId)
+                .tabName(tabName)
+                .query(query!!)
+                .build().execute()
+        } else if (conditionOrColumn.isEmpty() && conditionAndColumn.isEmpty())
+            fetchAll()
         else if (conditionAndColumn.isNotEmpty())
-            return fetchConditionAnd()
+            fetchConditionAnd()
         else
-            return fetchConditionOr()
+            fetchConditionOr()
     }
 
     private fun fetchAll(): GetResponse {

@@ -10,6 +10,7 @@ object StagedPaymentUtils : Tech4BytesSerializable<StagedPaymentsModel>(
     ProjectConfig.dBServerScriptURL,
     ProjectConfig.get_db_sheet_id(),
     "stagedPayments",
+    query = null,
     object : TypeToken<ArrayList<StagedPaymentsModel>?>() {}.type,
     appendInServer = true,
     appendInLocal = true) {

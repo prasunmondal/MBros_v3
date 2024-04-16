@@ -28,6 +28,7 @@ object CustomerKYC : Tech4BytesSerializable<CustomerKYCModel>(
     ProjectConfig.dBServerScriptURL,
     ProjectConfig.get_db_sheet_id(),
     "customerDetails",
+    query = null,
     object : TypeToken<ArrayList<CustomerKYCModel>?>() {}.type,
     appendInServer = true,
     appendInLocal = true) {

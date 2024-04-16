@@ -8,6 +8,7 @@ object CustomerMoneyDeposit: Tech4BytesSerializable<CustomerMoneyDepositModel>(
     ProjectConfig.dBServerScriptURL,
     ProjectConfig.get_db_sheet_id(),
     "moneyDeposits",
+    query = null,
     object : TypeToken<ArrayList<CustomerMoneyDepositModel>?>() {}.type,
     appendInServer = true,
     appendInLocal = true

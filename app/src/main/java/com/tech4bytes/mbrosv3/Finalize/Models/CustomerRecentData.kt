@@ -17,72 +17,16 @@ import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import java.util.*
 import java.util.stream.Collectors
 
-class CustomerData : java.io.Serializable {
-    var orderId = ""
-    var timestamp = ""
-    var name = ""
-    var deliveredPc = ""
-    var deliveredKg = ""
-    var rate = ""
-    var prevAmount = ""
-    var deliverAmount = ""
-    var totalAmount = ""
-    var paidCash = ""
-    var paidOnline = ""
-    var paid = ""
-    var customerAccount = ""
-    var khataBalance = ""
-    var avgWt = ""
-    var profit = ""
-    var profitPercent = ""
-    var notes = ""
-    var discount = ""
-    var otherBalances = ""
-    var totalBalance = ""
-    var khataDue = ""
-
-    constructor(deliveryObj: DeliverToCustomerDataModel, totalProfit: Double, totalKgsDelivered: Int) {
-
-        val profitByCustomer = totalProfit * NumberUtils.getDoubleOrZero(deliveryObj.deliveredKg) / totalKgsDelivered
-        val profitPercentByCustomer = profitByCustomer / totalProfit * 100
-        LogMe.log("ProfitPerCustomer: Name: ${deliveryObj.name}: $totalProfit * ${NumberUtils.getDoubleOrZero(deliveryObj.deliveredKg)} / $totalKgsDelivered = $profitByCustomer")
-
-        this.orderId = deliveryObj.id
-        this.timestamp = deliveryObj.timestamp
-        this.name = deliveryObj.name
-        this.deliveredPc = deliveryObj.deliveredPc
-        this.deliveredKg = deliveryObj.deliveredKg
-        this.rate = deliveryObj.rate
-        this.prevAmount = deliveryObj.prevDue
-        this.deliverAmount = deliveryObj.deliverAmount
-        this.khataDue = deliveryObj.khataBalance
-        this.paidCash = deliveryObj.paidCash
-        this.paidOnline = deliveryObj.paidOnline
-        this.paid = deliveryObj.paid
-        this.customerAccount = deliveryObj.customerAccount
-        this.khataBalance = deliveryObj.khataBalance
-        this.otherBalances = deliveryObj.otherBalances
-        this.totalBalance = deliveryObj.totalBalance
-        this.avgWt = NumberUtils.roundOff3places(deliveredKg.toDouble() / deliveredPc.toInt()).toString()
-        this.profit = NumberUtils.roundOff2places(profitByCustomer).toString()
-        this.profitPercent = NumberUtils.roundOff2places(profitPercentByCustomer).toString()
-        this.notes = deliveryObj.notes
-    }
-
-    override fun toString(): String {
-        return "CustomerData(orderId='$orderId', timestamp='$timestamp', name='$name', deliveredPc='$deliveredPc', deliveredKg='$deliveredKg', rate='$rate', prevAmount='$prevAmount', deliveredAmount='$deliverAmount', totalAmount='$totalAmount', paid='$paid', balanceDue='$khataBalance', avgWt='$avgWt', profit='$profit', profitPercent='$profitPercent')"
-    }
-}
-
-object CustomerDataUtils : Tech4BytesSerializable<CustomerData>(
+object CustomerRecentData : Tech4BytesSerializable<CustomerData>(
     ProjectConfig.dBServerScriptURL,
     ProjectConfig.get_db_finalize_sheet_id(),
     "deliveries",
-    null,
+    "=QUERY(IMPORTRANGE(\"https://docs.google.com/spreadsheets/d/11TA2pPlxqajVwkPEigNMPNfsV-12CExxmySk1OMw_v8\",\"deliveries!A2:Az\"), \n" +
+            "\"select * where \"&\" Col1 =\"&TEXTJOIN(\" or Col1=\",true,QUERY(IMPORTRANGE(\"https://docs.google.com/spreadsheets/d/11TA2pPlxqajVwkPEigNMPNfsV-12CExxmySk1OMw_v8\",\"deliveries!A2:Az\"), \"select max( Col1 ) group by Col3 label max( Col1 ) ''\"))&\"\"&\"\")",
     object : TypeToken<ArrayList<CustomerData>?>() {}.type,
     appendInServer = true,
     appendInLocal = true,
-    cacheTag = "allData"
+    cacheTag = "recentData"
 ) {
     fun getCustomerNames(): HashSet<String> {
         val customerNames: HashSet<String> = hashSetOf()
@@ -116,6 +60,39 @@ object CustomerDataUtils : Tech4BytesSerializable<CustomerData>(
             .tabName(FinalizeConfig.SHEET_FINALIZE_DELIVERIES_TAB_NAME)
             .dataObject(record as Any)
             .build().execute()
+    }
+
+    fun getAllLatestRecords(useCache: Boolean = true): MutableList<CustomerData> {
+        var customerRecords = get(useCache).sortedBy { it.orderId }.reversed()
+        val addedNames = mutableListOf<String>()
+        val latestRecordsList = mutableListOf<CustomerData>()
+        customerRecords.forEach {
+            if (!addedNames.contains(it.name)) {
+                latestRecordsList.add(it)
+                addedNames.add(it.name)
+            }
+        }
+        return latestRecordsList
+    }
+
+    fun getAllLatestRecordsByAccount(useCache: Boolean = true): MutableList<CustomerData> {
+//        var customerRecords = Get.builder().scriptId(scriptURL).sheetId(ProjectConfig.get_db_finalize_sheet_id()).tabName(tabname)
+//            .query("=QUERY(IMPORTRANGE(\"https://docs.google.com/spreadsheets/d/11TA2pPlxqajVwkPEigNMPNfsV-12CExxmySk1OMw_v8\",\"deliveries!A2:Az\"), \n" +
+//                    "\"select * where \"&\" Col1 =\"&TEXTJOIN(\" or Col1=\",true,QUERY(IMPORTRANGE(\"https://docs.google.com/spreadsheets/d/11TA2pPlxqajVwkPEigNMPNfsV-12CExxmySk1OMw_v8\",\"deliveries!A2:Az\"), \"select max( Col1 ) group by Col3 label max( Col1 ) ''\"))&\"\"&\"\")").execute()
+        var customerRecords = get(useCache)
+        LogMe.log("Length before filtering: " + customerRecords.size)
+        customerRecords = customerRecords.sortedBy { it.orderId }
+        customerRecords = customerRecords.reversed()
+
+        val addedNames = mutableListOf<String>()
+        val latestRecordsList = mutableListOf<CustomerData>()
+        customerRecords.forEach {
+            if (!addedNames.contains(it.customerAccount)) {
+                latestRecordsList.add(it)
+                addedNames.add(it.customerAccount)
+            }
+        }
+        return latestRecordsList
     }
 
     fun getCustomerDefaultRate(name: String): Int {

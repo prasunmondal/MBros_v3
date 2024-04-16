@@ -12,6 +12,7 @@ object UtilClass : Tech4BytesSerializable<modelClass>(
     ProjectConfig.dBServerScriptURL,
     ProjectConfig.get_db_sheet_id(),
     "testAnd",
+    query = null,
     object : TypeToken<ArrayList<modelClass>?>() {}.type,
     appendInServer = true,
     appendInLocal = true

@@ -12,6 +12,7 @@ object RolesUtils : Tech4BytesSerializable<AppUsersModel>(
     ProjectConfig.dBServerScriptURL,
     ProjectConfig.get_db_sheet_id(),
     "logins",
+    query = null,
     object : TypeToken<ArrayList<AppUsersModel>?>() {}.type,
     appendInServer = true,
     appendInLocal = true,

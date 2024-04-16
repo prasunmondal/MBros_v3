@@ -16,6 +16,7 @@ object SingleAttributedDataUtils : Tech4BytesSerializable<SingleAttributedDataMo
     ProjectConfig.dBServerScriptURL,
     ProjectConfig.get_db_sheet_id(),
     "metadata",
+    query = null,
     object : TypeToken<ArrayList<SingleAttributedDataModel>?>() {}.type,
     appendInServer = true,
     appendInLocal = true,

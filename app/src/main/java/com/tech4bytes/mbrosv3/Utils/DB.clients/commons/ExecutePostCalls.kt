@@ -22,7 +22,7 @@ class ExecutePostCalls(
     override fun onPreExecute() {}
     override fun doInBackground(vararg p0: String?): String {
         return try {
-            Log.e("DBCall:: Outbound", postDataParams.toString())
+            Log.e("DBCall:: Outbound", "scriptURL: $scriptUrl - $postDataParams")
             val conn = scriptUrl.openConnection() as HttpURLConnection
             conn.readTimeout = 150000
             conn.connectTimeout = 150000

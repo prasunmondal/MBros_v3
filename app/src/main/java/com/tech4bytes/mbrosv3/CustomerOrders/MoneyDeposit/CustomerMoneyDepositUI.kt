@@ -1,13 +1,11 @@
 package com.tech4bytes.mbrosv3.CustomerOrders.MoneyDeposit
 
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils

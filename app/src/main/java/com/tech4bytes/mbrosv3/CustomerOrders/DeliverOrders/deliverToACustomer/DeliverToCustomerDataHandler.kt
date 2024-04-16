@@ -8,6 +8,7 @@ object DeliverToCustomerDataHandler : Tech4BytesSerializable<DeliverToCustomerDa
     ProjectConfig.dBServerScriptURL,
     ProjectConfig.get_db_sheet_id(),
     "deliverOrders",
+    query = null,
     object : TypeToken<ArrayList<DeliverToCustomerDataModel>?>() {}.type,
     appendInServer = true,
     appendInLocal = true)

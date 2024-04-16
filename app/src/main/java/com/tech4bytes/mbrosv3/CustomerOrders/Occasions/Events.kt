@@ -1,7 +1,5 @@
 package com.tech4bytes.mbrosv3.CustomerOrders.Occasions
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.google.gson.reflect.TypeToken
 import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
 import com.tech4bytes.mbrosv3.ProjectConfig
@@ -13,6 +11,7 @@ object Events: Tech4BytesSerializable<EventsModel>(
     ProjectConfig.dBServerScriptURL,
     ProjectConfig.get_db_sheet_id(),
     "occasions",
+    query = null,
     object : TypeToken<ArrayList<EventsModel>?>() {}.type,
     appendInServer = true,
     appendInLocal = true

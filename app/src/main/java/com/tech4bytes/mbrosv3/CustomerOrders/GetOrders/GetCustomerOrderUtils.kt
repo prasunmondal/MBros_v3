@@ -9,7 +9,6 @@ import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
-import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
@@ -59,6 +58,7 @@ object GetCustomerOrderUtils : Tech4BytesSerializable<GetCustomerOrderModel>(
     ProjectConfig.dBServerScriptURL,
     ProjectConfig.get_db_sheet_id(),
     "GetOrders",
+    query = null,
     object : TypeToken<ArrayList<GetCustomerOrderModel>?>() {}.type,
     appendInServer = false,
     appendInLocal = false) {

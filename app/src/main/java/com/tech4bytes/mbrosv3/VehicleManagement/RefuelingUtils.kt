@@ -11,6 +11,7 @@ object RefuelingUtils : Tech4BytesSerializable<RefuelingModel>(
     ProjectConfig.dBServerScriptURL,
     ProjectConfig.get_db_sheet_id(),
     "fuel",
+    query = null,
     object : TypeToken<ArrayList<RefuelingModel>?>() {}.type,
     appendInServer = true,
     appendInLocal = true) {

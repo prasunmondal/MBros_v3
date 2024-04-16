@@ -8,6 +8,7 @@ object AppConstantsUtil : Tech4BytesSerializable<AppConstantModel>(
     ProjectConfig.dBServerScriptURL,
     ProjectConfig.get_db_sheet_id(),
     "appConstants",
+    query = null,
     object : TypeToken<ArrayList<AppConstantModel>?>() {}.type,
     appendInServer = true,
     appendInLocal = true,

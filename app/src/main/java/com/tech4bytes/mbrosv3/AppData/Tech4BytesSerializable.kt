@@ -1,15 +1,12 @@
 package com.tech4bytes.mbrosv3.AppData
 
-import android.os.Build
-import androidx.annotation.RequiresApi
-import com.prasunmondal.postjsontosheets.clients.commons.APIResponse
 import com.prasunmondal.postjsontosheets.clients.delete.Delete
 import com.prasunmondal.postjsontosheets.clients.get.Get
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
-import com.tech4bytes.extrack.centralCache.utils.ClassDetailsUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.DB.clients.get.ByQuery.GetByQuery
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import java.lang.reflect.Type
 
@@ -26,6 +23,9 @@ abstract class Tech4BytesSerializable<T : Any> : java.io.Serializable {
     var tabname: String
 
     @Transient
+    var query: String?
+
+    @Transient
     var cacheObjectType: Type
 
     @Transient
@@ -37,20 +37,37 @@ abstract class Tech4BytesSerializable<T : Any> : java.io.Serializable {
     @Transient
     var getEmptyListIfEmpty: Boolean
 
-    constructor(scriptURL: String, sheetURL: String, tabname: String, cacheObjectType: Type, appendInServer: Boolean, appendInLocal: Boolean, getEmptyListIfNoResultsFoundInServer: Boolean = false) {
+    @Transient
+    var cacheTag: String = "default"
+
+    constructor(
+        scriptURL: String,
+        sheetURL: String,
+        tabname: String,
+        query: String? = null,
+        cacheObjectType: Type,
+        appendInServer: Boolean,
+        appendInLocal: Boolean,
+        getEmptyListIfNoResultsFoundInServer: Boolean = false,
+        cacheTag: String = "default") {
         this.scriptURL = scriptURL
         this.sheetURL = sheetURL
         this.tabname = tabname
+        this.query = query
         this.cacheObjectType = cacheObjectType
         this.appendInServer = appendInServer
         this.appendInLocal = appendInLocal
         this.getEmptyListIfEmpty = getEmptyListIfNoResultsFoundInServer
+        this.cacheTag = cacheTag
     }
 
-    @RequiresApi(34)
-    fun get(useCache: Boolean = true, getEmptyListIfEmpty: Boolean = false, filterName: String = "default"): List<T> {
-        val cacheKey = getFilterName(filterName)
-        LogMe.log("Getting records: " + cacheKey)
+    fun get(
+        useCache: Boolean = true,
+        getEmptyListIfEmpty: Boolean = false,
+        cacheTag: String = this.cacheTag
+    ): List<T> {
+        val cacheKey = getFilterName(cacheTag)
+        LogMe.log("Getting records: $cacheKey")
         val cacheResults = try {
             CentralCache.get<T>(AppContexts.get(), cacheKey, useCache)
         } catch (ex: ClassCastException) {
@@ -67,7 +84,7 @@ abstract class Tech4BytesSerializable<T : Any> : java.io.Serializable {
         }
     }
 
-    fun parseNGetResponse(rawResponse: GetResponse): List<T> {
+    private fun parseNGetResponse(rawResponse: GetResponse): List<T> {
         var parsedResponse = rawResponse.parseToObject<T>(rawResponse.getRawResponse(), cacheObjectType)
         if ((getEmptyListIfEmpty || this.getEmptyListIfEmpty) && parsedResponse.isEmpty())
             return listOf()
@@ -76,9 +93,9 @@ abstract class Tech4BytesSerializable<T : Any> : java.io.Serializable {
         return parsedResponse
     }
 
-    fun isDataAvailable(filterName: String = "default"): Boolean {
+    fun isDataAvailable(cacheTag: String = "default"): Boolean {
         val useCache = true
-        val cacheKey = getFilterName(filterName)
+        val cacheKey = getFilterName(cacheTag)
         LogMe.log("Getting records: " + cacheKey)
         val cacheResults = try {
             CentralCache.get<T>(AppContexts.get(), cacheKey, useCache)
@@ -90,11 +107,20 @@ abstract class Tech4BytesSerializable<T : Any> : java.io.Serializable {
 
     private fun getFromServer(): GetResponse {
         LogMe.log("Expensive Operation - get data from server: $sheetURL - $tabname")
-        val result: GetResponse = Get.builder()
-            .scriptId(scriptURL)
-            .sheetId(sheetURL)
-            .tabName(tabname)
-            .build().execute()
+        val result: GetResponse = if(query == null || query!!.isEmpty()) {
+             Get.builder()
+                .scriptId(scriptURL)
+                .sheetId(sheetURL)
+                .tabName(tabname)
+                .build().execute()
+        } else {
+            GetByQuery.builder()
+                .scriptId(scriptURL)
+                .sheetId(sheetURL)
+                .tabName(tabname)
+                .query(query!!)
+                .build().execute()
+        }
 
         return result
     }
@@ -104,15 +130,12 @@ abstract class Tech4BytesSerializable<T : Any> : java.io.Serializable {
         val parsedData = parseNGetResponse(response)
         CentralCache.put(cacheKey, parsedData)
         LogMe.log("Put Complete")
-        LogMe.log("filterName: $cacheKey")
-//        parsedData.forEach {
-//            LogMe.log(it.toString())
-//        }
+        LogMe.log("cacheKey: $cacheKey")
     }
 
-    private fun getFilterName(filterName: String = "default"): String {
+    private fun getFilterName(cacheTag: String = "default"): String {
 //        var callerClassName = ClassDetailsUtils.getCaller(ClassDetailsUtils.getCaller())
-        return "$sheetURL/$tabname/$filterName"
+        return "$sheetURL/$tabname/$cacheTag"
     }
 
     open fun <T : Any> filterResults(list: ArrayList<T>): ArrayList<T> {

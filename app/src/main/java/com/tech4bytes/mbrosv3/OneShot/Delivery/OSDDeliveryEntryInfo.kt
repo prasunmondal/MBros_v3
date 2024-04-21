@@ -145,9 +145,7 @@ class OSDDeliveryEntryInfo {
 
             kgElement.doOnTextChanged { text, start, before, count ->
                 updateAvgKg(entry)
-                Thread {
-                    updateEntry(context as OneShotDelivery, value, entry)
-                }.start()
+                updateEntry(context as OneShotDelivery, value, entry)
             }
 
             paidCashElement.doOnTextChanged { text, start, before, count ->
@@ -230,45 +228,58 @@ class OSDDeliveryEntryInfo {
             entry: View,
             updateTotals: Boolean = true
         ) {
-            val kg = getKgForEntry(entry)
-            val otherBalances = getIntOrZero(CustomerKYC.getByName(order.name)!!.otherBalances)
-            val khataDueBalance = getDueBalance(order, entry)
-            order.deliveredKg = kg.toString()
-            order.deliveredPc = getPcForEntry(entry).toString()
-            order.deliverAmount = getTodaysSaleAmountForEntry(entry).toString()
-            order.paid = getPaidAmountForEntry(entry).toString()
-            order.paidCash =
-                entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidCash).text.toString()
-            order.paidOnline =
-                entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidOnline).text.toString()
-            order.rate = getRateForEntry(entry).toString()
-            order.khataBalance = khataDueBalance.toString()
-            order.otherBalances = otherBalances.toString()
+            Thread {
+                val kg = getKgForEntry(entry)
+                val otherBalances = getIntOrZero(CustomerKYC.getByName(order.name)!!.otherBalances)
+                val khataDueBalance = getDueBalance(order, entry)
+                order.deliveredKg = kg.toString()
+                order.deliveredPc = getPcForEntry(entry).toString()
+                order.deliverAmount = getTodaysSaleAmountForEntry(entry).toString()
+                order.paid = getPaidAmountForEntry(entry).toString()
+                order.paidCash =
+                    entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidCash).text.toString()
+                order.paidOnline =
+                    entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidOnline).text.toString()
+                order.rate = getRateForEntry(entry).toString()
+                order.khataBalance = khataDueBalance.toString()
+                order.otherBalances = otherBalances.toString()
 
-            order.totalBalance = (khataDueBalance + otherBalances).toString()
+                order.totalBalance = (khataDueBalance + otherBalances).toString()
 
-            val balanceElementBeforeLHDeduction =
-                entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
-            val lhBalanceElement = entry.findViewById<TextView>(R.id.osd_lh_balance)
-            val finalTotalBalanceDue = entry.findViewById<TextView>(R.id.osd_total_balance_including_lh)
+                val balanceElementBeforeLHDeduction =
+                    entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
+                val lhBalanceElement = entry.findViewById<TextView>(R.id.osd_lh_balance)
+                val finalTotalBalanceDue =
+                    entry.findViewById<TextView>(R.id.osd_total_balance_including_lh)
 
 
-            balanceElementBeforeLHDeduction.text = "$khataDueBalance"
-            lhBalanceElement.text = "$otherBalances"
-            finalTotalBalanceDue.text = "${khataDueBalance + otherBalances}"
+                balanceElementBeforeLHDeduction.text = "$khataDueBalance"
+                lhBalanceElement.text = "$otherBalances"
+                finalTotalBalanceDue.text = "${khataDueBalance + otherBalances}"
 
-            BalanceReferralCalculations.calculate(order)
-            if (updateTotals) OneShotDelivery.updateTotals(context)
-            updateDetailedInfo(order, entry)
+                BalanceReferralCalculations.calculate(order)
+                if (updateTotals) OneShotDelivery.updateTotals(context)
+                updateDetailedInfo(order, entry)
 
-            val pc = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc)
-            if (kg > 0.0) {
-                pc.setHintTextColor(ContextCompat.getColor(context, R.color.osd_pc_hint_color_2))
-            } else {
-                pc.setHintTextColor(ContextCompat.getColor(context, R.color.osd_pc_hint_color_1))
-            }
+                val pc = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc)
+                if (kg > 0.0) {
+                    pc.setHintTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.osd_pc_hint_color_2
+                        )
+                    )
+                } else {
+                    pc.setHintTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            R.color.osd_pc_hint_color_1
+                        )
+                    )
+                }
 
-            updateAutoAdjustmentBalance(order, entry)
+                updateAutoAdjustmentBalance(order, entry)
+            }.start()
         }
 
         private fun updateAutoAdjustmentBalance(order: DeliverToCustomerDataModel, entry: View) {

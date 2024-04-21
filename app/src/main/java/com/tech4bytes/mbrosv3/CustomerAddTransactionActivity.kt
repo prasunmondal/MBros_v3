@@ -51,7 +51,9 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
         }.start()
 
         paidAmountElement.addTextChangedListener {
-            generateMessage()
+            Thread {
+                generateMessage()
+            }.start()
         }
     }
 
@@ -113,12 +115,12 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
             }
         }
     }
-    fun generateMessage() {
-        smsList = SMSProcessor.getSMSList("PaymentIntimations", getObjFromUI())
+    private fun generateMessage() {
         val smsViewContainer = findViewById<LinearLayout>(R.id.ACT_messageViewer)
-        smsList.forEach {
-            LogMe.log(it.toString())
+        runOnUiThread {
+            OneShotSMS.showMessages(smsViewContainer, mutableListOf())
         }
+        smsList = SMSProcessor.getSMSList("PaymentIntimations", getObjFromUI())
         runOnUiThread {
             OneShotSMS.showMessages(smsViewContainer, smsList)
         }

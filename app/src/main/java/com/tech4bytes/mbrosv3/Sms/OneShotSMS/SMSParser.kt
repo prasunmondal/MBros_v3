@@ -56,7 +56,7 @@ class SMSParser {
             val formattedDate = DateUtils.getDateInFormat("dd/MM/yyyy")
             return template.replace("<date>", formattedDate)
                 .replace("<name>", stagedPayments.name)
-                .replace("<prevDue>", stagedPayments.prevBalance)
+                .replace("<prevDue>", stagedPayments.balanceBeforePayment)
                 .replace("<paidAmount>", stagedPayments.paidAmount)
                 .replace("<balanceIncludingOtherBalances>", stagedPayments.newBalance)
                 .replace("<balanceExcludingOtherBalances>", "stagedPayments.khataBalance")

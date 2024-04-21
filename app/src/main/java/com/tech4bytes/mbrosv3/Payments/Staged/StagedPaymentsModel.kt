@@ -8,7 +8,7 @@ class StagedPaymentsModel(
     var datetime: String = DateUtils.getCurrentTimestamp(),
     var name: String,
     var transactionType: PaymentsType,
-    var prevBalance: String,
+    var balanceBeforePayment: String,
     var paidAmount: String,
     var newBalance: String,
     var paymentMode: String,

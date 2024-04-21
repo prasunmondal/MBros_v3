@@ -10,7 +10,6 @@ import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Payments.PaymentsType
 import com.tech4bytes.mbrosv3.Payments.Staged.StagedPay
-import com.tech4bytes.mbrosv3.Payments.Staged.StagedPaymentUtils
 import com.tech4bytes.mbrosv3.Payments.Staged.StagedPaymentsModel
 import com.tech4bytes.mbrosv3.Sms.OneShotSMS.OneShotSMS
 import com.tech4bytes.mbrosv3.Sms.OneShotSMS.SMS
@@ -141,7 +140,8 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
             id = System.currentTimeMillis().toString(),
             datetime = DateUtils.getCurrentTimestamp(),
             name = nameElement.selectedItem.toString(),
-            prevBalance = CustomerDueData.getLastFinalizedDue(nameElement.selectedItem.toString(), true),
+            balanceBeforePayment = CustomerDueData.getLastFinalizedDue(nameElement.selectedItem.toString(),
+                shouldIncludePostDeliveryUpdates = true),
             transactionType = PaymentsType.valueOf(txnType.uppercase(Locale.ROOT)),
             paidAmount = paidAmountElement.text.toString(),
             paymentMode = txnMode,
@@ -153,7 +153,7 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
         if (stagedObj.transactionType == PaymentsType.DEBIT) {
             paidAmountInt *= -1
         }
-        stagedObj.newBalance = (NumberUtils.getIntOrZero(stagedObj.prevBalance) - paidAmountInt).toString()
+        stagedObj.newBalance = (NumberUtils.getIntOrZero(stagedObj.balanceBeforePayment) - paidAmountInt).toString()
 
         return stagedObj
     }

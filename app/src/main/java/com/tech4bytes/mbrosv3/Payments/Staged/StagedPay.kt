@@ -21,7 +21,7 @@ class StagedPay {
                 id = System.currentTimeMillis().toString(),
                 datetime = DateUtils.getCurrentTimestamp(),
                 name = name,
-                prevBalance = prevBalance,
+                balanceBeforePayment = prevBalance,
                 transactionType = PaymentsType.valueOf(txnType.uppercase(Locale.ROOT)),
                 paidAmount = amountPaid,
                 paymentMode = txnMode,

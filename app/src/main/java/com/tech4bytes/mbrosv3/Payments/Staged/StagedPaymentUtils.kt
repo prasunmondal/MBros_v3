@@ -29,7 +29,7 @@ object StagedPaymentUtils : Tech4BytesSerializable<StagedPaymentsModel>(
         return StagedPaymentsModel(
             id = "",
             datetime = "",
-            prevBalance = "",
+            balanceBeforePayment = "",
             name = name,
             transactionType = PaymentsType.CREDIT,
             paidAmount = sumPaid.toString(),

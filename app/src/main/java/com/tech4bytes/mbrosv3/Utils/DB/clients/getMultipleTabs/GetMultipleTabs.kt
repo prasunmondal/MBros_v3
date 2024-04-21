@@ -62,6 +62,7 @@ class GetMultipleTabs : APICalls, GetMultipleTabsFlow, GetMultipleTabsFlow.Scrip
 
         val c = ExecutePostCalls(scriptUrl, postDataParams) { response -> postExecute(response) }
         var response = c.execute().get()
+        LogMe.log("Inbound Data: " + response)
         val resultsMap = GetMultipleTabsResponse(response).getParsedList()
         resultsMap.forEach { receivedTabName ->
             this.classesToFetch.forEach {

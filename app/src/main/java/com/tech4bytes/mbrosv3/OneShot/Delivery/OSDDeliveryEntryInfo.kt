@@ -144,8 +144,10 @@ class OSDDeliveryEntryInfo {
             }
 
             kgElement.doOnTextChanged { text, start, before, count ->
-                updateEntry(context as OneShotDelivery, value, entry)
                 updateAvgKg(entry)
+                Thread {
+                    updateEntry(context as OneShotDelivery, value, entry)
+                }.start()
             }
 
             paidCashElement.doOnTextChanged { text, start, before, count ->

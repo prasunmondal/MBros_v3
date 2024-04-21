@@ -1,12 +1,14 @@
 package com.tech4bytes.mbrosv3.Customer
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Switch
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
@@ -103,9 +105,9 @@ class DueShow : AppCompatActivity() {
         return false
     }
 
-    private fun removeInActiveCustomers(list: MutableList<CustomerData>): MutableList<CustomerData> {
-        val filteredList = list.stream().filter { p -> shouldShow(p) }.toList()
-        return filteredList.toMutableList()
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+    private fun removeInActiveCustomers(list: MutableList<CustomerData>): List<CustomerData> {
+        return list.stream().filter { p -> shouldShow(p) }.toList()
     }
 
     private fun showDeltas(name: String, currentBalance: Int, view: TextView) {

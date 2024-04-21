@@ -10,9 +10,9 @@ import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 class OSMS {
 
     companion object {
-
+        const val SHEET_TEMPLATE_TAB_NAME = "smsModel"
         fun get(useCache: Boolean = true): List<OSMSModel> {
-            val cacheKey = OSMSConfig.SHEET_TEMPLATE_TAB_NAME
+            val cacheKey = SHEET_TEMPLATE_TAB_NAME
             val cacheResults = CentralCache.get<ArrayList<OSMSModel>>(AppContexts.get(), cacheKey, useCache)
 
             return if (cacheResults != null) {
@@ -24,12 +24,11 @@ class OSMS {
             }
         }
 
-
         private fun getFromServer(): List<OSMSModel> {
             val result: GetResponse = Get.builder()
                 .scriptId(ProjectConfig.dBServerScriptURL)
                 .sheetId(ProjectConfig.get_db_sheet_id())
-                .tabName(OSMSConfig.SHEET_TEMPLATE_TAB_NAME)
+                .tabName(SHEET_TEMPLATE_TAB_NAME)
                 .build().execute()
 
             return result.parseToObject(

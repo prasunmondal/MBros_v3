@@ -40,4 +40,9 @@ data class SMS(
     val number: String,
     val text: String,
     var isEnabled: Boolean = true,
-) : java.io.Serializable
+) : java.io.Serializable {
+
+    override fun toString(): String {
+        return "${medium.toUpperCase()}: $number ($isEnabled) - $text"
+    }
+}

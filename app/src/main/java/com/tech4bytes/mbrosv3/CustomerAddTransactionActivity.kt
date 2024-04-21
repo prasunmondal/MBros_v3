@@ -5,16 +5,38 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
+import com.tech4bytes.mbrosv3.Payments.PaymentsType
 import com.tech4bytes.mbrosv3.Payments.Staged.StagedPay
+import com.tech4bytes.mbrosv3.Payments.Staged.StagedPaymentUtils
+import com.tech4bytes.mbrosv3.Payments.Staged.StagedPaymentsModel
+import com.tech4bytes.mbrosv3.Sms.OneShotSMS.OneShotSMS
+import com.tech4bytes.mbrosv3.Sms.OneShotSMS.SMS
+import com.tech4bytes.mbrosv3.Sms.OneShotSMS.SMSParser
+import com.tech4bytes.mbrosv3.Sms.SMSProcessors.SMSProcessor.SMSProcessor
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
+import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
+import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
+import java.util.Locale
 
 class CustomerAddTransactionActivity : AppCompatActivity() {
+    private var smsList: MutableList<SMS> = mutableListOf()
+    private lateinit var nameElement: Spinner
+    private lateinit var prevAmount: EditText
+    private lateinit var paidAmountElement: EditText
+    private lateinit var notesElement: EditText
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_customer_add_transaction)
+        AppContexts.set(this)
+        nameElement = findViewById(R.id.addTransaction_name)
+        paidAmountElement = findViewById(R.id.addTransaction_amount)
+        notesElement = findViewById(R.id.addTransaction_note)
 
         setUI()
     }
@@ -27,6 +49,10 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
         Thread {
             setCustomerNameDropdown(useCache)
         }.start()
+
+        paidAmountElement.addTextChangedListener {
+            generateMessage()
+        }
     }
 
     private fun setCustomerNameDropdown(useCache: Boolean = true) {
@@ -73,7 +99,7 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUICheckFinalization(useCache: Boolean) {
+    private fun setUICheckFinalization(useCache: Boolean = true) {
         val isFinalized = DaySummaryUtils.isDayFinalized(useCache)
         val uiIndicator = findViewById<TextView>(R.id.addTransaction_finalizedStatus)
 
@@ -87,19 +113,55 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
             }
         }
     }
+    fun generateMessage() {
+        smsList = SMSProcessor.getSMSList("PaymentIntimations", getObjFromUI())
+        val smsViewContainer = findViewById<LinearLayout>(R.id.ACT_messageViewer)
+        smsList.forEach {
+            LogMe.log(it.toString())
+        }
+        runOnUiThread {
+            OneShotSMS.showMessages(smsViewContainer, smsList)
+        }
+    }
 
     fun onClickSubmitBtn(view: View) {
-        val name = findViewById<Spinner>(R.id.addTransaction_name).selectedItem.toString()
-        val prevAmount = CustomerDueData.getLastFinalizedDue(name, false)
-        val paidAmount = findViewById<EditText>(R.id.addTransaction_amount).text.toString()
-        val notes = findViewById<EditText>(R.id.addTransaction_note).text.toString()
+        StagedPay.transact(getObjFromUI())
+    }
 
+    private fun getObjFromUI(): StagedPaymentsModel {
         val selectedTxnTypeElement = findViewById<RadioGroup>(R.id.addTransaction_txn_type).checkedRadioButtonId
         val txnType = findViewById<RadioButton>(selectedTxnTypeElement).text.toString().uppercase()
 
         val selectedTxnModeElement = findViewById<RadioGroup>(R.id.addTransaction_txn_mode).checkedRadioButtonId
         val txnMode = findViewById<RadioButton>(selectedTxnModeElement).text.toString().uppercase()
 
-        StagedPay.transact(name, prevAmount, txnType, paidAmount, txnMode, notes)
+        val stagedObj = StagedPaymentsModel(
+            id = System.currentTimeMillis().toString(),
+            datetime = DateUtils.getCurrentTimestamp(),
+            name = nameElement.selectedItem.toString(),
+            prevBalance = CustomerDueData.getLastFinalizedDue(nameElement.selectedItem.toString(), true),
+            transactionType = PaymentsType.valueOf(txnType.uppercase(Locale.ROOT)),
+            paidAmount = paidAmountElement.text.toString(),
+            paymentMode = txnMode,
+            notes = notesElement.text.toString(),
+            newBalance = "0"
+        )
+
+        var paidAmountInt = NumberUtils.getIntOrZero(stagedObj.paidAmount)
+        if (stagedObj.transactionType == PaymentsType.DEBIT) {
+            paidAmountInt *= -1
+        }
+        stagedObj.newBalance = (NumberUtils.getIntOrZero(stagedObj.prevBalance) - paidAmountInt).toString()
+
+        return stagedObj
+    }
+
+    fun onClickSendMessageBtn(view: View) {
+        smsList.forEach {
+            if (it.isEnabled) {
+                LogMe.log("Sending Message: " + it)
+                SMSParser.sendViaDesiredMedium(it.medium, it.number, it.text)
+            }
+        }
     }
 }

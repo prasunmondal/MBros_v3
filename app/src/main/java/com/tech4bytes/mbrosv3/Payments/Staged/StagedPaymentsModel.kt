@@ -3,7 +3,7 @@ package com.tech4bytes.mbrosv3.Payments.Staged
 import com.tech4bytes.mbrosv3.Payments.PaymentsType
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 
-data class StagedPaymentsModel(
+class StagedPaymentsModel(
     var id: String = System.currentTimeMillis().toString(),
     var datetime: String = DateUtils.getCurrentTimestamp(),
     var name: String,

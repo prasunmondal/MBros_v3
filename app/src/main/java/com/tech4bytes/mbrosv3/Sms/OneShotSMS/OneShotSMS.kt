@@ -1,6 +1,5 @@
 package com.tech4bytes.mbrosv3.Sms.OneShotSMS
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,9 +12,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
-import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetchActivity
 import com.tech4bytes.mbrosv3.MoneyCounter.MoneyCounter
 import com.tech4bytes.mbrosv3.R
+import com.tech4bytes.mbrosv3.Sms.SMSProcessors.SMSProcessor.SMSProcessor
 import com.tech4bytes.mbrosv3.Utils.ContactsUtils.Contacts
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -54,7 +53,10 @@ class OneShotSMS : AppCompatActivity() {
         OSMS.get(useCache)
         val selectedType = initializeCommunicationSelector()
         Contacts.getContactList(this, false)
-        selectCommunication(selectedType)
+        smsList = selectCommunication(selectedType)
+        runOnUiThread {
+            showMessages(container, smsList)
+        }
     }
 
     private fun initializeCommunicationSelector(): String {
@@ -73,17 +75,17 @@ class OneShotSMS : AppCompatActivity() {
             }
         }
         communication_type_selector.setOnItemClickListener { adapterView, view, i, l ->
-            selectCommunication(communication_type_selector.text.toString())
+            smsList = selectCommunication(communication_type_selector.text.toString())
+            runOnUiThread {
+                showMessages(container, smsList)
+            }
         }
         return communicationSelectorOptions[0]
     }
 
-    private fun selectCommunication(selectedCommunications: String) {
+    fun selectCommunication(selectedCommunications: String): MutableList<SMS> {
 //        val finalSelectedCommunication = selectedCommunications ?: communication_type_selector.text.toString()
-        smsList = getSMSList(selectedCommunications)
-        runOnUiThread {
-            showMessages()
-        }
+        return SMSProcessor.getSMSList(selectedCommunications)
     }
 
     private fun getCommunicationSelectorOptions(): List<String> {
@@ -99,30 +101,6 @@ class OneShotSMS : AppCompatActivity() {
         return ListUtils.sortListByFrequency(result)
     }
 
-    private fun showMessages() {
-        container.removeAllViews()
-        var i = 0
-        smsList.forEach { msg ->
-            val layoutInflater = LayoutInflater.from(AppContexts.get())
-            val uiEntry = layoutInflater.inflate(R.layout.activity_one_shot_sms_entry_fragment, null)
-            val contentUI = uiEntry.findViewById<CheckBox>(R.id.osms_entry_sms_content)
-
-            val text = "${Contacts.getNameByNumber(msg.number, "")} - ${msg.number} (${msg.medium})\n\n${msg.text}"
-            contentUI.text = text
-            contentUI.isChecked = msg.isEnabled
-
-            contentUI.setOnClickListener {
-                msg.isEnabled = !msg.isEnabled
-                contentUI.isChecked = msg.isEnabled
-            }
-            container.addView(uiEntry)
-            i++
-        }
-    }
-
-    private fun getIndividualCommType(oSmsModel: OSMSModel): List<String> {
-        return oSmsModel.commReceiverCategory.split(",")
-    }
     fun onClickSendSMS(view: View) {
         val numberOfSMSToSend = smsList.stream().filter{ it.isEnabled }.count()
 
@@ -138,42 +116,37 @@ class OneShotSMS : AppCompatActivity() {
                 ).show()
                 smsList.forEach {
                     if (it.isEnabled) {
-                        OSMSProcessor.sendViaDesiredMedium(it.medium, it.number, it.text)
+                        SMSParser.sendViaDesiredMedium(it.medium, it.number, it.text)
                     }
                 }
             }
             .setNegativeButton(android.R.string.no, null).show()
     }
 
-    private fun getSMSList(selectedCommunications: String): MutableList<SMS> {
-        LogMe.log("Getting messages for type: $selectedCommunications")
-        val smsList: MutableList<SMS> = mutableListOf()
-        OSMS.get().forEach {
-            LogMe.log("Looking for: $selectedCommunications");
-            getIndividualCommType(it).forEach {r ->
-                LogMe.log("..$r..")
-            }
-
-            if (it.isAuthorized() && it.isMsgEnabled(it) && getIndividualCommType(it).contains(selectedCommunications)) {
-                val smsResult: List<SMS>? = when (it.communicationType) {
-                    "DELIVERY_SMS" -> OSMSProcessor.sendDeliverySMS(it)
-                    "DAY_SUMMARY" -> OSMSProcessor.sendDaySummary(it)
-                    "LOAD_DETAILS" -> OSMSProcessor.sendLoadDetails(it)
-                    "DELIVERY_SMS_ONLY_NON_ZERO_KG" -> OSMSProcessor.deliverySMSToNonZeroKgCustomers(it)
-                    "DELIVERY_SMS_ONLY_PAYMENT" -> OSMSProcessor.deliverySMSToOnlyPaymentCustomers(it)
-                    else -> null
-                }
-                if (smsResult != null)
-                    smsList.addAll(smsResult)
-            }
-        }
-        smsList.forEach { sms ->
-            LogMe.log(sms.toString())
-        }
-        return smsList
-    }
-
     fun goToCountMoney(view: View) {
         startActivity(Intent(this, MoneyCounter::class.java))
+    }
+
+    companion object {
+        fun showMessages(container: LinearLayout, smsList: MutableList<SMS>) {
+            container.removeAllViews()
+            var i = 0
+            smsList.forEach { msg ->
+                val layoutInflater = LayoutInflater.from(AppContexts.get())
+                val uiEntry = layoutInflater.inflate(R.layout.activity_one_shot_sms_entry_fragment, null)
+                val contentUI = uiEntry.findViewById<CheckBox>(R.id.osms_entry_sms_content)
+
+                val text = "${Contacts.getNameByNumber(msg.number, "")} - ${msg.number} (${msg.medium})\n\n${msg.text}"
+                contentUI.text = text
+                contentUI.isChecked = msg.isEnabled
+
+                contentUI.setOnClickListener {
+                    msg.isEnabled = !msg.isEnabled
+                    contentUI.isChecked = msg.isEnabled
+                }
+                container.addView(uiEntry)
+                i++
+            }
+        }
     }
 }

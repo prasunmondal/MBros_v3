@@ -246,17 +246,6 @@ class OSDDeliveryEntryInfo {
 
                 order.totalBalance = (khataDueBalance + otherBalances).toString()
 
-                val balanceElementBeforeLHDeduction =
-                    entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
-                val lhBalanceElement = entry.findViewById<TextView>(R.id.osd_lh_balance)
-                val finalTotalBalanceDue =
-                    entry.findViewById<TextView>(R.id.osd_total_balance_including_lh)
-
-
-                balanceElementBeforeLHDeduction.text = "$khataDueBalance"
-                lhBalanceElement.text = "$otherBalances"
-                finalTotalBalanceDue.text = "${khataDueBalance + otherBalances}"
-
                 BalanceReferralCalculations.calculate(order)
                 if (updateTotals) OneShotDelivery.updateTotals(context)
                 updateDetailedInfo(order, entry)
@@ -324,16 +313,34 @@ class OSDDeliveryEntryInfo {
                     entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_total_due)
                 val paid =
                     entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_paid_amount)
-                val balanceDue =
+                val finalKhataBalance =
                     entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_balance_due)
+                val finalTotalBalanceDue =
+                    entry.findViewById<TextView>(R.id.osd_total_balance_including_lh)
+                val balanceElementBeforeLHDeduction =
+                    entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
+                val lhBalanceElement = entry.findViewById<TextView>(R.id.osd_lh_balance)
 
-                prevDue.text = "₹ ${order.prevDue}"
+
                 kg.text = "${order.deliveredKg} kg"
                 rate.text = "₹ ${order.rate}"
+
+                prevDue.text = "₹ ${order.prevDue}"
                 todaysSale.text = "₹ ${order.deliverAmount}"
-                total.text = "₹ ${order.khataBalance}"
+                total.text = "${getIntOrZero(order.prevDue) + getIntOrZero(order.deliverAmount)}"
+
                 paid.text = "₹ ${order.paid}"
-                balanceDue.text = "₹ ${order.totalBalance}"
+
+
+
+
+
+
+                balanceElementBeforeLHDeduction.text = "${order.khataBalance}"
+                finalKhataBalance.text = "₹ ${order.khataBalance}"
+
+                lhBalanceElement.text = "${order.otherBalances}"
+                finalTotalBalanceDue.text = "${getIntOrZero(order.khataBalance) + getIntOrZero(order.otherBalances)}"
             }
         }
 

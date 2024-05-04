@@ -42,9 +42,7 @@ class CustomerDueData {
         }
         
         fun getLastFinalizedDue(name: String, shouldIncludePostDeliveryUpdates: Boolean = false, includeStagedPayments: Boolean = false, useCache: Boolean = true): String {
-            if(getLastFinalizedDue.isEmpty()) {
-                getLastFinalizedDue = getBalance(shouldIncludePostDeliveryUpdates, includeStagedPayments)
-            }
+            getLastFinalizedDue = getBalance(shouldIncludePostDeliveryUpdates, includeStagedPayments)
             return NumberUtils.getIntOrZero(getLastFinalizedDue[name].toString()).toString()
         }
     }

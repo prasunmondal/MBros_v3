@@ -48,6 +48,7 @@ class SMSParser {
                 .replace("<todaysAmount>", deliveryData.deliverAmount)
                 .replace("<paidAmount>", deliveryData.paid)
                 .replace("<rate>", deliveryData.rate)
+                .replace("<otherBalances>", deliveryData.otherBalances)
                 .replace("<balanceIncludingOtherBalances>", deliveryData.totalBalance)
                 .replace("<balanceExcludingOtherBalances>", deliveryData.khataBalance)
         }

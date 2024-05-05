@@ -13,7 +13,8 @@ enum class ActivityAuthEnums : java.io.Serializable {
     SMS_ORDERING,
     CUSTOMER_TRANSACTIONS,
     MONEY_DEPOSITS,
-    WEB_PORTAL;
+    WEB_PORTAL,
+    COMMUNICATION_CENTER;
 
     companion object {
         fun getString(enum: ActivityAuthEnums): String? {
@@ -30,6 +31,7 @@ enum class ActivityAuthEnums : java.io.Serializable {
                 CUSTOMER_TRANSACTIONS -> "Customer Transactions"
                 WEB_PORTAL -> "Web Portal"
                 MONEY_DEPOSITS -> "Money Deposits"
+                COMMUNICATION_CENTER -> "Communication Center"
                 else -> null
             }
         }

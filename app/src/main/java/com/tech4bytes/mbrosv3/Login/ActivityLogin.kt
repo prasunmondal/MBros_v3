@@ -42,6 +42,7 @@ import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotLoad
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
+import com.tech4bytes.mbrosv3.Sms.OneShotSMS.OneShotSMS
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -175,6 +176,7 @@ class ActivityLogin : AppCompatActivity() {
             ActivityAuthEnums.CUSTOMER_TRANSACTIONS -> ::goToCustomerTransactions
             ActivityAuthEnums.WEB_PORTAL -> ::goToWebPortal
             ActivityAuthEnums.MONEY_DEPOSITS -> ::goToMoneyDeposits
+            ActivityAuthEnums.COMMUNICATION_CENTER -> ::goToSendSMSPage
             else -> null
         }
     }
@@ -271,6 +273,9 @@ class ActivityLogin : AppCompatActivity() {
         goToDataFetchActivity(ActivityAuthEnums.ADMIN, ActivityAdminDeliveryDashboard::class.java)
     }
 
+    fun goToSendSMSPage() {
+        goToDataFetchActivity(ActivityAuthEnums.COMMUNICATION_CENTER, OneShotSMS::class.java)
+    }
     private fun goToCustomerTransactions() {
         goToDataFetchActivity(
             ActivityAuthEnums.CUSTOMER_TRANSACTIONS,

@@ -125,14 +125,4 @@ class DataFetchActivity : AppCompatActivity() {
             }
         }.start()
     }
-
-    private fun testFun(singleAttributedDataUtils: Tech4BytesSerializable<*>) {
-        LogMe.log(singleAttributedDataUtils.tabname)
-        try {
-            singleAttributedDataUtils.parseAndSaveToCache(GetResponse(""))
-            LogMe.log("Done")
-        } catch (e: Exception) {
-            LogMe.log(e)
-        }
-    }
 }

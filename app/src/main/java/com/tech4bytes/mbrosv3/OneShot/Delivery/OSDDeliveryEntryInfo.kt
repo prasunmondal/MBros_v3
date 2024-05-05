@@ -268,6 +268,7 @@ class OSDDeliveryEntryInfo {
                 }
 
                 updateAutoAdjustmentBalance(order, entry)
+                updateDetailedInfo(order, entry)
             }.start()
         }
 
@@ -300,7 +301,7 @@ class OSDDeliveryEntryInfo {
             val container =
                 entry.findViewById<LinearLayout>(R.id.one_shot_delivery_fragment_more_details_container)
 
-            if (container.visibility == View.VISIBLE) {
+//            if (container.visibility == View.VISIBLE) {
                 val prevDue =
                     entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_prev_due)
                 val kg =
@@ -333,15 +334,12 @@ class OSDDeliveryEntryInfo {
 
 
 
-
-
-
                 balanceElementBeforeLHDeduction.text = "${order.khataBalance}"
                 finalKhataBalance.text = "₹ ${order.khataBalance}"
 
                 lhBalanceElement.text = "${order.otherBalances}"
                 finalTotalBalanceDue.text = "${getIntOrZero(order.khataBalance) + getIntOrZero(order.otherBalances)}"
-            }
+//            }
         }
 
         private fun getDueBalance(order: DeliverToCustomerDataModel, entry: View): Int {

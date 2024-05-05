@@ -40,9 +40,9 @@ class CustomerDueData {
         fun getBalanceIncludingLeftHandBalance(name: String, shouldIncludePostDeliveryUpdates: Boolean = true, includeStagedPayments: Boolean = true): Int {
             return getBalance(name, shouldIncludePostDeliveryUpdates, includeStagedPayments) + NumberUtils.getIntOrZero(CustomerKYC.getByName(name)!!.otherBalances)
         }
-        
-        fun getLastFinalizedDue(name: String, shouldIncludePostDeliveryUpdates: Boolean = false, includeStagedPayments: Boolean = false, useCache: Boolean = true): String {
-            getLastFinalizedDue = getBalance(shouldIncludePostDeliveryUpdates, includeStagedPayments)
+
+        fun getLastFinalizedDue(name: String, useCache: Boolean = true): String {
+            getLastFinalizedDue = getBalance(false, false)
             return NumberUtils.getIntOrZero(getLastFinalizedDue[name].toString()).toString()
         }
     }

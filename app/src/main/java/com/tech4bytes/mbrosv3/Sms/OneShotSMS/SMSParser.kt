@@ -18,7 +18,7 @@ class SMSParser {
 
         fun parseWithMetadata(smsDetail: OSMSModel): List<SMS>? {
             val metadata = SingleAttributedDataUtils.getRecords()
-            if (smsDetail.inputData.equals(metadata.load_account, true)) {
+            if (smsDetail.inputData.equals(metadata.load_account, true) || smsDetail.inputData.isEmpty()) {
                 val templateToSendInfo = smsDetail.dataTemplate
 
                 val formattedDate = DateUtils.getDateInFormat("dd/MM/yyyy")
@@ -72,7 +72,7 @@ class SMSParser {
             if (!isEnabled)
                 return null
 
-            val text = parseWithDeliveryData(smsDetail.inputData, deliveryData)
+            val text = parseWithDeliveryData(smsDetail.dataTemplate, deliveryData)
             LogMe.log("$smsDetail: $text")
             return listOf(SMS(smsDetail.platform, smsDetail.sendTo, text))
         }
@@ -97,7 +97,7 @@ class SMSParser {
                 val deliveryData = DeliverToCustomerActivity.getDeliveryRecord(customerName)
 
                 if(deliveryData!=null && NumberUtils.getDoubleOrZero(deliveryData.deliveredKg)>0.0) {
-                    val text = parseWithDeliveryData(smsDetail.inputData, deliveryData)
+                    val text = parseWithDeliveryData(smsDetail.dataTemplate, deliveryData)
                     LogMe.log("$smsDetail: $text")
                     list.add(SMS(smsDetail.platform, customerNumber, text))
                 }
@@ -122,7 +122,7 @@ class SMSParser {
                     && NumberUtils.getDoubleOrZero(deliveryData.deliveredKg)==0.0
                     && NumberUtils.getDoubleOrZero(deliveryData.paid) > 0) {
 
-                    val text = parseWithDeliveryData(smsDetail.inputData, deliveryData)
+                    val text = parseWithDeliveryData(smsDetail.dataTemplate, deliveryData)
                     LogMe.log("$smsDetail: $text")
                     list.add(SMS(smsDetail.platform, number, text))
                 }

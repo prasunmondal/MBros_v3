@@ -11,7 +11,7 @@
         android:id="@+id/scrollView5"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/addTransaction_submit_btn"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout29"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -161,6 +161,7 @@
     </ScrollView>
 
     <LinearLayout
+        android:id="@+id/linearLayout29"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="horizontal"

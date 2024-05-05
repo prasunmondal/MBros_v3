@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background2"
     tools:context=".CustomerAddTransactionActivity">
 
     <ScrollView
+        android:id="@+id/scrollView5"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/addTransaction_submit_btn"
@@ -29,20 +31,23 @@
                     android:id="@+id/textView81"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Is Finalized" />
+                    android:text="Is Finalized"
+                    android:textColor="#D8D5D5" />
 
                 <TextView
                     android:id="@+id/addTransaction_finalizedStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="Loading..."
-                    android:padding="20dp" />
+                    android:padding="20dp"
+                    android:textColor="#D8D5D5" />
             </LinearLayout>
 
             <Spinner
                 android:id="@+id/addTransaction_name"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:background="#D7FAF6D3"
                 android:hint="Name" />
 
             <LinearLayout
@@ -54,14 +59,16 @@
                     android:id="@+id/textView82"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Current Balance:" />
+                    android:text="Current Balance:"
+                    android:textColor="#D8D5D5" />
 
                 <TextView
                     android:id="@+id/addTransaction_currentBalance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="Loading..."
-                    android:padding="5dp" />
+                    android:padding="5dp"
+                    android:textColor="#D8D5D5" />
             </LinearLayout>
 
             <RadioGroup
@@ -74,13 +81,15 @@
                     android:id="@+id/addTransaction_txn_type_credit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Credit" />
+                    android:text="Credit"
+                    android:textColor="#D8D5D5" />
 
                 <RadioButton
                     android:id="@+id/addTransaction_txn_type_debit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Debit" />
+                    android:text="Debit"
+                    android:textColor="#D8D5D5" />
             </RadioGroup>
 
             <EditText
@@ -89,7 +98,10 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Amount: 00.00"
-                android:inputType="number" />
+                android:inputType="number"
+                android:textColor="#D8D5D5"
+                android:textColorHint="#72D7D4D4"
+                android:tooltipText="Amount" />
 
             <RadioGroup
                 android:id="@+id/addTransaction_txn_mode"
@@ -101,13 +113,15 @@
                     android:id="@+id/addTransaction_txn_mode_online"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Online Pay" />
+                    android:text="Online Pay"
+                    android:textColor="#D8D5D5" />
 
                 <RadioButton
                     android:id="@+id/addTransaction_txn_mode_cash"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Cash" />
+                    android:text="Cash"
+                    android:textColor="#D8D5D5" />
             </RadioGroup>
 
             <EditText
@@ -116,7 +130,9 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Notes"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textColor="#D8D5D5"
+                android:textColorHint="#72D7D4D4" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -129,6 +145,7 @@
                     android:layout_height="wrap_content"
                     android:paddingTop="20dp"
                     android:text="Message"
+                    android:textColor="#D8D5D5"
                     android:textStyle="bold" />
 
 
@@ -138,31 +155,40 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"></LinearLayout>
 
-                <TextView
-                    android:id="@+id/send_message_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@color/app_dark_buttons_background_color"
-                    android:gravity="center"
-                    android:onClick="onClickSendMessageBtn"
-                    android:text="Send Message"
-                    android:textColor="@color/app_dark_buttons_text_color" />
             </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
 
-    <TextView
-        android:id="@+id/addTransaction_submit_btn"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:background="@color/app_dark_buttons_background_color"
-        android:gravity="center"
-        android:onClick="onClickSubmitBtn"
-        android:text="Submit and Finalize"
-        android:textColor="@color/app_dark_buttons_text_color"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/scrollView5"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/send_message_btn"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@color/app_dark_buttons_background_color"
+            android:gravity="center"
+            android:onClick="onClickSendMessageBtn"
+            android:text="Send Message"
+            android:textColor="@color/app_dark_buttons_text_color" />
+
+        <TextView
+            android:id="@+id/addTransaction_submit_btn"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@color/app_dark_buttons_background_color"
+            android:gravity="center"
+            android:onClick="onClickSubmitBtn"
+            android:text="Submit and Finalize"
+            android:textColor="@color/app_dark_buttons_text_color" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

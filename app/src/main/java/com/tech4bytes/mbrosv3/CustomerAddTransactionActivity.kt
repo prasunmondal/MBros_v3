@@ -126,7 +126,8 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
     }
 
     fun onClickSubmitBtn(view: View) {
-        StagedPay.transact(getObjFromUI())
+        Toast.makeText(this, "Not Yet Supported!", Toast.LENGTH_LONG).show()
+//        StagedPay.transact(getObjFromUI())
     }
 
     private fun getObjFromUI(): StagedPaymentsModel {

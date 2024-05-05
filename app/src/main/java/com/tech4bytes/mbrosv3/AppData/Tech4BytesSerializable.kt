@@ -78,9 +78,11 @@ abstract class Tech4BytesSerializable<T : Any> : java.io.Serializable {
         return if (cacheResults != null) {
             cacheResults as List<T>
         } else {
-            val parsedResponse = parseNGetResponse(getFromServer())
-            CentralCache.put(cacheKey, parsedResponse)
-            parsedResponse
+            synchronized(Tech4BytesSerializableLocks.getLock(cacheKey)!!) {
+                // Synchronized code block
+                println("Synchronized function called with key: $cacheKey")
+                parseAndSaveToCache(getFromServer(), cacheKey)
+            }
         }
     }
 
@@ -125,12 +127,17 @@ abstract class Tech4BytesSerializable<T : Any> : java.io.Serializable {
         return result
     }
 
-    fun parseAndSaveToCache(response: GetResponse) {
-        val cacheKey = getFilterName()
+    fun parseAndSaveToCache(response: GetResponse, cacheKey: String? = null): List<T> {
+        val resolvedCacheKey = if(cacheKey.isNullOrEmpty()) {
+            getFilterName()
+        } else {
+            cacheKey
+        }
         val parsedData = parseNGetResponse(response)
-        CentralCache.put(cacheKey, parsedData)
+        CentralCache.put(resolvedCacheKey, parsedData)
         LogMe.log("Put Complete")
-        LogMe.log("cacheKey: $cacheKey")
+        LogMe.log("cacheKey: $resolvedCacheKey")
+        return parsedData
     }
 
     private fun getFilterName(cacheTag: String = "default"): String {

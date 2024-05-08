@@ -438,13 +438,9 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun filterListToGetDataToSave(map: MutableMap<String, DeliverToCustomerDataModel>): Map<String, DeliverToCustomerDataModel> {
-        return map.filter { x -> shouldRecordThisTransaction(x) }
-    }
-
-    private fun shouldRecordThisTransaction(it: Map.Entry<String, DeliverToCustomerDataModel>): Boolean {
-        return NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0.0
-                || NumberUtils.getIntOrZero(it.value.paid) > 0
-                || NumberUtils.getIntOrZero(it.value.adjustments) != 0
+        return map.filter { x -> NumberUtils.getDoubleOrZero(x.value.deliveredKg) > 0.0
+                || NumberUtils.getIntOrZero(x.value.paid) > 0
+                || NumberUtils.getIntOrZero(x.value.adjustments) != 0 }
     }
 
     fun onClickToggleProfitViewUI(view: View) {

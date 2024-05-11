@@ -23,6 +23,8 @@ import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import java.time.LocalDateTime
+import java.util.stream.Collectors
+import kotlin.streams.toList
 
 class DueShow : AppCompatActivity() {
 
@@ -105,9 +107,8 @@ class DueShow : AppCompatActivity() {
         return false
     }
 
-    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     private fun removeInActiveCustomers(list: MutableList<CustomerData>): List<CustomerData> {
-        return list.stream().filter { p -> shouldShow(p) }.toList()
+        return list.stream().filter { p -> shouldShow(p) }.collect(Collectors.toList())
     }
 
     private fun showDeltas(name: String, currentBalance: Int, view: TextView) {

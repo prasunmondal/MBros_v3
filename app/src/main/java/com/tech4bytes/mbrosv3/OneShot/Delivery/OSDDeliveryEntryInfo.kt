@@ -2,8 +2,6 @@ package com.tech4bytes.mbrosv3.OneShot.Delivery
 
 import android.app.Activity
 import android.content.Context
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
@@ -12,7 +10,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
-import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -28,7 +25,6 @@ import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.SMSUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
-import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils.Companion.getIntOrZero
 
@@ -137,45 +133,31 @@ class OSDDeliveryEntryInfo {
             val paidCashElement =
                 entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidCash)
 
-
-            rateElement.addTextChangedListener {
-                getTextWatcher {
-                    updateEntry(context as OneShotDelivery, value, entry)
-                    fragmentUpdateCustomerWiseRateView(context, value, entry)
-                }
+            rateElement.doOnTextChanged { text, start, before, count ->
+                updateEntry(context as OneShotDelivery, value, entry)
+                fragmentUpdateCustomerWiseRateView(context, value, entry)
             }
 
-
-            pcElement.addTextChangedListener {
-                getTextWatcher {
-                    updateEntry(context as OneShotDelivery, value, entry)
-                    updateAvgKg(entry)
-                }
+            pcElement.doOnTextChanged { text, start, before, count ->
+                updateEntry(context as OneShotDelivery, value, entry)
+                updateAvgKg(entry)
             }
 
-            kgElement.addTextChangedListener {
-                getTextWatcher {
-                    updateAvgKg(entry)
-                    updateEntry(context as OneShotDelivery, value, entry)
-                }
+            kgElement.doOnTextChanged { text, start, before, count ->
+                updateAvgKg(entry)
+                updateEntry(context as OneShotDelivery, value, entry)
             }
 
-            paidCashElement.addTextChangedListener {
-                getTextWatcher {
-                    updatePaidElement(entry)
-                }
+            paidCashElement.doOnTextChanged { text, start, before, count ->
+                updatePaidElement(entry)
             }
 
-            paidOnlineElement.addTextChangedListener {
-                getTextWatcher {
-                    updatePaidElement(entry)
-                }
+            paidOnlineElement.doOnTextChanged { text, start, before, count ->
+                updatePaidElement(entry)
             }
 
-            paidElement.addTextChangedListener {
-                getTextWatcher {
-                    updateEntry(context as OneShotDelivery, value, entry)
-                }
+            paidElement.doOnTextChanged { text, start, before, count ->
+                updateEntry(context as OneShotDelivery, value, entry)
             }
 
             balanceElement.setOnClickListener {
@@ -246,7 +228,7 @@ class OSDDeliveryEntryInfo {
             entry: View,
             updateTotals: Boolean = true
         ) {
-//            Thread {
+            Thread {
                 val kg = getKgForEntry(entry)
                 val otherBalances = getIntOrZero(CustomerKYC.getByName(order.name)!!.otherBalances)
                 val khataDueBalance = getDueBalance(order, entry)
@@ -265,6 +247,8 @@ class OSDDeliveryEntryInfo {
                 order.totalBalance = (khataDueBalance + otherBalances).toString()
 
                 BalanceReferralCalculations.calculate(order)
+                if (updateTotals) OneShotDelivery.updateTotals(context)
+                updateDetailedInfo(order, entry)
 
                 val pc = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc)
                 if (kg > 0.0) {
@@ -285,8 +269,7 @@ class OSDDeliveryEntryInfo {
 
                 updateAutoAdjustmentBalance(order, entry)
                 updateDetailedInfo(order, entry)
-//            }.start()
-            if (updateTotals) OneShotDelivery.updateTotals(context)
+            }.start()
         }
 
         private fun updateAutoAdjustmentBalance(order: DeliverToCustomerDataModel, entry: View) {
@@ -408,37 +391,6 @@ class OSDDeliveryEntryInfo {
             if (rate.isEmpty())
                 return 0
             return rate.toInt()
-        }
-
-        fun getTextWatcher(func: () -> Unit): TextWatcher {
-            val DELAY_MS: Long = 300 // Delay in milliseconds
-
-            val handler = android.os.Handler()
-            var isTyping = false
-
-            val textWatcher: TextWatcher = object : TextWatcher {
-                override fun beforeTextChanged(
-                    charSequence: CharSequence,
-                    i: Int,
-                    i1: Int,
-                    i2: Int
-                ) {
-                }
-
-                override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
-                override fun afterTextChanged(editable: Editable) {
-                    if (!isTyping) {
-                        isTyping = true
-                        LogMe.log("Executing func")
-                        handler.postDelayed(func, DELAY_MS)
-                    } else {
-                        handler.removeCallbacks(func)
-                        LogMe.log("Executing func")
-                        handler.postDelayed(func, DELAY_MS)
-                    }
-                }
-            }
-            return textWatcher
         }
     }
 }

@@ -23,6 +23,7 @@ import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Payments.Staged.StagedPaymentUtils
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.SMSUtils
+import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
@@ -138,30 +139,30 @@ class OSDDeliveryEntryInfo {
             val paidCashElement =
                 entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidCash)
 
-            addOnTextChangeListener(rateElement) {
+            UIUtils.addOnTextChangeListener(rateElement) {
                 updateEntry(context as OneShotDelivery, value, entry)
                 fragmentUpdateCustomerWiseRateView(context, value, entry)
             }
 
-            addOnTextChangeListener(pcElement) {
+            UIUtils.addOnTextChangeListener(pcElement) {
                 updateEntry(context as OneShotDelivery, value, entry)
                 updateAvgKg(entry)
             }
 
-            addOnTextChangeListener(kgElement) {
+            UIUtils.addOnTextChangeListener(kgElement) {
                 updateAvgKg(entry)
                 updateEntry(context as OneShotDelivery, value, entry)
             }
 
-                    addOnTextChangeListener(paidCashElement) {
+            UIUtils.addOnTextChangeListener(paidCashElement) {
                 updatePaidElement(entry)
             }
 
-                    addOnTextChangeListener(paidOnlineElement) {
+            UIUtils.addOnTextChangeListener(paidOnlineElement) {
                 updatePaidElement(entry)
             }
 
-                    addOnTextChangeListener(paidElement) {
+            UIUtils.addOnTextChangeListener(paidElement) {
                 updateEntry(context as OneShotDelivery, value, entry)
             }
 
@@ -395,19 +396,6 @@ class OSDDeliveryEntryInfo {
             if (rate.isEmpty())
                 return 0
             return rate.toInt()
-        }
-
-        fun addOnTextChangeListener(inputField: TextView, func: () -> Unit) {
-            val debouncePeriod: Long = 300 // Delay in milliseconds
-            var debounceJob: Job? = null
-
-            inputField.doOnTextChanged { text, _, _, _ ->
-                debounceJob?.cancel() // Cancel the previous debounce job
-                debounceJob = CoroutineScope(Dispatchers.Main).launch {
-                    delay(debouncePeriod) // Wait for the debounce period
-                    func.invoke()
-                }
-            }
         }
     }
 }

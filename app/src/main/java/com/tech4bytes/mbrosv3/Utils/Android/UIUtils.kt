@@ -10,11 +10,17 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doOnTextChanged
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textview.MaterialTextView
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class UIUtils : AppCompatActivity() {
@@ -76,6 +82,19 @@ class UIUtils : AppCompatActivity() {
                     }
                     (uIElement as AppCompatImageView).setColorFilter(ContextCompat.getColor(AppContexts.get(), colorToSet))
                     uIElement.tag = tag
+                }
+            }
+        }
+
+        fun addOnTextChangeListener(inputField: TextView, func: () -> Unit) {
+            val debouncePeriod: Long = 300 // Delay in milliseconds
+            var debounceJob: Job? = null
+
+            inputField.doOnTextChanged { text, _, _, _ ->
+                debounceJob?.cancel() // Cancel the previous debounce job
+                debounceJob = CoroutineScope(Dispatchers.Main).launch {
+                    delay(debouncePeriod) // Wait for the debounce period
+                    func.invoke()
                 }
             }
         }

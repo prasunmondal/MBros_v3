@@ -13,6 +13,7 @@ import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.SendInfoTexts.Whatsapp.Whatsapp
+import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -48,19 +49,19 @@ class OSDLoadInfo {
         fun setListeners(context: OneShotDelivery, loadPcElement: EditText, loadKgElement: EditText, loadAvgWtElement: TextView, deliveryPriceElement: EditText) {
             val record = SingleAttributedDataUtils.getRecords()
 
-            loadPcElement.doOnTextChanged { text, start, before, count ->
+            UIUtils.addOnTextChangeListener(loadPcElement) {
                 record.actualLoadPc = loadPcElement.text.toString()
                 updateRelatedFields_LoadPcKg(loadPcElement, loadKgElement, loadAvgWtElement)
                 OneShotDelivery.updateTotals(context)
             }
 
-            loadKgElement.doOnTextChanged { text, start, before, count ->
+            UIUtils.addOnTextChangeListener(loadKgElement) {
                 record.actualLoadKg = loadKgElement.text.toString()
                 updateRelatedFields_LoadPcKg(loadPcElement, loadKgElement, loadAvgWtElement)
                 OneShotDelivery.updateTotals(context)
             }
 
-            deliveryPriceElement.doOnTextChanged { text, start, before, count ->
+            UIUtils.addOnTextChangeListener(deliveryPriceElement) {
                 record.bufferRate = DeliveryCalculations.getBufferPrice(record.finalFarmRate, deliveryPriceElement.text.toString()).toString()
 
                 SingleAttributedDataUtils.saveToLocal(record)

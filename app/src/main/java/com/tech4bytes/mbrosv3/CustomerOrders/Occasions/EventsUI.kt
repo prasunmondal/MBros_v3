@@ -1,12 +1,10 @@
 package com.tech4bytes.mbrosv3.CustomerOrders.Occasions
 
 import android.app.Activity
-import android.os.Build
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils

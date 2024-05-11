@@ -1,17 +1,15 @@
 package com.tech4bytes.mbrosv3.Sms.OneShotSMS
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.OneShot.RefuelUI
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
-import java.sql.Ref
 
 class OtherExpensesActivity : AppCompatActivity() {
     private lateinit var refuelUIObj: RefuelUI

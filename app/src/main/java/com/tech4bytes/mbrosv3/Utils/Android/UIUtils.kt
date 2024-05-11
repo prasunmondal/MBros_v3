@@ -86,7 +86,7 @@ class UIUtils : AppCompatActivity() {
             }
         }
 
-        fun addOnTextChangeListener(inputField: TextView, func: () -> Unit) {
+        fun addDebouncedOnTextChangeListener(inputField: TextView, func: () -> Unit) {
             val debouncePeriod: Long = 300 // Delay in milliseconds
             var debounceJob: Job? = null
 

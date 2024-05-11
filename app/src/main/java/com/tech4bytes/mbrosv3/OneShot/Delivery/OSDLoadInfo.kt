@@ -4,8 +4,6 @@ import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.widget.doOnTextChanged
-import com.google.android.material.textfield.TextInputLayout
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
@@ -49,19 +47,19 @@ class OSDLoadInfo {
         fun setListeners(context: OneShotDelivery, loadPcElement: EditText, loadKgElement: EditText, loadAvgWtElement: TextView, deliveryPriceElement: EditText) {
             val record = SingleAttributedDataUtils.getRecords()
 
-            UIUtils.addOnTextChangeListener(loadPcElement) {
+            UIUtils.addDebouncedOnTextChangeListener(loadPcElement) {
                 record.actualLoadPc = loadPcElement.text.toString()
                 updateRelatedFields_LoadPcKg(loadPcElement, loadKgElement, loadAvgWtElement)
                 OneShotDelivery.updateTotals(context)
             }
 
-            UIUtils.addOnTextChangeListener(loadKgElement) {
+            UIUtils.addDebouncedOnTextChangeListener(loadKgElement) {
                 record.actualLoadKg = loadKgElement.text.toString()
                 updateRelatedFields_LoadPcKg(loadPcElement, loadKgElement, loadAvgWtElement)
                 OneShotDelivery.updateTotals(context)
             }
 
-            UIUtils.addOnTextChangeListener(deliveryPriceElement) {
+            UIUtils.addDebouncedOnTextChangeListener(deliveryPriceElement) {
                 record.bufferRate = DeliveryCalculations.getBufferPrice(record.finalFarmRate, deliveryPriceElement.text.toString()).toString()
 
                 SingleAttributedDataUtils.saveToLocal(record)

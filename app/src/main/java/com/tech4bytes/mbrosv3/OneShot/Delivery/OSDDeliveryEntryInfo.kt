@@ -10,7 +10,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
-import androidx.core.widget.doOnTextChanged
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
@@ -28,11 +27,6 @@ import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils.Companion.getIntOrZero
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class OSDDeliveryEntryInfo {
 
@@ -139,30 +133,30 @@ class OSDDeliveryEntryInfo {
             val paidCashElement =
                 entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidCash)
 
-            UIUtils.addOnTextChangeListener(rateElement) {
+            UIUtils.addDebouncedOnTextChangeListener(rateElement) {
                 updateEntry(context as OneShotDelivery, value, entry)
                 fragmentUpdateCustomerWiseRateView(context, value, entry)
             }
 
-            UIUtils.addOnTextChangeListener(pcElement) {
+            UIUtils.addDebouncedOnTextChangeListener(pcElement) {
                 updateEntry(context as OneShotDelivery, value, entry)
                 updateAvgKg(entry)
             }
 
-            UIUtils.addOnTextChangeListener(kgElement) {
+            UIUtils.addDebouncedOnTextChangeListener(kgElement) {
                 updateAvgKg(entry)
                 updateEntry(context as OneShotDelivery, value, entry)
             }
 
-            UIUtils.addOnTextChangeListener(paidCashElement) {
+            UIUtils.addDebouncedOnTextChangeListener(paidCashElement) {
                 updatePaidElement(entry)
             }
 
-            UIUtils.addOnTextChangeListener(paidOnlineElement) {
+            UIUtils.addDebouncedOnTextChangeListener(paidOnlineElement) {
                 updatePaidElement(entry)
             }
 
-            UIUtils.addOnTextChangeListener(paidElement) {
+            UIUtils.addDebouncedOnTextChangeListener(paidElement) {
                 updateEntry(context as OneShotDelivery, value, entry)
             }
 

@@ -138,11 +138,6 @@ class OSDDeliveryEntryInfo {
             val paidCashElement =
                 entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidCash)
 
-//            rateElement.doOnTextChanged { text, start, before, count ->
-//                updateEntry(context as OneShotDelivery, value, entry)
-//                fragmentUpdateCustomerWiseRateView(context, value, entry)
-//            }
-
             addOnTextChangeListener(rateElement) {
                 updateEntry(context as OneShotDelivery, value, entry)
                 fragmentUpdateCustomerWiseRateView(context, value, entry)

@@ -8,6 +8,7 @@ class Contact {
         this.name = name
         this.phoneNumber = phoneNumber
     }
+
     override fun toString(): String {
         return "Contact(name=$name, phoneNumber=$phoneNumber)"
     }

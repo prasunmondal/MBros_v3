@@ -1,8 +1,6 @@
 package com.tech4bytes.mbrosv3.Sms.OneShotSMS
 
-import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
-import com.tech4bytes.mbrosv3.AppUsers.RolesUtils
 
 data class OSMSModel(
     val commReceiverCategory: String,

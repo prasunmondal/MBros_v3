@@ -4,7 +4,7 @@ import com.google.gson.reflect.TypeToken
 import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
 import com.tech4bytes.mbrosv3.ProjectConfig
 
-object CustomerMoneyDeposit: Tech4BytesSerializable<CustomerMoneyDepositModel>(
+object CustomerMoneyDeposit : Tech4BytesSerializable<CustomerMoneyDepositModel>(
     ProjectConfig.dBServerScriptURL,
     ProjectConfig.get_db_sheet_id(),
     "moneyDeposits",
@@ -14,7 +14,7 @@ object CustomerMoneyDeposit: Tech4BytesSerializable<CustomerMoneyDepositModel>(
     appendInLocal = true
 ) {
     override fun <T : Any> sortResults(list: ArrayList<T>): ArrayList<T> {
-        if(list.isEmpty())
+        if (list.isEmpty())
             return arrayListOf()
 
         (list as MutableList<CustomerMoneyDepositModel>).sortBy { it.id }

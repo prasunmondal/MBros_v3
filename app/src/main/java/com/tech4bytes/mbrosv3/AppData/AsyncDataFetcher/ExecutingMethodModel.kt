@@ -1,8 +1,5 @@
 package com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher
 
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataModel
-import kotlin.reflect.KFunction
-
 class ExecutingMethodModel : java.io.Serializable {
     var method: () -> List<Any>
     var description: String = "Get Data"

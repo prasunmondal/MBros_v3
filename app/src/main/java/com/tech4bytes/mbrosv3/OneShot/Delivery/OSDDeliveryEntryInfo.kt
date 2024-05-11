@@ -229,45 +229,45 @@ class OSDDeliveryEntryInfo {
             updateTotals: Boolean = true
         ) {
 //            Thread {
-                val kg = getKgForEntry(entry)
-                val otherBalances = getIntOrZero(CustomerKYC.getByName(order.name)!!.otherBalances)
-                val khataDueBalance = getDueBalance(order, entry)
-                order.deliveredKg = kg.toString()
-                order.deliveredPc = getPcForEntry(entry).toString()
-                order.deliverAmount = getTodaysSaleAmountForEntry(entry).toString()
-                order.paid = getPaidAmountForEntry(entry).toString()
-                order.paidCash =
-                    entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidCash).text.toString()
-                order.paidOnline =
-                    entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidOnline).text.toString()
-                order.rate = getRateForEntry(entry).toString()
-                order.khataBalance = khataDueBalance.toString()
-                order.otherBalances = otherBalances.toString()
+            val kg = getKgForEntry(entry)
+            val otherBalances = getIntOrZero(CustomerKYC.getByName(order.name)!!.otherBalances)
+            val khataDueBalance = getDueBalance(order, entry)
+            order.deliveredKg = kg.toString()
+            order.deliveredPc = getPcForEntry(entry).toString()
+            order.deliverAmount = getTodaysSaleAmountForEntry(entry).toString()
+            order.paid = getPaidAmountForEntry(entry).toString()
+            order.paidCash =
+                entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidCash).text.toString()
+            order.paidOnline =
+                entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidOnline).text.toString()
+            order.rate = getRateForEntry(entry).toString()
+            order.khataBalance = khataDueBalance.toString()
+            order.otherBalances = otherBalances.toString()
 
-                order.totalBalance = (khataDueBalance + otherBalances).toString()
+            order.totalBalance = (khataDueBalance + otherBalances).toString()
 
-                BalanceReferralCalculations.calculate(order)
-                if (updateTotals) OneShotDelivery.updateTotals(context)
+            BalanceReferralCalculations.calculate(order)
+            if (updateTotals) OneShotDelivery.updateTotals(context)
 
-                val pc = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc)
-                if (kg > 0.0) {
-                    pc.setHintTextColor(
-                        ContextCompat.getColor(
-                            context,
-                            R.color.osd_pc_hint_color_2
-                        )
+            val pc = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc)
+            if (kg > 0.0) {
+                pc.setHintTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.osd_pc_hint_color_2
                     )
-                } else {
-                    pc.setHintTextColor(
-                        ContextCompat.getColor(
-                            context,
-                            R.color.osd_pc_hint_color_1
-                        )
+                )
+            } else {
+                pc.setHintTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.osd_pc_hint_color_1
                     )
-                }
+                )
+            }
 
-                updateAutoAdjustmentBalance(order, entry)
-                updateDetailedInfo(order, entry)
+            updateAutoAdjustmentBalance(order, entry)
+            updateDetailedInfo(order, entry)
 //            }.start()
         }
 
@@ -301,43 +301,44 @@ class OSDDeliveryEntryInfo {
                 entry.findViewById<LinearLayout>(R.id.one_shot_delivery_fragment_more_details_container)
 
 //            if (container.visibility == View.VISIBLE) {
-                val prevDue =
-                    entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_prev_due)
-                val kg =
-                    entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_kg)
-                val rate =
-                    entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_rate)
-                val todaysSale =
-                    entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_sale_total)
-                val total =
-                    entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_total_due)
-                val paid =
-                    entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_paid_amount)
-                val finalKhataBalance =
-                    entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_balance_due)
-                val finalTotalBalanceDue =
-                    entry.findViewById<TextView>(R.id.osd_total_balance_including_lh)
-                val balanceElementBeforeLHDeduction =
-                    entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
-                val lhBalanceElement = entry.findViewById<TextView>(R.id.osd_lh_balance)
+            val prevDue =
+                entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_prev_due)
+            val kg =
+                entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_kg)
+            val rate =
+                entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_rate)
+            val todaysSale =
+                entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_sale_total)
+            val total =
+                entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_total_due)
+            val paid =
+                entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_paid_amount)
+            val finalKhataBalance =
+                entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_balance_due)
+            val finalTotalBalanceDue =
+                entry.findViewById<TextView>(R.id.osd_total_balance_including_lh)
+            val balanceElementBeforeLHDeduction =
+                entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
+            val lhBalanceElement = entry.findViewById<TextView>(R.id.osd_lh_balance)
 
 
-                kg.text = "${order.deliveredKg} kg"
-                rate.text = "₹ ${order.rate}"
+            kg.text = "${order.deliveredKg} kg"
+            rate.text = "₹ ${order.rate}"
 
-                prevDue.text = "₹ ${order.prevDue}"
-                todaysSale.text = "₹ ${order.deliverAmount}"
-                total.text = "${getIntOrZero(order.prevDue) + getIntOrZero(order.deliverAmount)}"
+            prevDue.text = "₹ ${order.prevDue}"
+            todaysSale.text = "₹ ${order.deliverAmount}"
+            total.text = "${getIntOrZero(order.prevDue) + getIntOrZero(order.deliverAmount)}"
 
-                paid.text = "₹ ${order.paid}"
+            paid.text = "₹ ${order.paid}"
 
 
 
-                balanceElementBeforeLHDeduction.text = "${order.khataBalance}"
-                finalKhataBalance.text = "₹ ${order.khataBalance}"
+            balanceElementBeforeLHDeduction.text = "${order.khataBalance}"
+            finalKhataBalance.text = "₹ ${order.khataBalance}"
 
-                lhBalanceElement.text = "${order.otherBalances}"
-                finalTotalBalanceDue.text = "${getIntOrZero(order.khataBalance) + getIntOrZero(order.otherBalances)}"
+            lhBalanceElement.text = "${order.otherBalances}"
+            finalTotalBalanceDue.text =
+                "${getIntOrZero(order.khataBalance) + getIntOrZero(order.otherBalances)}"
 //            }
         }
 

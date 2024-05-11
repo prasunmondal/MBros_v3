@@ -11,4 +11,5 @@ object DeliverToCustomerDataHandler : Tech4BytesSerializable<DeliverToCustomerDa
     query = null,
     object : TypeToken<ArrayList<DeliverToCustomerDataModel>?>() {}.type,
     appendInServer = true,
-    appendInLocal = true)
+    appendInLocal = true
+)

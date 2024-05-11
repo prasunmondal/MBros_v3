@@ -38,6 +38,7 @@ class GetByQuery : APICalls, GetByQueryFlow, GetByQueryFlow.ScriptIdBuilder,
         this.query = query
         return this
     }
+
     override fun postCompletion(onCompletion: Consumer<GetByQueryResponse>?): GetByQueryFlow.FinalRequestBuilder {
         this.onCompletion = onCompletion
         return this

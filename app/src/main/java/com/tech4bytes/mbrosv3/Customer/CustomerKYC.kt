@@ -31,7 +31,8 @@ object CustomerKYC : Tech4BytesSerializable<CustomerKYCModel>(
     query = null,
     object : TypeToken<ArrayList<CustomerKYCModel>?>() {}.type,
     appendInServer = true,
-    appendInLocal = true) {
+    appendInLocal = true
+) {
 
     fun getByName(englishName: String): CustomerKYCModel? {
         get().forEach {

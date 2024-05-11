@@ -12,7 +12,7 @@ data class CustomerMoneyDepositModel(
     val creditAmount: String,
     val handOverTo: String,
     val notes: String
-): Serializable {
+) : Serializable {
 
     override fun toString(): String {
         return "MoneyDepositModel(id='$id', beneficiary='$beneficiary', mode='$mode', debitAccount='$debitAccount', creditAccount='$creditAccount', debitAmount='$debitAmount', creditAmount='$creditAmount', handOverTo='$handOverTo', notes='$notes')"

@@ -17,6 +17,7 @@ class AuthorizationUtils {
             }
             return listOfRoles
         }
+
         fun getAllUserAuthorizations(): List<AuthorizationEnums> {
             val listOfRoles = mutableListOf<AuthorizationEnums>()
             val appUsersData = RolesUtils.getAppUser()

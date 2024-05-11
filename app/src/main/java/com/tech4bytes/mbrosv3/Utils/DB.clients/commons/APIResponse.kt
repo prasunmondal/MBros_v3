@@ -5,9 +5,6 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import com.google.gson.reflect.TypeToken
-import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstantModel
-import java.lang.NullPointerException
 import java.lang.reflect.Type
 
 open class APIResponse {

@@ -12,4 +12,5 @@ object AppConstantsUtil : Tech4BytesSerializable<AppConstantModel>(
     object : TypeToken<ArrayList<AppConstantModel>?>() {}.type,
     appendInServer = true,
     appendInLocal = true,
-    getEmptyListIfNoResultsFoundInServer = true)
+    getEmptyListIfNoResultsFoundInServer = true
+)

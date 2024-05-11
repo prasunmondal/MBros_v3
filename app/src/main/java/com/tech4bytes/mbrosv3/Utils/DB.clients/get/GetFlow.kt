@@ -1,6 +1,5 @@
 package com.prasunmondal.postjsontosheets.clients.get
 
-import com.tech4bytes.mbrosv3.Utils.DB.clients.get.ByQuery.GetByQuery
 import java.util.function.Consumer
 
 interface GetFlow {

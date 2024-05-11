@@ -5,7 +5,10 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 
 class DateUtils {
@@ -116,7 +119,8 @@ class DateUtils {
         fun getNextTimeOccurrenceTimestamp(hourIn24Hour: Int): LocalDateTime {
             val currentDateTime: LocalDateTime? = LocalDateTime.now()
             val todayAt4Pm: LocalDateTime? = currentDateTime!!.toLocalDate().atTime(hourIn24Hour, 0)
-            val tomorrowAt4Pm: LocalDateTime? = currentDateTime.toLocalDate().plusDays(1).atTime(hourIn24Hour, 0)
+            val tomorrowAt4Pm: LocalDateTime? =
+                currentDateTime.toLocalDate().plusDays(1).atTime(hourIn24Hour, 0)
 
             if (todayAt4Pm!!.isAfter(currentDateTime)) {
                 return todayAt4Pm

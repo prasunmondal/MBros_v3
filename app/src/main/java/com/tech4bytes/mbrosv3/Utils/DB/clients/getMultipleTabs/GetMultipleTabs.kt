@@ -49,7 +49,7 @@ class GetMultipleTabs : APICalls, GetMultipleTabsFlow, GetMultipleTabsFlow.Scrip
 
     private fun fetchAllMultipleTabs(): GetMultipleTabsResponse {
 
-        if(isAllDataAvailable()) {
+        if (isAllDataAvailable()) {
             return GetMultipleTabsResponse("OK")
         }
 
@@ -78,7 +78,7 @@ class GetMultipleTabs : APICalls, GetMultipleTabsFlow, GetMultipleTabsFlow.Scrip
         this.classesToFetch.forEach {
             val t = it.isDataAvailable()
             LogMe.log("Data Available: " + it.tabname + " - $t")
-            if(t == false)
+            if (t == false)
                 return false
         }
         return true

@@ -89,7 +89,7 @@ class Get() : APICalls, GetFlow, GetFlow.ScriptIdBuilder,
     }
 
     override fun execute(): GetResponse {
-        return if(query != null && query!!.isNotEmpty()) {
+        return if (query != null && query!!.isNotEmpty()) {
             GetByQuery.builder().scriptId(scriptURL)
                 .sheetId(sheetId)
                 .tabName(tabName)

@@ -228,7 +228,7 @@ class OSDDeliveryEntryInfo {
             entry: View,
             updateTotals: Boolean = true
         ) {
-            Thread {
+//            Thread {
                 val kg = getKgForEntry(entry)
                 val otherBalances = getIntOrZero(CustomerKYC.getByName(order.name)!!.otherBalances)
                 val khataDueBalance = getDueBalance(order, entry)
@@ -248,7 +248,6 @@ class OSDDeliveryEntryInfo {
 
                 BalanceReferralCalculations.calculate(order)
                 if (updateTotals) OneShotDelivery.updateTotals(context)
-                updateDetailedInfo(order, entry)
 
                 val pc = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc)
                 if (kg > 0.0) {
@@ -269,7 +268,7 @@ class OSDDeliveryEntryInfo {
 
                 updateAutoAdjustmentBalance(order, entry)
                 updateDetailedInfo(order, entry)
-            }.start()
+//            }.start()
         }
 
         private fun updateAutoAdjustmentBalance(order: DeliverToCustomerDataModel, entry: View) {

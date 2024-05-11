@@ -1,6 +1,5 @@
 package com.tech4bytes.mbrosv3.Utils.DB.clients.get.ByQuery
 
-import com.prasunmondal.postjsontosheets.clients.get.GetFlow
 import com.prasunmondal.postjsontosheets.clients.get.GetResponse
 import java.util.function.Consumer
 
@@ -21,6 +20,7 @@ interface GetByQueryFlow {
     interface AddQueryBuilder {
         fun query(query: String): FinalRequestBuilder
     }
+
     interface FinalRequestBuilder {
         // All optional parameters goes here
         fun build(): GetByQuery

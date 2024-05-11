@@ -50,8 +50,8 @@
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:gravity="left"
-                android:paddingRight="5dp"
                 android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:text="88"
                 android:textColor="#F6B6CE"
                 android:textSize="14sp" />

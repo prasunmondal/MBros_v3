@@ -27,6 +27,11 @@ import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils.Companion.getIntOrZero
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class OSDDeliveryEntryInfo {
 
@@ -122,7 +127,7 @@ class OSDDeliveryEntryInfo {
             val entry = uiMaps[value.name]!!
             val rateElement = entry.findViewById<TextInputEditText>(R.id.osd_rate_for_customer)
             val pcElement = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_pc)
-            val kgElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_kg)
+            val kgElement = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_kg)
             val paidElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid)
             val balanceElement =
                 entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
@@ -133,30 +138,35 @@ class OSDDeliveryEntryInfo {
             val paidCashElement =
                 entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidCash)
 
-            rateElement.doOnTextChanged { text, start, before, count ->
+//            rateElement.doOnTextChanged { text, start, before, count ->
+//                updateEntry(context as OneShotDelivery, value, entry)
+//                fragmentUpdateCustomerWiseRateView(context, value, entry)
+//            }
+
+            addOnTextChangeListener(rateElement) {
                 updateEntry(context as OneShotDelivery, value, entry)
                 fragmentUpdateCustomerWiseRateView(context, value, entry)
             }
 
-            pcElement.doOnTextChanged { text, start, before, count ->
+            addOnTextChangeListener(pcElement) {
                 updateEntry(context as OneShotDelivery, value, entry)
                 updateAvgKg(entry)
             }
 
-            kgElement.doOnTextChanged { text, start, before, count ->
+            addOnTextChangeListener(kgElement) {
                 updateAvgKg(entry)
                 updateEntry(context as OneShotDelivery, value, entry)
             }
 
-            paidCashElement.doOnTextChanged { text, start, before, count ->
+                    addOnTextChangeListener(paidCashElement) {
                 updatePaidElement(entry)
             }
 
-            paidOnlineElement.doOnTextChanged { text, start, before, count ->
+                    addOnTextChangeListener(paidOnlineElement) {
                 updatePaidElement(entry)
             }
 
-            paidElement.doOnTextChanged { text, start, before, count ->
+                    addOnTextChangeListener(paidElement) {
                 updateEntry(context as OneShotDelivery, value, entry)
             }
 
@@ -390,6 +400,19 @@ class OSDDeliveryEntryInfo {
             if (rate.isEmpty())
                 return 0
             return rate.toInt()
+        }
+
+        fun addOnTextChangeListener(inputField: TextView, func: () -> Unit) {
+            val debouncePeriod: Long = 300 // Delay in milliseconds
+            var debounceJob: Job? = null
+
+            inputField.doOnTextChanged { text, _, _, _ ->
+                debounceJob?.cancel() // Cancel the previous debounce job
+                debounceJob = CoroutineScope(Dispatchers.Main).launch {
+                    delay(debouncePeriod) // Wait for the debounce period
+                    func.invoke()
+                }
+            }
         }
     }
 }

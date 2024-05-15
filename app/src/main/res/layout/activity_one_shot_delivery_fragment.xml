@@ -78,8 +78,8 @@
                             android:hint="Rate"
                             android:inputType="number"
                             android:nextFocusDown="@+id/one_shot_delivery_fragment_pc"
-                            android:textColor="#D3D2D2"
-                            android:textColorHint="#9A9797"
+                            android:textColor="#74D3D2D2"
+                            android:textColorHint="#7E9A9797"
                             android:textSize="14dp" />
 
                     </com.google.android.material.textfield.TextInputLayout>

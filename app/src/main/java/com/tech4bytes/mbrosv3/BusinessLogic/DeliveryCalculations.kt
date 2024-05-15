@@ -78,7 +78,7 @@ class DeliveryCalculations {
             return kmCost + labourCost + inHandCashExpenses
         }
 
-        fun getTotalMarketDue(): Int {
+        fun getCumilativeKhataDue(): Int {
             val dueMap: MutableMap<String, Int> = mutableMapOf()
             CustomerRecentData.getAllLatestRecords().forEach {
                 dueMap[it.name] = NumberUtils.getIntOrZero(it.khataBalance)

@@ -90,7 +90,7 @@ object DaySummaryUtils {
         daySummaryObj.sold_amount = "${DeliveryCalculations.getDaySaleAmount()}"
         daySummaryObj.paid_amount = "${DeliveryCalculations.getTotalOfPaidAmounts()}"
         daySummaryObj.prev_due_balance = "${DeliveryCalculations.getPrevMarketDue()}"
-        daySummaryObj.new_due_balance = "${DeliveryCalculations.getTotalMarketDue()}"
+        daySummaryObj.new_due_balance = "${DeliveryCalculations.getCumilativeKhataDue()}"
         daySummaryObj.loadingCompany = metadata.load_companyName
         daySummaryObj.loadingBranch = metadata.load_branch
         daySummaryObj.loadingArea = metadata.load_area

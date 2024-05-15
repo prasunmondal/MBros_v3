@@ -89,7 +89,7 @@ object DaySummaryUtils {
         daySummaryObj.shortage = "${NumberUtils.roundOff3places(DeliveryCalculations.getShortage(daySummaryObj.kg, daySummaryObj.deliveredKg))}"
         daySummaryObj.sold_amount = "${DeliveryCalculations.getDaySaleAmount()}"
         daySummaryObj.paid_amount = "${DeliveryCalculations.getTotalOfPaidAmounts()}"
-        daySummaryObj.prev_due_balance = "${DeliveryCalculations.getPrevMarketDue()}"
+        daySummaryObj.prev_due_balance = "${DeliveryCalculations.getPrevCumilativeKhataDue()}"
         daySummaryObj.new_due_balance = "${DeliveryCalculations.getCumilativeKhataDue()}"
         daySummaryObj.loadingCompany = metadata.load_companyName
         daySummaryObj.loadingBranch = metadata.load_branch

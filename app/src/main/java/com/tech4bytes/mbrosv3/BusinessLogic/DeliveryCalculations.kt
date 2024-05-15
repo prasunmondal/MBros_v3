@@ -94,7 +94,7 @@ class DeliveryCalculations {
             return sum
         }
 
-        fun getPrevMarketDue(): Int {
+        fun getPrevCumilativeKhataDue(): Int {
             var sum = 0
             CustomerRecentData.getAllLatestRecords().forEach {
                 sum += NumberUtils.getIntOrZero(it.khataBalance)

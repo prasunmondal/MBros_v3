@@ -84,7 +84,7 @@ class DeliveryCalculations {
                 dueMap[it.name] = NumberUtils.getIntOrZero(it.khataBalance)
             }
             DeliverToCustomerDataHandler.get().forEach {
-                dueMap[it.name] = NumberUtils.getIntOrZero(it.totalBalance)
+                dueMap[it.name] = NumberUtils.getIntOrZero(it.khataBalance)
             }
 
             var sum = 0

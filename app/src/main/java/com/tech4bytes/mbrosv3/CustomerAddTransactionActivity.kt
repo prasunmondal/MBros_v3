@@ -11,6 +11,7 @@ import android.widget.RadioGroup
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
@@ -166,11 +167,25 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
     }
 
     fun onClickSendMessageBtn(view: View) {
-        smsList.forEach {
-            if (it.isEnabled) {
-                LogMe.log("Sending Message: " + it)
-                SMSParser.sendViaDesiredMedium(it.medium, it.number, it.text)
+
+        val numberOfSMSToSend = smsList.stream().filter{ it.isEnabled }.count()
+
+        AlertDialog.Builder(this)
+            .setTitle("Send Messages?")
+            .setMessage("Sending $numberOfSMSToSend messages? \nR U Sure?")
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .setPositiveButton(android.R.string.yes) { dialog, whichButton ->
+                Toast.makeText(
+                    this,
+                    "",
+                    Toast.LENGTH_SHORT
+                ).show()
+                smsList.forEach {
+                    if (it.isEnabled) {
+                        SMSParser.sendViaDesiredMedium(it.medium, it.number, it.text)
+                    }
+                }
             }
-        }
+            .setNegativeButton(android.R.string.no, null).show()
     }
 }

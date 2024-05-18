@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
+import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
 import com.tech4bytes.mbrosv3.Payments.PaymentsType
 import com.tech4bytes.mbrosv3.Payments.Staged.StagedPaymentsModel
 import com.tech4bytes.mbrosv3.Sms.OneShotSMS.OneShotSMS
@@ -196,6 +197,11 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
         bundle.putString("communication_selector_type", "Shareholder")
         bundle.putBoolean("useCache", false)
         switchActivityIntent.putExtras(bundle)
+        startActivity(switchActivityIntent)
+    }
+
+    fun onClickGoToDelivery(view: View) {
+        val switchActivityIntent = Intent(this, OneShotDelivery::class.java)
         startActivity(switchActivityIntent)
     }
 }

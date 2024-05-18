@@ -33,24 +33,27 @@ class OneShotSMS : AppCompatActivity() {
         supportActionBar!!.hide()
         AppContexts.set(this)
 
+        val inputCommunicationSelectorOption = intent.extras!!.get("communication_selector_type") as String
+        val inputUseCache = intent.extras!!.get("useCache") as Boolean
+
         container = findViewById(R.id.osms_container)
         communication_type_selector = findViewById(R.id.comcentre_communication_type)
         refreshBtn = findViewById(R.id.msg_cntr_refresh_btn)
 
         Thread {
-            initializeListeners()
-            processAndShowMessages()
+            initializeListeners(inputCommunicationSelectorOption)
+            processAndShowMessages(inputCommunicationSelectorOption, inputUseCache)
         }.start()
     }
 
-    private fun initializeListeners() {
+    private fun initializeListeners(communicationSelectorOption: String) {
         refreshBtn.setOnClickListener {
-            processAndShowMessages(false)
+            processAndShowMessages(communicationSelectorOption, false)
         }
     }
-    fun processAndShowMessages(useCache: Boolean = true) {
+    fun processAndShowMessages(communicationSelectorOption: String, useCache: Boolean = true) {
         OSMS.get(useCache)
-        val selectedType = initializeCommunicationSelector()
+        val selectedType = initializeCommunicationSelector(communicationSelectorOption)
         Contacts.getContactList(this, false)
         smsList = selectCommunication(selectedType)
         runOnUiThread {
@@ -58,14 +61,20 @@ class OneShotSMS : AppCompatActivity() {
         }
     }
 
-    private fun initializeCommunicationSelector(): String {
+    private fun initializeCommunicationSelector(communicationSelectorOption: String): String {
         val communicationSelectorOptions = getCommunicationSelectorOptions()
 
         val adapter: ArrayAdapter<String> =
             ArrayAdapter<String>(this, R.layout.template_dropdown_entry, communicationSelectorOptions)
         runOnUiThread {
             communication_type_selector.setAdapter(adapter)
-            communication_type_selector.setText(communicationSelectorOptions[0], false)
+
+            if(communicationSelectorOption.isNotBlank() && communicationSelectorOptions.contains(communicationSelectorOption))
+                communication_type_selector.setText(communicationSelectorOption, false)
+            else
+                communication_type_selector.setText(communicationSelectorOptions[0], false)
+
+
             communication_type_selector.threshold = 0
             communication_type_selector.setOnTouchListener { _, _ ->
                 communication_type_selector.showDropDown()

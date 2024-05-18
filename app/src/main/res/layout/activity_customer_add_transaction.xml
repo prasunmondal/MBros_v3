@@ -189,6 +189,18 @@
             android:gravity="center"
             android:onClick="onClickSubmitBtn"
             android:text="Submit and Finalize"
+            android:textColor="@color/app_dark_buttons_text_color"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/send_report_btn"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@color/app_dark_buttons_background_color"
+            android:gravity="center"
+            android:onClick="onClickSendReport"
+            android:text="Send Report"
             android:textColor="@color/app_dark_buttons_text_color" />
     </LinearLayout>
 

@@ -1,5 +1,6 @@
 package com.tech4bytes.mbrosv3
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
@@ -187,5 +188,14 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
                 }
             }
             .setNegativeButton(android.R.string.no, null).show()
+    }
+
+    fun onClickSendReport(view: View) {
+        val switchActivityIntent = Intent(this, OneShotSMS::class.java)
+        val bundle = Bundle()
+        bundle.putString("communication_selector_type", "Shareholder")
+        bundle.putBoolean("useCache", false)
+        switchActivityIntent.putExtras(bundle)
+        startActivity(switchActivityIntent)
     }
 }

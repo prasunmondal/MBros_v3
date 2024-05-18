@@ -33,8 +33,8 @@ class OneShotSMS : AppCompatActivity() {
         supportActionBar!!.hide()
         AppContexts.set(this)
 
-        val inputCommunicationSelectorOption = intent.extras!!.get("communication_selector_type") as String
-        val inputUseCache = intent.extras!!.get("useCache") as Boolean
+        val inputCommunicationSelectorOption = try {intent.extras!!.get("communication_selector_type") as String} catch (e: Exception) {""}
+        val inputUseCache = try {intent.extras!!.get("useCache") as Boolean} catch (e: Exception) {true}
 
         container = findViewById(R.id.osms_container)
         communication_type_selector = findViewById(R.id.comcentre_communication_type)

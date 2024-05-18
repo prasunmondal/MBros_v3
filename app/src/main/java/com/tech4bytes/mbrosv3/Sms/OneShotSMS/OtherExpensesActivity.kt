@@ -53,6 +53,10 @@ class OtherExpensesActivity : AppCompatActivity() {
 
     fun goToSendSMSPage(view: View) {
         val switchActivityIntent = Intent(this, OneShotSMS::class.java)
+        val bundle = Bundle()
+        bundle.putString("communication_selector_type", "Shareholder")
+        bundle.putBoolean("useCache", false)
+        switchActivityIntent.putExtras(bundle)
         startActivity(switchActivityIntent)
     }
 }

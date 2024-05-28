@@ -16,6 +16,22 @@ object StagedPaymentUtils : Tech4BytesSerializable<StagedPaymentsModel>(
     appendInLocal = true) {
 
     fun getStagedPayments(name: String, useCache: Boolean = true): StagedPaymentsModel {
+
+        // disable stagedpayents
+        // delete the below return block to enable StagedPayments
+        return StagedPaymentsModel(
+            id = "",
+            datetime = "",
+            balanceBeforePayment = "",
+            name = name,
+            transactionType = PaymentsType.CREDIT,
+            paidAmount = "",
+            newBalance = "",
+            paymentMode = "",
+            notes = ""
+        )
+
+
         val list = get(useCache).filter { it.name == name }
         var sumPaid = 0
         var allNotes = ""

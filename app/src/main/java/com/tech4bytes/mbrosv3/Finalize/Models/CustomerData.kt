@@ -119,7 +119,7 @@ object CustomerDataUtils : Tech4BytesSerializable<CustomerData>(
     }
 
     fun getCustomerDefaultRate(name: String): Int {
-        return SingleAttributedDataUtils.getFinalRateInt() + SingleAttributedDataUtils.getBufferRateInt() + CustomerKYC.getByName(name)!!.rateDifference.toInt()
+        return SingleAttributedDataUtils.getFinalRateInt() + SingleAttributedDataUtils.getBufferRateInt() + NumberUtils.getIntOrZero(CustomerKYC.getByName(name)!!.rateDifference)
     }
 
     fun getDeliveryRate(name: String): Int {

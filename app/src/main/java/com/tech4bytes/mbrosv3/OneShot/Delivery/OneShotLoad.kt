@@ -15,10 +15,12 @@ import androidx.core.widget.doOnTextChanged
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.tech4bytes.mbrosv3.AppData.AppUtils
+import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
+import com.tech4bytes.mbrosv3.Sms.SMSUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Language.English.EnglishUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -267,6 +269,13 @@ class OneShotLoad : AppCompatActivity() {
                 oslSaveBtn.isEnabled = true
                 oslSaveBtn.alpha = 1.0f
                 oslSaveBtn.isClickable = true
+            }
+
+            try {
+                SMSUtils.sendSMS(this, "Load Information Updated", AppConstants.get(AppConstants.SMS_NUMBER_ON_LOAD_INFO_UPDATE))
+            } catch (e: Exception) {
+                LogMe.log(e, "Update Communication failed.")
+                Toast.makeText(this, "Update Communication failed.", Toast.LENGTH_SHORT).show()
             }
         }.start()
     }

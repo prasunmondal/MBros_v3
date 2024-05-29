@@ -67,16 +67,16 @@ class OneShotLoad : AppCompatActivity() {
     }
 
     private fun getUIChecksumString(): String {
-        val metadata = SingleAttributedDataUtils.getRecords()
-        return "companyName:${companyLabel2.text} " +
-                "- companyBranch: ${companyBranch2.text} " +
-                "- companyArea: ${companyArea2.text}" +
-                "- loadAccount: ${companyAccount2.text}" +
-                "- farmRate: ${finalFarmRate.text}" +
-                "- deliveryRate: ${initialFarmRate.text}" +
-                "- handExpense: ${inHandCash.text}" +
-                "- salary: ${getSalaryDivisionFromUI()}" +
-                "- totalNoOfPeople: ${getTotalNoOfLaboursFromUI()}"
+//        val metadata = SingleAttributedDataUtils.getRecords()
+        return "\n- companyName:${companyLabel2.text} " +
+                "\n- companyBranch: ${companyBranch2.text} " +
+                "\n- companyArea: ${companyArea2.text}" +
+                "\n- loadAccount: ${companyAccount2.text}" +
+                "\n- farmRate: ${finalFarmRate.text}" +
+                "\n- deliveryRate: ${initialFarmRate.text}" +
+                "\n- handExpense: ${inHandCash.text}" +
+                "\n- salary: ${getSalaryDivisionFromUI()}" +
+                "\n- totalNoOfPeople: ${getTotalNoOfLaboursFromUI()}"
     }
 
     private fun initializeVariables() {
@@ -272,7 +272,7 @@ class OneShotLoad : AppCompatActivity() {
             }
 
             try {
-                SMSUtils.sendSMS(this, "Load Information Updated", AppConstants.get(AppConstants.SMS_NUMBER_ON_LOAD_INFO_UPDATE))
+                SMSUtils.sendSMS(this, "Load Information Updated\n\n" + getUIChecksumString(), AppConstants.get(AppConstants.SMS_NUMBER_ON_LOAD_INFO_UPDATE))
             } catch (e: Exception) {
                 LogMe.log(e, "Update Communication failed.")
                 Toast.makeText(this, "Update Communication failed.", Toast.LENGTH_SHORT).show()

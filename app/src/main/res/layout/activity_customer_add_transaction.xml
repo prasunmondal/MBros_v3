@@ -113,7 +113,28 @@
                     android:id="@+id/addTransaction_txn_mode_online"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Online Pay"
+                    android:text="Online"
+                    android:textColor="#D8D5D5" />
+
+                <RadioButton
+                    android:id="@+id/addTransaction_txn_mode_online_gpay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Online/GPay"
+                    android:textColor="#D8D5D5" />
+
+                <RadioButton
+                    android:id="@+id/addTransaction_txn_mode_online_paytm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Online/Paytm"
+                    android:textColor="#D8D5D5" />
+
+                <RadioButton
+                    android:id="@+id/addTransaction_txn_mode_online_phonepe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Online/PhonePe"
                     android:textColor="#D8D5D5" />
 
                 <RadioButton

@@ -59,6 +59,7 @@ class SMSParser {
                 .replace("<name>", stagedPayments.name)
                 .replace("<prevDue>", stagedPayments.balanceBeforePayment)
                 .replace("<paidAmount>", stagedPayments.paidAmount)
+                .replace("<paymentMode>", stagedPayments.paymentMode)
                 .replace("<balanceIncludingOtherBalances>", stagedPayments.newBalance)
                 .replace("<balanceExcludingOtherBalances>", "stagedPayments.khataBalance")
         }

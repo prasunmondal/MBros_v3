@@ -145,7 +145,7 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
         val txnType = findViewById<RadioButton>(selectedTxnTypeElement).text.toString().uppercase()
 
         val selectedTxnModeElement = findViewById<RadioGroup>(R.id.addTransaction_txn_mode).checkedRadioButtonId
-        val txnMode = findViewById<RadioButton>(selectedTxnModeElement).text.toString().uppercase()
+        val txnMode = findViewById<RadioButton>(selectedTxnModeElement).text.toString()
 
         val stagedObj = StagedPaymentsModel(
             id = System.currentTimeMillis().toString(),

@@ -294,6 +294,8 @@ class OSDDeliveryEntryInfo {
                 (getIntOrZero(order.totalBalance) - autoAdjustments.transferAmount).toString()
             autoAdjustmentJustification.text = autoAdjustments.message
             autoAdjustmentBalance.text = autoAdjustments.transferAmount.toString()
+            val adjustingBalance = autoAdjustmentBalance.text.toString()
+            order.khataBalance = (getIntOrZero(order.khataBalance) + getIntOrZero(adjustingBalance)).toString()
         }
 
         private fun updateDetailedInfo(order: DeliverToCustomerDataModel, entry: View) {

@@ -84,6 +84,19 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <ImageView
+                        android:id="@+id/one_shot_delivery_fragment_refresh_btn"
+                        android:layout_width="20dp"
+                        android:layout_height="22dp"
+                        android:layout_marginTop="10dp"
+                        android:onClick="onClickRefreshRate"
+                        android:tint="#858282"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/osd_rate_for_customer_container"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@android:drawable/ic_popup_sync" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout

@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -158,6 +159,13 @@ class OSDDeliveryEntryInfo {
 
             UIUtils.addDebouncedOnTextChangeListener(paidElement) {
                 updateEntry(context as OneShotDelivery, value, entry)
+            }
+            val refreshRateButton =
+            entry.findViewById<ImageView>(R.id.one_shot_delivery_fragment_refresh_btn)
+
+            refreshRateButton.setOnClickListener{
+                rateElement.setText("${CustomerDataUtils.getDeliveryRate(value.name)}")
+                fragmentUpdateCustomerWiseRateView(context, value, entry)
             }
 
             balanceElement.setOnClickListener {

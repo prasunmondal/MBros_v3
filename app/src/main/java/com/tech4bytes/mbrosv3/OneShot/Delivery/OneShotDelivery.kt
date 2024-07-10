@@ -491,4 +491,6 @@ class OneShotDelivery : AppCompatActivity() {
     fun onClickSendLoadInfoToCompany(view: View) {
         OSDLoadInfo.sendLoadInfoToCompany(loadPcElement.text.toString(), loadKgElement.text.toString())
     }
+
+
 }

@@ -1,7 +1,9 @@
 package com.tech4bytes.mbrosv3.OneShot.Delivery
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
@@ -9,6 +11,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.google.android.material.textfield.TextInputEditText
@@ -20,6 +23,7 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.SMSDetails.SendSMSDet
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
+import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.Payments.Staged.StagedPaymentUtils
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.SMSUtils
@@ -119,6 +123,7 @@ class OSDDeliveryEntryInfo {
             return entry
         }
 
+        @SuppressLint("SuspiciousIndentation")
         fun setListeners(context: Context, value: DeliverToCustomerDataModel) {
             val entry = uiMaps[value.name]!!
             val rateElement = entry.findViewById<TextInputEditText>(R.id.osd_rate_for_customer)
@@ -163,10 +168,28 @@ class OSDDeliveryEntryInfo {
             val refreshRateButton =
             entry.findViewById<ImageView>(R.id.one_shot_delivery_fragment_refresh_btn)
 
-            refreshRateButton.setOnClickListener{
-                rateElement.setText("${CustomerDataUtils.getDeliveryRate(value.name)}")
-                fragmentUpdateCustomerWiseRateView(context, value, entry)
-            }
+
+                if (AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_RATE_RESET_BUTTON)) {
+                    refreshRateButton.setOnClickListener {
+                        val builder: AlertDialog.Builder =
+                            AlertDialog.Builder(context as OneShotDelivery)
+                        builder.setMessage("Customer rate will reset. Do you want to restore the previous value?")
+                            .setTitle("Restore Rate")
+                            .setPositiveButton("Yes") { dialog, id ->
+                                // CONFIRM
+                                rateElement.setText("${CustomerDataUtils.getDeliveryRate(value.name)}")
+                                fragmentUpdateCustomerWiseRateView(context, value, entry)
+                            }
+                            .setNegativeButton("No") { dialog, id ->
+                                // CANCEL
+                            }.setIcon(android.R.drawable.ic_dialog_alert)
+                            .show()
+                    }
+                }
+                else
+                {
+                    refreshRateButton.visibility = View.GONE
+                }
 
             balanceElement.setOnClickListener {
                 if (moreDetailsContainer.visibility == View.VISIBLE) {

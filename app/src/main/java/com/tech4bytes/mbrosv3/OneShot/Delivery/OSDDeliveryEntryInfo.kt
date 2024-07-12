@@ -173,11 +173,11 @@ class OSDDeliveryEntryInfo {
                     refreshRateButton.setOnClickListener {
                         val builder: AlertDialog.Builder =
                             AlertDialog.Builder(context as OneShotDelivery)
-                        builder.setMessage("Customer rate will reset. Do you want to restore the previous value?")
+                        builder.setMessage("Customer rate will reset. Do you want to restore the original rate?")
                             .setTitle("Restore Rate")
                             .setPositiveButton("Yes") { dialog, id ->
                                 // CONFIRM
-                                rateElement.setText("${CustomerDataUtils.getDeliveryRate(value.name)}")
+                                rateElement.setText("${CustomerDataUtils.getCustomerDefaultRate(value.name)}")
                                 fragmentUpdateCustomerWiseRateView(context, value, entry)
                             }
                             .setNegativeButton("No") { dialog, id ->

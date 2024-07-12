@@ -18,6 +18,7 @@ import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerCalculations
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerConfig
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
@@ -326,6 +327,7 @@ class OneShotDelivery : AppCompatActivity() {
 
             totalShortageElement.text = "▼ ${"%.3f".format(shortage)} kg"
             totalCollectedElement.text = "$sumAmountCollected"
+            totalCollectedElement.tooltipText="Cash:   ${DeliverToCustomerCalculations.getTotalAmountPaidInCashTodayByCustomers()}\nOnline: ${DeliverToCustomerCalculations.getTotalAmountPaidOnlineTodayByCustomers()} "
             totalBalanceDueElement.text = "$sumBalanceDue"
 
             if (needsSave)

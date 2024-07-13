@@ -165,9 +165,7 @@ class OSDDeliveryEntryInfo {
             UIUtils.addDebouncedOnTextChangeListener(paidElement) {
                 updateEntry(context as OneShotDelivery, value, entry)
             }
-            val refreshRateButton =
-            entry.findViewById<ImageView>(R.id.one_shot_delivery_fragment_refresh_btn)
-
+            val refreshRateButton = entry.findViewById<ImageView>(R.id.one_shot_delivery_fragment_refresh_btn)
 
                 if (AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_RATE_RESET_BUTTON)) {
                     refreshRateButton.setOnClickListener {
@@ -233,15 +231,18 @@ class OSDDeliveryEntryInfo {
             entry: View
         ) {
             val rateElement = entry.findViewById<TextInputEditText>(R.id.osd_rate_for_customer)
+            val refreshRateButton = entry.findViewById<ImageView>(R.id.one_shot_delivery_fragment_refresh_btn)
             if (getIntOrZero(rateElement.text.toString()) != CustomerDataUtils.getCustomerDefaultRate(
                     value.name
                 )
             ) {
                 rateElement.setBackgroundColor(ContextCompat.getColor(context, R.color.red))
                 rateElement.setTextColor(ContextCompat.getColor(context, R.color.white))
+                refreshRateButton.visibility = View.VISIBLE
             } else {
                 rateElement.setBackgroundColor(0x00000000)
                 rateElement.setTextColor(rateElement.textColors.defaultColor)
+                refreshRateButton.visibility = View.GONE
             }
         }
 

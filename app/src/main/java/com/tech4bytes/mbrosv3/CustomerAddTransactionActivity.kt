@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
+import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
 import com.tech4bytes.mbrosv3.Payments.PaymentsType
 import com.tech4bytes.mbrosv3.Payments.Staged.StagedPaymentsModel
@@ -218,6 +219,12 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
 
     fun onClickGoToDelivery(view: View) {
         val switchActivityIntent = Intent(this, OneShotDelivery::class.java)
+        startActivity(switchActivityIntent)
+    }
+
+    override fun onBackPressed() {
+        val switchActivityIntent = Intent(this, ActivityLogin::class.java)
+        switchActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(switchActivityIntent)
     }
 }

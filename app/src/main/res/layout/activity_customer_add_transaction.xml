@@ -69,81 +69,91 @@
                     android:hint="Loading..."
                     android:padding="5dp"
                     android:textColor="#D8D5D5" />
+
             </LinearLayout>
-
-            <RadioGroup
-                android:id="@+id/addTransaction_txn_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checkedButton="@+id/addTransaction_txn_type_credit">
-
-                <RadioButton
-                    android:id="@+id/addTransaction_txn_type_credit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Credit"
-                    android:textColor="#D8D5D5" />
-
-                <RadioButton
-                    android:id="@+id/addTransaction_txn_type_debit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Debit"
-                    android:textColor="#D8D5D5" />
-            </RadioGroup>
 
             <EditText
                 android:id="@+id/addTransaction_amount"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
+                android:layout_weight="1"
                 android:hint="Amount: 00.00"
                 android:inputType="number"
                 android:textColor="#D8D5D5"
                 android:textColorHint="#72D7D4D4"
                 android:tooltipText="Amount" />
 
-            <RadioGroup
-                android:id="@+id/addTransaction_txn_mode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checkedButton="@+id/addTransaction_txn_mode_online">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-                <RadioButton
-                    android:id="@+id/addTransaction_txn_mode_online"
-                    android:layout_width="match_parent"
+                <RadioGroup
+                    android:id="@+id/addTransaction_txn_type"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Online"
-                    android:textColor="#D8D5D5" />
+                    android:layout_weight="1"
+                    android:checkedButton="@+id/addTransaction_txn_type_credit">
 
-                <RadioButton
-                    android:id="@+id/addTransaction_txn_mode_online_gpay"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Online/GPay"
-                    android:textColor="#D8D5D5" />
+                    <RadioButton
+                        android:id="@+id/addTransaction_txn_type_credit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Credit"
+                        android:textColor="#D8D5D5" />
 
-                <RadioButton
-                    android:id="@+id/addTransaction_txn_mode_online_paytm"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Online/Paytm"
-                    android:textColor="#D8D5D5" />
+                    <RadioButton
+                        android:id="@+id/addTransaction_txn_type_debit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Debit"
+                        android:textColor="#D8D5D5" />
+                </RadioGroup>
 
-                <RadioButton
-                    android:id="@+id/addTransaction_txn_mode_online_phonepe"
-                    android:layout_width="match_parent"
+                <RadioGroup
+                    android:id="@+id/addTransaction_txn_mode"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Online/PhonePe"
-                    android:textColor="#D8D5D5" />
+                    android:layout_weight="1"
+                    android:checkedButton="@+id/addTransaction_txn_mode_online">
 
-                <RadioButton
-                    android:id="@+id/addTransaction_txn_mode_cash"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Cash"
-                    android:textColor="#D8D5D5" />
-            </RadioGroup>
+                    <RadioButton
+                        android:id="@+id/addTransaction_txn_mode_online"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Online"
+                        android:textColor="#D8D5D5" />
+
+                    <RadioButton
+                        android:id="@+id/addTransaction_txn_mode_online_gpay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Online/GPay"
+                        android:textColor="#D8D5D5" />
+
+                    <RadioButton
+                        android:id="@+id/addTransaction_txn_mode_online_paytm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Online/Paytm"
+                        android:textColor="#D8D5D5" />
+
+                    <RadioButton
+                        android:id="@+id/addTransaction_txn_mode_online_phonepe"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Online/PhonePe"
+                        android:textColor="#D8D5D5" />
+
+                    <RadioButton
+                        android:id="@+id/addTransaction_txn_mode_cash"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Cash"
+                        android:textColor="#D8D5D5" />
+                </RadioGroup>
+
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/addTransaction_note"

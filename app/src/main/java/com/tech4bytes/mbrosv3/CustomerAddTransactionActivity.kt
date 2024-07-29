@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.RadioGroup.OnCheckedChangeListener
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
@@ -28,7 +29,6 @@ import com.tech4bytes.mbrosv3.Sms.SMSProcessors.SMSProcessor.SMSProcessor
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
-import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import java.util.Locale
 
@@ -60,6 +60,20 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
         }.start()
 
         paidAmountElement.addTextChangedListener {
+            Thread {
+                generateMessage()
+            }.start()
+        }
+
+        val selectedTxnModeElement = findViewById<RadioGroup>(R.id.addTransaction_txn_mode)
+        selectedTxnModeElement.setOnCheckedChangeListener { group, checkedId ->
+            Thread {
+                generateMessage()
+            }.start()
+        }
+
+        val selectedTxnTypeElement = findViewById<RadioGroup>(R.id.addTransaction_txn_type)
+        selectedTxnTypeElement.setOnCheckedChangeListener { group, checkedId ->
             Thread {
                 generateMessage()
             }.start()

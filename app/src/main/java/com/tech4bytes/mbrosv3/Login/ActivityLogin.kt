@@ -31,6 +31,7 @@ import com.tech4bytes.mbrosv3.AppUsers.RolesUtils
 import com.tech4bytes.mbrosv3.BuildConfig
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.DueShow
+import com.tech4bytes.mbrosv3.CustomerAddTransactionActivity
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.adminDashboard.ActivityAdminDeliveryDashboard
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
@@ -177,6 +178,7 @@ class ActivityLogin : AppCompatActivity() {
             ActivityAuthEnums.WEB_PORTAL -> ::goToWebPortal
             ActivityAuthEnums.MONEY_DEPOSITS -> ::goToMoneyDeposits
             ActivityAuthEnums.COMMUNICATION_CENTER -> ::goToSendSMSPage
+            ActivityAuthEnums.ADD_TRANSACTION -> ::goToAddCustomerTransaction
             else -> null
         }
     }
@@ -276,6 +278,11 @@ class ActivityLogin : AppCompatActivity() {
     fun goToSendSMSPage() {
         goToDataFetchActivity(ActivityAuthEnums.COMMUNICATION_CENTER, OneShotSMS::class.java)
     }
+
+    fun goToAddCustomerTransaction() {
+        goToDataFetchActivity(ActivityAuthEnums.ADD_TRANSACTION, CustomerAddTransactionActivity::class.java)
+    }
+
     private fun goToCustomerTransactions() {
         goToDataFetchActivity(
             ActivityAuthEnums.CUSTOMER_TRANSACTIONS,

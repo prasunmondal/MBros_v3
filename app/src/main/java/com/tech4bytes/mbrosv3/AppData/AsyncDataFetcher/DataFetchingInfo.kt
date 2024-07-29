@@ -9,6 +9,7 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.De
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerRecentData
+import com.tech4bytes.mbrosv3.Sms.OneShotSMS.OSMS
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.VehicleManagement.RefuelingUtils
@@ -29,6 +30,7 @@ class DataFetchingInfo {
                 DaySummaryUtils::get.toString() -> "Transaction reports"
                 RefuelingUtils::get.toString() -> "Fuel data"
                 AppConstantsUtil::get.toString() -> "App Constants Data"
+                OSMS::get.toString() -> "Fetch Message Templates"
                 else -> "Get data"
             }
         }
@@ -119,6 +121,14 @@ class DataFetchingInfo {
                 }
                 ActivityAuthEnums.CUSTOMER_TRANSACTIONS -> {
                     executingMethods.add(CustomerDataUtils::get, {CustomerDataUtils.get() })
+                }
+                ActivityAuthEnums.ADD_TRANSACTION -> {
+                    executingMethods.add(SingleAttributedDataUtils::get, {SingleAttributedDataUtils.get() })
+                    executingMethods.add(CustomerRecentData::get, {CustomerRecentData.get() })
+                    executingMethods.add(CustomerDataUtils::get, {CustomerDataUtils.get() })
+                    executingMethods.add(DaySummaryUtils::get, {DaySummaryUtils.get() })
+                    executingMethods.add(DeliverToCustomerDataHandler::get, {DeliverToCustomerDataHandler.get() })
+                    executingMethods.add(OSMS::get, {OSMS.get() })
                 }
                 else -> {}
             }

@@ -73,8 +73,10 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
             android.R.layout.simple_spinner_item, CustomerDataUtils.getAllCustomerNames(useCache)
         )
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        customerNamesSpinner.setAdapter(adapter)
+        runOnUiThread {
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            customerNamesSpinner.setAdapter(adapter)
+        }
 
         customerNamesSpinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(

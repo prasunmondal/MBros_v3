@@ -1,5 +1,9 @@
 package com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth
 
+import android.content.Intent
+import android.view.View
+import com.tech4bytes.mbrosv3.CustomerAddTransactionActivity
+
 enum class ActivityAuthEnums : java.io.Serializable {
     ADMIN,
     DELIVERY,
@@ -14,7 +18,8 @@ enum class ActivityAuthEnums : java.io.Serializable {
     CUSTOMER_TRANSACTIONS,
     MONEY_DEPOSITS,
     WEB_PORTAL,
-    COMMUNICATION_CENTER;
+    COMMUNICATION_CENTER,
+    ADD_TRANSACTION;
 
     companion object {
         fun getString(enum: ActivityAuthEnums): String? {
@@ -32,6 +37,7 @@ enum class ActivityAuthEnums : java.io.Serializable {
                 WEB_PORTAL -> "Web Portal"
                 MONEY_DEPOSITS -> "Money Deposits"
                 COMMUNICATION_CENTER -> "Communication Center"
+                ADD_TRANSACTION -> "Add Transaction"
                 else -> null
             }
         }

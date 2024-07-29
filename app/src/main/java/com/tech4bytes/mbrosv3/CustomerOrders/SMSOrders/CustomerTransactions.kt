@@ -113,9 +113,4 @@ class CustomerTransactions : AppCompatActivity() {
         switchActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(switchActivityIntent)
     }
-
-    fun onClickAddCustomerTransaction(view: View) {
-        val switchActivityIntent = Intent(this, CustomerAddTransactionActivity::class.java)
-        startActivity(switchActivityIntent)
-    }
 }

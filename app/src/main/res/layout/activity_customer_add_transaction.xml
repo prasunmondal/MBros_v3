@@ -47,13 +47,16 @@
                 android:id="@+id/addTransaction_name"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="#D7FAF6D3"
+                android:background="@drawable/rounded"
+                android:backgroundTint="#9EE6E5D7"
                 android:hint="Name" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingVertical="5dp"
+                android:paddingStart="15dp">
 
                 <TextView
                     android:id="@+id/textView82"
@@ -68,6 +71,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Loading..."
                     android:padding="5dp"
+                    android:paddingStart="20dp"
                     android:textColor="#D8D5D5" />
 
             </LinearLayout>
@@ -76,9 +80,14 @@
                 android:id="@+id/addTransaction_amount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="15dp"
                 android:layout_weight="1"
+                android:background="@drawable/rounded"
+                android:backgroundTint="#16E6DDDD"
                 android:hint="Amount: 00.00"
                 android:inputType="number"
+                android:padding="10dp"
+                android:paddingVertical="10dp"
                 android:textColor="#D8D5D5"
                 android:textColorHint="#72D7D4D4"
                 android:tooltipText="Amount" />
@@ -98,14 +107,14 @@
                     <RadioButton
                         android:id="@+id/addTransaction_txn_type_credit"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="35dp"
                         android:text="Credit"
                         android:textColor="#D8D5D5" />
 
                     <RadioButton
                         android:id="@+id/addTransaction_txn_type_debit"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="35dp"
                         android:text="Debit"
                         android:textColor="#D8D5D5" />
                 </RadioGroup>
@@ -120,35 +129,35 @@
                     <RadioButton
                         android:id="@+id/addTransaction_txn_mode_online"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="35dp"
                         android:text="Online"
                         android:textColor="#D8D5D5" />
 
                     <RadioButton
                         android:id="@+id/addTransaction_txn_mode_online_gpay"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="35dp"
                         android:text="Online/GPay"
                         android:textColor="#D8D5D5" />
 
                     <RadioButton
                         android:id="@+id/addTransaction_txn_mode_online_paytm"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="35dp"
                         android:text="Online/Paytm"
                         android:textColor="#D8D5D5" />
 
                     <RadioButton
                         android:id="@+id/addTransaction_txn_mode_online_phonepe"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="35dp"
                         android:text="Online/PhonePe"
                         android:textColor="#D8D5D5" />
 
                     <RadioButton
                         android:id="@+id/addTransaction_txn_mode_cash"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="35dp"
                         android:text="Cash"
                         android:textColor="#D8D5D5" />
                 </RadioGroup>

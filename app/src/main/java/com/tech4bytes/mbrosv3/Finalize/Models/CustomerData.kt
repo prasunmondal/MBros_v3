@@ -6,6 +6,7 @@ import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.BusinessLogic.Sorter
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
+import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
@@ -141,9 +142,16 @@ object CustomerDataUtils : Tech4BytesSerializable<CustomerData>(
     }
 
     fun getAllCustomerNames(useCache: Boolean = true): List<String> {
-        return get(useCache).stream()
+        val customersFromCustomerDetails = CustomerKYC.get(useCache).stream()
+            .filter { d -> d.nameEng.isNotEmpty() }
+            .map(CustomerKYCModel::nameEng)
+            .collect(Collectors.toSet()).toList()
+
+        val customersFromFinalizedDeliveries = get(useCache).stream()
             .filter { d -> d.name.isNotEmpty() }
             .map(CustomerData::name)
-            .collect(Collectors.toSet()).toList().sorted()
+            .collect(Collectors.toSet()).toList()
+
+        return (customersFromCustomerDetails + customersFromFinalizedDeliveries).toSet().toList().sorted()
     }
 }

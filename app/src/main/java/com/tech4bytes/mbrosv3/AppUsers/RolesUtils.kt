@@ -4,6 +4,7 @@ import android.provider.Settings
 import android.provider.Settings.Secure.ANDROID_ID
 import com.google.gson.reflect.TypeToken
 import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
+import com.tech4bytes.mbrosv3.DeviceIDUtil
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -46,9 +47,6 @@ object RolesUtils : Tech4BytesSerializable<AppUsersModel>(
     }
 
     private fun getPhoneId(): String {
-        return Settings.Secure.getString(
-            AppContexts.get().contentResolver,
-            ANDROID_ID
-        )
+        return DeviceIDUtil(AppContexts.get()).getUniqueID()
     }
 }

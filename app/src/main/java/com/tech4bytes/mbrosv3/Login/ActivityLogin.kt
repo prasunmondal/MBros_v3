@@ -44,6 +44,7 @@ import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotLoad
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.OneShotSMS.OneShotSMS
+import com.tech4bytes.mbrosv3.Sms.SMSUtils
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -84,6 +85,14 @@ class ActivityLogin : AppCompatActivity() {
                 runOnUiThread {
                     Toast.makeText(this, "Registering Device: ${getPhoneId()}", Toast.LENGTH_LONG)
                         .show()
+
+                    // Send SMS when a new device registration is requested.
+                    try {
+                        SMSUtils.sendSMS(this, "New Registration Requested.\n\nDevice ID: " + getPhoneId(), AppConstants.get(AppConstants.SMS_NUMBER_ON_DEVICE_REG_REQUEST))
+                    } catch (e: Exception) {
+                        LogMe.log(e, "Failed to Communicate Registration Request.")
+                        Toast.makeText(this, "Failed to Communicate Registration Request.", Toast.LENGTH_LONG).show()
+                    }
                 }
                 logUnIdentifiedDevice()
             } else {

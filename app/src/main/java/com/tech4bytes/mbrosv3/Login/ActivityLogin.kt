@@ -5,8 +5,8 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.provider.Settings.Secure
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -38,6 +38,7 @@ import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.ActivityGetCustomerOrders
 import com.tech4bytes.mbrosv3.CustomerOrders.MoneyDeposit.CustomerMoneyDepositUI
 import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.CustomerTransactions
 import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrdering
+import com.tech4bytes.mbrosv3.DeviceIDUtil
 import com.tech4bytes.mbrosv3.MoneyCounter.MoneyCounter
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotLoad
@@ -69,6 +70,7 @@ class ActivityLogin : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         updateAppVerOnUI()
+        getDeviceDetails()
 
         askPermissions(listOf(
             android.Manifest.permission.READ_CONTACTS,
@@ -87,8 +89,9 @@ class ActivityLogin : AppCompatActivity() {
                         .show()
 
                     // Send SMS when a new device registration is requested.
+                    var deviceDetails = Build.BRAND
                     try {
-                        SMSUtils.sendSMS(this, "New Registration Requested.\n\nDevice ID: " + getPhoneId(), AppConstants.get(AppConstants.SMS_NUMBER_ON_DEVICE_REG_REQUEST))
+                        SMSUtils.sendSMS(this, "New Registration Requested.\n\nDevice ID: " + getPhoneId() + " - " + getDeviceDetails(), AppConstants.get(AppConstants.SMS_NUMBER_ON_DEVICE_REG_REQUEST))
                     } catch (e: Exception) {
                         LogMe.log(e, "Failed to Communicate Registration Request.")
                         Toast.makeText(this, "Failed to Communicate Registration Request.", Toast.LENGTH_LONG).show()
@@ -126,6 +129,14 @@ class ActivityLogin : AppCompatActivity() {
                 }
             }
         }.start()
+    }
+
+    private fun getDeviceDetails(): String {
+        val deviceModel = Build.MODEL
+        val manufacturer = Build.MANUFACTURER
+        val androidVersion = Build.VERSION.RELEASE
+
+        return "$manufacturer / $deviceModel / $androidVersion"
     }
 
     private fun getPendingPermissions(permissionsList: List<String>): MutableList<String> {
@@ -319,15 +330,19 @@ class ActivityLogin : AppCompatActivity() {
         runOnUiThread {
             Toast.makeText(AppContexts.get(), "Device Registration Pending. Connect Admin", Toast.LENGTH_LONG).show()
         }
+
+        try {
+            SMSUtils.sendSMS(this, "MBros\nFollow Up: New Registration Requested.\n\nDevice ID: " + getPhoneId() + " - " + getDeviceDetails(), AppConstants.get(AppConstants.SMS_NUMBER_ON_DEVICE_REG_REQUEST))
+        } catch (e: Exception) {
+            LogMe.log(e, "Failed to Communicate Registration Request.")
+            Toast.makeText(this, "Failed to Communicate Registration Request.", Toast.LENGTH_LONG).show()
+        }
         CentralCache.invalidateFullCache()
     }
 
     @SuppressLint("HardwareIds")
     private fun getPhoneId(): String {
-        return Secure.getString(
-            applicationContext.contentResolver,
-            Secure.ANDROID_ID
-        )
+        return DeviceIDUtil(AppContexts.get()).getUniqueID()
     }
 
     fun loginPageOnClickRefresh(view: View) {

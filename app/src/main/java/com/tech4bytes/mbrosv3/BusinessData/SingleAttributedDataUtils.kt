@@ -1,16 +1,20 @@
 package com.tech4bytes.mbrosv3.BusinessData
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.provider.Settings
 import com.google.gson.reflect.TypeToken
 import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
+import com.tech4bytes.mbrosv3.DeviceIDUtil
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
+import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ReflectionUtils
 import kotlin.reflect.KMutableProperty1
+
 
 object SingleAttributedDataUtils : Tech4BytesSerializable<SingleAttributedDataModel>(
     ProjectConfig.dBServerScriptURL,
@@ -64,10 +68,11 @@ object SingleAttributedDataUtils : Tech4BytesSerializable<SingleAttributedDataMo
 
     @SuppressLint("HardwareIds")
     private fun getPhoneId(): String {
-        return Settings.Secure.getString(
-            AppContexts.get().contentResolver,
-            Settings.Secure.ANDROID_ID
-        )
+        return DeviceIDUtil(AppContexts.get()).getUniqueID()
+//        return Settings.Secure.getString(
+//            AppContexts.get().contentResolver,
+//            Settings.Secure.ANDROID_ID
+//        )
     }
 
     fun invalidateCache() {

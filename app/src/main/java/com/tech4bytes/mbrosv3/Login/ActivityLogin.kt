@@ -91,7 +91,7 @@ class ActivityLogin : AppCompatActivity() {
                     // Send SMS when a new device registration is requested.
                     var deviceDetails = Build.BRAND
                     try {
-                        SMSUtils.sendSMS(this, "New Registration Requested.\n\nDevice ID: " + getPhoneId() + " - " + getDeviceDetails(), AppConstants.get(AppConstants.SMS_NUMBER_ON_DEVICE_REG_REQUEST))
+                        SMSUtils.sendSMS(this, "New Registration Requested.\n\nDevice ID: " + getPhoneId() + "\nModel: " + getDeviceDetails(), AppConstants.get(AppConstants.SMS_NUMBER_ON_DEVICE_REG_REQUEST))
                     } catch (e: Exception) {
                         LogMe.log(e, "Failed to Communicate Registration Request.")
                         Toast.makeText(this, "Failed to Communicate Registration Request.", Toast.LENGTH_LONG).show()

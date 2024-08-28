@@ -1,5 +1,6 @@
 package com.tech4bytes.mbrosv3.Sms.OneShotSMS
 
+import android.widget.Switch
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
@@ -39,19 +40,71 @@ class SMSParser {
         }
 
         fun parseWithDeliveryData(template: String, deliveryData: DeliverToCustomerDataModel): String {
-            val formattedDate = DateUtils.getDateInFormat("dd/MM/yyyy")
-            return template.replace("<date>", formattedDate)
-                .replace("<name>", deliveryData.name)
-                .replace("<prevDue>", deliveryData.prevDue)
-                .replace("<pc>", deliveryData.deliveredPc)
-                .replace("<kg>", deliveryData.deliveredKg)
-                .replace("<todaysAmount>", deliveryData.deliverAmount)
-                .replace("<paidAmount>", deliveryData.paid)
-                .replace("<rate>", deliveryData.rate)
-                .replace("<otherBalances>", deliveryData.otherBalances)
-                .replace("<balanceIncludingOtherBalances>", deliveryData.totalBalance)
-                .replace("<balanceExcludingOtherBalances>", deliveryData.khataBalance)
+
+//                .replace("<name>", deliveryData.name)
+//                .replace("<prevDue>", deliveryData.prevDue)
+//                .replace("<pc>", deliveryData.deliveredPc)
+//                .replace("<kg>", deliveryData.deliveredKg)
+//                .replace("<todaysAmount>", deliveryData.deliverAmount)
+//                .replace("<paidCash>", deliveryData.paidCash)
+//                .replace("<paidOnline>", deliveryData.paidOnline)
+//                .replace("<rate>", deliveryData.rate)
+//                .replace("<otherBalances>", deliveryData.otherBalances)
+//                .replace("<balanceIncludingOtherBalances>", deliveryData.totalBalance)
+//                .replace("<balanceExcludingOtherBalances>", deliveryData.khataBalance)
+//            isPresent("<name>",deliveryData.name,template)
+//            isPresent("<prevDue>",deliveryData.prevDue,template)
+//            isPresent("<pc>",deliveryData.deliveredPc,template)
+//            isPresent("<kg>",deliveryData.deliveredKg,template)
+//            isPresent("<todaysAmount>",deliveryData.deliverAmount,template)
+//            isPresent("<paidCash>",deliveryData.paidCash,template)
+//            isPresent("<paidOnline>",deliveryData.paidOnline,template)
+//            isPresent("<rate>",deliveryData.rate,template)
+//            isPresent("<otherBalances>",deliveryData.otherBalances,template)
+//            isPresent("<balanceIncludingOtherBalances>",deliveryData.totalBalance,template)
+//            isPresent("<balanceExcludingOtherBalances>",deliveryData.khataBalance,template)
+
+           var splitedLines= template.split("\n")
+            var data:String =""
+            splitedLines.forEach{line ->
+                data +=  formatString(line,deliveryData)
+            }
+            return data
         }
+
+        fun formatString(string: String,deliveryData: DeliverToCustomerDataModel):String{
+            var variableName = getVariableName(string)
+            var value= getValue(variableName,deliveryData)
+            if(string.contains("$")){
+                if(value.isEmpty() || NumberUtils.getDoubleOrZero(value)==0.0){
+                    return ""
+                }
+            }
+            return string.replace("<$variableName>",value)
+        }
+
+        private fun getVariableName(string: String): String {
+            return string.substringAfter('<').substringBefore('>')
+        }
+
+        fun getValue(varNAme: String, deliveryData: DeliverToCustomerDataModel): String{
+            when(varNAme){
+                "date"-> return DateUtils.getDateInFormat("dd/MM/yyyy")
+                "name"-> return deliveryData.name
+                "prevDue"-> return deliveryData.prevDue
+                "pc"-> return deliveryData.deliveredPc
+                "kg"-> return deliveryData.deliveredKg
+                "todaysAmount"-> return deliveryData.deliverAmount
+                "paidCash"-> return deliveryData.paidCash
+                "paidOnline"-> return deliveryData.paidOnline
+                "rate"-> return deliveryData.rate
+                "otherBalances"-> return deliveryData.otherBalances
+                "balanceIncludingOtherBalances"-> return deliveryData.totalBalance
+                "balanceExcludingOtherBalances"-> return deliveryData.khataBalance
+            }
+            return ""
+        }
+
 
         fun parseWithStagedPaymentDetails(template: String, stagedPayments: StagedPaymentsModel): String {
             val formattedDate = DateUtils.getDateInFormat("dd/MM/yyyy")

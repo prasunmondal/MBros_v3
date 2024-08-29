@@ -12,6 +12,7 @@ import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
+import kotlinx.coroutines.selects.whileSelect
 
 class SMSParser {
 
@@ -40,69 +41,52 @@ class SMSParser {
         }
 
         fun parseWithDeliveryData(template: String, deliveryData: DeliverToCustomerDataModel): String {
-
-//                .replace("<name>", deliveryData.name)
-//                .replace("<prevDue>", deliveryData.prevDue)
-//                .replace("<pc>", deliveryData.deliveredPc)
-//                .replace("<kg>", deliveryData.deliveredKg)
-//                .replace("<todaysAmount>", deliveryData.deliverAmount)
-//                .replace("<paidCash>", deliveryData.paidCash)
-//                .replace("<paidOnline>", deliveryData.paidOnline)
-//                .replace("<rate>", deliveryData.rate)
-//                .replace("<otherBalances>", deliveryData.otherBalances)
-//                .replace("<balanceIncludingOtherBalances>", deliveryData.totalBalance)
-//                .replace("<balanceExcludingOtherBalances>", deliveryData.khataBalance)
-//            isPresent("<name>",deliveryData.name,template)
-//            isPresent("<prevDue>",deliveryData.prevDue,template)
-//            isPresent("<pc>",deliveryData.deliveredPc,template)
-//            isPresent("<kg>",deliveryData.deliveredKg,template)
-//            isPresent("<todaysAmount>",deliveryData.deliverAmount,template)
-//            isPresent("<paidCash>",deliveryData.paidCash,template)
-//            isPresent("<paidOnline>",deliveryData.paidOnline,template)
-//            isPresent("<rate>",deliveryData.rate,template)
-//            isPresent("<otherBalances>",deliveryData.otherBalances,template)
-//            isPresent("<balanceIncludingOtherBalances>",deliveryData.totalBalance,template)
-//            isPresent("<balanceExcludingOtherBalances>",deliveryData.khataBalance,template)
-
            var splitedLines= template.split("\n")
             var data:String =""
             splitedLines.forEach{line ->
-                data +=  formatString(line,deliveryData)
+                data +=  formatString(line,deliveryData)+"\n"
             }
             return data
         }
 
         fun formatString(string: String,deliveryData: DeliverToCustomerDataModel):String{
-            var variableName = getVariableName(string)
-            var value= getValue(variableName,deliveryData)
-            if(string.contains("$")){
-                if(value.isEmpty() || NumberUtils.getDoubleOrZero(value)==0.0){
-                    return ""
+            var string2 = string
+            while(!getVariableName(string2).equals("") ) {
+                var variableName = getVariableName(string2)
+                var value= getValue(variableName,deliveryData)
+                if(string2.contains("$")){
+                    if(value.isEmpty() || NumberUtils.getDoubleOrZero(value)==0.0){
+                        return ""
+                    }
                 }
+                string2=string2.replace("<$variableName>",value)
             }
-            return string.replace("<$variableName>",value)
+            return string2
         }
 
         private fun getVariableName(string: String): String {
-            return string.substringAfter('<').substringBefore('>')
+           if(string.contains("<")) {
+               return string.substringAfter('<').substringBefore('>')
+           }
+            return ""
         }
 
         fun getValue(varNAme: String, deliveryData: DeliverToCustomerDataModel): String{
-            when(varNAme){
-                "date"-> return DateUtils.getDateInFormat("dd/MM/yyyy")
-                "name"-> return deliveryData.name
-                "prevDue"-> return deliveryData.prevDue
-                "pc"-> return deliveryData.deliveredPc
-                "kg"-> return deliveryData.deliveredKg
-                "todaysAmount"-> return deliveryData.deliverAmount
-                "paidCash"-> return deliveryData.paidCash
-                "paidOnline"-> return deliveryData.paidOnline
-                "rate"-> return deliveryData.rate
-                "otherBalances"-> return deliveryData.otherBalances
-                "balanceIncludingOtherBalances"-> return deliveryData.totalBalance
-                "balanceExcludingOtherBalances"-> return deliveryData.khataBalance
+            return when(varNAme){
+                "date"-> DateUtils.getDateInFormat("dd/MM/yyyy")
+                "name"-> deliveryData.name
+                "rate"-> deliveryData.rate
+                "prevDue"-> deliveryData.prevDue
+                "pc"-> deliveryData.deliveredPc
+                "kg"-> deliveryData.deliveredKg
+                "todaysAmount"-> deliveryData.deliverAmount
+                "paidCash"-> deliveryData.paidCash
+                "paidOnline"-> deliveryData.paidOnline
+                "otherBalances"-> deliveryData.otherBalances
+                "balanceIncludingOtherBalances"-> deliveryData.totalBalance
+                "balanceExcludingOtherBalances"-> deliveryData.khataBalance
+                else -> ""
             }
-            return ""
         }
 
 

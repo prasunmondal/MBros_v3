@@ -1,5 +1,6 @@
 package com.tech4bytes.mbrosv3.Sms.OneShotSMS
 
+import android.widget.Switch
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
@@ -11,6 +12,7 @@ import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
+import kotlinx.coroutines.selects.whileSelect
 
 class SMSParser {
 
@@ -39,19 +41,54 @@ class SMSParser {
         }
 
         fun parseWithDeliveryData(template: String, deliveryData: DeliverToCustomerDataModel): String {
-            val formattedDate = DateUtils.getDateInFormat("dd/MM/yyyy")
-            return template.replace("<date>", formattedDate)
-                .replace("<name>", deliveryData.name)
-                .replace("<prevDue>", deliveryData.prevDue)
-                .replace("<pc>", deliveryData.deliveredPc)
-                .replace("<kg>", deliveryData.deliveredKg)
-                .replace("<todaysAmount>", deliveryData.deliverAmount)
-                .replace("<paidAmount>", deliveryData.paid)
-                .replace("<rate>", deliveryData.rate)
-                .replace("<otherBalances>", deliveryData.otherBalances)
-                .replace("<balanceIncludingOtherBalances>", deliveryData.totalBalance)
-                .replace("<balanceExcludingOtherBalances>", deliveryData.khataBalance)
+           var splitedLines= template.split("\n")
+            var data:String =""
+            splitedLines.forEach{line ->
+                data +=  formatString(line,deliveryData)+"\n"
+            }
+            return data
         }
+
+        fun formatString(string: String,deliveryData: DeliverToCustomerDataModel):String{
+            var string2 = string
+            while(!getVariableName(string2).equals("") ) {
+                var variableName = getVariableName(string2)
+                var value= getValue(variableName,deliveryData)
+                if(string2.contains("$")){
+                    if(value.isEmpty() || NumberUtils.getDoubleOrZero(value)==0.0){
+                        return ""
+                    }
+                }
+                string2=string2.replace("<$variableName>",value)
+            }
+            return string2
+        }
+
+        private fun getVariableName(string: String): String {
+           if(string.contains("<")) {
+               return string.substringAfter('<').substringBefore('>')
+           }
+            return ""
+        }
+
+        fun getValue(varNAme: String, deliveryData: DeliverToCustomerDataModel): String{
+            return when(varNAme){
+                "date"-> DateUtils.getDateInFormat("dd/MM/yyyy")
+                "name"-> deliveryData.name
+                "rate"-> deliveryData.rate
+                "prevDue"-> deliveryData.prevDue
+                "pc"-> deliveryData.deliveredPc
+                "kg"-> deliveryData.deliveredKg
+                "todaysAmount"-> deliveryData.deliverAmount
+                "paidCash"-> deliveryData.paidCash
+                "paidOnline"-> deliveryData.paidOnline
+                "otherBalances"-> deliveryData.otherBalances
+                "balanceIncludingOtherBalances"-> deliveryData.totalBalance
+                "balanceExcludingOtherBalances"-> deliveryData.khataBalance
+                else -> ""
+            }
+        }
+
 
         fun parseWithStagedPaymentDetails(template: String, stagedPayments: StagedPaymentsModel): String {
             val formattedDate = DateUtils.getDateInFormat("dd/MM/yyyy")

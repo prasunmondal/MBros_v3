@@ -396,7 +396,7 @@ class OneShotDelivery : AppCompatActivity() {
 
     private fun saveSingleAttributeData() {
         Thread {
-            SingleAttributedDataUtils.saveToLocalThenServer(SingleAttributedDataUtils.getRecords())
+            SingleAttributedDataUtils.insert(SingleAttributedDataUtils.getRecords()).execute()
             setSaveProgressBar(10)
         }.start()
     }

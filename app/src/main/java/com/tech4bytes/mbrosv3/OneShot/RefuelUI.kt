@@ -346,6 +346,6 @@ class RefuelUI(
         saveKmData()
         saveFuelData()
         if(saveToServer)
-            SingleAttributedDataUtils.saveToServer(SingleAttributedDataUtils.getRecords())
+            SingleAttributedDataUtils.insert(SingleAttributedDataUtils.getRecords()).execute()
     }
 }

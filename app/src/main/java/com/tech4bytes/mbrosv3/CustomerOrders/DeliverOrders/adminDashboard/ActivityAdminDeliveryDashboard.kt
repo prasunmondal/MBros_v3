@@ -303,7 +303,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
             obj.finalFarmRate = UIUtils.getUIElementValue(farmRateElement)
             val deliveryRate = UIUtils.getUIElementValue(deliveryRateElement)
             obj.bufferRate = DeliveryCalculations.getBufferPrice(obj.finalFarmRate, deliveryRate).toString()
-            SingleAttributedDataUtils.saveToLocalThenServer(obj)
+            SingleAttributedDataUtils.insert(obj).execute()
             CustomerDataUtils.spoolDeliveringData()
             RefuelingUtils.spoolRefuelingData()
             DaySummaryUtils.saveToServer()

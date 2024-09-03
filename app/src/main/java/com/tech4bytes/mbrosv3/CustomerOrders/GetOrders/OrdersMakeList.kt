@@ -92,7 +92,7 @@ class OrdersMakeList : AppCompatActivity() {
             metadataObj.estimatedLoadPc = totalPc.toString()
             metadataObj.estimatedLoadKg = totalKg.toString()
 
-            SingleAttributedDataUtils.saveToLocalThenServer(metadataObj)
+            SingleAttributedDataUtils.insert(metadataObj).execute()
             runOnUiThread {
                 Toast.makeText(this, "Data save complete!", Toast.LENGTH_LONG).show()
             }

@@ -1,42 +1,31 @@
 package com.tech4bytes.mbrosv3.BusinessData
 
-import android.annotation.SuppressLint
-import android.os.Build
-import android.provider.Settings
-import com.google.gson.reflect.TypeToken
-import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
-import com.tech4bytes.mbrosv3.DeviceIDUtil
+import com.prasunmondal.dev.libs.device.DeviceUtils
+import com.prasunmondal.dev.libs.gsheet.ContextWrapper
+import com.prasunmondal.dev.libs.gsheet.clients.ClientFilter
+import com.prasunmondal.dev.libs.gsheet.clients.GSheetSerialized
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
-import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
-import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ReflectionUtils
 import kotlin.reflect.KMutableProperty1
 
 
-object SingleAttributedDataUtils : Tech4BytesSerializable<SingleAttributedDataModel>(
-    ProjectConfig.dBServerScriptURL,
-    ProjectConfig.get_db_sheet_id(),
+object SingleAttributedDataUtils : GSheetSerialized<SingleAttributedDataModel>(
+    ContextWrapper(AppContexts.get()),
+    ProjectConfig.dBServerScriptURLNew,
+    "1X6HriHjIE0XfAblDlE7Uf5a8JTHu00kW2SWvTFKL78w",
     "metadata",
     query = null,
-    object : TypeToken<ArrayList<SingleAttributedDataModel>?>() {}.type,
+    classTypeForResponseParsing = SingleAttributedDataModel::class.java,
     appendInServer = true,
     appendInLocal = true,
-    getEmptyListIfNoResultsFoundInServer = true) {
-
-    override fun <T : Any> sortResults(list: ArrayList<T>): ArrayList<T> {
-        ListUtils.sortListByAttribute(list as ArrayList<SingleAttributedDataModel>, SingleAttributedDataModel::id)
-        list.sortBy { it.id }
-        list.reverse()
-        val t: ArrayList<SingleAttributedDataModel> = arrayListOf()
-        t.add(list[0])
-        return t as ArrayList<T>
-    }
+    filter = ClientFilter("latestRecordById") { list: List<SingleAttributedDataModel> -> arrayListOf(list.maxBy { (it).id }) }) {
 
     fun getRecords(useCache: Boolean = true): SingleAttributedDataModel {
-        return get(useCache)[0]
+        val t = fetchAll().execute(useCache)
+        return t[0]
     }
 
     fun getBufferRateInt(): Int {
@@ -60,19 +49,10 @@ object SingleAttributedDataUtils : Tech4BytesSerializable<SingleAttributedDataMo
     fun saveToLocal(obj: SingleAttributedDataModel?) {
         if (obj != null) {
             obj.id = System.currentTimeMillis().toString()
-            obj.recordGeneratorDevice = getPhoneId()
+            obj.recordGeneratorDevice = DeviceUtils.getUniqueID(AppContexts.get())
             obj.date = DateUtils.getCurrentTimestamp()
+            insert(obj).saveToLocal(false)
         }
-        super.saveToLocal(obj, null)
-    }
-
-    @SuppressLint("HardwareIds")
-    private fun getPhoneId(): String {
-        return DeviceIDUtil(AppContexts.get()).getUniqueID()
-//        return Settings.Secure.getString(
-//            AppContexts.get().contentResolver,
-//            Settings.Secure.ANDROID_ID
-//        )
     }
 
     fun invalidateCache() {

@@ -25,7 +25,7 @@ class DataFetchingInfo {
                 CustomerKYC::get.toString() -> "Get Customer KYCs"
                 CustomerRecentData::get.toString() -> "Getting Previous Recents"
                 CustomerDataUtils::get.toString() -> "Previous delivery reports"
-                SingleAttributedDataUtils::get.toString() -> "Metadata"
+//                SingleAttributedDataUtils::fetchAll.toString() -> "Metadata"
                 DeliverToCustomerDataHandler::get.toString() -> "Current delivery reports"
                 DaySummaryUtils::get.toString() -> "Transaction reports"
                 RefuelingUtils::get.toString() -> "Fuel data"
@@ -42,10 +42,6 @@ class DataFetchingInfo {
                 ActivityAuthEnums.ADMIN,
                 ActivityAuthEnums.ONE_SHOT_DELIVERY,
                 -> {
-                    executingMethods.add(SingleAttributedDataUtils::get, { SingleAttributedDataUtils.get(
-                        
-                    )
-                    })
                     executingMethods.add(CustomerKYC::get, { CustomerKYC.get() })
                     executingMethods.add(GetCustomerOrderUtils::get, {GetCustomerOrderUtils.get(
                         
@@ -81,10 +77,10 @@ class DataFetchingInfo {
                     })
                 }
                 ActivityAuthEnums.ORDER_COLLECTOR -> {
-                    executingMethods.add(SingleAttributedDataUtils::getRecords, {SingleAttributedDataUtils.get(
-                        
-                    )
-                    })
+//                    executingMethods.add(SingleAttributedDataUtils::getRecords, {SingleAttributedDataUtils.get(
+//
+//                    )
+//                    })
                     executingMethods.add(CustomerKYC::get, {CustomerKYC.get() })
                     executingMethods.add(GetCustomerOrderUtils::get, {GetCustomerOrderUtils.get(
                         
@@ -93,17 +89,17 @@ class DataFetchingInfo {
                     executingMethods.add(CustomerRecentData::get, {CustomerRecentData.get() })
                 }
                 ActivityAuthEnums.LOAD_INFORMATION -> {
-                    executingMethods.add(SingleAttributedDataUtils::getRecords, {SingleAttributedDataUtils.get(
-                        
-                    )
-                    })
+//                    executingMethods.add(SingleAttributedDataUtils::getRecords, {SingleAttributedDataUtils.get(
+//
+//                    )
+//                    })
                     executingMethods.add(DaySummaryUtils::get, {DaySummaryUtils.get()})
                 }
                 ActivityAuthEnums.MONEY_CALCULATOR -> {
-                    executingMethods.add(SingleAttributedDataUtils::getRecords, {SingleAttributedDataUtils.get(
-                        
-                    )
-                    })
+//                    executingMethods.add(SingleAttributedDataUtils::getRecords, {SingleAttributedDataUtils.get(
+//
+//                    )
+//                    })
                     executingMethods.add(DeliverToCustomerDataHandler::get, {DeliverToCustomerDataHandler.get(
                         
                     )
@@ -123,7 +119,7 @@ class DataFetchingInfo {
                     executingMethods.add(CustomerDataUtils::get, {CustomerDataUtils.get() })
                 }
                 ActivityAuthEnums.ADD_TRANSACTION -> {
-                    executingMethods.add(SingleAttributedDataUtils::get, {SingleAttributedDataUtils.get() })
+//                    executingMethods.add(SingleAttributedDataUtils::get, {SingleAttributedDataUtils.get() })
                     executingMethods.add(CustomerRecentData::get, {CustomerRecentData.get() })
                     executingMethods.add(CustomerDataUtils::get, {CustomerDataUtils.get() })
                     executingMethods.add(DaySummaryUtils::get, {DaySummaryUtils.get() })

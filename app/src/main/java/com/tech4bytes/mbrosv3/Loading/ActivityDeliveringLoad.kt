@@ -91,7 +91,7 @@ class ActivityDeliveringLoad : AppCompatActivity() {
         if (bufferRateFromUI.isNotEmpty())
             record.bufferRate = bufferRateFromUI
 
-        SingleAttributedDataUtils.saveToLocalThenServer(record)
+        SingleAttributedDataUtils.insert(record).execute()
     }
 
     fun goToDeliveringDeliverPage() {

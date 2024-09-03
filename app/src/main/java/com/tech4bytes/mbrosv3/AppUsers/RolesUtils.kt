@@ -5,11 +5,11 @@ import com.prasunmondal.dev.libs.gsheet.ContextWrapper
 import com.prasunmondal.dev.libs.gsheet.clients.ClientFilter
 import com.prasunmondal.dev.libs.gsheet.clients.GSheetSerialized
 import com.tech4bytes.mbrosv3.ProjectConfig
-import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.prasunmondal.dev.libs.contexts.AppContexts
 
 object RolesUtils : GSheetSerialized<AppUsersModel>(
     ContextWrapper(AppContexts.get()),
-    ProjectConfig.dBServerScriptURL,
+    ProjectConfig.dBServerScriptURLNew,
     ProjectConfig.get_db_sheet_id(),
     "logins",
     query = null,

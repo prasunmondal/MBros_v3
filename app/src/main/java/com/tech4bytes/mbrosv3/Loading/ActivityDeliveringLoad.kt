@@ -13,7 +13,7 @@ import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
-import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import java.lang.String.format
 
@@ -25,7 +25,7 @@ class ActivityDeliveringLoad : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_delivering_load)
         view = findViewById(R.id.activity_delivering_load)
-        AppContexts.set(this, this)
+        AppContexts.set(this)
         AppUtils.logError(this)
 
         addListeners()

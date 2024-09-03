@@ -15,6 +15,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.AppData.AppUtils
@@ -28,7 +29,7 @@ import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.AppUsers.Config
 import com.tech4bytes.mbrosv3.AppUsers.RolesUtils
-import com.tech4bytes.mbrosv3.BuildConfig
+//import com.tech4bytes.mbrosv3.BuildConfig
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.DueShow
 import com.tech4bytes.mbrosv3.CustomerAddTransactionActivity
@@ -46,7 +47,6 @@ import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.OneShotSMS.OneShotSMS
 import com.tech4bytes.mbrosv3.Sms.SMSUtils
-import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import java.io.File
@@ -175,8 +175,9 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     private fun updateAppVerOnUI() {
-        findViewById<TextView>(R.id.app_ver_label).text =
-            "App Version: ${BuildConfig.lastGitCommitHash} (${BuildConfig.lastGitCommitDate})"
+        // TODO: 09/2024
+//        findViewById<TextView>(R.id.app_ver_label).text =
+//            "App Version: ${BuildConfig.lastGitCommitHash} (${BuildConfig.lastGitCommitDate})"
     }
 
     private fun getRoleAndActivityMapping(role: ActivityAuthEnums): (() -> Unit)? {

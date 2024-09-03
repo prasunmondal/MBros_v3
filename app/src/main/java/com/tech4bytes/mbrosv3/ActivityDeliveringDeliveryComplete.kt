@@ -8,13 +8,13 @@ import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.UserRoleUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
-import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.prasunmondal.dev.libs.contexts.AppContexts
 
 class ActivityDeliveringDeliveryComplete : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_delivering_delivery_complete)
-        AppContexts.set(this, this)
+        AppContexts.set(this)
         AppUtils.logError(this)
     }
 

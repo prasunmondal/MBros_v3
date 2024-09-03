@@ -25,7 +25,7 @@ import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
-import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
@@ -41,7 +41,7 @@ class DeliverToCustomerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_delivering_deliver)
-        AppContexts.set(this, this)
+        AppContexts.set(this)
         AppUtils.logError(this)
         mainView = findViewById(R.id.activity_delivering_deliver_main)
 

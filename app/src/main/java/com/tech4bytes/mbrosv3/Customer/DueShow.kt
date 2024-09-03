@@ -19,7 +19,7 @@ import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerRecentData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
-import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import java.time.LocalDateTime
@@ -35,7 +35,7 @@ class DueShow : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_due_show)
-        AppContexts.set(this, this)
+        AppContexts.set(this)
 
         setUI()
         showDues(toggleBalanceViewBtn.isChecked)

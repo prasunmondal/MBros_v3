@@ -1,22 +1,24 @@
 package com.tech4bytes.mbrosv3.VehicleManagement
 
-import com.google.gson.reflect.TypeToken
-import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
+import com.prasunmondal.dev.libs.contexts.AppContexts
+import com.prasunmondal.dev.libs.gsheet.ContextWrapper
+import com.prasunmondal.dev.libs.gsheet.clients.GSheetSerialized
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 
-object RefuelingUtils : Tech4BytesSerializable<RefuelingModel>(
-    ProjectConfig.dBServerScriptURL,
+object RefuelingUtils : GSheetSerialized<RefuelingModel>(
+    ContextWrapper(AppContexts.get()),
+    ProjectConfig.dBServerScriptURLNew,
     ProjectConfig.get_db_sheet_id(),
     "fuel",
     query = null,
-    object : TypeToken<ArrayList<RefuelingModel>?>() {}.type,
+    classTypeForResponseParsing = RefuelingModel::class.java,
     appendInServer = true,
     appendInLocal = true) {
     private fun getLatestRecord(useCache: Boolean = true): RefuelingModel {
-        val list = get(useCache)
+        val list = fetchAll().execute(useCache)
         return list[list.size - 1]
     }
 
@@ -58,7 +60,8 @@ object RefuelingUtils : Tech4BytesSerializable<RefuelingModel>(
 
             val calculatedMileage = (NumberUtils.getIntOrZero(refuelingObj.refueling_km) - NumberUtils.getIntOrZero(refuelingObj.prev_refuel_km)) / NumberUtils.getDoubleOrZero(refuelingObj.measure)
             refuelingObj.mileage = "%.3f".format(calculatedMileage)
-            saveToServer(refuelingObj)
+            insert(refuelingObj).execute()
+//            saveToServer(refuelingObj)
         }
     }
 }

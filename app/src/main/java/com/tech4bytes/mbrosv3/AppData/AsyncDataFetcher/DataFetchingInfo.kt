@@ -28,7 +28,7 @@ class DataFetchingInfo {
 //                SingleAttributedDataUtils::fetchAll.toString() -> "Metadata"
                 DeliverToCustomerDataHandler::get.toString() -> "Current delivery reports"
                 DaySummaryUtils::get.toString() -> "Transaction reports"
-                RefuelingUtils::get.toString() -> "Fuel data"
+//                RefuelingUtils::get.toString() -> "Fuel data"
                 AppConstantsUtil::get.toString() -> "App Constants Data"
                 OSMS::get.toString() -> "Fetch Message Templates"
                 else -> "Get data"
@@ -53,7 +53,7 @@ class DataFetchingInfo {
                     )
                     })
                     executingMethods.add(DaySummaryUtils::get, {DaySummaryUtils.get()})
-                    executingMethods.add(RefuelingUtils::get, {RefuelingUtils.get() })
+//                    executingMethods.add(RefuelingUtils::get, {RefuelingUtils.get() })
                     executingMethods.add(AppConstantsUtil::get, {AppConstantsUtil.get() })
                 }
                 ActivityAuthEnums.DELIVERY -> {

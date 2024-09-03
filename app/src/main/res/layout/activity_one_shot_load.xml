@@ -397,6 +397,24 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Switch
+                android:id="@+id/osl_readiness_for_customer_communication"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded"
+                android:backgroundTint="#A3511313"
+                android:onClick="onClickCommunicationReadyButton"
+                android:padding="10dp"
+                android:text="Ready to send message to customer"
+                android:textColor="#C998958E" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginTop="15dp"
             android:background="@drawable/rounded"
             android:backgroundTint="#9E232323"

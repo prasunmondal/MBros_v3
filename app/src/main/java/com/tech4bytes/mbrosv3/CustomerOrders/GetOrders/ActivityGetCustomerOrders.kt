@@ -18,7 +18,7 @@ import com.tech4bytes.mbrosv3.Loading.LoadModel
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
-import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 
@@ -32,7 +32,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_get_order_estimates)
-        AppContexts.set(this, this)
+        AppContexts.set(this)
         AppUtils.logError(this)
 
         containerView = findViewById<LinearLayout>(R.id.activity_get_order_estimates__parent_view)

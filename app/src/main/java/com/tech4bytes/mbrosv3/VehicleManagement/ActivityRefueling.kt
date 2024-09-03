@@ -11,7 +11,7 @@ import com.tech4bytes.mbrosv3.ActivityDeliveringDeliveryComplete
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
-import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.prasunmondal.dev.libs.contexts.AppContexts
 
 class ActivityRefueling : AppCompatActivity() {
 
@@ -20,7 +20,7 @@ class ActivityRefueling : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_refueling)
-        AppContexts.set(this, this)
+        AppContexts.set(this)
         AppUtils.logError(this)
 
         mainContainer = findViewById<ConstraintLayout>(R.id.activity_refueling_container)
@@ -48,7 +48,8 @@ class ActivityRefueling : AppCompatActivity() {
 
     fun onClickRefuelingSubmitBtn(view: View) {
         val obj = RefuelingModel(measure = getFuelMeasure(), amount = getRefuelingAmount(), refueling_km = getKM(), is_full_tank = isTankFulled())
-        RefuelingUtils.saveToServer(obj)
+        RefuelingUtils.insert(obj).execute()
+//        RefuelingUtils.saveToServer(obj)
         goToActivityDeliveringDeliveryComplete()
     }
 

@@ -21,13 +21,10 @@ enum class AppConstants {
     EVENTS_SHOW_N_DAYS;
 
     companion object {
-        fun preFetch(useCache: Boolean = true) {
-            AppConstantsUtil.get(useCache)
-        }
 
         fun get(constant: AppConstants, useCache: Boolean = true): String {
             LogMe.log("Searching in AppConstants: $constant")
-            val constantList = AppConstantsUtil.get(useCache)
+            val constantList = AppConstantsUtil.fetchAll().execute(useCache)
             constantList.forEach {
                 if (it.constantName == constant.name) {
                     LogMe.log("Searching in AppConstants: $constant: Successful. Value: ${it.constantValue}")
@@ -40,7 +37,7 @@ enum class AppConstants {
 
         fun get(constant: String, useCache: Boolean = true): String {
             LogMe.log("Searching in AppConstants: $constant")
-            val constantList = AppConstantsUtil.get(useCache)
+            val constantList = AppConstantsUtil.fetchAll().execute(useCache)
             constantList.forEach {
                 if (it.constantName == constant) {
                     LogMe.log("Searching in AppConstants: $constant: Successful. Value: ${it.constantValue}")

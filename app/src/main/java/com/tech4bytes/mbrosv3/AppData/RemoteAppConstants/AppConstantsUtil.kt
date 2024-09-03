@@ -1,16 +1,16 @@
 package com.tech4bytes.mbrosv3.AppData.RemoteAppConstants
 
-import com.google.gson.reflect.TypeToken
-import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
+import com.prasunmondal.dev.libs.contexts.AppContexts
+import com.prasunmondal.dev.libs.gsheet.ContextWrapper
+import com.prasunmondal.dev.libs.gsheet.clients.GSheetSerialized
 import com.tech4bytes.mbrosv3.ProjectConfig
 
-object AppConstantsUtil : Tech4BytesSerializable<AppConstantModel>(
-    ProjectConfig.dBServerScriptURL,
-    ProjectConfig.get_db_sheet_id(),
-    "appConstants",
-    query = null,
-    object : TypeToken<ArrayList<AppConstantModel>?>() {}.type,
+object AppConstantsUtil : GSheetSerialized<AppConstantModel>(
+    context = ContextWrapper(AppContexts.get()),
+    scriptURL = ProjectConfig.dBServerScriptURL,
+    sheetURL = ProjectConfig.get_db_sheet_id(),
+    tabName = "appConstants",
+    classTypeForResponseParsing = AppConstantModel::class.java,
     appendInServer = true,
-    appendInLocal = true,
-    getEmptyListIfNoResultsFoundInServer = true
+    appendInLocal = true
 )

@@ -140,7 +140,7 @@ object CustomerDataUtils : GSheetSerialized<CustomerData>(
     }
 
     fun getAllCustomerNames(useCache: Boolean = true): List<String> {
-        val customersFromCustomerDetails = CustomerKYC.get(useCache).stream()
+        val customersFromCustomerDetails = CustomerKYC.fetchAll().execute(useCache).stream()
             .filter { d -> d.nameEng.isNotEmpty() }
             .map(CustomerKYCModel::nameEng)
             .collect(Collectors.toSet()).toList()

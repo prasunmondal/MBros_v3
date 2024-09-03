@@ -84,8 +84,8 @@ object GetCustomerOrderUtils : Tech4BytesSerializable<GetCustomerOrderModel>(
 
         obj = mutableListOf()
 
-        LogMe.log(CustomerKYC.get().toString())
-        CustomerKYC.get().forEach {
+        LogMe.log(CustomerKYC.fetchAll().execute().toString())
+        CustomerKYC.fetchAll().execute().forEach {
             if (it.isActiveCustomer.toBoolean()) {
                 obj.add(nameMappedOrders[it.nameEng]!!)
             }
@@ -96,7 +96,7 @@ object GetCustomerOrderUtils : Tech4BytesSerializable<GetCustomerOrderModel>(
     private fun getCompleteList(): List<GetCustomerOrderModel> {
         val list: MutableList<GetCustomerOrderModel> = mutableListOf()
         val actualOrders = getServerList()
-        CustomerKYC.get().forEach { masterList ->
+        CustomerKYC.fetchAll().execute().forEach { masterList ->
             var isInOrderList = false
             actualOrders.forEach { orderList ->
                 if (masterList.nameEng == orderList.name) {
@@ -114,7 +114,7 @@ object GetCustomerOrderUtils : Tech4BytesSerializable<GetCustomerOrderModel>(
     fun getListOfOrderedCustomers(): List<GetCustomerOrderModel> {
         val list: MutableList<GetCustomerOrderModel> = mutableListOf()
         val actualOrders = getServerList()
-        CustomerKYC.get().forEach { masterList ->
+        CustomerKYC.fetchAll().execute().forEach { masterList ->
             actualOrders.forEach { orderList ->
                 if (masterList.nameEng == orderList.name) {
                     list.add(orderList)
@@ -127,7 +127,7 @@ object GetCustomerOrderUtils : Tech4BytesSerializable<GetCustomerOrderModel>(
     fun getListOfUnOrderedCustomers(): List<GetCustomerOrderModel> {
         val list: MutableList<GetCustomerOrderModel> = mutableListOf()
         val actualOrders = getServerList()
-        CustomerKYC.get().forEach { masterList ->
+        CustomerKYC.fetchAll().execute().forEach { masterList ->
             var isInOrderList = false
             actualOrders.forEach { orderList ->
                 if (masterList.nameEng == orderList.name) {

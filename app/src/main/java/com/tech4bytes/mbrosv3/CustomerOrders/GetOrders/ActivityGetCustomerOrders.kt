@@ -138,7 +138,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
     private fun getCustomerNamesAsStringList(): List<String> {
         val namesList = mutableListOf<String>()
 
-        CustomerKYC.get().forEach {
+        CustomerKYC.fetchAll().execute().forEach {
             namesList.add(it.nameEng)
         }
         return namesList

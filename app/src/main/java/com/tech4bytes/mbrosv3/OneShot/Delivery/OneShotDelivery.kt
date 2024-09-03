@@ -91,7 +91,7 @@ class OneShotDelivery : AppCompatActivity() {
 
     @SuppressLint("NewApi")
     private fun populateCustomerListDropdown() {
-        val allCustomers = ListUtils.getAllPossibleValuesList(CustomerKYC.get(), CustomerKYCModel::nameEng).toList()
+        val allCustomers = ListUtils.getAllPossibleValuesList(CustomerKYC.fetchAll().execute(), CustomerKYCModel::nameEng).toList()
         val customersInUI = ListUtils.getAllPossibleValuesList(deliverRecords.values.toList(), DeliverToCustomerDataModel::name).toList()
         val listToShow = CollectionUtils.subtract(allCustomers, customersInUI).toList().sorted()
 

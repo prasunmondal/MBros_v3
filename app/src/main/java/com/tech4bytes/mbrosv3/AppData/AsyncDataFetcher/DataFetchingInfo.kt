@@ -22,7 +22,7 @@ class DataFetchingInfo {
             LogMe.log(executingMethod.toString())
             return when (executingMethod.toString()) {
                 GetCustomerOrderUtils::get.toString() -> "Customer orders"
-                CustomerKYC::get.toString() -> "Get Customer KYCs"
+//                CustomerKYC::get.toString() -> "Get Customer KYCs"
                 CustomerRecentData::get.toString() -> "Getting Previous Recents"
 //                CustomerDataUtils::get.toString() -> "Previous delivery reports"
 //                SingleAttributedDataUtils::fetchAll.toString() -> "Metadata"
@@ -42,7 +42,7 @@ class DataFetchingInfo {
                 ActivityAuthEnums.ADMIN,
                 ActivityAuthEnums.ONE_SHOT_DELIVERY,
                 -> {
-                    executingMethods.add(CustomerKYC::get, { CustomerKYC.get() })
+//                    executingMethods.add(CustomerKYC::get, { CustomerKYC.get() })
                     executingMethods.add(GetCustomerOrderUtils::get, {GetCustomerOrderUtils.get(
                         
                     )
@@ -57,7 +57,7 @@ class DataFetchingInfo {
 //                    executingMethods.add(AppConstantsUtil::get, {AppConstantsUtil.get() })
                 }
                 ActivityAuthEnums.DELIVERY -> {
-                    executingMethods.add(CustomerKYC::get, {CustomerKYC.get() })
+//                    executingMethods.add(CustomerKYC::get, {CustomerKYC.get() })
                     executingMethods.add(GetCustomerOrderUtils::get, {GetCustomerOrderUtils.get(
                         
                     )
@@ -69,7 +69,7 @@ class DataFetchingInfo {
                     executingMethods.add(CustomerRecentData::get, {CustomerRecentData.get() })
                 }
                 ActivityAuthEnums.BALANCE_VIEW -> {
-                    executingMethods.add(CustomerKYC::get, {CustomerKYC.get() })
+//                    executingMethods.add(CustomerKYC::get, {CustomerKYC.get() })
                     executingMethods.add(CustomerRecentData::get, {CustomerRecentData.get() })
                     executingMethods.add(DeliverToCustomerDataHandler::get, {DeliverToCustomerDataHandler.get(
                         
@@ -81,7 +81,7 @@ class DataFetchingInfo {
 //
 //                    )
 //                    })
-                    executingMethods.add(CustomerKYC::get, {CustomerKYC.get() })
+//                    executingMethods.add(CustomerKYC::get, {CustomerKYC.get() })
                     executingMethods.add(GetCustomerOrderUtils::get, {GetCustomerOrderUtils.get(
                         
                     )
@@ -107,7 +107,7 @@ class DataFetchingInfo {
 //                    executingMethods.add(AppConstants::preFetch, {AppConstantsUtil.get() })
                 }
                 ActivityAuthEnums.SMS_ORDERING -> {
-                    executingMethods.add(CustomerKYC::get, {CustomerKYC.get() })
+//                    executingMethods.add(CustomerKYC::get, {CustomerKYC.get() })
 //                    executingMethods.add(AppConstants::preFetch, {AppConstantsUtil.get() })
                     executingMethods.add(DeliverToCustomerDataHandler::get, {DeliverToCustomerDataHandler.get(
                         

@@ -1,6 +1,9 @@
 package com.tech4bytes.mbrosv3.Finalize.Models
 
 import com.google.gson.reflect.TypeToken
+import com.prasunmondal.dev.libs.contexts.AppContexts
+import com.prasunmondal.dev.libs.gsheet.ContextWrapper
+import com.prasunmondal.dev.libs.gsheet.clients.GSheetSerialized
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
@@ -75,22 +78,17 @@ class CustomerData : java.io.Serializable {
     }
 }
 
-object CustomerDataUtils : Tech4BytesSerializable<CustomerData>(
-    ProjectConfig.dBServerScriptURL,
-    ProjectConfig.get_db_finalize_sheet_id(),
-    "deliveries",
-    null,
-    object : TypeToken<ArrayList<CustomerData>?>() {}.type,
+object CustomerDataUtils : GSheetSerialized<CustomerData>(
+    context = ContextWrapper(AppContexts.get()),
+    scriptURL = ProjectConfig.dBServerScriptURL,
+    sheetURL = ProjectConfig.get_db_finalize_sheet_id(),
+    tabName = "deliveries",
+    classTypeForResponseParsing = CustomerData::class.java,
     appendInServer = true,
-    appendInLocal = true,
-    cacheTag = "allData"
+    appendInLocal = true
 ) {
     fun getCustomerNames(): HashSet<String> {
-        val customerNames: HashSet<String> = hashSetOf()
-        get().forEach {
-            customerNames.add(it.name)
-        }
-        return customerNames
+        return fetchAll().execute().map { it.name }.toHashSet()
     }
 
     fun spoolDeliveringData() {
@@ -147,7 +145,7 @@ object CustomerDataUtils : Tech4BytesSerializable<CustomerData>(
             .map(CustomerKYCModel::nameEng)
             .collect(Collectors.toSet()).toList()
 
-        val customersFromFinalizedDeliveries = get(useCache).stream()
+        val customersFromFinalizedDeliveries = fetchAll().execute(useCache).stream()
             .filter { d -> d.name.isNotEmpty() }
             .map(CustomerData::name)
             .collect(Collectors.toSet()).toList()

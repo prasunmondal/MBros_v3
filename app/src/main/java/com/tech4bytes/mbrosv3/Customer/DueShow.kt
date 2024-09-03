@@ -68,7 +68,7 @@ class DueShow : AppCompatActivity() {
         //                                                        <------- list starts
 
         LogMe.log("Name :$name")
-        val listSorted = CustomerDataUtils.get()
+        val listSorted = CustomerDataUtils.fetchAll().execute()
             .filter { it.name == name }
             .sortedBy { t -> t.timestamp }.reversed()
         try {

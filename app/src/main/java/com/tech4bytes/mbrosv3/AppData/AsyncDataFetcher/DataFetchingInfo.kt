@@ -24,7 +24,7 @@ class DataFetchingInfo {
                 GetCustomerOrderUtils::get.toString() -> "Customer orders"
                 CustomerKYC::get.toString() -> "Get Customer KYCs"
                 CustomerRecentData::get.toString() -> "Getting Previous Recents"
-                CustomerDataUtils::get.toString() -> "Previous delivery reports"
+//                CustomerDataUtils::get.toString() -> "Previous delivery reports"
 //                SingleAttributedDataUtils::fetchAll.toString() -> "Metadata"
                 DeliverToCustomerDataHandler::get.toString() -> "Current delivery reports"
                 DaySummaryUtils::get.toString() -> "Transaction reports"
@@ -116,12 +116,12 @@ class DataFetchingInfo {
                     executingMethods.add(CustomerRecentData::get, {CustomerRecentData.get() })
                 }
                 ActivityAuthEnums.CUSTOMER_TRANSACTIONS -> {
-                    executingMethods.add(CustomerDataUtils::get, {CustomerDataUtils.get() })
+//                    executingMethods.add(CustomerDataUtils::get, {CustomerDataUtils.get() })
                 }
                 ActivityAuthEnums.ADD_TRANSACTION -> {
 //                    executingMethods.add(SingleAttributedDataUtils::get, {SingleAttributedDataUtils.get() })
                     executingMethods.add(CustomerRecentData::get, {CustomerRecentData.get() })
-                    executingMethods.add(CustomerDataUtils::get, {CustomerDataUtils.get() })
+//                    executingMethods.add(CustomerDataUtils::get, {CustomerDataUtils.get() })
                     executingMethods.add(DaySummaryUtils::get, {DaySummaryUtils.get() })
                     executingMethods.add(DeliverToCustomerDataHandler::get, {DeliverToCustomerDataHandler.get() })
                     executingMethods.add(OSMS::get, {OSMS.get() })

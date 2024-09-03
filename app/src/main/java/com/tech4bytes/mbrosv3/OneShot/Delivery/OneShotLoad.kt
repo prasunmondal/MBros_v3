@@ -3,6 +3,8 @@ package com.tech4bytes.mbrosv3.OneShot.Delivery
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -21,7 +23,7 @@ import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.SMSUtils
-import com.tech4bytes.mbrosv3.Utils.Contexts.AppContexts
+import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Language.English.EnglishUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
@@ -51,6 +53,15 @@ class OneShotLoad : AppCompatActivity() {
         AppUtils.logError(this)
         initializeVariables()
         initializeUI()
+    }
+
+    fun onClickCommunicationReadyButton(view: View) {
+        val communicationReadyBtn = findViewById<Switch>(R.id.osl_readiness_for_customer_communication)
+        val isEnabled = communicationReadyBtn.isEnabled
+//        UIUtils.setUIElementValue(communicationReadyBtn, (!isEnabled).toString())
+//        val color: Long = if(isEnabled)  else
+//        communicationReadyBtn.set = isEnabled
+//        if(isEnabled) communicationReadyBtn.setBackgroundColor(Color.RED) else communicationReadyBtn.background = Color.GREEN
     }
 
     private fun getServerChecksumString(): String {
@@ -167,6 +178,15 @@ class OneShotLoad : AppCompatActivity() {
         }
         finalFarmRate.addTextChangedListener { markDataFresh(false) }
         inHandCash.addTextChangedListener { markDataFresh(false) }
+
+        val communicationReadyBtn = findViewById<Switch>(R.id.osl_readiness_for_customer_communication)
+        communicationReadyBtn.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+//            communicationReadyBtn.backgroundTintList(0x511313)// else communicationReadyBtn.setBackgroundColor(0x04332F)
+            if(isChecked)
+            communicationReadyBtn.backgroundTintList = ColorStateList.valueOf(0x511313)
+            else
+            communicationReadyBtn.backgroundTintList = ColorStateList.valueOf(0x04332F)
+        })
     }
 
     private fun getCompanyNames(): List<String> {
@@ -261,7 +281,7 @@ class OneShotLoad : AppCompatActivity() {
                 oslSaveBtn.alpha = .5f
                 oslSaveBtn.isClickable = false
             }
-            SingleAttributedDataUtils.saveToLocalThenServer(SingleAttributedDataUtils.getRecords())
+            SingleAttributedDataUtils.insert(SingleAttributedDataUtils.getRecords()).execute()
             SingleAttributedDataUtils.getRecords(false)
             runOnUiThread {
                 markDataFresh(true)

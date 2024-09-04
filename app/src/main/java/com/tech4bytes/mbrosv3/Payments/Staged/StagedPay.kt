@@ -34,11 +34,11 @@ class StagedPay {
                 paidAmountInt *= -1
             }
             stagedObj.newBalance = (NumberUtils.getIntOrZero(prevBalance) - paidAmountInt).toString()
-            StagedPaymentUtils.saveToServerThenLocal(stagedObj)
+            StagedPaymentUtils.insert(stagedObj).execute()
         }
 
         fun transact(transObj: StagedPaymentsModel) {
-            StagedPaymentUtils.saveToServerThenLocal(transObj)
+            StagedPaymentUtils.insert(transObj).execute()
         }
     }
 }

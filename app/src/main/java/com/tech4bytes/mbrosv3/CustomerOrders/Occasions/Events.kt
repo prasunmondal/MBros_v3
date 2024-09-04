@@ -1,30 +1,29 @@
 package com.tech4bytes.mbrosv3.CustomerOrders.Occasions
 
-import com.google.gson.reflect.TypeToken
-import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
+import com.prasunmondal.dev.libs.contexts.AppContexts
+import com.prasunmondal.dev.libs.gsheet.ContextWrapper
+import com.prasunmondal.dev.libs.gsheet.clients.ClientSort
+import com.prasunmondal.dev.libs.gsheet.clients.GSheetSerialized
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import java.util.Calendar
 import java.util.Date
 
-object Events: Tech4BytesSerializable<EventsModel>(
-    ProjectConfig.dBServerScriptURL,
-    ProjectConfig.get_db_sheet_id(),
+object Events: GSheetSerialized<EventsModel>(
+    context = ContextWrapper(AppContexts.get()),
+    scriptURL = ProjectConfig.dBServerScriptURL,
+    sheetId = ProjectConfig.get_db_sheet_id(),
     "occasions",
     query = null,
-    object : TypeToken<ArrayList<EventsModel>?>() {}.type,
+    classTypeForResponseParsing = EventsModel::class.java,
     appendInServer = true,
-    appendInLocal = true
+    appendInLocal = true,
+    sort = ClientSort("sortByEventDate") { list: List<EventsModel> -> list.sortedBy { p -> DateUtils.getDate(p.eng_date) }.reversed().reversed() }
 ) {
-
-    override fun <T : Any> sortResults(list: ArrayList<T>): ArrayList<T> {
-        return (list as ArrayList<EventsModel>).sortedBy { p -> DateUtils.getDate(p.eng_date) }.reversed().reversed() as ArrayList<T>
-    }
-
     fun getOccasionsInLastNDays(n: Int): List<EventsModel> {
         val listOfEvents: MutableList<EventsModel> = mutableListOf()
 
-        val events = get()
+        val events = fetchAll().execute()
         val calendar = Calendar.getInstance()
         val todaysDate = calendar.time
         calendar.add(Calendar.DAY_OF_YEAR, n)

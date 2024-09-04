@@ -28,7 +28,7 @@ class GetOrdersFinalize : AppCompatActivity() {
         setContentView(R.layout.activity_get_orders_finalize)
         AppContexts.set(this)
 
-        listOrders = GetCustomerOrderUtils.get()
+        listOrders = GetCustomerOrderUtils.fetchAll().execute()
         LogMe.log(listOrders.toString())
         showList()
         updatePcs()
@@ -86,13 +86,13 @@ class GetOrdersFinalize : AppCompatActivity() {
         entryFinalPcAttr.doOnTextChanged { _, _, _, _ ->
             order.calculatedPc = entryFinalPcAttr.text.toString().replace(" ", "")
             updatePcs()
-            localSave()
+//            localSave()
         }
 
         entryFinalKgAttr.doOnTextChanged { _, _, _, _ ->
             order.calculatedKg = entryFinalKgAttr.text.toString().replace(" ", "")
             updateKgs()
-            localSave()
+//            localSave()
         }
 
         listContainer.addView(entry)
@@ -124,9 +124,9 @@ class GetOrdersFinalize : AppCompatActivity() {
         finalizePc.text = sum.toString()
     }
 
-    private fun localSave() {
-        GetCustomerOrderUtils.saveToLocal()
-    }
+//    private fun localSave() {
+//        GetCustomerOrderUtils.saveToLocal()
+//    }
 
     fun onClickGoToGetOrdersPage(view: View) {
         val switchActivityIntent = Intent(this, ActivityGetCustomerOrders::class.java)

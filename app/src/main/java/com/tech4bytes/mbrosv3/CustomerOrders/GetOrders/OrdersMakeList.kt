@@ -24,7 +24,7 @@ class OrdersMakeList : AppCompatActivity() {
         setContentView(R.layout.activity_orders_make_list)
         AppContexts.set(this)
 
-        listOrders = GetCustomerOrderUtils.get()
+        listOrders = GetCustomerOrderUtils.fetchAll().execute()
         showList()
     }
 
@@ -79,7 +79,7 @@ class OrdersMakeList : AppCompatActivity() {
             runOnUiThread {
                 Toast.makeText(this, "Saving Data", Toast.LENGTH_SHORT).show()
             }
-            GetCustomerOrderUtils.deleteAll()
+            GetCustomerOrderUtils.deleteAll().execute()
             GetCustomerOrderUtils.save()
 
             val metadataObj = SingleAttributedDataUtils.getRecords()

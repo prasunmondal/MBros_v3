@@ -11,6 +11,9 @@ import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.prasunmondal.dev.libs.contexts.AppContexts
+import com.prasunmondal.dev.libs.gsheet.ContextWrapper
+import com.prasunmondal.dev.libs.gsheet.clients.GScript
+import com.prasunmondal.dev.libs.gsheet.clients.GSheetSerialized
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
@@ -54,12 +57,13 @@ data class GetCustomerOrderModel(
     }
 }
 
-object GetCustomerOrderUtils : Tech4BytesSerializable<GetCustomerOrderModel>(
-    ProjectConfig.dBServerScriptURL,
-    ProjectConfig.get_db_sheet_id(),
-    "GetOrders",
+object GetCustomerOrderUtils : GSheetSerialized<GetCustomerOrderModel>(
+    context = ContextWrapper(AppContexts.get()),
+    scriptURL = ProjectConfig.dBServerScriptURLNew,
+    sheetId = ProjectConfig.get_db_sheet_id(),
+    tabName = "GetOrders",
     query = null,
-    object : TypeToken<ArrayList<GetCustomerOrderModel>?>() {}.type,
+    classTypeForResponseParsing = GetCustomerOrderModel::class.java,
     appendInServer = false,
     appendInLocal = false) {
 
@@ -90,7 +94,7 @@ object GetCustomerOrderUtils : Tech4BytesSerializable<GetCustomerOrderModel>(
                 obj.add(nameMappedOrders[it.nameEng]!!)
             }
         }
-        saveToLocal()
+//        saveToLocal()
     }
 
     private fun getCompleteList(): List<GetCustomerOrderModel> {
@@ -142,11 +146,11 @@ object GetCustomerOrderUtils : Tech4BytesSerializable<GetCustomerOrderModel>(
     }
 
     fun getNumberOfCustomersOrdered(useCache: Boolean): Int {
-        return get(useCache).size
+        return fetchAll().execute(useCache).size
     }
 
     fun getByName(inputName: String): GetCustomerOrderModel? {
-        get().forEach {
+        fetchAll().execute().forEach {
             if (it.name == inputName) {
                 return it
             }
@@ -158,47 +162,45 @@ object GetCustomerOrderUtils : Tech4BytesSerializable<GetCustomerOrderModel>(
         obj.forEach {
             it.timestamp = DateUtils.getCurrentTimestamp()
         }
-        saveToServer()
-        saveToLocal()
+
+        getRecordsForOnlyOrderedCustomers().forEach {
+            GetCustomerOrderUtils.insert(it).queue()
+        }
+        GetCustomerOrderUtils.fetchAll().queue()
+        GScript.execute(ProjectConfig.dBServerScriptURLNew)
+//        saveToServer()
+//        saveToLocal()
     }
 
-    fun deleteAll() {
-        Delete.builder()
-            .scriptId(ProjectConfig.dBServerScriptURL)
-            .sheetId(ProjectConfig.get_db_sheet_id())
-            .tabName(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
-            .build().execute()
-        deleteFromLocal()
-    }
+//    fun deleteAll() {
+//        deleteAll(
+//        Delete.builder()
+//            .scriptId(ProjectConfig.dBServerScriptURL)
+//            .sheetId(ProjectConfig.get_db_sheet_id())
+//            .tabName(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
+//            .build().execute()
+//        deleteFromLocal()
+//    }
 
     private fun saveToServer() {
-        getRecordsForOnlyOrderedCustomers().forEach {
-            if (NumberUtils.getIntOrZero(it.orderedKg) > 0 || NumberUtils.getIntOrZero(it.orderedPc) > 0) {
-                PostObject.builder()
-                    .scriptId(ProjectConfig.dBServerScriptURL)
-                    .sheetId(ProjectConfig.get_db_sheet_id())
-                    .tabName(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
-                    .dataObject(it as Any)
-                    .build().execute()
-            }
-        }
+
     }
 
     private fun getRecordsForOnlyOrderedCustomers(): MutableList<GetCustomerOrderModel> {
         return obj.stream().filter { p -> p.id.isNotEmpty() }.collect(Collectors.toList())
     }
 
-    fun saveToLocal() {
-        saveToLocal(obj)
-    }
+//    fun saveToLocal() {
+//        saveToLocal(obj)
+//    }
 
-    fun saveToLocal(obj: MutableList<GetCustomerOrderModel>) {
-        CentralCache.put(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, obj)
-    }
+//    fun saveToLocal(obj: MutableList<GetCustomerOrderModel>) {
+//        CentralCache.put(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, obj)
+//    }
 
-    fun deleteFromLocal() {
-        CentralCache.put(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, listOf<GetCustomerOrderModel>())
-    }
+//    fun deleteFromLocal() {
+//        CentralCache.put(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, listOf<GetCustomerOrderModel>())
+//    }
 
     private fun getFromServer(): List<GetCustomerOrderModel> {
         // val waitDialog = ProgressDialog.show(AppContexts.get(), "Please Wait", "লোড হচ্ছে", true)

@@ -21,7 +21,7 @@ class DataFetchingInfo {
         fun getDescription(executingMethod: KFunction<Any>): String {
             LogMe.log(executingMethod.toString())
             return when (executingMethod.toString()) {
-                GetCustomerOrderUtils::get.toString() -> "Customer orders"
+//                GetCustomerOrderUtils::get.toString() -> "Customer orders"
 //                CustomerKYC::get.toString() -> "Get Customer KYCs"
                 CustomerRecentData::get.toString() -> "Getting Previous Recents"
 //                CustomerDataUtils::get.toString() -> "Previous delivery reports"
@@ -43,10 +43,10 @@ class DataFetchingInfo {
                 ActivityAuthEnums.ONE_SHOT_DELIVERY,
                 -> {
 //                    executingMethods.add(CustomerKYC::get, { CustomerKYC.get() })
-                    executingMethods.add(GetCustomerOrderUtils::get, {GetCustomerOrderUtils.get(
-                        
-                    )
-                    })
+//                    executingMethods.add(GetCustomerOrderUtils::get, {GetCustomerOrderUtils.get(
+//
+//                    )
+//                    })
                     executingMethods.add(CustomerRecentData::get, {CustomerRecentData.get() })
 //                    executingMethods.add(DeliverToCustomerDataHandler::get, {DeliverToCustomerDataHandler.get(
 //
@@ -58,10 +58,10 @@ class DataFetchingInfo {
                 }
                 ActivityAuthEnums.DELIVERY -> {
 //                    executingMethods.add(CustomerKYC::get, {CustomerKYC.get() })
-                    executingMethods.add(GetCustomerOrderUtils::get, {GetCustomerOrderUtils.get(
-                        
-                    )
-                    })
+//                    executingMethods.add(GetCustomerOrderUtils::get, {GetCustomerOrderUtils.get(
+//
+//                    )
+//                    })
 //                    executingMethods.add(DeliverToCustomerDataHandler::get, {DeliverToCustomerDataHandler.get(
 //
 //                    )
@@ -82,10 +82,10 @@ class DataFetchingInfo {
 //                    )
 //                    })
 //                    executingMethods.add(CustomerKYC::get, {CustomerKYC.get() })
-                    executingMethods.add(GetCustomerOrderUtils::get, {GetCustomerOrderUtils.get(
-                        
-                    )
-                    })
+//                    executingMethods.add(GetCustomerOrderUtils::get, {GetCustomerOrderUtils.get(
+//
+//                    )
+//                    })
                     executingMethods.add(CustomerRecentData::get, {CustomerRecentData.get() })
                 }
                 ActivityAuthEnums.LOAD_INFORMATION -> {

@@ -41,7 +41,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
     }
 
     private fun initializeUI(reset: Boolean) {
-        listOrders = GetCustomerOrderUtils.get()
+        listOrders = GetCustomerOrderUtils.fetchAll().execute()
         LogMe.log(listOrders.toString())
 
         val avg_wt = findViewById<EditText>(R.id.get_orders_avg_wt34)
@@ -121,7 +121,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
 
     private fun updateTotalKg() {
         var sum = 0
-        GetCustomerOrderUtils.get().forEach {
+        GetCustomerOrderUtils.fetchAll().execute().forEach {
             sum += getJustTheNumber(it.orderedKg)
         }
         UIUtils.setUIElementValue(containerView.findViewById(R.id.activity_get_order_estimates__total_kg), "$sum kg")
@@ -129,7 +129,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
 
     private fun updateTotalPc() {
         var sum = 0
-        GetCustomerOrderUtils.get().forEach {
+        GetCustomerOrderUtils.fetchAll().execute().forEach {
             sum += getJustTheNumber(it.orderedPc)
         }
         UIUtils.setUIElementValue(containerView.findViewById(R.id.activity_get_order_estimates__total_pc), "$sum pc")

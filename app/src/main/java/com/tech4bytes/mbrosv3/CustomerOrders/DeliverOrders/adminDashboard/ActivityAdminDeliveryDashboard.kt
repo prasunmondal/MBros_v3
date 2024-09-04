@@ -280,7 +280,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     fun updateDashboard(useCache: Boolean) {
         SingleAttributedDataUtils.getRecords(useCache)
         DeliverToCustomerDataHandler.fetchAll().execute(useCache)
-        GetCustomerOrderUtils.get(useCache)
+        GetCustomerOrderUtils.fetchAll().execute(useCache)
 
         updateLoadInfo(useCache)
         updateDeliveredInfo(useCache)

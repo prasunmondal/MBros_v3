@@ -37,7 +37,7 @@ object CustomerRecentData : Tech4BytesSerializable<CustomerData>(
     }
 
     fun spoolDeliveringData() {
-        var deliveredData = DeliverToCustomerDataHandler.get()
+        var deliveredData = DeliverToCustomerDataHandler.fetchAll().execute()
         deliveredData = Sorter.sortByNameList(deliveredData, DeliverToCustomerDataModel::name) as List<DeliverToCustomerDataModel>
 
         val totalProfit = DaySummaryUtils.getDayProfit()

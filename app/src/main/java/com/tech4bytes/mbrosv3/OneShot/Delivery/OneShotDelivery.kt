@@ -31,6 +31,7 @@ import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
 import com.prasunmondal.dev.libs.contexts.AppContexts
+import com.prasunmondal.dev.libs.gsheet.clients.GScript
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
@@ -180,7 +181,7 @@ class OneShotDelivery : AppCompatActivity() {
             deliverRecords[it.name] = deliverCustomersOrders
         }
 
-        val t = DeliverToCustomerDataHandler.get()
+        val t = DeliverToCustomerDataHandler.fetchAll().execute()
         t.forEach {
             var customerAccount = CustomerKYC.getByName(it.name)!!.referredBy
             if (customerAccount.isEmpty())
@@ -358,13 +359,13 @@ class OneShotDelivery : AppCompatActivity() {
 
             gatherSingleAttributedData()
 
-            DeliverToCustomerDataHandler.deleteData()
+            DeliverToCustomerDataHandler.deleteAll().execute()
 
             saveSingleAttributeData()
             saveDeliveryData()
             refuelUIObj.saveFuelData()
             SingleAttributedDataUtils.getRecords()
-            DeliverToCustomerDataHandler.get()
+            DeliverToCustomerDataHandler.fetchAll().execute()
             runOnUiThread()
             {
                 saveOneSortDeliveryButton.isEnabled = true
@@ -416,19 +417,20 @@ class OneShotDelivery : AppCompatActivity() {
 
         val filteredListToSave = filterListToGetDataToSave(allDeliveredRecords)
 
-        // save locally
-        filteredListToSave.forEach {
-            if(it.value.date.isEmpty()) {
-                it.value.date = DateUtils.getDateInFormat("dd/MM/yyyy")
-                it.value.customerAccount = it.value.name
-            }
-            DeliverToCustomerDataHandler.saveToLocal(it.value)
-        }
+        // TODO - 09-2024
+//        // save locally
+//        filteredListToSave.forEach {
+//            if(it.value.date.isEmpty()) {
+//                it.value.date = DateUtils.getDateInFormat("dd/MM/yyyy")
+//                it.value.customerAccount = it.value.name
+//            }
+//            DeliverToCustomerDataHandler.saveToLocal(it.value)
+//        }
 
         // save to server
         filteredListToSave.forEach {
             it.value.deliveryStatus = "DELIVERED"
-            DeliverToCustomerDataHandler.saveToServer(it.value)
+            DeliverToCustomerDataHandler.insert(it.value).queue()
             if (eachStep + 10 < 100) {
                 eachStep += 10
             } else {
@@ -436,6 +438,8 @@ class OneShotDelivery : AppCompatActivity() {
             }
             runOnUiThread { setSaveProgressBar(eachStep) }
         }
+        DeliverToCustomerDataHandler.fetchAll().queue()
+        GScript.execute(ProjectConfig.dBServerScriptURLNew)
         runOnUiThread { setSaveProgressBar(100) }
     }
 

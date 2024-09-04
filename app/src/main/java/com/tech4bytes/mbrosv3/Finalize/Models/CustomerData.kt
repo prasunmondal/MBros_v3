@@ -81,7 +81,7 @@ class CustomerData : java.io.Serializable {
 object CustomerDataUtils : GSheetSerialized<CustomerData>(
     context = ContextWrapper(AppContexts.get()),
     scriptURL = ProjectConfig.dBServerScriptURL,
-    sheetURL = ProjectConfig.get_db_finalize_sheet_id(),
+    sheetId = ProjectConfig.get_db_finalize_sheet_id(),
     tabName = "deliveries",
     classTypeForResponseParsing = CustomerData::class.java,
     appendInServer = true,
@@ -92,7 +92,7 @@ object CustomerDataUtils : GSheetSerialized<CustomerData>(
     }
 
     fun spoolDeliveringData() {
-        var deliveredData = DeliverToCustomerDataHandler.get()
+        var deliveredData = DeliverToCustomerDataHandler.fetchAll().execute()
         deliveredData = Sorter.sortByNameList(deliveredData, DeliverToCustomerDataModel::name) as List<DeliverToCustomerDataModel>
 
         val totalProfit = DaySummaryUtils.getDayProfit()

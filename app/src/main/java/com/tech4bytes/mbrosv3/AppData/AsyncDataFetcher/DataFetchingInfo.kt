@@ -26,7 +26,7 @@ class DataFetchingInfo {
                 CustomerRecentData::get.toString() -> "Getting Previous Recents"
 //                CustomerDataUtils::get.toString() -> "Previous delivery reports"
 //                SingleAttributedDataUtils::fetchAll.toString() -> "Metadata"
-                DeliverToCustomerDataHandler::get.toString() -> "Current delivery reports"
+//                DeliverToCustomerDataHandler::get.toString() -> "Current delivery reports"
                 DaySummaryUtils::get.toString() -> "Transaction reports"
 //                RefuelingUtils::get.toString() -> "Fuel data"
 //                AppConstantsUtil::get.toString() -> "App Constants Data"
@@ -48,10 +48,10 @@ class DataFetchingInfo {
                     )
                     })
                     executingMethods.add(CustomerRecentData::get, {CustomerRecentData.get() })
-                    executingMethods.add(DeliverToCustomerDataHandler::get, {DeliverToCustomerDataHandler.get(
-                        
-                    )
-                    })
+//                    executingMethods.add(DeliverToCustomerDataHandler::get, {DeliverToCustomerDataHandler.get(
+//
+//                    )
+//                    })
                     executingMethods.add(DaySummaryUtils::get, {DaySummaryUtils.get()})
 //                    executingMethods.add(RefuelingUtils::get, {RefuelingUtils.get() })
 //                    executingMethods.add(AppConstantsUtil::get, {AppConstantsUtil.get() })
@@ -62,19 +62,19 @@ class DataFetchingInfo {
                         
                     )
                     })
-                    executingMethods.add(DeliverToCustomerDataHandler::get, {DeliverToCustomerDataHandler.get(
-                        
-                    )
-                    })
+//                    executingMethods.add(DeliverToCustomerDataHandler::get, {DeliverToCustomerDataHandler.get(
+//
+//                    )
+//                    })
                     executingMethods.add(CustomerRecentData::get, {CustomerRecentData.get() })
                 }
                 ActivityAuthEnums.BALANCE_VIEW -> {
 //                    executingMethods.add(CustomerKYC::get, {CustomerKYC.get() })
                     executingMethods.add(CustomerRecentData::get, {CustomerRecentData.get() })
-                    executingMethods.add(DeliverToCustomerDataHandler::get, {DeliverToCustomerDataHandler.get(
-                        
-                    )
-                    })
+//                    executingMethods.add(DeliverToCustomerDataHandler::get, {DeliverToCustomerDataHandler.get(
+//
+//                    )
+//                    })
                 }
                 ActivityAuthEnums.ORDER_COLLECTOR -> {
 //                    executingMethods.add(SingleAttributedDataUtils::getRecords, {SingleAttributedDataUtils.get(
@@ -100,19 +100,19 @@ class DataFetchingInfo {
 //
 //                    )
 //                    })
-                    executingMethods.add(DeliverToCustomerDataHandler::get, {DeliverToCustomerDataHandler.get(
-                        
-                    )
-                    })
+//                    executingMethods.add(DeliverToCustomerDataHandler::get, {DeliverToCustomerDataHandler.get(
+//
+//                    )
+//                    })
 //                    executingMethods.add(AppConstants::preFetch, {AppConstantsUtil.get() })
                 }
                 ActivityAuthEnums.SMS_ORDERING -> {
 //                    executingMethods.add(CustomerKYC::get, {CustomerKYC.get() })
 //                    executingMethods.add(AppConstants::preFetch, {AppConstantsUtil.get() })
-                    executingMethods.add(DeliverToCustomerDataHandler::get, {DeliverToCustomerDataHandler.get(
-                        
-                    )
-                    })
+//                    executingMethods.add(DeliverToCustomerDataHandler::get, {DeliverToCustomerDataHandler.get(
+//
+//                    )
+//                    })
                     executingMethods.add(CustomerRecentData::get, {CustomerRecentData.get() })
                 }
                 ActivityAuthEnums.CUSTOMER_TRANSACTIONS -> {
@@ -123,7 +123,7 @@ class DataFetchingInfo {
                     executingMethods.add(CustomerRecentData::get, {CustomerRecentData.get() })
 //                    executingMethods.add(CustomerDataUtils::get, {CustomerDataUtils.get() })
                     executingMethods.add(DaySummaryUtils::get, {DaySummaryUtils.get() })
-                    executingMethods.add(DeliverToCustomerDataHandler::get, {DeliverToCustomerDataHandler.get() })
+//                    executingMethods.add(DeliverToCustomerDataHandler::get, {DeliverToCustomerDataHandler.get() })
                     executingMethods.add(OSMS::get, {OSMS.get() })
                 }
                 else -> {}

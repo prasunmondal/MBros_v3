@@ -103,7 +103,7 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
     var map: MutableMap<String, VerifyElements> = mutableMapOf()
 
     private fun showDeliveryData() {
-        var deliveredData = DeliverToCustomerDataHandler.get()
+        var deliveredData = DeliverToCustomerDataHandler.fetchAll().execute()
         var bundlesCount = 0
 
         val listContainer = findViewById<LinearLayout>(R.id.activity_collector_verify_money_collection_container)

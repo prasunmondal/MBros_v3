@@ -1,15 +1,17 @@
 package com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer
 
-import com.google.gson.reflect.TypeToken
-import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
+import com.prasunmondal.dev.libs.contexts.AppContexts
+import com.prasunmondal.dev.libs.gsheet.ContextWrapper
+import com.prasunmondal.dev.libs.gsheet.clients.GSheetSerialized
 import com.tech4bytes.mbrosv3.ProjectConfig
 
-object DeliverToCustomerDataHandler : Tech4BytesSerializable<DeliverToCustomerDataModel>(
-    ProjectConfig.dBServerScriptURL,
-    ProjectConfig.get_db_sheet_id(),
-    "deliverOrders",
+object DeliverToCustomerDataHandler : GSheetSerialized<DeliverToCustomerDataModel>(
+    context = ContextWrapper(AppContexts.get()),
+    scriptURL = ProjectConfig.dBServerScriptURLNew,
+    sheetId = ProjectConfig.get_db_sheet_id(),
+    tabName = "deliverOrders",
     query = null,
-    object : TypeToken<ArrayList<DeliverToCustomerDataModel>?>() {}.type,
+    classTypeForResponseParsing = DeliverToCustomerDataModel::class.java,
     appendInServer = true,
     appendInLocal = true
 )

@@ -24,7 +24,7 @@ class DeliveryCalculations {
 
         fun getDaySaleAmount(): Int {
             var sum = 0
-            DeliverToCustomerDataHandler.get().forEach {
+            DeliverToCustomerDataHandler.fetchAll().execute().forEach {
                 sum += NumberUtils.getIntOrZero(it.deliverAmount)
             }
             return sum
@@ -32,7 +32,7 @@ class DeliveryCalculations {
 
         fun getTotalOfPaidAmounts(): Int {
             var sum = 0
-            DeliverToCustomerDataHandler.get().forEach {
+            DeliverToCustomerDataHandler.fetchAll().execute().forEach {
                 sum += NumberUtils.getIntOrZero(it.paid)
             }
             return sum
@@ -40,7 +40,7 @@ class DeliveryCalculations {
 
         fun getTotalDeliveredPc(): Int {
             var sum = 0
-            DeliverToCustomerDataHandler.get().forEach {
+            DeliverToCustomerDataHandler.fetchAll().execute().forEach {
                 sum += NumberUtils.getIntOrZero(it.deliveredPc)
             }
             return sum
@@ -48,7 +48,7 @@ class DeliveryCalculations {
 
         fun getTotalDeliveredKg(): Double {
             var sum = 0.0
-            DeliverToCustomerDataHandler.get().forEach {
+            DeliverToCustomerDataHandler.fetchAll().execute().forEach {
                 sum += NumberUtils.getDoubleOrZero(it.deliveredKg)
             }
             return sum
@@ -83,7 +83,7 @@ class DeliveryCalculations {
             CustomerRecentData.getAllLatestRecords().forEach {
                 dueMap[it.name] = NumberUtils.getIntOrZero(it.khataBalance)
             }
-            DeliverToCustomerDataHandler.get().forEach {
+            DeliverToCustomerDataHandler.fetchAll().execute().forEach {
                 dueMap[it.name] = NumberUtils.getIntOrZero(it.khataBalance)
             }
 

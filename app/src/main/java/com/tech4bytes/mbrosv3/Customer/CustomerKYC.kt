@@ -31,7 +31,7 @@ data class CustomerKYCModel(
 object CustomerKYC : GSheetSerialized<CustomerKYCModel>(
     context = ContextWrapper(AppContexts.get()),
     scriptURL = ProjectConfig.dBServerScriptURL,
-    sheetURL = ProjectConfig.get_db_sheet_id(),
+    sheetId = ProjectConfig.get_db_sheet_id(),
     tabName = "customerDetails",
     query = null,
     classTypeForResponseParsing = CustomerKYCModel::class.java,

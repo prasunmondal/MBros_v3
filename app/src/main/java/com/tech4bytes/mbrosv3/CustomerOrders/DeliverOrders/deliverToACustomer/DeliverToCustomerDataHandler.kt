@@ -11,7 +11,5 @@ object DeliverToCustomerDataHandler : GSheetSerialized<DeliverToCustomerDataMode
     sheetId = ProjectConfig.get_db_sheet_id(),
     tabName = "deliverOrders",
     query = null,
-    classTypeForResponseParsing = DeliverToCustomerDataModel::class.java,
-    appendInServer = true,
-    appendInLocal = true
+    modelClass = DeliverToCustomerDataModel::class.java
 )

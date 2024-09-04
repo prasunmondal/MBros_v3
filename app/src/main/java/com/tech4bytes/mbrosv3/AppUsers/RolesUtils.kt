@@ -13,9 +13,7 @@ object RolesUtils : GSheetSerialized<AppUsersModel>(
     ProjectConfig.get_db_sheet_id(),
     "logins",
     query = null,
-    classTypeForResponseParsing = AppUsersModel::class.java,
-    appendInServer = true,
-    appendInLocal = true,
+    modelClass = AppUsersModel::class.java,
     filter = ClientFilter("getUserForCurrentDevice") {list: List<AppUsersModel> -> list.filter { DeviceUtils.getUniqueID(AppContexts.get()) == it.device_id }}
 ) {
     fun getAppUser(useCache: Boolean = true): AppUsersModel? {

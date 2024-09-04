@@ -15,9 +15,7 @@ object StagedPaymentUtils : GSheetSerialized<StagedPaymentsModel>(
     sheetId = ProjectConfig.get_db_sheet_id(),
     tabName = "stagedPayments",
     query = null,
-    classTypeForResponseParsing = StagedPaymentsModel::class.java,
-    appendInServer = true,
-    appendInLocal = true) {
+    modelClass = StagedPaymentsModel::class.java,) {
 
     fun getStagedPayments(name: String, useCache: Boolean = true): StagedPaymentsModel {
 

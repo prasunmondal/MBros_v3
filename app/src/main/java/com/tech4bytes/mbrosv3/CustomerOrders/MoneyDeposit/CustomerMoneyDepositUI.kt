@@ -30,7 +30,7 @@ class CustomerMoneyDepositUI : AppCompatActivity() {
 
         Thread {
             initiallizeUIVariables()
-            val allTransactionRecords = CustomerMoneyDeposit.get(false)
+            val allTransactionRecords = CustomerMoneyDeposit.fetchAll().execute(false)
             setListeners(allTransactionRecords)
             populateBeneficiary(allTransactionRecords)
         }.start()
@@ -142,7 +142,7 @@ class CustomerMoneyDepositUI : AppCompatActivity() {
             runOnUiThread {
                 saveBtn.text = "Saving Data..."
             }
-            CustomerMoneyDeposit.saveToServerThenLocal(newObj)
+            CustomerMoneyDeposit.insert(newObj).execute()
             runOnUiThread {
                 saveBtn.text = "Save"
             }

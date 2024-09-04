@@ -83,7 +83,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     implementation 'com.github.prasunmondal:lib.postToGSheet:1.0.1'
-    implementation 'com.github.prasunmondal:dev-libs:1.1.9'
+    implementation 'com.github.prasunmondal:dev-libs:1.1.12'
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.9.0"
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'com.android.volley:volley:1.2.1'

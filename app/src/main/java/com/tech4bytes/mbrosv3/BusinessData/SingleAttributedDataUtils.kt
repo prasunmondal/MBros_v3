@@ -18,9 +18,7 @@ object SingleAttributedDataUtils : GSheetSerialized<SingleAttributedDataModel>(
     "1X6HriHjIE0XfAblDlE7Uf5a8JTHu00kW2SWvTFKL78w",
     "metadata",
     query = null,
-    classTypeForResponseParsing = SingleAttributedDataModel::class.java,
-    appendInServer = true,
-    appendInLocal = true,
+    modelClass = SingleAttributedDataModel::class.java,
     filter = ClientFilter("latestRecordById") { list: List<SingleAttributedDataModel> -> arrayListOf(list.maxBy { (it).id }) }) {
 
     fun getRecords(useCache: Boolean = true): SingleAttributedDataModel {

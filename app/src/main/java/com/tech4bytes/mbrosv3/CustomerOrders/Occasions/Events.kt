@@ -15,9 +15,7 @@ object Events: GSheetSerialized<EventsModel>(
     sheetId = ProjectConfig.get_db_sheet_id(),
     "occasions",
     query = null,
-    classTypeForResponseParsing = EventsModel::class.java,
-    appendInServer = true,
-    appendInLocal = true,
+    modelClass = EventsModel::class.java,
     sort = ClientSort("sortByEventDate") { list: List<EventsModel> -> list.sortedBy { p -> DateUtils.getDate(p.eng_date) }.reversed().reversed() }
 ) {
     fun getOccasionsInLastNDays(n: Int): List<EventsModel> {

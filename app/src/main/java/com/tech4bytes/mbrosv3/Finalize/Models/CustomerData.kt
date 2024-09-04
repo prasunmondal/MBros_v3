@@ -83,9 +83,7 @@ object CustomerDataUtils : GSheetSerialized<CustomerData>(
     scriptURL = ProjectConfig.dBServerScriptURL,
     sheetId = ProjectConfig.get_db_finalize_sheet_id(),
     tabName = "deliveries",
-    classTypeForResponseParsing = CustomerData::class.java,
-    appendInServer = true,
-    appendInLocal = true
+    modelClass = CustomerData::class.java
 ) {
     fun getCustomerNames(): HashSet<String> {
         return fetchAll().execute().map { it.name }.toHashSet()

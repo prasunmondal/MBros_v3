@@ -63,7 +63,7 @@ object GetCustomerOrderUtils : GSheetSerialized<GetCustomerOrderModel>(
     sheetId = ProjectConfig.get_db_sheet_id(),
     tabName = "GetOrders",
     query = null,
-    classTypeForResponseParsing = GetCustomerOrderModel::class.java,
+    modelClass = GetCustomerOrderModel::class.java,
     appendInServer = false,
     appendInLocal = false) {
 

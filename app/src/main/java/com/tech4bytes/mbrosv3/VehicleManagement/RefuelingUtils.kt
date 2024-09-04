@@ -14,9 +14,7 @@ object RefuelingUtils : GSheetSerialized<RefuelingModel>(
     ProjectConfig.get_db_sheet_id(),
     "fuel",
     query = null,
-    classTypeForResponseParsing = RefuelingModel::class.java,
-    appendInServer = true,
-    appendInLocal = true) {
+    modelClass = RefuelingModel::class.java) {
     private fun getLatestRecord(useCache: Boolean = true): RefuelingModel {
         val list = fetchAll().execute(useCache)
         return list[list.size - 1]

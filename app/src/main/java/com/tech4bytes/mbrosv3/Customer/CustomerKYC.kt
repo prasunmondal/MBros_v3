@@ -30,13 +30,11 @@ data class CustomerKYCModel(
 
 object CustomerKYC : GSheetSerialized<CustomerKYCModel>(
     context = ContextWrapper(AppContexts.get()),
-    scriptURL = ProjectConfig.dBServerScriptURL,
+    scriptURL = ProjectConfig.dBServerScriptURLNew,
     sheetId = ProjectConfig.get_db_sheet_id(),
     tabName = "customerDetails",
     query = null,
-    classTypeForResponseParsing = CustomerKYCModel::class.java,
-    appendInServer = true,
-    appendInLocal = true
+    modelClass = CustomerKYCModel::class.java
 ) {
 
     fun getByName(englishName: String): CustomerKYCModel? {

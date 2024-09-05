@@ -44,7 +44,7 @@ class GetByQuery : APICalls, GetByQueryFlow, GetByQueryFlow.ScriptIdBuilder,
         return this
     }
 
-    private fun fetchByQuery(): GetResponse {
+    private fun fetchAll(): GetResponse {
         val scriptUrl = URL(this.scriptURL)
         val postDataParams = JSONObject()
         postDataParams.put("opCode", "FETCH_BY_QUERY")
@@ -62,7 +62,7 @@ class GetByQuery : APICalls, GetByQueryFlow, GetByQueryFlow.ScriptIdBuilder,
     }
 
     override fun execute(): GetResponse {
-        return fetchByQuery()
+        return fetchAll()
     }
 
     private fun postExecute(response: String) {

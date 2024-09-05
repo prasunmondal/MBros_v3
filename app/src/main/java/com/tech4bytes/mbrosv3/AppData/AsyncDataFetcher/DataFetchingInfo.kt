@@ -23,7 +23,7 @@ class DataFetchingInfo {
             return when (executingMethod.toString()) {
 //                GetCustomerOrderUtils::get.toString() -> "Customer orders"
 //                CustomerKYC::get.toString() -> "Get Customer KYCs"
-                CustomerRecentData::get.toString() -> "Getting Previous Recents"
+//                CustomerRecentData::fetchAll().execute.toString() -> "Getting Previous Recents"
 //                CustomerDataUtils::get.toString() -> "Previous delivery reports"
 //                SingleAttributedDataUtils::fetchAll.toString() -> "Metadata"
 //                DeliverToCustomerDataHandler::get.toString() -> "Current delivery reports"
@@ -47,7 +47,7 @@ class DataFetchingInfo {
 //
 //                    )
 //                    })
-                    executingMethods.add(CustomerRecentData::get, {CustomerRecentData.get() })
+//                    executingMethods.add(CustomerRecentData::fetchAll().execute, {CustomerRecentData.get() })
 //                    executingMethods.add(DeliverToCustomerDataHandler::get, {DeliverToCustomerDataHandler.get(
 //
 //                    )
@@ -66,11 +66,11 @@ class DataFetchingInfo {
 //
 //                    )
 //                    })
-                    executingMethods.add(CustomerRecentData::get, {CustomerRecentData.get() })
+//                    executingMethods.add(CustomerRecentData::get, {CustomerRecentData.fetchAll().execute() })
                 }
                 ActivityAuthEnums.BALANCE_VIEW -> {
 //                    executingMethods.add(CustomerKYC::get, {CustomerKYC.get() })
-                    executingMethods.add(CustomerRecentData::get, {CustomerRecentData.get() })
+//                    executingMethods.add(CustomerRecentData::get, {CustomerRecentData.fetchAll().execute() })
 //                    executingMethods.add(DeliverToCustomerDataHandler::get, {DeliverToCustomerDataHandler.get(
 //
 //                    )
@@ -86,7 +86,7 @@ class DataFetchingInfo {
 //
 //                    )
 //                    })
-                    executingMethods.add(CustomerRecentData::get, {CustomerRecentData.get() })
+//                    executingMethods.add(CustomerRecentData::get, {CustomerRecentData.fetchAll().execute() })
                 }
                 ActivityAuthEnums.LOAD_INFORMATION -> {
 //                    executingMethods.add(SingleAttributedDataUtils::getRecords, {SingleAttributedDataUtils.get(
@@ -113,14 +113,14 @@ class DataFetchingInfo {
 //
 //                    )
 //                    })
-                    executingMethods.add(CustomerRecentData::get, {CustomerRecentData.get() })
+//                    executingMethods.add(CustomerRecentData::get, {CustomerRecentData.fetchAll().execute() })
                 }
                 ActivityAuthEnums.CUSTOMER_TRANSACTIONS -> {
 //                    executingMethods.add(CustomerDataUtils::get, {CustomerDataUtils.get() })
                 }
                 ActivityAuthEnums.ADD_TRANSACTION -> {
 //                    executingMethods.add(SingleAttributedDataUtils::get, {SingleAttributedDataUtils.get() })
-                    executingMethods.add(CustomerRecentData::get, {CustomerRecentData.get() })
+//                    executingMethods.add(CustomerRecentData::get, {CustomerRecentData.fetchAll().execute() })
 //                    executingMethods.add(CustomerDataUtils::get, {CustomerDataUtils.get() })
                     executingMethods.add(DaySummaryUtils::get, {DaySummaryUtils.get() })
 //                    executingMethods.add(DeliverToCustomerDataHandler::get, {DeliverToCustomerDataHandler.get() })

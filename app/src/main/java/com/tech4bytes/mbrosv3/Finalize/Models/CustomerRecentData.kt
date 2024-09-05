@@ -1,6 +1,10 @@
 package com.tech4bytes.mbrosv3.Finalize.Models
 
 import com.google.gson.reflect.TypeToken
+import com.prasunmondal.dev.libs.contexts.AppContexts
+import com.prasunmondal.dev.libs.gsheet.ContextWrapper
+import com.prasunmondal.dev.libs.gsheet.clients.ClientFilter
+import com.prasunmondal.dev.libs.gsheet.clients.GSheetSerialized
 import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
@@ -9,6 +13,7 @@ import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
+import com.tech4bytes.mbrosv3.CustomerOrders.MoneyDeposit.CustomerDeposit.CustomerMoneyDepositModel
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
@@ -17,20 +22,23 @@ import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import java.util.Date
 import java.util.stream.Collectors
 
-object CustomerRecentData : Tech4BytesSerializable<CustomerData>(
-    ProjectConfig.dBServerScriptURL,
-    ProjectConfig.get_db_finalize_sheet_id(),
-    "deliveries",
-    "=QUERY(IMPORTRANGE(\"https://docs.google.com/spreadsheets/d/11TA2pPlxqajVwkPEigNMPNfsV-12CExxmySk1OMw_v8\",\"deliveries!A2:Az\"), \n" +
-            "\"select * where \"&\" Col1 =\"&TEXTJOIN(\" or Col1=\",true,QUERY(IMPORTRANGE(\"https://docs.google.com/spreadsheets/d/11TA2pPlxqajVwkPEigNMPNfsV-12CExxmySk1OMw_v8\",\"deliveries!A2:Az\"), \"select max( Col1 ) group by Col3 label max( Col1 ) ''\"))&\"\"&\"\")",
-    object : TypeToken<ArrayList<CustomerData>?>() {}.type,
-    appendInServer = true,
-    appendInLocal = true,
-    cacheTag = "recentData"
+object CustomerRecentData : GSheetSerialized<CustomerData>(
+    context = ContextWrapper(AppContexts.get()),
+    scriptURL = ProjectConfig.dBServerScriptURL,
+    sheetId = ProjectConfig.get_db_finalize_sheet_id(),
+    tabName = "deliveries",
+//    query = "=QUERY(IMPORTRANGE(\"https://docs.google.com/spreadsheets/d/11TA2pPlxqajVwkPEigNMPNfsV-12CExxmySk1OMw_v8\",\"deliveries!A2:Az\"), \n" +
+//            "\"select * where \"&\" Col1 =\"&TEXTJOIN(\" or Col1=\",true,QUERY(IMPORTRANGE(\"https://docs.google.com/spreadsheets/d/11TA2pPlxqajVwkPEigNMPNfsV-12CExxmySk1OMw_v8\",\"deliveries!A2:Az\"), \"select max( Col1 ) group by Col3 label max( Col1 ) ''\"))&\"\"&\"\")",
+    modelClass = CustomerData::class.java,
+    filter = ClientFilter("getRecentDataForEachConsumer")
+    { list: List<CustomerData> ->
+        list.groupBy { it.name }
+            .map { (_, recordList) -> recordList.maxByOrNull { it.timestamp }!! }
+    }
 ) {
     fun getCustomerNames(): HashSet<String> {
         val customerNames: HashSet<String> = hashSetOf()
-        get().forEach {
+        fetchAll().execute().forEach {
             customerNames.add(it.name)
         }
         return customerNames
@@ -63,7 +71,7 @@ object CustomerRecentData : Tech4BytesSerializable<CustomerData>(
     }
 
     fun getAllLatestRecords(useCache: Boolean = true): MutableList<CustomerData> {
-        var customerRecords = get(useCache).sortedBy { it.orderId }.reversed()
+        var customerRecords = fetchAll().execute(useCache).sortedBy { it.orderId }.reversed()
         val addedNames = mutableListOf<String>()
         val latestRecordsList = mutableListOf<CustomerData>()
         customerRecords.forEach {
@@ -79,7 +87,7 @@ object CustomerRecentData : Tech4BytesSerializable<CustomerData>(
 //        var customerRecords = Get.builder().scriptId(scriptURL).sheetId(ProjectConfig.get_db_finalize_sheet_id()).tabName(tabname)
 //            .query("=QUERY(IMPORTRANGE(\"https://docs.google.com/spreadsheets/d/11TA2pPlxqajVwkPEigNMPNfsV-12CExxmySk1OMw_v8\",\"deliveries!A2:Az\"), \n" +
 //                    "\"select * where \"&\" Col1 =\"&TEXTJOIN(\" or Col1=\",true,QUERY(IMPORTRANGE(\"https://docs.google.com/spreadsheets/d/11TA2pPlxqajVwkPEigNMPNfsV-12CExxmySk1OMw_v8\",\"deliveries!A2:Az\"), \"select max( Col1 ) group by Col3 label max( Col1 ) ''\"))&\"\"&\"\")").execute()
-        var customerRecords = get(useCache)
+        var customerRecords = fetchAll().execute(useCache)
         LogMe.log("Length before filtering: " + customerRecords.size)
         customerRecords = customerRecords.sortedBy { it.orderId }
         customerRecords = customerRecords.reversed()
@@ -118,7 +126,7 @@ object CustomerRecentData : Tech4BytesSerializable<CustomerData>(
     }
 
     fun getAllCustomerNames(useCache: Boolean = true): List<String> {
-        return get(useCache).stream()
+        return fetchAll().execute(useCache).stream()
             .filter { d -> d.name.isNotEmpty() }
             .map(CustomerData::name)
             .collect(Collectors.toSet()).toList().sorted()

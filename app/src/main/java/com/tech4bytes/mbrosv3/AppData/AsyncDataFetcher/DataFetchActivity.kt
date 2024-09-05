@@ -10,7 +10,9 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.prasunmondal.dev.libs.contexts.AppContexts
+import com.prasunmondal.dev.libs.gsheet.clients.GScript
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
+import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
 import kotlin.reflect.KFunction
 
@@ -53,33 +55,16 @@ class DataFetchActivity : AppCompatActivity() {
             }
 
             Thread {
-//                GetMultipleTabs.builder().scriptId(ProjectConfig.dBServerScriptURL)
-//                    .sheetId(ProjectConfig.get_db_sheet_id())
-//                    .classesToFetch(
-//                        listOf(
-//                            CustomerKYC,
-//                            GetCustomerOrderUtils,
-//                            DeliverToCustomerDataHandler,
-//                            RefuelingUtils,
-//                            AppConstantsUtil,
-//                            SingleAttributedDataUtils,
-//                            CustomerKYC,
-//                            DeliverToCustomerDataHandler,
-//                            StagedPaymentUtils
-//                        )
-//                    )
-//                    .build()
-//                    .execute()
-//
-//                GetMultipleTabs.builder().scriptId(ProjectConfig.dBServerScriptURL)
-//                    .sheetId(ProjectConfig.get_db_finalize_sheet_id())
-//                    .classesToFetch(listOf(CustomerDataUtils))
-//                    .build()
-//                    .execute()
-
+//                map.forEach {
+//                    @Suppress("UNCHECKED_CAST")
+//                    run(map, it.key, it.value.useCache, nextActivity)
+//                }
                 map.forEach {
-                    @Suppress("UNCHECKED_CAST")
-                    run(map, it.key, it.value.useCache, nextActivity)
+                    map[it.key]!!.executingMethod.invoke()
+                }
+                GScript.execute(ProjectConfig.dBServerScriptURLNew)
+                if ((nextActivity as Class<*>?) != null && nextActivity != null) {
+                    goToNextActivity(nextActivity)
                 }
             }.start()
         }

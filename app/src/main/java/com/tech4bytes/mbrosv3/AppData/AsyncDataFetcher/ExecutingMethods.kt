@@ -5,7 +5,7 @@ import kotlin.reflect.KFunction
 class ExecutingMethods : java.io.Serializable {
     private var listOfExecutingMethods: MutableMap<KFunction<Any>, ExecutingMethodModel> = mutableMapOf()
 
-    fun add(executingMethod: KFunction<Any>, func: () -> List<Any>, useCache: Boolean = true) {
+    fun add(executingMethod: KFunction<Any>, func: () -> Unit, useCache: Boolean = true) {
         listOfExecutingMethods[executingMethod] =
             ExecutingMethodModel(
                 func,

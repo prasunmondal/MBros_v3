@@ -4,9 +4,9 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
+import com.prasunmondal.dev.libs.caching.CentralCacheObj
 import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.prasunmondal.dev.libs.errorHandling.ErrorHandler
-import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.UserRoleUtils
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.ProjectConfig
@@ -18,7 +18,7 @@ class AppUtils {
 
         fun invalidateAllDataAndRestartApp() {
             UserRoleUtils.deleteUserRolesCache()
-            CentralCache.invalidateFullCache()
+            CentralCacheObj.centralCache.invalidateFullCache(AppContexts.get())
             goToLoginPage()
         }
 

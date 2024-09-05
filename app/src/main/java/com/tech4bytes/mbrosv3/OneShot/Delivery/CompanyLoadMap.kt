@@ -1,7 +1,7 @@
 package com.tech4bytes.mbrosv3.OneShot.Delivery
 
+import com.prasunmondal.dev.libs.caching.CentralCacheObj
 import com.prasunmondal.dev.libs.contexts.AppContexts
-import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
 
 class CompanyLoadMap : java.io.Serializable {
@@ -14,11 +14,11 @@ class CompanyLoadMap : java.io.Serializable {
 
         private val cacheKey = "CompanyLoadMap"
         fun get(useCache: Boolean = true): List<CompanyLoadMap> {
-            var cacheResults = CentralCache.get<List<CompanyLoadMap>>(AppContexts.get(), cacheKey, useCache)
+            var cacheResults = CentralCacheObj.centralCache.get<List<CompanyLoadMap>>(AppContexts.get(), cacheKey, useCache)
 
             if (cacheResults == null) {
                 cacheResults = prepareData()
-                CentralCache.put(cacheKey, cacheResults)
+                CentralCacheObj.centralCache.put(AppContexts.get(), cacheKey, cacheResults)
             }
             return cacheResults
         }

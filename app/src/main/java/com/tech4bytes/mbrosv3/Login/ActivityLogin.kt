@@ -16,8 +16,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.prasunmondal.dev.libs.caching.CentralCacheObj
 import com.prasunmondal.dev.libs.contexts.AppContexts
-import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetchActivity
 import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetchingInfo
@@ -262,7 +262,7 @@ class ActivityLogin : AppCompatActivity() {
             AuthorizationEnums.NONE.toString()
         )
         RolesUtils.insert(obj).execute()
-        CentralCache.invalidateFullCache()
+        CentralCacheObj.centralCache.invalidateFullCache(AppContexts.get())
     }
 
     private fun goToCollectorRole() {
@@ -329,7 +329,7 @@ class ActivityLogin : AppCompatActivity() {
             LogMe.log(e, "Failed to Communicate Registration Request.")
             Toast.makeText(this, "Failed to Communicate Registration Request.", Toast.LENGTH_LONG).show()
         }
-        CentralCache.invalidateFullCache()
+        CentralCacheObj.centralCache.invalidateFullCache(AppContexts.get())
     }
 
     @SuppressLint("HardwareIds")

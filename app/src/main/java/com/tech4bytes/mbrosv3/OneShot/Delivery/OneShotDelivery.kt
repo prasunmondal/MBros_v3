@@ -349,13 +349,14 @@ class OneShotDelivery : AppCompatActivity() {
 
             gatherSingleAttributedData()
 
-            DeliverToCustomerDataHandler.deleteAll().execute()
-
-            saveSingleAttributeData()
+            DeliverToCustomerDataHandler.deleteAll().queue()
+            SingleAttributedDataUtils.insert(SingleAttributedDataUtils.getRecords()).queue()
             saveDeliveryData()
+            DeliverToCustomerDataHandler.fetchAll().queue()
             refuelUIObj.saveFuelData()
-            SingleAttributedDataUtils.getRecords()
-            DeliverToCustomerDataHandler.fetchAll().execute()
+            SingleAttributedDataUtils.fetchAll().queue()
+            DeliverToCustomerDataHandler.fetchAll().queue()
+            GScript.execute(ProjectConfig.dBServerScriptURLNew)
             runOnUiThread()
             {
                 saveOneSortDeliveryButton.isEnabled = true
@@ -383,13 +384,6 @@ class OneShotDelivery : AppCompatActivity() {
         obj.actualLoadKg = loadKgElement.text.toString()
         obj.actualLoadPc = loadPcElement.text.toString()
         SingleAttributedDataUtils.saveToLocal(obj)
-    }
-
-    private fun saveSingleAttributeData() {
-        Thread {
-            SingleAttributedDataUtils.insert(SingleAttributedDataUtils.getRecords()).execute()
-            setSaveProgressBar(10)
-        }.start()
     }
 
     private fun saveDeliveryData() {
@@ -428,8 +422,6 @@ class OneShotDelivery : AppCompatActivity() {
             }
             runOnUiThread { setSaveProgressBar(eachStep) }
         }
-        DeliverToCustomerDataHandler.fetchAll().queue()
-        GScript.execute(ProjectConfig.dBServerScriptURLNew)
         runOnUiThread { setSaveProgressBar(100) }
     }
 

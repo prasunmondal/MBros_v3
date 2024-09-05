@@ -1,5 +1,6 @@
 package com.tech4bytes.mbrosv3.Login
 
+//import com.tech4bytes.mbrosv3.BuildConfig
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -16,7 +17,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.prasunmondal.dev.libs.contexts.AppContexts
-import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
 import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetchActivity
@@ -27,9 +27,7 @@ import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEn
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.UserRoleUtils
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
-import com.tech4bytes.mbrosv3.AppUsers.Config
 import com.tech4bytes.mbrosv3.AppUsers.RolesUtils
-//import com.tech4bytes.mbrosv3.BuildConfig
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.DueShow
 import com.tech4bytes.mbrosv3.CustomerAddTransactionActivity
@@ -43,7 +41,6 @@ import com.tech4bytes.mbrosv3.DeviceIDUtil
 import com.tech4bytes.mbrosv3.MoneyCounter.MoneyCounter
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotLoad
-import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.OneShotSMS.OneShotSMS
 import com.tech4bytes.mbrosv3.Sms.SMSUtils
@@ -264,13 +261,7 @@ class ActivityLogin : AppCompatActivity() {
             ActivityAuthEnums.UNIDENTIFIED.toString(),
             AuthorizationEnums.NONE.toString()
         )
-        PostObject.builder()
-            .scriptId(ProjectConfig.dBServerScriptURL)
-            .sheetId(ProjectConfig.get_db_sheet_id())
-            .tabName(Config.SHEET_TAB_NAME)
-            .dataObject(obj as Any)
-            .build().execute()
-
+        RolesUtils.insert(obj).execute()
         CentralCache.invalidateFullCache()
     }
 

@@ -1,40 +1,13 @@
 package com.tech4bytes.mbrosv3.Sms.OneShotSMS
 
-import com.google.gson.reflect.TypeToken
-import com.prasunmondal.postjsontosheets.clients.get.Get
-import com.prasunmondal.postjsontosheets.clients.get.GetResponse
-import com.tech4bytes.extrack.centralCache.CentralCache
-import com.tech4bytes.mbrosv3.ProjectConfig
 import com.prasunmondal.dev.libs.contexts.AppContexts
+import com.prasunmondal.dev.libs.gsheet.ContextWrapper
+import com.prasunmondal.dev.libs.gsheet.clients.GSheetSerialized
+import com.tech4bytes.mbrosv3.ProjectConfig
 
-class OSMS {
-
-    companion object {
-        const val SHEET_TEMPLATE_TAB_NAME = "smsModel"
-        fun get(useCache: Boolean = true): List<OSMSModel> {
-            val cacheKey = SHEET_TEMPLATE_TAB_NAME
-            val cacheResults = CentralCache.get<ArrayList<OSMSModel>>(AppContexts.get(), cacheKey, useCache)
-
-            return if (cacheResults != null) {
-                cacheResults
-            } else {
-                val resultFromServer = getFromServer()
-                CentralCache.put(cacheKey, resultFromServer)
-                resultFromServer
-            }
-        }
-
-        private fun getFromServer(): List<OSMSModel> {
-            val result: GetResponse = Get.builder()
-                .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.get_db_sheet_id())
-                .tabName(SHEET_TEMPLATE_TAB_NAME)
-                .build().execute()
-
-            return result.parseToObject(
-                result.getRawResponse(),
-                object : TypeToken<ArrayList<OSMSModel>?>() {}.type
-            )
-        }
-    }
-}
+object OSMS: GSheetSerialized<OSMSModel>(
+    context = ContextWrapper(AppContexts.get()),
+    sheetId = ProjectConfig.get_db_sheet_id(),
+    tabName = "smsModel",
+    modelClass = OSMSModel::class.java
+)

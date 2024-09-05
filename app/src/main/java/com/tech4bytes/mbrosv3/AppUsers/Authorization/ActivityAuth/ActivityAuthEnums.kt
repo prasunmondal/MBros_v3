@@ -1,9 +1,5 @@
 package com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth
 
-import android.content.Intent
-import android.view.View
-import com.tech4bytes.mbrosv3.CustomerAddTransactionActivity
-
 enum class ActivityAuthEnums : java.io.Serializable {
     ADMIN,
     DELIVERY,

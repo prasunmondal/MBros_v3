@@ -1,8 +1,8 @@
 package com.tech4bytes.mbrosv3.OneShot.Delivery
 
+import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.tech4bytes.extrack.centralCache.CentralCache
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
-import com.prasunmondal.dev.libs.contexts.AppContexts
 
 class CompanyLoadMap : java.io.Serializable {
     var companyName = ""
@@ -25,7 +25,7 @@ class CompanyLoadMap : java.io.Serializable {
 
         fun prepareData(): List<CompanyLoadMap> {
             val list = mutableListOf<CompanyLoadMap>()
-            DaySummaryUtils.get().forEach {
+            DaySummaryUtils.fetchAll().execute().forEach {
                 val t = CompanyLoadMap()
                 t.companyName = it.loadingCompany
                 t.branch = it.loadingBranch

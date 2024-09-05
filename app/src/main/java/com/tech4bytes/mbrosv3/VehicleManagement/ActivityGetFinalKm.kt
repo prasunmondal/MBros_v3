@@ -5,10 +5,11 @@ import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.tech4bytes.mbrosv3.ActivityDeliveringDeliveryComplete
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
-import com.prasunmondal.dev.libs.contexts.AppContexts
 
 class ActivityGetFinalKm : AppCompatActivity() {
 
@@ -27,8 +28,9 @@ class ActivityGetFinalKm : AppCompatActivity() {
     }
 
     fun onClickFinalKmSubmit(view: View) {
-        val obj = KmManagement(finalKm = getFinalKm())
-        KmManagement.addToServer(obj)
+        val data = SingleAttributedDataUtils.getRecords()
+        data.vehicle_finalKm = getFinalKm().toString()
+        SingleAttributedDataUtils.insert(data).execute()
         goToActivityDeliveringDeliveryComplete()
     }
 

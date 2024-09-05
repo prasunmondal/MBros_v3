@@ -16,8 +16,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
+import com.prasunmondal.dev.libs.contexts.AppContexts
+import com.prasunmondal.dev.libs.gsheet.clients.GScript
 import com.tech4bytes.mbrosv3.AppData.AppUtils
-import com.tech4bytes.mbrosv3.BusinessData.SheetCalculator
+import com.tech4bytes.mbrosv3.BusinessData.SheetCalculatorUtil
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerCalculations
@@ -25,12 +27,11 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.De
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
-import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
+import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.SendInfoTexts.Whatsapp.Whatsapp
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
-import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
@@ -98,7 +99,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
 
     private fun setSheetCalculatorCorrectness(useCache: Boolean) {
         Thread {
-            val khataCorrectnessStatus = SheetCalculator.isKhataGreen(useCache)
+            val khataCorrectnessStatus = SheetCalculatorUtil.isKhataGreen(useCache)
 
             runOnUiThread {
                 val khataCorrectnessIndicator = findViewById<TextView>(R.id.dashboard_check_khata_status)
@@ -303,10 +304,11 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
             obj.finalFarmRate = UIUtils.getUIElementValue(farmRateElement)
             val deliveryRate = UIUtils.getUIElementValue(deliveryRateElement)
             obj.bufferRate = DeliveryCalculations.getBufferPrice(obj.finalFarmRate, deliveryRate).toString()
-            SingleAttributedDataUtils.insert(obj).execute()
+            SingleAttributedDataUtils.insert(obj).queue()
             CustomerDataUtils.spoolDeliveringData()
             RefuelingUtils.spoolRefuelingData()
-            DaySummaryUtils.saveToServer()
+            DaySummaryUtils.insert(DaySummaryUtils.getDaySummaryObjectForCurrentData()).execute()
+            GScript.execute(ProjectConfig.dBServerScriptURLNew)
             setStatuses(false)
         }.start()
     }
@@ -337,7 +339,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
 
     fun onClickDeleteDeliveryDataBtn() {
         Thread {
-            OneShotDelivery.deleteDeliveryDataOnServer()
+            DeliverToCustomerDataHandler.deleteAll()
             setStatuses(false)
         }.start()
     }

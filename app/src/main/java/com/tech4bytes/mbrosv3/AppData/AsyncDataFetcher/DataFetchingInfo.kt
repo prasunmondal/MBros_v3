@@ -1,18 +1,7 @@
 package com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher
 
-import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
-import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstantsUtil
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
-import com.tech4bytes.mbrosv3.Customer.CustomerKYC
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
-import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderUtils
-import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
-import com.tech4bytes.mbrosv3.Finalize.Models.CustomerRecentData
-import com.tech4bytes.mbrosv3.Sms.OneShotSMS.OSMS
-import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
-import com.tech4bytes.mbrosv3.VehicleManagement.RefuelingUtils
 import kotlin.reflect.KFunction
 
 class DataFetchingInfo {
@@ -27,10 +16,10 @@ class DataFetchingInfo {
 //                CustomerDataUtils::get.toString() -> "Previous delivery reports"
 //                SingleAttributedDataUtils::fetchAll.toString() -> "Metadata"
 //                DeliverToCustomerDataHandler::get.toString() -> "Current delivery reports"
-                DaySummaryUtils::get.toString() -> "Transaction reports"
+//                DaySummaryUtils::get.toString() -> "Transaction reports"
 //                RefuelingUtils::get.toString() -> "Fuel data"
 //                AppConstantsUtil::get.toString() -> "App Constants Data"
-                OSMS::get.toString() -> "Fetch Message Templates"
+//                OSMS::get.toString() -> "Fetch Message Templates"
                 else -> "Get data"
             }
         }
@@ -52,7 +41,7 @@ class DataFetchingInfo {
 //
 //                    )
 //                    })
-                    executingMethods.add(DaySummaryUtils::get, {DaySummaryUtils.get()})
+//                    executingMethods.add(DaySummaryUtils::get, {DaySummaryUtils.get()})
 //                    executingMethods.add(RefuelingUtils::get, {RefuelingUtils.get() })
 //                    executingMethods.add(AppConstantsUtil::get, {AppConstantsUtil.get() })
                 }
@@ -93,7 +82,7 @@ class DataFetchingInfo {
 //
 //                    )
 //                    })
-                    executingMethods.add(DaySummaryUtils::get, {DaySummaryUtils.get()})
+//                    executingMethods.add(DaySummaryUtils::get, {DaySummaryUtils.get()})
                 }
                 ActivityAuthEnums.MONEY_CALCULATOR -> {
 //                    executingMethods.add(SingleAttributedDataUtils::getRecords, {SingleAttributedDataUtils.get(
@@ -122,9 +111,9 @@ class DataFetchingInfo {
 //                    executingMethods.add(SingleAttributedDataUtils::get, {SingleAttributedDataUtils.get() })
 //                    executingMethods.add(CustomerRecentData::get, {CustomerRecentData.fetchAll().execute() })
 //                    executingMethods.add(CustomerDataUtils::get, {CustomerDataUtils.get() })
-                    executingMethods.add(DaySummaryUtils::get, {DaySummaryUtils.get() })
+//                    executingMethods.add(DaySummaryUtils::get, {DaySummaryUtils.get() })
 //                    executingMethods.add(DeliverToCustomerDataHandler::get, {DeliverToCustomerDataHandler.get() })
-                    executingMethods.add(OSMS::get, {OSMS.get() })
+//                    executingMethods.add(OSMS::get, {OSMS.get() })
                 }
                 else -> {}
             }

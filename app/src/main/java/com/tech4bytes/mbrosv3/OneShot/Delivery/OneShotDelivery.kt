@@ -11,7 +11,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.prasunmondal.postjsontosheets.clients.delete.Delete
+import com.prasunmondal.dev.libs.contexts.AppContexts
+import com.prasunmondal.dev.libs.gsheet.clients.GScript
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
@@ -19,7 +20,6 @@ import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerCalculations
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerConfig
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderUtils
@@ -30,8 +30,6 @@ import com.tech4bytes.mbrosv3.OneShot.RefuelUI
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
-import com.prasunmondal.dev.libs.contexts.AppContexts
-import com.prasunmondal.dev.libs.gsheet.clients.GScript
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
@@ -336,14 +334,6 @@ class OneShotDelivery : AppCompatActivity() {
 
             context.updateHiddenData()
         }
-
-        fun deleteDeliveryDataOnServer() {
-            Delete.builder()
-                .scriptId(ProjectConfig.dBServerScriptURL)
-                .sheetId(ProjectConfig.get_db_sheet_id())
-                .tabName(DeliverToCustomerConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
-                .build().execute()
-        }
     }
 
     @SuppressLint("NewApi")
@@ -484,7 +474,7 @@ class OneShotDelivery : AppCompatActivity() {
                 deleteDeliveryDataButton.alpha = 0.5f
                 deleteDeliveryDataButton.isClickable = false
             }
-            deleteDeliveryDataOnServer()
+            DeliverToCustomerDataHandler.deleteAll()
             runOnUiThread()
             {
                 deleteDeliveryDataButton.isEnabled = true

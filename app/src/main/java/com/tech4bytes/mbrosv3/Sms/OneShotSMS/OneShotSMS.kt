@@ -12,11 +12,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
+import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.tech4bytes.mbrosv3.MoneyCounter.MoneyCounter
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.SMSProcessors.SMSProcessor.SMSProcessor
 import com.tech4bytes.mbrosv3.Utils.ContactsUtils.Contacts
-import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 
 
@@ -52,7 +52,7 @@ class OneShotSMS : AppCompatActivity() {
         }
     }
     fun processAndShowMessages(communicationSelectorOption: String, useCache: Boolean = true) {
-        OSMS.get(useCache)
+        OSMS.fetchAll().execute(useCache)
         val selectedType = initializeCommunicationSelector(communicationSelectorOption)
         Contacts.getContactList(this, false)
         smsList = selectCommunication(selectedType)
@@ -98,7 +98,7 @@ class OneShotSMS : AppCompatActivity() {
 
     private fun getCommunicationSelectorOptions(): List<String> {
         var result = mutableListOf<String>()
-        val smsRawList = OSMS.get()
+        val smsRawList = OSMS.fetchAll().execute()
         smsRawList.forEach { sms ->
             if(sms.isAuthorized()) {
             sms.commReceiverCategory.split(",").forEach { commType ->

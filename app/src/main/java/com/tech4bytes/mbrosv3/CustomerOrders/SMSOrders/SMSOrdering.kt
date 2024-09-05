@@ -10,6 +10,8 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
+import com.prasunmondal.dev.libs.contexts.AppContexts
+import com.prasunmondal.dev.libs.gsheet.clients.GScript
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.BusinessLogic.Sorter
@@ -18,10 +20,10 @@ import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
 import com.tech4bytes.mbrosv3.CustomerOrders.Occasions.EventsUI
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
+import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.SmsReader
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
-import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
@@ -283,14 +285,15 @@ class SMSOrdering : AppCompatActivity() {
                 saveBtn.text = "Deleting previous data"
             }
 
-            SMSOrderModel.deleteAllDataInServer()
+            SMSOrderModelUtil.deleteAll()
             var count = 1
             orders.forEach {
                 runOnUiThread {
                     saveBtn.text = "Saving (${count++}/${orders.size})"
                 }
-                SMSOrderModel.save(it)
+                SMSOrderModelUtil.insert(it).queue()
             }
+            GScript.execute(ProjectConfig.dBServerScriptURLNew)
 
             runOnUiThread {
                 saveBtn.isEnabled = true

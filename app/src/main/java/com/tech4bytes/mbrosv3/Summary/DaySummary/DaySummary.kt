@@ -1,18 +1,15 @@
 package com.tech4bytes.mbrosv3.Summary.DaySummary
 
-import com.google.gson.reflect.TypeToken
-import com.prasunmondal.postjsontosheets.clients.get.Get
-import com.prasunmondal.postjsontosheets.clients.get.GetResponse
-import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
-import com.tech4bytes.extrack.centralCache.CentralCache
+import com.prasunmondal.dev.libs.contexts.AppContexts
+import com.prasunmondal.dev.libs.gsheet.ContextWrapper
+import com.prasunmondal.dev.libs.gsheet.clients.ClientSort
+import com.prasunmondal.dev.libs.gsheet.clients.GSheetSerialized
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.ProjectConfig
-import com.tech4bytes.mbrosv3.Summary.SummaryConfig
-import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
@@ -52,27 +49,13 @@ data class DaySummary(
     var police: String = "",
     var police_breakdown: String = "") : java.io.Serializable
 
-object DaySummaryUtils {
-
-    fun get(useCache: Boolean = true): List<DaySummary> {
-        var cacheResults = CentralCache.get<List<DaySummary>>(AppContexts.get(), SummaryConfig.TAB_DAY_SUMMARY, useCache)
-
-        if (cacheResults == null) {
-            cacheResults = getFromServer()
-            CentralCache.put(SummaryConfig.TAB_DAY_SUMMARY, cacheResults)
-        }
-        return cacheResults
-    }
-
-    fun saveToServer() {
-        PostObject.builder()
-            .scriptId(ProjectConfig.dBServerScriptURL)
-            .sheetId(ProjectConfig.get_db_finalize_sheet_id())
-            .tabName(SummaryConfig.TAB_DAY_SUMMARY)
-            .dataObject(getDaySummaryObjectForCurrentData() as Any)
-            .build().execute()
-    }
-
+object DaySummaryUtils: GSheetSerialized<DaySummary>(
+    context = ContextWrapper(AppContexts.get()),
+    sheetId = ProjectConfig.get_db_finalize_sheet_id(),
+    tabName = "cumilativeCalculations",
+    modelClass = DaySummary::class.java,
+    sort = ClientSort("sortedByTimestamp") {list: List<DaySummary> -> ListUtils.sortListByAttribute(list, DaySummary::timestamp)}
+) {
     fun getDaySummaryObjectForCurrentData(): DaySummary {
         val daySummaryObj = DaySummary()
         val metadata = SingleAttributedDataUtils.getRecords()
@@ -114,23 +97,8 @@ object DaySummaryUtils {
         return daySummaryObj
     }
 
-    private fun getFromServer(): List<DaySummary> {
-        val result: GetResponse = Get.builder()
-            .scriptId(ProjectConfig.dBServerScriptURL)
-            .sheetId(ProjectConfig.get_db_finalize_sheet_id())
-            .tabName(SummaryConfig.TAB_DAY_SUMMARY)
-            .build().execute()
-
-        val parsedResult = result.parseToObject<DaySummary>(
-            result.getRawResponse(),
-            object : TypeToken<ArrayList<DaySummary>?>() {}.type
-        )
-
-        return ListUtils.sortListByAttribute(parsedResult, DaySummary::timestamp)
-    }
-
     fun getPrevTripEndKm(useCache: Boolean = true): Int {
-        val list = get(useCache)
+        val list = DaySummaryUtils.fetchAll().execute(useCache)
         return NumberUtils.getIntOrZero(list[list.size - 1].trip_end_km)
     }
 

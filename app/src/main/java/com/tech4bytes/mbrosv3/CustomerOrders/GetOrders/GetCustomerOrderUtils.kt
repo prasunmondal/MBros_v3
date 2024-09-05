@@ -1,19 +1,12 @@
 package com.tech4bytes.mbrosv3.CustomerOrders.GetOrders
 
-import com.google.gson.reflect.TypeToken
-import com.prasunmondal.postjsontosheets.clients.delete.Delete
-import com.prasunmondal.postjsontosheets.clients.get.Get
-import com.prasunmondal.postjsontosheets.clients.get.GetResponse
-import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
-import com.tech4bytes.extrack.centralCache.CentralCache
-import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
-import com.tech4bytes.mbrosv3.Customer.CustomerKYC
-import com.tech4bytes.mbrosv3.ProjectConfig
 import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.prasunmondal.dev.libs.gsheet.ContextWrapper
 import com.prasunmondal.dev.libs.gsheet.clients.GScript
 import com.prasunmondal.dev.libs.gsheet.clients.GSheetSerialized
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
+import com.tech4bytes.mbrosv3.Customer.CustomerKYC
+import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
@@ -94,30 +87,11 @@ object GetCustomerOrderUtils : GSheetSerialized<GetCustomerOrderModel>(
                 obj.add(nameMappedOrders[it.nameEng]!!)
             }
         }
-//        saveToLocal()
-    }
-
-    private fun getCompleteList(): List<GetCustomerOrderModel> {
-        val list: MutableList<GetCustomerOrderModel> = mutableListOf()
-        val actualOrders = getServerList()
-        CustomerKYC.fetchAll().execute().forEach { masterList ->
-            var isInOrderList = false
-            actualOrders.forEach { orderList ->
-                if (masterList.nameEng == orderList.name) {
-                    list.add(orderList)
-                    isInOrderList = true
-                }
-            }
-            if (!isInOrderList && masterList.isActiveCustomer.toBoolean()) {
-                list.add(GetCustomerOrderModel(name = masterList.nameEng))
-            }
-        }
-        return list
     }
 
     fun getListOfOrderedCustomers(): List<GetCustomerOrderModel> {
         val list: MutableList<GetCustomerOrderModel> = mutableListOf()
-        val actualOrders = getServerList()
+        val actualOrders = GetCustomerOrderUtils.fetchAll().execute()
         CustomerKYC.fetchAll().execute().forEach { masterList ->
             actualOrders.forEach { orderList ->
                 if (masterList.nameEng == orderList.name) {
@@ -130,7 +104,7 @@ object GetCustomerOrderUtils : GSheetSerialized<GetCustomerOrderModel>(
 
     fun getListOfUnOrderedCustomers(): List<GetCustomerOrderModel> {
         val list: MutableList<GetCustomerOrderModel> = mutableListOf()
-        val actualOrders = getServerList()
+        val actualOrders = fetchAll().execute()
         CustomerKYC.fetchAll().execute().forEach { masterList ->
             var isInOrderList = false
             actualOrders.forEach { orderList ->
@@ -168,66 +142,9 @@ object GetCustomerOrderUtils : GSheetSerialized<GetCustomerOrderModel>(
         }
         GetCustomerOrderUtils.fetchAll().queue()
         GScript.execute(ProjectConfig.dBServerScriptURLNew)
-//        saveToServer()
-//        saveToLocal()
-    }
-
-//    fun deleteAll() {
-//        deleteAll(
-//        Delete.builder()
-//            .scriptId(ProjectConfig.dBServerScriptURL)
-//            .sheetId(ProjectConfig.get_db_sheet_id())
-//            .tabName(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
-//            .build().execute()
-//        deleteFromLocal()
-//    }
-
-    private fun saveToServer() {
-
     }
 
     private fun getRecordsForOnlyOrderedCustomers(): MutableList<GetCustomerOrderModel> {
         return obj.stream().filter { p -> p.id.isNotEmpty() }.collect(Collectors.toList())
-    }
-
-//    fun saveToLocal() {
-//        saveToLocal(obj)
-//    }
-
-//    fun saveToLocal(obj: MutableList<GetCustomerOrderModel>) {
-//        CentralCache.put(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, obj)
-//    }
-
-//    fun deleteFromLocal() {
-//        CentralCache.put(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME, listOf<GetCustomerOrderModel>())
-//    }
-
-    private fun getFromServer(): List<GetCustomerOrderModel> {
-        // val waitDialog = ProgressDialog.show(AppContexts.get(), "Please Wait", "লোড হচ্ছে", true)
-        val result: GetResponse = Get.builder()
-            .scriptId(ProjectConfig.dBServerScriptURL)
-            .sheetId(ProjectConfig.get_db_sheet_id())
-            .tabName(CustomerOrdersConfig.SHEET_INDIVIDUAL_ORDERS_TAB_NAME)
-            .build().execute()
-
-        // waitDialog!!.dismiss()
-        return result.parseToObject(
-            result.getRawResponse(),
-            object : TypeToken<ArrayList<GetCustomerOrderModel>?>() {}.type
-        )
-    }
-
-    private fun getServerList(useCache: Boolean = true): List<GetCustomerOrderModel> {
-        val getOrdersServerListKey = "getOrdersServerList"
-        val cacheResults = CentralCache.get<ArrayList<GetCustomerOrderModel>>(AppContexts.get(), getOrdersServerListKey, useCache)
-
-        obj = if (cacheResults != null) {
-            cacheResults
-        } else {
-            val resultFromServer = getFromServer()
-            CentralCache.put(getOrdersServerListKey, resultFromServer)
-            resultFromServer as MutableList<GetCustomerOrderModel>
-        }
-        return obj
     }
 }

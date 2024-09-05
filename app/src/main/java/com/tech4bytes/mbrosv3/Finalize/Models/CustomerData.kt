@@ -1,11 +1,8 @@
 package com.tech4bytes.mbrosv3.Finalize.Models
 
-import com.google.gson.reflect.TypeToken
 import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.prasunmondal.dev.libs.gsheet.ContextWrapper
 import com.prasunmondal.dev.libs.gsheet.clients.GSheetSerialized
-import com.prasunmondal.postjsontosheets.clients.post.serializable.PostObject
-import com.tech4bytes.mbrosv3.AppData.Tech4BytesSerializable
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.BusinessLogic.Sorter
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
@@ -102,17 +99,8 @@ object CustomerDataUtils : GSheetSerialized<CustomerData>(
         deliveredData.forEach {
             it.timestamp = DateUtils.getDateInFormat(Date(it.id.toLong()), "M/d/yyyy")
             val record = CustomerData(it, actualDeliveredKg, totalProfit)
-            addToFinalizeSheet(record)
+            CustomerRecentData.insert(record).queue()
         }
-    }
-
-    private fun addToFinalizeSheet(record: CustomerData) {
-        PostObject.builder()
-            .scriptId(ProjectConfig.dBServerScriptURL)
-            .sheetId(ProjectConfig.get_db_finalize_sheet_id())
-            .tabName(FinalizeConfig.SHEET_FINALIZE_DELIVERIES_TAB_NAME)
-            .dataObject(record as Any)
-            .build().execute()
     }
 
     fun getCustomerDefaultRate(name: String): Int {

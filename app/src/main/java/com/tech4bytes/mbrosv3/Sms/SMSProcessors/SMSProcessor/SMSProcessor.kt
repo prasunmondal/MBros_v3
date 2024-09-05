@@ -11,7 +11,7 @@ class SMSProcessor {
         fun getSMSList(selectedCommunications: String, inputObj: Any? = null): MutableList<SMS> {
             LogMe.log("Getting messages for type: $selectedCommunications")
             val smsList: MutableList<SMS> = mutableListOf()
-            OSMS.get().forEach {
+            OSMS.fetchAll().execute().forEach {
                 LogMe.log("Looking for: $selectedCommunications");
                 getIndividualCommType(it).forEach {r ->
                     LogMe.log("..$r..")

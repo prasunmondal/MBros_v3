@@ -285,7 +285,7 @@ class SMSOrdering : AppCompatActivity() {
                 saveBtn.text = "Deleting previous data"
             }
 
-            SMSOrderModelUtil.deleteAll()
+            SMSOrderModelUtil.deleteAll().queue()
             var count = 1
             orders.forEach {
                 runOnUiThread {

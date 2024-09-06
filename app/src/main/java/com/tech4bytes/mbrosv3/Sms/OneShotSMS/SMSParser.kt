@@ -42,7 +42,7 @@ class SMSParser {
            var splitedLines= template.split("\n")
             var data:String =""
             splitedLines.forEach{line ->
-                if(formatString(line,deliveryData) == ""){}
+                if(line.isNotEmpty() && formatString(line,deliveryData) == ""){}
                 else{
                     data +=  formatString(line,deliveryData)+"\n"
                 }

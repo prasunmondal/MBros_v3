@@ -353,12 +353,10 @@ class OneShotDelivery : AppCompatActivity() {
             SingleAttributedDataUtils.insert(SingleAttributedDataUtils.getRecords()).queue()
             saveDeliveryData()
             refuelUIObj.saveFuelData()
-            GScript.execute(ProjectConfig.dBServerScriptURLNew)
-
-            // TODO: To Optimize
-            SingleAttributedDataUtils.fetchAll().execute(false)
-            DeliverToCustomerDataHandler.fetchAll().execute(false)
-            DeliverToCustomerDataHandler.fetchAll().execute(false)
+            SingleAttributedDataUtils.fetchAll().queue()
+            DeliverToCustomerDataHandler.fetchAll().queue()
+            DeliverToCustomerDataHandler.fetchAll().queue()
+            GScript.execute(false)
             runOnUiThread()
             {
                 saveOneSortDeliveryButton.isEnabled = true

@@ -80,7 +80,6 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
-
         AppUtils.logError(this)
         getPermissions()
 
@@ -92,20 +91,10 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         setListeners()
     }
 
-    fun fetchFresh() {
-        SingleAttributedDataUtils.getRecords()
-        DeliverToCustomerDataHandler.fetchAll().queue()
-        GetCustomerOrderUtils.fetchAll().queue()
-        GScript.execute(false)
-    }
-
     private fun setStatuses(useCache: Boolean) {
-        if(!useCache) {
-            fetchFresh()
-        }
-        setSheetCalculatorCorrectness(true)
-        setFinalizedIndicator(true)
-        setResetIndicator(true)
+        setSheetCalculatorCorrectness(false)
+        setFinalizedIndicator(useCache)
+        setResetIndicator(useCache)
     }
 
     private fun setSheetCalculatorCorrectness(useCache: Boolean) {
@@ -204,7 +193,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         if (isResetDone != null) {
             return isResetDone!!
         }
-        isResetDone = DeliverToCustomerDataHandler.fetchAll().execute().isEmpty()
+        isResetDone = DeliverToCustomerDataHandler.fetchAll().execute(useCache).isEmpty()
         return isResetDone!!
     }
 
@@ -268,7 +257,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     }
 
     fun updateDeliveredInfo(useCache: Boolean) {
-        val countersDelivered = DeliverToCustomerDataHandler.fetchAll().execute()
+        val countersDelivered = DeliverToCustomerDataHandler.fetchAll().execute(useCache)
         val numberOfCustomersDelivered = countersDelivered.size
         val totalNumberOfCustomers = GetCustomerOrderUtils.getNumberOfCustomersOrdered(useCache)
         val deliveredPc = DeliverToCustomerCalculations.getTotalPcDelivered()
@@ -290,9 +279,9 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     }
 
     fun updateDashboard(useCache: Boolean) {
-        SingleAttributedDataUtils.getRecords()
-        DeliverToCustomerDataHandler.fetchAll().execute()
-        GetCustomerOrderUtils.fetchAll().execute()
+        SingleAttributedDataUtils.getRecords(useCache)
+        DeliverToCustomerDataHandler.fetchAll().execute(useCache)
+        GetCustomerOrderUtils.fetchAll().execute(useCache)
 
         updateLoadInfo(useCache)
         updateDeliveredInfo(useCache)

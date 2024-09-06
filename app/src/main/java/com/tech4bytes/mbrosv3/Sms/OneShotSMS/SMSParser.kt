@@ -83,6 +83,7 @@ class SMSParser {
                 "todaysAmount"-> deliveryData.deliverAmount
                 "paidCash"-> deliveryData.paidCash
                 "paidOnline"-> deliveryData.paidOnline
+                "paidAmount" -> deliveryData.paid
                 "otherBalances"-> deliveryData.otherBalances
                 "balanceIncludingOtherBalances"-> deliveryData.totalBalance
                 "balanceExcludingOtherBalances"-> deliveryData.khataBalance

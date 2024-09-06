@@ -293,7 +293,8 @@ class SMSOrdering : AppCompatActivity() {
                 }
                 SMSOrderModelUtil.insert(it).queue()
             }
-            GScript.execute(ProjectConfig.dBServerScriptURLNew)
+            SMSOrderModelUtil.fetchAll().queue()
+            GScript.execute(false)
 
             runOnUiThread {
                 saveBtn.isEnabled = true

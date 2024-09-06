@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.prasunmondal.dev.libs.contexts.AppContexts
+import com.prasunmondal.dev.libs.gsheet.clients.GScript
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
@@ -345,7 +346,10 @@ class RefuelUI(
     fun saveDataFromThisUI(saveToServer: Boolean = true) {
         saveKmData()
         saveFuelData()
-        if(saveToServer)
-            SingleAttributedDataUtils.insert(SingleAttributedDataUtils.getRecords()).execute()
+        if(saveToServer) {
+            SingleAttributedDataUtils.insert(SingleAttributedDataUtils.getRecords()).queue()
+            SingleAttributedDataUtils.fetchAll().queue()
+            GScript.execute(false)
+        }
     }
 }

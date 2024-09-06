@@ -59,7 +59,6 @@ object RefuelingUtils : GSheetSerialized<RefuelingModel>(
             val calculatedMileage = (NumberUtils.getIntOrZero(refuelingObj.refueling_km) - NumberUtils.getIntOrZero(refuelingObj.prev_refuel_km)) / NumberUtils.getDoubleOrZero(refuelingObj.measure)
             refuelingObj.mileage = "%.3f".format(calculatedMileage)
             insert(refuelingObj).queue()
-//            saveToServer(refuelingObj)
         }
     }
 }

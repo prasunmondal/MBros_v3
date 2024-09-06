@@ -141,7 +141,7 @@ object GetCustomerOrderUtils : GSheetSerialized<GetCustomerOrderModel>(
             GetCustomerOrderUtils.insert(it).queue()
         }
         GetCustomerOrderUtils.fetchAll().queue()
-        GScript.execute(ProjectConfig.dBServerScriptURLNew)
+        GScript.execute(false)
     }
 
     private fun getRecordsForOnlyOrderedCustomers(): MutableList<GetCustomerOrderModel> {

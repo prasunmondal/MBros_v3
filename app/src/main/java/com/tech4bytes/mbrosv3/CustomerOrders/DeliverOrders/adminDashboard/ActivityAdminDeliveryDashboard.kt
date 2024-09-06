@@ -307,8 +307,8 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
             SingleAttributedDataUtils.insert(obj).queue()
             CustomerDataUtils.spoolDeliveringData()
             RefuelingUtils.spoolRefuelingData()
-            DaySummaryUtils.insert(DaySummaryUtils.getDaySummaryObjectForCurrentData()).execute()
-            GScript.execute(ProjectConfig.dBServerScriptURLNew)
+            DaySummaryUtils.insert(DaySummaryUtils.getDaySummaryObjectForCurrentData()).queue()
+            GScript.execute(false)
             setStatuses(false)
         }.start()
     }

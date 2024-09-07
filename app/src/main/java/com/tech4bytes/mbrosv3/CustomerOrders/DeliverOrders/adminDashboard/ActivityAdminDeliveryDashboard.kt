@@ -339,7 +339,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
 
     fun onClickDeleteDeliveryDataBtn() {
         Thread {
-            DeliverToCustomerDataHandler.deleteAll()
+            DeliverToCustomerDataHandler.deleteAll().execute()
             setStatuses(false)
         }.start()
     }

@@ -47,7 +47,7 @@ class SMSParser {
                     data +=  formatString(line,deliveryData)+"\n"
                 }
             }
-            return data
+            return data.trim()
         }
 
         fun formatString(string: String,deliveryData: DeliverToCustomerDataModel):String{

@@ -285,16 +285,10 @@ class SMSOrdering : AppCompatActivity() {
                 saveBtn.text = "Deleting previous data"
             }
 
-            SMSOrderModelUtil.deleteAll().queue()
-            var count = 1
-            orders.forEach {
-                runOnUiThread {
-                    saveBtn.text = "Saving (${count++}/${orders.size})"
-                }
-                SMSOrderModelUtil.insert(it).queue()
+            runOnUiThread {
+                saveBtn.text = "Saving ${orders.size} reecords)"
             }
-            SMSOrderModelUtil.fetchAll().queue()
-            GScript.execute()
+            SMSOrderModelUtil.save(orders).execute()
 
             runOnUiThread {
                 saveBtn.isEnabled = true

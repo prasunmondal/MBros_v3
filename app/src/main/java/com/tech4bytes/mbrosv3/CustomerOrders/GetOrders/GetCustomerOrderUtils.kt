@@ -136,12 +136,7 @@ object GetCustomerOrderUtils : GSheetSerialized<GetCustomerOrderModel>(
         obj.forEach {
             it.timestamp = DateUtils.getCurrentTimestamp()
         }
-
-        getRecordsForOnlyOrderedCustomers().forEach {
-            GetCustomerOrderUtils.insert(it).queue()
-        }
-        GetCustomerOrderUtils.fetchAll().queue()
-        GScript.execute()
+        GetCustomerOrderUtils.save(getRecordsForOnlyOrderedCustomers()).queue()
     }
 
     private fun getRecordsForOnlyOrderedCustomers(): MutableList<GetCustomerOrderModel> {

@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import com.prasunmondal.dev.libs.contexts.AppContexts
+import com.prasunmondal.dev.libs.gsheet.clients.GScript
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.R
@@ -79,9 +80,7 @@ class OrdersMakeList : AppCompatActivity() {
             runOnUiThread {
                 Toast.makeText(this, "Saving Data", Toast.LENGTH_SHORT).show()
             }
-            GetCustomerOrderUtils.deleteAll().execute()
             GetCustomerOrderUtils.save()
-
             val metadataObj = SingleAttributedDataUtils.getRecords()
             var totalPc = 0
             var totalKg = 0
@@ -92,10 +91,11 @@ class OrdersMakeList : AppCompatActivity() {
             metadataObj.estimatedLoadPc = totalPc.toString()
             metadataObj.estimatedLoadKg = totalKg.toString()
 
-            SingleAttributedDataUtils.insert(metadataObj).execute()
+            SingleAttributedDataUtils.insert(metadataObj).queue()
             runOnUiThread {
                 Toast.makeText(this, "Data save complete!", Toast.LENGTH_LONG).show()
             }
+            GScript.execute()
         }.start()
     }
 }

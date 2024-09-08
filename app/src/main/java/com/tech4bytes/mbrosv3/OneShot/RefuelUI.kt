@@ -349,7 +349,7 @@ class RefuelUI(
         if(saveToServer) {
             SingleAttributedDataUtils.insert(SingleAttributedDataUtils.getRecords()).queue()
             SingleAttributedDataUtils.fetchAll().queue()
-            GScript.execute(false)
+            GScript.execute()
         }
     }
 }

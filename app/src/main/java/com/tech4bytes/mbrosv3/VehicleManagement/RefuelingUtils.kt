@@ -16,7 +16,7 @@ object RefuelingUtils : GSheetSerialized<RefuelingModel>(
     query = null,
     modelClass = RefuelingModel::class.java) {
     private fun getLatestRecord(useCache: Boolean = true): RefuelingModel {
-        val list = fetchAll().execute(useCache)
+        val list = fetchAll(useCache).execute()
         return list[list.size - 1]
     }
 

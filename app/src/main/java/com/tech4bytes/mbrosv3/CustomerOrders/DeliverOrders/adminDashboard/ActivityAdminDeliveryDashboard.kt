@@ -193,7 +193,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         if (isResetDone != null) {
             return isResetDone!!
         }
-        isResetDone = DeliverToCustomerDataHandler.fetchAll().execute(useCache).isEmpty()
+        isResetDone = DeliverToCustomerDataHandler.fetchAll(useCache).execute().isEmpty()
         return isResetDone!!
     }
 
@@ -257,7 +257,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     }
 
     fun updateDeliveredInfo(useCache: Boolean) {
-        val countersDelivered = DeliverToCustomerDataHandler.fetchAll().execute(useCache)
+        val countersDelivered = DeliverToCustomerDataHandler.fetchAll(useCache).execute()
         val numberOfCustomersDelivered = countersDelivered.size
         val totalNumberOfCustomers = GetCustomerOrderUtils.getNumberOfCustomersOrdered(useCache)
         val deliveredPc = DeliverToCustomerCalculations.getTotalPcDelivered()
@@ -280,8 +280,8 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
 
     fun updateDashboard(useCache: Boolean) {
         SingleAttributedDataUtils.getRecords(useCache)
-        DeliverToCustomerDataHandler.fetchAll().execute(useCache)
-        GetCustomerOrderUtils.fetchAll().execute(useCache)
+        DeliverToCustomerDataHandler.fetchAll(useCache).execute()
+        GetCustomerOrderUtils.fetchAll(useCache).execute()
 
         updateLoadInfo(useCache)
         updateDeliveredInfo(useCache)
@@ -308,7 +308,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
             CustomerDataUtils.spoolDeliveringData()
             RefuelingUtils.spoolRefuelingData()
             DaySummaryUtils.insert(DaySummaryUtils.getDaySummaryObjectForCurrentData()).queue()
-            GScript.execute(false)
+            GScript.execute()
             setStatuses(false)
         }.start()
     }

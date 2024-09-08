@@ -24,7 +24,7 @@ enum class AppConstants {
 
         fun get(constant: AppConstants, useCache: Boolean = true): String {
             LogMe.log("Searching in AppConstants: $constant")
-            val constantList = AppConstantsUtil.fetchAll().execute(useCache)
+            val constantList = AppConstantsUtil.fetchAll(useCache).execute()
             constantList.forEach {
                 if (it.constantName == constant.name) {
                     LogMe.log("Searching in AppConstants: $constant: Successful. Value: ${it.constantValue}")
@@ -37,7 +37,7 @@ enum class AppConstants {
 
         fun get(constant: String, useCache: Boolean = true): String {
             LogMe.log("Searching in AppConstants: $constant")
-            val constantList = AppConstantsUtil.fetchAll().execute(useCache)
+            val constantList = AppConstantsUtil.fetchAll(useCache).execute()
             constantList.forEach {
                 if (it.constantName == constant) {
                     LogMe.log("Searching in AppConstants: $constant: Successful. Value: ${it.constantValue}")

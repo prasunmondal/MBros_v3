@@ -356,7 +356,7 @@ class OneShotDelivery : AppCompatActivity() {
             SingleAttributedDataUtils.fetchAll().queue()
             DeliverToCustomerDataHandler.fetchAll().queue()
             DeliverToCustomerDataHandler.fetchAll().queue()
-            GScript.execute(false)
+            GScript.execute()
             runOnUiThread()
             {
                 saveOneSortDeliveryButton.isEnabled = true

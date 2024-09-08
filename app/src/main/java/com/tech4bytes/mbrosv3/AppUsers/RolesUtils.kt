@@ -17,9 +17,9 @@ object RolesUtils : GSheetSerialized<AppUsersModel>(
     filter = ClientFilter("getUserForCurrentDevice") {list: List<AppUsersModel> -> list.filter { DeviceUtils.getUniqueID(AppContexts.get()) == it.device_id }}
 ) {
     fun getAppUser(useCache: Boolean = true): AppUsersModel? {
-        val user = fetchAll().execute(useCache)
+        val user = fetchAll(useCache).execute()
         if(user.isEmpty())
             return null
-        return fetchAll().execute(useCache)[0]
+        return fetchAll(useCache).execute()[0]
     }
 }

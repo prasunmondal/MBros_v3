@@ -120,7 +120,7 @@ object GetCustomerOrderUtils : GSheetSerialized<GetCustomerOrderModel>(
     }
 
     fun getNumberOfCustomersOrdered(useCache: Boolean): Int {
-        return fetchAll().execute(useCache).size
+        return fetchAll(useCache).execute().size
     }
 
     fun getByName(inputName: String): GetCustomerOrderModel? {
@@ -141,7 +141,7 @@ object GetCustomerOrderUtils : GSheetSerialized<GetCustomerOrderModel>(
             GetCustomerOrderUtils.insert(it).queue()
         }
         GetCustomerOrderUtils.fetchAll().queue()
-        GScript.execute(false)
+        GScript.execute()
     }
 
     private fun getRecordsForOnlyOrderedCustomers(): MutableList<GetCustomerOrderModel> {

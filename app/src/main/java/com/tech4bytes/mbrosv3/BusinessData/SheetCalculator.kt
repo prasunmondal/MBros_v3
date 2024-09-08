@@ -14,6 +14,6 @@ object SheetCalculatorUtil: GSheetSerialized<SheetCalculator>(
     modelClass = SheetCalculator::class.java
 ) {
     fun isKhataGreen(useCache: Boolean): Boolean {
-        return fetchAll().execute(useCache)[0].is_khata_green.toBoolean()
+        return fetchAll(useCache).execute()[0].is_khata_green.toBoolean()
     }
 }

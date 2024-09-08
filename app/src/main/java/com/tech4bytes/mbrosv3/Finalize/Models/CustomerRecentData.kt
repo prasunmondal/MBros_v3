@@ -64,7 +64,7 @@ object CustomerRecentData : GSheetSerialized<CustomerData>(
     }
 
     fun getAllLatestRecords(useCache: Boolean = true): MutableList<CustomerData> {
-        var customerRecords = fetchAll().execute(useCache).sortedBy { it.orderId }.reversed()
+        var customerRecords = fetchAll(useCache).execute().sortedBy { it.orderId }.reversed()
         val addedNames = mutableListOf<String>()
         val latestRecordsList = mutableListOf<CustomerData>()
         customerRecords.forEach {
@@ -80,7 +80,7 @@ object CustomerRecentData : GSheetSerialized<CustomerData>(
 //        var customerRecords = Get.builder().scriptId(scriptURL).sheetId(ProjectConfig.get_db_finalize_sheet_id()).tabName(tabname)
 //            .query("=QUERY(IMPORTRANGE(\"https://docs.google.com/spreadsheets/d/11TA2pPlxqajVwkPEigNMPNfsV-12CExxmySk1OMw_v8\",\"deliveries!A2:Az\"), \n" +
 //                    "\"select * where \"&\" Col1 =\"&TEXTJOIN(\" or Col1=\",true,QUERY(IMPORTRANGE(\"https://docs.google.com/spreadsheets/d/11TA2pPlxqajVwkPEigNMPNfsV-12CExxmySk1OMw_v8\",\"deliveries!A2:Az\"), \"select max( Col1 ) group by Col3 label max( Col1 ) ''\"))&\"\"&\"\")").execute()
-        var customerRecords = fetchAll().execute(useCache)
+        var customerRecords = fetchAll(useCache).execute()
         LogMe.log("Length before filtering: " + customerRecords.size)
         customerRecords = customerRecords.sortedBy { it.orderId }
         customerRecords = customerRecords.reversed()
@@ -119,7 +119,7 @@ object CustomerRecentData : GSheetSerialized<CustomerData>(
     }
 
     fun getAllCustomerNames(useCache: Boolean = true): List<String> {
-        return fetchAll().execute(useCache).stream()
+        return fetchAll(useCache).execute().stream()
             .filter { d -> d.name.isNotEmpty() }
             .map(CustomerData::name)
             .collect(Collectors.toSet()).toList().sorted()

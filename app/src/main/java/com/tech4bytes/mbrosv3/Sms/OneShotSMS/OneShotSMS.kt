@@ -52,7 +52,7 @@ class OneShotSMS : AppCompatActivity() {
         }
     }
     fun processAndShowMessages(communicationSelectorOption: String, useCache: Boolean = true) {
-        OSMS.fetchAll().execute(useCache)
+        OSMS.fetchAll(useCache).execute()
         val selectedType = initializeCommunicationSelector(communicationSelectorOption)
         Contacts.getContactList(this, false)
         smsList = selectCommunication(selectedType)

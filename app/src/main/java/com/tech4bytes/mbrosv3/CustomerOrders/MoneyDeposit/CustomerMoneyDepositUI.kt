@@ -30,7 +30,7 @@ class CustomerMoneyDepositUI : AppCompatActivity() {
 
         Thread {
             initiallizeUIVariables()
-            val allTransactionRecords = CustomerMoneyDeposit.fetchAll().execute(false)
+            val allTransactionRecords = CustomerMoneyDeposit.fetchAll(false).execute()
             setListeners(allTransactionRecords)
             populateBeneficiary(allTransactionRecords)
         }.start()

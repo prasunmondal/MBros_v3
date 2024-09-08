@@ -98,7 +98,7 @@ object DaySummaryUtils: GSheetSerialized<DaySummary>(
     }
 
     fun getPrevTripEndKm(useCache: Boolean = true): Int {
-        val list = DaySummaryUtils.fetchAll().execute(useCache)
+        val list = DaySummaryUtils.fetchAll(useCache).execute()
         return NumberUtils.getIntOrZero(list[list.size - 1].trip_end_km)
     }
 

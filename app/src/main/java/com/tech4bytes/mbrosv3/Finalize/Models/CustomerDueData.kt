@@ -17,7 +17,7 @@ class CustomerDueData {
                 dueMap[it.customerAccount] = NumberUtils.getIntOrZero(it.khataBalance)
             }
             if (shouldIncludePostDeliveryUpdates) {
-                DeliverToCustomerDataHandler.fetchAll().execute(useCache).forEach {
+                DeliverToCustomerDataHandler.fetchAll(useCache).execute().forEach {
                     dueMap[it.customerAccount] = NumberUtils.getIntOrZero(it.khataBalance)
                 }
             }

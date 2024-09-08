@@ -8,9 +8,6 @@ import com.prasunmondal.dev.libs.gsheet.clients.GSheetSerialized
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
-import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ReflectionUtils
-import kotlin.reflect.KMutableProperty1
-
 
 object SingleAttributedDataUtils : GSheetSerialized<SingleAttributedDataModel>(
     ContextWrapper(AppContexts.get()),
@@ -21,9 +18,21 @@ object SingleAttributedDataUtils : GSheetSerialized<SingleAttributedDataModel>(
     modelClass = SingleAttributedDataModel::class.java,
     filter = ClientFilter("latestRecordById") { list: List<SingleAttributedDataModel> -> arrayListOf(list.maxBy { (it).id }) }) {
 
+    var globalObject: SingleAttributedDataModel? = null
     fun getRecords(useCache: Boolean = true): SingleAttributedDataModel {
-        val t = fetchAll().execute(useCache)
-        return t[0]
+        if(globalObject != null)
+            return globalObject!!
+
+        globalObject = fetchAll(useCache).execute()[0]
+        return globalObject!!
+    }
+
+    fun queueSaveToServer() {
+        insert(getRecords()).queue()
+    }
+
+    fun executeSaveToServer() {
+        insert(getRecords()).execute()
     }
 
     fun getBufferRateInt(): Int {
@@ -38,23 +47,13 @@ object SingleAttributedDataUtils : GSheetSerialized<SingleAttributedDataModel>(
         return getRecords().finalFarmRate.toInt()
     }
 
-    fun saveAttributeToLocal(kMutableProperty: KMutableProperty1<SingleAttributedDataModel, String>, value: String) {
-        val obj = getRecords()
-        ReflectionUtils.setAttribute(obj, kMutableProperty, value)
-        saveToLocal(obj)
-    }
-
     fun saveToLocal(obj: SingleAttributedDataModel?) {
         if (obj != null) {
             obj.id = System.currentTimeMillis().toString()
             obj.recordGeneratorDevice = DeviceUtils.getUniqueID(AppContexts.get())
             obj.date = DateUtils.getCurrentTimestamp()
-            insert(obj).saveToLocal(false)
+            globalObject = obj
         }
-    }
-
-    fun invalidateCache() {
-        saveToLocal(null)
     }
 
     fun getExtraExpenseExcludingPolice(obj: SingleAttributedDataModel): Int {

@@ -32,7 +32,7 @@ object StagedPaymentUtils : GSheetSerialized<StagedPaymentsModel>(
         )
 
 
-        val list = fetchAll().execute(useCache).filter { it.name == name }
+        val list = fetchAll(useCache).execute().filter { it.name == name }
         var sumPaid = 0
         var allNotes = ""
         list.forEach {

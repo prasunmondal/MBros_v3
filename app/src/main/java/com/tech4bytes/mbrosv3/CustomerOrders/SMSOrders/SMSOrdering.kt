@@ -196,7 +196,21 @@ class SMSOrdering : AppCompatActivity() {
                 val finalizedPcView = entry.findViewById<EditText>(R.id.smsorder_listEntry_pc)
                 val finalizedKgView = entry.findViewById<EditText>(R.id.smsorder_list_finalized_kg)
                 finalizedPcView.hint = orders[j].orderedPc.toString()
+                finalizedKgView.hint = orders[j].orderedKg.toString()
                 showSuggestions(entry, orders[j])
+
+                if(orders[j].orderedPc > 0) {
+                    finalizedPcView.setText(orders[j].orderedPc.toString())
+                } else {
+                    finalizedPcView.setText("")
+                }
+
+                if(orders[j].orderedKg > 0) {
+                    finalizedKgView.setText(orders[j].orderedKg.toString())
+                } else {
+                    finalizedKgView.setText("")
+                }
+
 
                 finalizedPcView.doOnTextChanged { text, start, before, count ->
                     orders[j].orderedPc = NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedPcView))
@@ -206,10 +220,11 @@ class SMSOrdering : AppCompatActivity() {
 
                 finalizedKgView.doOnTextChanged { text, start, before, count ->
                     orders[j].orderedKg = NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedKgView))
+                    showSuggestions(entry, orders[j])
                     updateTotal()
                 }
 
-                entry.findViewById<TextView>(R.id.smsorder_list_finalized_kg).text = orders[j].orderedKg.toString()
+//                entry.findViewById<TextView>(R.id.smsorder_list_finalized_kg).text = orders[j].orderedKg.toString()
                 entry.findViewById<TextView>(R.id.smsorder_listEntry_number).text = orders[j].name
                 entry.findViewById<TextView>(R.id.smsorder_listEntry_amount).text = "$balance"
                 orderListContainer.addView(entry)

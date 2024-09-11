@@ -188,10 +188,24 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout24">
 
         <LinearLayout
-            android:id="@+id/smsorders_order_list_view_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/smsorders_order_list_view_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/smsorders_order_extra_aand_total_view_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" />
+        </LinearLayout>
     </ScrollView>
 
     <Button

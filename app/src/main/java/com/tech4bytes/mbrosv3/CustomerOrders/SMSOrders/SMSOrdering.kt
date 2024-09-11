@@ -59,6 +59,7 @@ class SMSOrdering : AppCompatActivity() {
             setUpListeners()
             showSMS()
             processSMS()
+            showTotal()
         }.start()
     }
 
@@ -195,6 +196,7 @@ class SMSOrdering : AppCompatActivity() {
                 entry.findViewById<TextView>(R.id.smsorder_listEntry_calculated_pc).text = orders[j].calculatedPc.toString()
 
                 val finalizedPcView = entry.findViewById<EditText>(R.id.smsorder_listEntry_pc)
+                val finalizedKgView = entry.findViewById<EditText>(R.id.smsorder_listEntry_date)
                 finalizedPcView.hint = orders[j].orderedPc.toString()
                 showSuggestions(entry, orders[j])
 
@@ -204,21 +206,30 @@ class SMSOrdering : AppCompatActivity() {
                     updateTotal()
                 }
 
+                finalizedKgView.doOnTextChanged { text, start, before, count ->
+                    orders[j].orderedKg = NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedKgView))
+                    updateTotal()
+                }
+
                 entry.findViewById<TextView>(R.id.smsorder_listEntry_date).text = orders[j].orderedKg.toString()
                 entry.findViewById<TextView>(R.id.smsorder_listEntry_number).text = orders[j].name
                 entry.findViewById<TextView>(R.id.smsorder_listEntry_amount).text = "$balance"
                 orderListContainer.addView(entry)
             }
         }
-        showTotal()
     }
 
     var totalEntryView: View? = null
     fun showTotal() {
-        val orderListContainer = findViewById<LinearLayout>(R.id.smsorders_order_list_view_container)
-        totalEntryView = layoutInflater.inflate(R.layout.activity_sms_ordering_list_fragments, null)
-        updateTotal()
-        orderListContainer.addView(totalEntryView)
+        runOnUiThread {
+            val orderListContainer =
+                findViewById<LinearLayout>(R.id.smsorders_order_extra_aand_total_view_container)
+            orderListContainer.removeAllViews()
+            totalEntryView =
+                layoutInflater.inflate(R.layout.activity_sms_ordering_list_fragments, null)
+            orderListContainer.addView(totalEntryView)
+            updateTotal()
+        }
     }
 
     fun updateTotal() {
@@ -230,11 +241,16 @@ class SMSOrdering : AppCompatActivity() {
         }
 
         val totalPcsField = totalEntryView?.findViewById<EditText>(R.id.smsorder_listEntry_pc)
+        val totalKgsField = totalEntryView?.findViewById<EditText>(R.id.smsorder_listEntry_date)
         totalPcsField?.setText(totalPc.toString())
         totalPcsField?.setTextColor(ContextCompat.getColor(this, androidx.appcompat.R.color.material_blue_grey_800))
         totalPcsField?.setTypeface(null, Typeface.BOLD)
 
-        totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_date)?.text = "$totalKg"
+        totalKgsField?.setText(totalKg.toString())
+        totalKgsField?.setTextColor(ContextCompat.getColor(this, androidx.appcompat.R.color.material_blue_grey_800))
+        totalKgsField?.setTypeface(null, Typeface.BOLD)
+
+//        totalEntryView?.findViewById<EditText>(R.id.smsorder_listEntry_date)?.text = "$totalKg"
         totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_number)?.text = "TOTAL"
         totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_amount)?.text = ""
 

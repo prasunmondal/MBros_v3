@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.prasunmondal.dev.libs.contexts.AppContexts
-import com.prasunmondal.dev.libs.gsheet.clients.GScript
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.BusinessLogic.Sorter
@@ -20,7 +19,6 @@ import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
 import com.tech4bytes.mbrosv3.CustomerOrders.Occasions.EventsUI
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
-import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.SmsReader
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
@@ -64,7 +62,7 @@ class SMSOrdering : AppCompatActivity() {
     }
 
     fun setUpUI() {
-        val offset = 1000L * 60 * 60 * 12;
+        val offset = 1000L * 60 * 60 * 12
         val currentDate = System.currentTimeMillis()
         val listDate = Date(currentDate + offset)
 
@@ -196,7 +194,7 @@ class SMSOrdering : AppCompatActivity() {
                 entry.findViewById<TextView>(R.id.smsorder_listEntry_calculated_pc).text = orders[j].calculatedPc.toString()
 
                 val finalizedPcView = entry.findViewById<EditText>(R.id.smsorder_listEntry_pc)
-                val finalizedKgView = entry.findViewById<EditText>(R.id.smsorder_listEntry_date)
+                val finalizedKgView = entry.findViewById<EditText>(R.id.smsorder_list_finalized_kg)
                 finalizedPcView.hint = orders[j].orderedPc.toString()
                 showSuggestions(entry, orders[j])
 
@@ -211,7 +209,7 @@ class SMSOrdering : AppCompatActivity() {
                     updateTotal()
                 }
 
-                entry.findViewById<TextView>(R.id.smsorder_listEntry_date).text = orders[j].orderedKg.toString()
+                entry.findViewById<TextView>(R.id.smsorder_list_finalized_kg).text = orders[j].orderedKg.toString()
                 entry.findViewById<TextView>(R.id.smsorder_listEntry_number).text = orders[j].name
                 entry.findViewById<TextView>(R.id.smsorder_listEntry_amount).text = "$balance"
                 orderListContainer.addView(entry)
@@ -241,7 +239,7 @@ class SMSOrdering : AppCompatActivity() {
         }
 
         val totalPcsField = totalEntryView?.findViewById<EditText>(R.id.smsorder_listEntry_pc)
-        val totalKgsField = totalEntryView?.findViewById<EditText>(R.id.smsorder_listEntry_date)
+        val totalKgsField = totalEntryView?.findViewById<EditText>(R.id.smsorder_list_finalized_kg)
         totalPcsField?.setText(totalPc.toString())
         totalPcsField?.setTextColor(ContextCompat.getColor(this, androidx.appcompat.R.color.material_blue_grey_800))
         totalPcsField?.setTypeface(null, Typeface.BOLD)

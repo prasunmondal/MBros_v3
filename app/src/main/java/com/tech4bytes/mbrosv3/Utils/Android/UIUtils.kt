@@ -42,16 +42,12 @@ class UIUtils : AppCompatActivity() {
         }
 
         fun getTextOrHint(view: TextView): String {
-            return if (view.text.toString() == "") {
+            return if (view.hint != null && view.text.toString() == "") {
                 view.hint.toString()
             } else {
                 view.text.toString()
             }
         }
-//
-//        fun setUIElementValue(view: View, value: String) {
-//            setUIElementValue(AppContexts.get(), view, value)
-//        }
 
         fun setUIElementValue(view: View, value: String) {
             val uIElement = view

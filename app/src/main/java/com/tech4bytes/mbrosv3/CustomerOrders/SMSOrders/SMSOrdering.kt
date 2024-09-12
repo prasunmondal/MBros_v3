@@ -88,7 +88,12 @@ class SMSOrdering : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     fun showSMS() {
-        val smsFiltered = SmsReader.getAllSms(this, this, StringUtils.getListFromCSV(AppConstants.get(AppConstants.SMS_ORDER_GET_ORDER_PH_NUMBER)).toTypedArray())
+        val smsFiltered = SmsReader.getAllSms(
+            this,
+            this,
+            StringUtils.getListFromCSV(AppConstants.get(AppConstants.SMS_ORDER_GET_ORDER_PH_NUMBER))
+                .toTypedArray()
+        )
         val container = findViewById<LinearLayout>(R.id.smsorders_sms_view_container)
 
         runOnUiThread {
@@ -98,10 +103,13 @@ class SMSOrdering : AppCompatActivity() {
         smsFiltered.forEach { sms ->
             runOnUiThread {
                 val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_fragments, null)
-                entry.findViewById<TextView>(R.id.smsorder_listEntry_receive_number).text = sms.number
+                entry.findViewById<TextView>(R.id.smsorder_listEntry_receive_number).text =
+                    sms.number
                 entry.findViewById<TextView>(R.id.smsorder_listEntry_text).text = sms.body
-                entry.findViewById<TextView>(R.id.smsorder_listEntry_date).text = sms.datetime.split(" ")[2]
-                entry.findViewById<TextView>(R.id.smsorder_listEntry_month).text = sms.datetime.split(" ")[1]
+                entry.findViewById<TextView>(R.id.smsorder_listEntry_date).text =
+                    sms.datetime.split(" ")[2]
+                entry.findViewById<TextView>(R.id.smsorder_listEntry_month).text =
+                    sms.datetime.split(" ")[1]
                 container.addView(entry)
                 entry.setOnClickListener {
                     smsToProcess = sms.body
@@ -120,7 +128,8 @@ class SMSOrdering : AppCompatActivity() {
         val namesArray = AppConstants.get(AppConstants.SMS_ORDER_SEQUENCE).split(",")
         val minSize = Math.min(valueArray.size, namesArray.size)
 
-        val orderListContainer = findViewById<LinearLayout>(R.id.smsorders_order_list_view_container)
+        val orderListContainer =
+            findViewById<LinearLayout>(R.id.smsorders_order_list_view_container)
         orderListContainer.removeAllViews()
         orders = mutableListOf()
         for (j in 0 until minSize) {
@@ -130,7 +139,15 @@ class SMSOrdering : AppCompatActivity() {
                     avgWt1 = 1.0
                 }
                 val finalPc = (NumberUtils.getIntOrZero(valueArray[j].trim()) / avgWt1).toInt()
-                orders.add(SMSOrderModel(System.currentTimeMillis().toString(), namesArray[j].trim(), valueArray[j].trim().toInt(), "", finalPc))
+                orders.add(
+                    SMSOrderModel(
+                        System.currentTimeMillis().toString(),
+                        namesArray[j].trim(),
+                        valueArray[j].trim().toInt(),
+                        "",
+                        finalPc
+                    )
+                )
             }
         }
         populateCustomerListDropdown()
@@ -155,14 +172,18 @@ class SMSOrdering : AppCompatActivity() {
     }
 
     private fun populateCustomerListDropdown() {
-        val sortedList = ListUtils.getAllPossibleValuesList(CustomerKYC.fetchAll().execute(), CustomerKYCModel::nameEng).toList()
+        val sortedList = ListUtils.getAllPossibleValuesList(
+            CustomerKYC.fetchAll().execute(),
+            CustomerKYCModel::nameEng
+        ).toList()
 
         // remove already showing names from dropdown
         val alreadyInUI: List<String> = orders.stream()
             .map(SMSOrderModel::name)
             .collect(Collectors.toList())
         val listToShow = CollectionUtils.subtract(sortedList, alreadyInUI).toList()
-        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.template_dropdown_entry, listToShow)
+        val adapter: ArrayAdapter<String> =
+            ArrayAdapter<String>(this, R.layout.template_dropdown_entry, listToShow)
 
         runOnUiThread {
             val uiView = findViewById<AutoCompleteTextView>(R.id.smsorder_customer_picker)
@@ -187,39 +208,50 @@ class SMSOrdering : AppCompatActivity() {
         runOnUiThread {
             val orderListContainer =
                 findViewById<LinearLayout>(R.id.smsorders_order_list_view_container)
-            if(clearPreviousEntries)
+            if (clearPreviousEntries)
                 orderListContainer.removeAllViews()
-            orders = Sorter.sortByNameList(orders, SMSOrderModel::name) as MutableList<SMSOrderModel>
-            for (j in 0 until orders.size) {
-                    val balance = CustomerDueData.getBalance(orders[j].name)
-                    val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_list_fragments, null)
-                    val finalizedPcView = entry.findViewById<EditText>(R.id.smsorder_listEntry_pc)
-                    val finalizedKgView = entry.findViewById<EditText>(R.id.smsorder_list_finalized_kg)
+            orders =
+                Sorter.sortByNameList(orders, SMSOrderModel::name) as MutableList<SMSOrderModel>
+            orders.forEach { order ->
+                val balance = CustomerDueData.getBalance(order.name)
+                val entry =
+                    layoutInflater.inflate(R.layout.activity_sms_ordering_list_fragments, null)
+                val finalizedPcView = entry.findViewById<EditText>(R.id.smsorder_listEntry_pc)
+                val finalizedKgView = entry.findViewById<EditText>(R.id.smsorder_list_finalized_kg)
+                val removeBtn = entry.findViewById<ImageView>(R.id.smsorder_listEntry_remove)
 
-                    finalizedPcView.setText(orders[j].appPc)
-                    if(orders[j].orderedKg > 0)
-                        finalizedKgView.setText(orders[j].orderedKg.toString())
-                    refreshHints(entry, orders[j])
+                finalizedPcView.setText(order.appPc)
+                if (order.orderedKg > 0)
+                    finalizedKgView.setText(order.orderedKg.toString())
+                refreshHints(entry, order)
 
-                    finalizedPcView.doOnTextChanged { text, start, before, count ->
-                        orders[j].finalPc = NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedPcView))
-                        orders[j].appPc = if(NumberUtils.getIntOrZero(finalizedPcView.text.toString()) == 0) "" else finalizedPcView.text.toString()
-                        refreshHints(entry, orders[j])
-                        updateTotal()
-                    }
+                finalizedPcView.doOnTextChanged { text, start, before, count ->
+                    order.finalPc = NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedPcView))
+                    order.appPc =
+                        if (NumberUtils.getIntOrZero(finalizedPcView.text.toString()) == 0) "" else finalizedPcView.text.toString()
+                    refreshHints(entry, order)
+                    updateTotal()
+                }
 
-                    finalizedKgView.doOnTextChanged { text, start, before, count ->
-                        orders[j].orderedKg =
-                            NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedKgView))
-                        refreshHints(entry, orders[j])
-                        updateTotal()
-                    }
+                finalizedKgView.doOnTextChanged { text, start, before, count ->
+                    order.orderedKg =
+                        NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedKgView))
+                    refreshHints(entry, order)
+                    updateTotal()
+                }
 
-                    entry.findViewById<TextView>(R.id.smsorder_listEntry_number).text =
-                        orders[j].name
-                    entry.findViewById<TextView>(R.id.smsorder_listEntry_amount).text = "$balance"
-                    orderListContainer.addView(entry)
-                    listViews[orders[j].name] = entry
+                removeBtn.setOnClickListener {
+                    orders.remove(order)
+                    orderListContainer.removeView(entry)
+                    refreshHints(entry, order)
+                    updateTotal()
+                }
+
+                entry.findViewById<TextView>(R.id.smsorder_listEntry_number).text =
+                    order.name
+                entry.findViewById<TextView>(R.id.smsorder_listEntry_amount).text = "$balance"
+                orderListContainer.addView(entry)
+                listViews[order.name] = entry
             }
             showTotal()
         }
@@ -250,11 +282,21 @@ class SMSOrdering : AppCompatActivity() {
         val totalKgsField = totalEntryView?.findViewById<EditText>(R.id.smsorder_list_finalized_kg)
 
         totalPcsField?.setText(totalPc.toString())
-        totalPcsField?.setTextColor(ContextCompat.getColor(this, androidx.appcompat.R.color.material_blue_grey_800))
+        totalPcsField?.setTextColor(
+            ContextCompat.getColor(
+                this,
+                androidx.appcompat.R.color.material_blue_grey_800
+            )
+        )
         totalPcsField?.setTypeface(null, Typeface.BOLD)
 
         totalKgsField?.setText(totalKg.toString())
-        totalKgsField?.setTextColor(ContextCompat.getColor(this, androidx.appcompat.R.color.material_blue_grey_800))
+        totalKgsField?.setTextColor(
+            ContextCompat.getColor(
+                this,
+                androidx.appcompat.R.color.material_blue_grey_800
+            )
+        )
         totalKgsField?.setTypeface(null, Typeface.BOLD)
 
         totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_number)?.text = "TOTAL"
@@ -262,12 +304,15 @@ class SMSOrdering : AppCompatActivity() {
     }
 
     fun refreshHints(entry: View, order: SMSOrderModel?) {
-        val estimatedPcsHintView1 = entry.findViewById<TextView>(R.id.smsorder_listEntry_calculated_pc)
+        val estimatedPcsHintView1 =
+            entry.findViewById<TextView>(R.id.smsorder_listEntry_calculated_pc)
         val estimatedKgsHintView1 = entry.findViewById<TextView>(R.id.smsorder_listEntry_approx_kg)
         val estimatedPcsTextView = entry.findViewById<TextView>(R.id.smsorder_listEntry_pc)
-        if(getAvgWt1() > 0.0) {
-            val estimatedPc1: Double = NumberUtils.getDoubleOrZero((getEntryKg(entry) / getAvgWt1()).toString())
-            val estimatedkg1: Double = NumberUtils.getDoubleOrZero((getAvgWt1() * getPc(entry)).toString())
+        if (getAvgWt1() > 0.0) {
+            val estimatedPc1: Double =
+                NumberUtils.getDoubleOrZero((getEntryKg(entry) / getAvgWt1()).toString())
+            val estimatedkg1: Double =
+                NumberUtils.getDoubleOrZero((getAvgWt1() * getPc(entry)).toString())
             estimatedPcsHintView1.text = String.format("%.1f", estimatedPc1)
             estimatedKgsHintView1.text = String.format("%.1f", estimatedkg1)
             estimatedPcsTextView.hint = String.format(ceil(estimatedPc1).toInt().toString())
@@ -279,9 +324,11 @@ class SMSOrdering : AppCompatActivity() {
 
         val estimatedPcsHintView2 = entry.findViewById<TextView>(R.id.smsorder_listEntry_approx_pc2)
         val estimatedKgsHintView2 = entry.findViewById<TextView>(R.id.smsorder_listEntry_approx_kg2)
-        if(getAvgWt2() > 0.0) {
-            val estimatedPc2: Double = NumberUtils.getDoubleOrZero((getEntryKg(entry) / getAvgWt2()).toString())
-            val estimatedkg2: Double = NumberUtils.getDoubleOrZero((getAvgWt2() * getPc(entry)).toString())
+        if (getAvgWt2() > 0.0) {
+            val estimatedPc2: Double =
+                NumberUtils.getDoubleOrZero((getEntryKg(entry) / getAvgWt2()).toString())
+            val estimatedkg2: Double =
+                NumberUtils.getDoubleOrZero((getAvgWt2() * getPc(entry)).toString())
             estimatedPcsHintView2.text = String.format("%.1f", estimatedPc2)
             estimatedKgsHintView2.text = String.format("%.1f", estimatedkg2)
         } else {
@@ -306,9 +353,12 @@ class SMSOrdering : AppCompatActivity() {
         return NumberUtils.getIntOrZero(UIUtils.getTextOrHint(entry.findViewById(R.id.smsorder_list_finalized_kg)))
     }
 
+    @Deprecated("Deprecated in Java")
+    @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
         val switchActivityIntent = Intent(this, ActivityLogin::class.java)
-        switchActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        switchActivityIntent.flags =
+            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(switchActivityIntent)
     }
 
@@ -351,6 +401,7 @@ class SMSOrdering : AppCompatActivity() {
         }
         updateTotal()
     }
+
     fun onClickToggleSMSView(view: View) {
         val c = findViewById<ScrollView>(R.id.smsorders_sms_view_scroll_container)
         val b = findViewById<TextView>(R.id.smsordering_toggle_sms_text)

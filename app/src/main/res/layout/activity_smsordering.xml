@@ -44,7 +44,8 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:background="#6D000000"
-            android:visibility="invisible">
+            android:visibility="gone"
+            tools:visibility="gone">
 
             <LinearLayout
                 android:id="@+id/smsorders_sms_view_container"

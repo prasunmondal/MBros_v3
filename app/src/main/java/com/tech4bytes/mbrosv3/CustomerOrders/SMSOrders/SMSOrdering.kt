@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
@@ -241,14 +242,10 @@ class SMSOrdering : AppCompatActivity() {
                 }
 
                 removeBtn.setOnClickListener {
-                    orders.remove(order)
-                    orderListContainer.removeView(entry)
-                    refreshHints(entry, order)
-                    updateTotal()
+                    confirmOrderDeletion(orderListContainer, order, entry)
                 }
 
-                entry.findViewById<TextView>(R.id.smsorder_listEntry_number).text =
-                    order.name
+                entry.findViewById<TextView>(R.id.smsorder_listEntry_number).text = order.name
                 entry.findViewById<TextView>(R.id.smsorder_listEntry_amount).text = "$balance"
                 orderListContainer.addView(entry)
                 listViews[order.name] = entry
@@ -268,6 +265,23 @@ class SMSOrdering : AppCompatActivity() {
             orderListContainer.addView(totalEntryView)
             updateTotal()
         }
+    }
+
+    private fun confirmOrderDeletion(orderListContainer: LinearLayout, order: SMSOrderModel, entry: View) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setMessage("Deleting order for: " + order.name)
+            .setTitle("Delete Order?")
+            .setPositiveButton("Confirm") { dialog, id ->
+                // CONFIRM
+                orders.remove(order)
+                orderListContainer.removeView(entry)
+                refreshHints(entry, order)
+                updateTotal()
+            }
+            .setNegativeButton("Cancel") { dialog, id ->
+                // CANCEL
+            }.setIcon(android.R.drawable.ic_dialog_alert)
+            .show()
     }
 
     fun updateTotal() {

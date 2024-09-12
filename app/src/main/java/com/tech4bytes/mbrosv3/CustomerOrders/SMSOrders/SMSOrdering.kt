@@ -11,8 +11,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.prasunmondal.dev.libs.contexts.AppContexts
+import com.prasunmondal.dev.libs.gsheet.clients.GScript
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
+import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.BusinessLogic.Sorter
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
@@ -53,10 +55,11 @@ class SMSOrdering : AppCompatActivity() {
 
         Thread {
             setUpUI()
+            fetchFromServer()
             populateCustomerListDropdown()
             setUpListeners()
             showSMS()
-            fetchFromServer()
+
             showEntries()
 //            processSMS()
             showTotal()
@@ -135,6 +138,11 @@ class SMSOrdering : AppCompatActivity() {
 
     private fun fetchFromServer() {
         orders = SMSOrderModelUtil.fetchAll().execute() as MutableList<SMSOrderModel>
+        val SingleAttrObj = SingleAttributedDataUtils.getRecords()
+        runOnUiThread {
+            findViewById<EditText>(R.id.smsorder_avg_wt1).setText(SingleAttrObj.loadAvgWt1)
+            findViewById<EditText>(R.id.smsorder_avg_wt2).setText(SingleAttrObj.loadAvgWt2)
+        }
         populateCustomerListDropdown()
     }
 
@@ -306,6 +314,10 @@ class SMSOrdering : AppCompatActivity() {
 
     fun onClickSaveSMSOrdersBtn(view: View) {
         val saveBtn = view as Button
+        var singleAttrObj = SingleAttributedDataUtils.getRecords()
+        singleAttrObj.loadAvgWt1 = findViewById<EditText>(R.id.smsorder_avg_wt1).text.toString()
+        singleAttrObj.loadAvgWt2 = findViewById<EditText>(R.id.smsorder_avg_wt2).text.toString()
+
         Thread {
             runOnUiThread {
                 saveBtn.isEnabled = false
@@ -317,7 +329,9 @@ class SMSOrdering : AppCompatActivity() {
             runOnUiThread {
                 saveBtn.text = "Saving ${orders.size} reecords)"
             }
-            SMSOrderModelUtil.save(orders).execute()
+            SMSOrderModelUtil.save(orders).queue()
+            SingleAttributedDataUtils.save(singleAttrObj).queue()
+            GScript.execute()
 
             runOnUiThread {
                 saveBtn.isEnabled = true

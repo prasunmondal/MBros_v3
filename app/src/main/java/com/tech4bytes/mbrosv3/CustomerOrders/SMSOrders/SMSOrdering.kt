@@ -267,6 +267,12 @@ class SMSOrdering : AppCompatActivity() {
         }
     }
 
+    fun onClickDeleteAllBtn(view: View) {
+        val orderListContainer =
+            findViewById<LinearLayout>(R.id.smsorders_order_list_view_container)
+        confirmDeleteAllOrder(orderListContainer)
+    }
+
     private fun confirmOrderDeletion(orderListContainer: LinearLayout, order: SMSOrderModel, entry: View) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         builder.setMessage("Deleting order for: " + order.name)
@@ -276,6 +282,23 @@ class SMSOrdering : AppCompatActivity() {
                 orders.remove(order)
                 orderListContainer.removeView(entry)
                 refreshHints(entry, order)
+                updateTotal()
+            }
+            .setNegativeButton("Cancel") { dialog, id ->
+                // CANCEL
+            }.setIcon(android.R.drawable.ic_dialog_alert)
+            .show()
+    }
+
+    private fun confirmDeleteAllOrder(orderListContainer: LinearLayout) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setMessage("Deleting all orders")
+            .setTitle("Delete Orders?")
+            .setPositiveButton("Confirm") { dialog, id ->
+                // CONFIRM
+                orders = mutableListOf()
+                listViews.clear()
+                orderListContainer.removeAllViews()
                 updateTotal()
             }
             .setNegativeButton("Cancel") { dialog, id ->

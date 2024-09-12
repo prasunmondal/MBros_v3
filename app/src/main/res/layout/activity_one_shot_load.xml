@@ -408,7 +408,8 @@
                 android:onClick="onClickCommunicationReadyButton"
                 android:padding="10dp"
                 android:text="Ready to send message to customer"
-                android:textColor="#C998958E" />
+                android:textColor="#C998958E"
+                android:visibility="gone" />
 
         </LinearLayout>
 

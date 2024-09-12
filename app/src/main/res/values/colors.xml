@@ -72,6 +72,6 @@
     <color name="mc_counter_aiming_amount_non_zero">#FA4545</color>
 
     <!-- SMS ORDERING-->
-    <color name="smso_avg1_grp_text_color">#D5ED7575</color>
-    <color name="smso_avg2_grp_text_color">#197377</color>
+    <color name="smso_avg1_grp_text_color">#94ED7575</color>
+    <color name="smso_avg2_grp_text_color">#D719BFC7</color>
 </resources>

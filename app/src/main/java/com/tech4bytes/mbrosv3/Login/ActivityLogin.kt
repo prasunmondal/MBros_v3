@@ -28,6 +28,7 @@ import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.UserRoleUtils
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.AppUsers.RolesUtils
+import com.tech4bytes.mbrosv3.BuildConfig
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.DueShow
 import com.tech4bytes.mbrosv3.CustomerAddTransactionActivity
@@ -172,9 +173,8 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     private fun updateAppVerOnUI() {
-        // TODO: 09/2024
-//        findViewById<TextView>(R.id.app_ver_label).text =
-//            "App Version: ${BuildConfig.lastGitCommitHash} (${BuildConfig.lastGitCommitDate})"
+        findViewById<TextView>(R.id.app_ver_label).text =
+            "App Version: ${BuildConfig.lastGitCommitHash} (${BuildConfig.lastGitCommitDate})"
     }
 
     private fun getRoleAndActivityMapping(role: ActivityAuthEnums): (() -> Unit)? {

@@ -81,6 +81,7 @@ class DataFetchingInfo {
                     executingMethods.add(AppConstantsUtil::fetchAll, {AppConstantsUtil.fetchAll().queue() })
                 }
                 ActivityAuthEnums.SMS_ORDERING -> {
+                    executingMethods.add(SingleAttributedDataUtils::fetchAll, {SingleAttributedDataUtils.fetchAll().queue() })
                     executingMethods.add(SMSOrderModelUtil::fetchAll, {SMSOrderModelUtil.fetchAll().queue() })
                     executingMethods.add(CustomerKYC::fetchAll, {CustomerKYC.fetchAll().queue() })
                     executingMethods.add(AppConstantsUtil::fetchAll, {AppConstantsUtil.fetchAll().queue() })

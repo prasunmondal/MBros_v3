@@ -37,6 +37,7 @@ class SMSOrdering : AppCompatActivity() {
 
     var orders = mutableListOf<SMSOrderModel>()
     var smsToProcess: String = ""
+    var listViews: MutableMap<String, View> = mutableMapOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +57,8 @@ class SMSOrdering : AppCompatActivity() {
             populateCustomerListDropdown()
             setUpListeners()
             showSMS()
+            fetchFromServer()
+            showEntries()
             processSMS()
             showTotal()
         }.start()
@@ -74,14 +77,10 @@ class SMSOrdering : AppCompatActivity() {
 
     private fun setUpListeners() {
         findViewById<EditText>(R.id.smsorder_avg_wt1).doOnTextChanged { text, start, before, count ->
-            processSMS()
-            showEntries()
-            updateTotal()
+            refreshEntries()
         }
         findViewById<EditText>(R.id.smsorder_avg_wt2).doOnTextChanged { text, start, before, count ->
-            processSMS()
-            showEntries()
-            updateTotal()
+            refreshEntries()
         }
     }
 
@@ -113,8 +112,8 @@ class SMSOrdering : AppCompatActivity() {
     }
 
     private fun processSMS() {
-        val valueStr = smsToProcess
-//        val valueStr = "3+5+7+8+9+9+6+7+8+8+7"
+//        val valueStr = smsToProcess
+        val valueStr = "3+5+7+8+9+9+6+7+8+8+7"
         val valueArray = valueStr.split("+")
         val namesArray = AppConstants.get(AppConstants.SMS_ORDER_SEQUENCE).split(",")
         val minSize = Math.min(valueArray.size, namesArray.size)
@@ -142,6 +141,11 @@ class SMSOrdering : AppCompatActivity() {
                 orders.add(SMSOrderModel(System.currentTimeMillis().toString(), namesArray[j].trim(), valueArray[j].trim().toInt(), calculatedPcDouble, finalizedPc1))
             }
         }
+        populateCustomerListDropdown()
+    }
+
+    private fun fetchFromServer() {
+        orders = SMSOrderModelUtil.fetchAll().execute() as MutableList<SMSOrderModel>
         populateCustomerListDropdown()
     }
 
@@ -184,51 +188,47 @@ class SMSOrdering : AppCompatActivity() {
     }
 
     private fun showEntries() {
-        val orderListContainer = findViewById<LinearLayout>(R.id.smsorders_order_list_view_container)
-        orderListContainer.removeAllViews()
-        orders = Sorter.sortByNameList(orders, SMSOrderModel::name) as MutableList<SMSOrderModel>
-        for (j in 0 until orders.size) {
-            runOnUiThread {
-                val balance = CustomerDueData.getBalance(orders[j].name)
-                val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_list_fragments, null)
-                entry.findViewById<TextView>(R.id.smsorder_listEntry_calculated_pc).text = orders[j].calculatedPc.toString()
+        runOnUiThread {
+            val orderListContainer =
+                findViewById<LinearLayout>(R.id.smsorders_order_list_view_container)
+            orderListContainer.removeAllViews()
+            orders =
+                Sorter.sortByNameList(orders, SMSOrderModel::name) as MutableList<SMSOrderModel>
+            for (j in 0 until orders.size) {
+                runOnUiThread {
+                    val balance = CustomerDueData.getBalance(orders[j].name)
+                    val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_list_fragments, null)
+                    val finalizedPcView = entry.findViewById<EditText>(R.id.smsorder_listEntry_pc)
+                    val finalizedKgView = entry.findViewById<EditText>(R.id.smsorder_list_finalized_kg)
 
-                val finalizedPcView = entry.findViewById<EditText>(R.id.smsorder_listEntry_pc)
-                val finalizedKgView = entry.findViewById<EditText>(R.id.smsorder_list_finalized_kg)
-                finalizedPcView.hint = orders[j].orderedPc.toString()
-                finalizedKgView.hint = orders[j].orderedKg.toString()
-                showSuggestions(entry, orders[j])
+                    if(orders[j].orderedPc > 0)
+                        finalizedPcView.setText(orders[j].orderedPc.toString())
+                    if(orders[j].orderedKg > 0)
+                        finalizedKgView.setText(orders[j].orderedKg.toString())
+                    refreshHints(entry, orders[j])
 
-                if(orders[j].orderedPc > 0) {
-                    finalizedPcView.setText(orders[j].orderedPc.toString())
-                } else {
-                    finalizedPcView.setText("")
+                    finalizedPcView.doOnTextChanged { text, start, before, count ->
+                        orders[j].orderedPc =
+                            NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedPcView))
+                        refreshHints(entry, orders[j])
+                        updateTotal()
+                    }
+
+                    finalizedKgView.doOnTextChanged { text, start, before, count ->
+                        orders[j].orderedKg =
+                            NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedKgView))
+                        refreshHints(entry, orders[j])
+                        updateTotal()
+                    }
+
+                    entry.findViewById<TextView>(R.id.smsorder_listEntry_number).text =
+                        orders[j].name
+                    entry.findViewById<TextView>(R.id.smsorder_listEntry_amount).text = "$balance"
+                    orderListContainer.addView(entry)
+                    listViews[orders[j].name] = entry
                 }
-
-                if(orders[j].orderedKg > 0) {
-                    finalizedKgView.setText(orders[j].orderedKg.toString())
-                } else {
-                    finalizedKgView.setText("")
-                }
-
-
-                finalizedPcView.doOnTextChanged { text, start, before, count ->
-                    orders[j].orderedPc = NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedPcView))
-                    showSuggestions(entry, orders[j])
-                    updateTotal()
-                }
-
-                finalizedKgView.doOnTextChanged { text, start, before, count ->
-                    orders[j].orderedKg = NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedKgView))
-                    showSuggestions(entry, orders[j])
-                    updateTotal()
-                }
-
-//                entry.findViewById<TextView>(R.id.smsorder_list_finalized_kg).text = orders[j].orderedKg.toString()
-                entry.findViewById<TextView>(R.id.smsorder_listEntry_number).text = orders[j].name
-                entry.findViewById<TextView>(R.id.smsorder_listEntry_amount).text = "$balance"
-                orderListContainer.addView(entry)
             }
+            showTotal()
         }
     }
 
@@ -255,6 +255,7 @@ class SMSOrdering : AppCompatActivity() {
 
         val totalPcsField = totalEntryView?.findViewById<EditText>(R.id.smsorder_listEntry_pc)
         val totalKgsField = totalEntryView?.findViewById<EditText>(R.id.smsorder_list_finalized_kg)
+
         totalPcsField?.setText(totalPc.toString())
         totalPcsField?.setTextColor(ContextCompat.getColor(this, androidx.appcompat.R.color.material_blue_grey_800))
         totalPcsField?.setTypeface(null, Typeface.BOLD)
@@ -263,26 +264,36 @@ class SMSOrdering : AppCompatActivity() {
         totalKgsField?.setTextColor(ContextCompat.getColor(this, androidx.appcompat.R.color.material_blue_grey_800))
         totalKgsField?.setTypeface(null, Typeface.BOLD)
 
-//        totalEntryView?.findViewById<EditText>(R.id.smsorder_listEntry_date)?.text = "$totalKg"
         totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_number)?.text = "TOTAL"
         totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_amount)?.text = ""
-
-        showSuggestions(totalEntryView!!, null)
     }
 
-    fun showSuggestions(entry: View, order: SMSOrderModel?) {
-        val estimatedKgView1 = entry.findViewById<TextView>(R.id.smsorder_listEntry_approx_kg)
-        val estimatedkg1: Double = getAvgWt1() * getPc(entry)
-        estimatedKgView1.text = NumberUtils.roundOff3places(estimatedkg1).toString()
+    fun refreshHints(entry: View, order: SMSOrderModel?) {
+        val estimatedPcsHintView1 = entry.findViewById<TextView>(R.id.smsorder_listEntry_calculated_pc)
+        val estimatedKgsHintView1 = entry.findViewById<TextView>(R.id.smsorder_listEntry_approx_kg)
+        val estimatedPcsTextView = entry.findViewById<TextView>(R.id.smsorder_listEntry_pc)
+        if(getAvgWt1() > 0.0) {
+            val estimatedPc1: Double = NumberUtils.getDoubleOrZero((getEntryKg(entry) / getAvgWt1()).toString())
+            val estimatedkg1: Double = NumberUtils.getDoubleOrZero((getAvgWt1() * getPc(entry)).toString())
+            estimatedPcsHintView1.text = String.format("%.1f", estimatedPc1)
+            estimatedKgsHintView1.text = String.format("%.1f", estimatedkg1)
+            estimatedPcsTextView.hint = String.format("%.1f", estimatedPc1)
+        } else {
+            estimatedPcsHintView1.text = ""
+            estimatedKgsHintView1.text = ""
+            estimatedPcsTextView.hint = "0"
+        }
 
-        val estimatedKgView2 = entry.findViewById<TextView>(R.id.smsorder_listEntry_approx_kg2)
-        val estimatedkg2: Double = NumberUtils.getDoubleOrZero((getAvgWt2() * getPc(entry)).toString())
-        estimatedKgView2.text = String.format("%.1f", estimatedkg2)
-
-        if(order != null) {
-            val estimatedPcView2 = entry.findViewById<TextView>(R.id.smsorder_listEntry_approx_pc2)
-            val estimatedPc2: Double = NumberUtils.getDoubleOrZero((order.orderedKg / getAvgWt2()).toString())
-            estimatedPcView2.text = String.format("%.1f", estimatedPc2)
+        val estimatedPcsHintView2 = entry.findViewById<TextView>(R.id.smsorder_listEntry_approx_pc2)
+        val estimatedKgsHintView2 = entry.findViewById<TextView>(R.id.smsorder_listEntry_approx_kg2)
+        if(getAvgWt2() > 0.0) {
+            val estimatedPc2: Double = NumberUtils.getDoubleOrZero((getEntryKg(entry) / getAvgWt2()).toString())
+            val estimatedkg2: Double = NumberUtils.getDoubleOrZero((getAvgWt2() * getPc(entry)).toString())
+            estimatedPcsHintView2.text = String.format("%.1f", estimatedPc2)
+            estimatedKgsHintView2.text = String.format("%.1f", estimatedkg2)
+        } else {
+            estimatedPcsHintView2.text = ""
+            estimatedKgsHintView2.text = ""
         }
     }
 
@@ -296,6 +307,10 @@ class SMSOrdering : AppCompatActivity() {
 
     fun getPc(entry: View): Int {
         return NumberUtils.getIntOrZero(UIUtils.getTextOrHint(entry.findViewById(R.id.smsorder_listEntry_pc)))
+    }
+
+    fun getEntryKg(entry: View): Int {
+        return NumberUtils.getIntOrZero(UIUtils.getTextOrHint(entry.findViewById(R.id.smsorder_list_finalized_kg)))
     }
 
     override fun onBackPressed() {
@@ -328,6 +343,15 @@ class SMSOrdering : AppCompatActivity() {
         }.start()
     }
 
+    fun refreshEntries() {
+        listViews.forEach {
+            val orderObj = orders.stream()
+                .filter { person -> person.name.equals(it.key) }
+                .findFirst().get()
+            refreshHints(it.value, orderObj)
+        }
+        updateTotal()
+    }
     fun onClickToggleSMSView(view: View) {
         val c = findViewById<ScrollView>(R.id.smsorders_sms_view_scroll_container)
         val b = findViewById<TextView>(R.id.smsordering_toggle_sms_text)

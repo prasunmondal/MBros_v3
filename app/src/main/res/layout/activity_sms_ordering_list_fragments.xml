@@ -53,11 +53,11 @@
                         android:id="@+id/smsorder_list_finalized_kg"
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
+                        android:hint="0"
                         android:inputType="number|numberDecimal"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="5dp"
-                        android:text="888"
+                        android:paddingLeft="10dp"
                         android:textColor="#B6BCE1"
+                        android:textColorHint="#938C8C"
                         android:textSize="14sp" />
 
                     <androidx.appcompat.widget.AppCompatTextView

@@ -43,7 +43,8 @@
             android:id="@+id/smsorders_sms_view_scroll_container"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:background="#6D000000">
+            android:background="#6D000000"
+            android:visibility="invisible">
 
             <LinearLayout
                 android:id="@+id/smsorders_sms_view_container"
@@ -68,7 +69,7 @@
             android:background="#000000"
             android:gravity="center"
             android:onClick="onClickToggleSMSView"
-            android:text="Hide SMS"
+            android:text="Show SMS"
             android:textColor="#D5D4D4" />
     </LinearLayout>
 

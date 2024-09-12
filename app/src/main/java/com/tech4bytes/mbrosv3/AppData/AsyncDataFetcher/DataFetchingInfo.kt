@@ -7,6 +7,7 @@ import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderUtils
+import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrderModelUtil
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerRecentData
 import com.tech4bytes.mbrosv3.ProjectConfig
@@ -80,6 +81,7 @@ class DataFetchingInfo {
                     executingMethods.add(AppConstantsUtil::fetchAll, {AppConstantsUtil.fetchAll().queue() })
                 }
                 ActivityAuthEnums.SMS_ORDERING -> {
+                    executingMethods.add(SMSOrderModelUtil::fetchAll, {SMSOrderModelUtil.fetchAll().queue() })
                     executingMethods.add(CustomerKYC::fetchAll, {CustomerKYC.fetchAll().queue() })
                     executingMethods.add(AppConstantsUtil::fetchAll, {AppConstantsUtil.fetchAll().queue() })
                     executingMethods.add(DeliverToCustomerDataHandler::fetchAll, {DeliverToCustomerDataHandler.fetchAll().queue() })

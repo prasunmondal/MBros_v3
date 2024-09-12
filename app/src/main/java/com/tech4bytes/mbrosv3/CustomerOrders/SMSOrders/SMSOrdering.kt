@@ -103,7 +103,7 @@ class SMSOrdering : AppCompatActivity() {
                 entry.setOnClickListener {
                     smsToProcess = sms.body
                     processSMS()
-                    showEntries()
+                    showEntries(true)
                     onClickToggleSMSView(entry)
                 }
             }
@@ -142,7 +142,7 @@ class SMSOrdering : AppCompatActivity() {
         if (orders.none { it.name == name }) {
             // if the name is not already present in the list
             orders.add(SMSOrderModel(System.currentTimeMillis().toString(), name, 0, "", 0))
-            showEntries()
+            showEntries(true)
         }
     }
 
@@ -168,7 +168,6 @@ class SMSOrdering : AppCompatActivity() {
             }
             uiView.setOnItemClickListener { adapterView, view, i, l ->
                 addCustomer(uiView.text.toString())
-                showEntries()
                 populateCustomerListDropdown()
                 uiView.setText("")
                 uiView.hint = "+Customer"
@@ -176,19 +175,18 @@ class SMSOrdering : AppCompatActivity() {
         }
     }
 
-    private fun showEntries() {
+    private fun showEntries(clearPreviousEntries: Boolean = false) {
         runOnUiThread {
             val orderListContainer =
                 findViewById<LinearLayout>(R.id.smsorders_order_list_view_container)
-//            orderListContainer.removeAllViews()
-            orders =
-                Sorter.sortByNameList(orders, SMSOrderModel::name) as MutableList<SMSOrderModel>
+            if(clearPreviousEntries)
+                orderListContainer.removeAllViews()
+            orders = Sorter.sortByNameList(orders, SMSOrderModel::name) as MutableList<SMSOrderModel>
             for (j in 0 until orders.size) {
                     val balance = CustomerDueData.getBalance(orders[j].name)
                     val entry = layoutInflater.inflate(R.layout.activity_sms_ordering_list_fragments, null)
                     val finalizedPcView = entry.findViewById<EditText>(R.id.smsorder_listEntry_pc)
                     val finalizedKgView = entry.findViewById<EditText>(R.id.smsorder_list_finalized_kg)
-
 
                     finalizedPcView.setText(orders[j].appPc)
                     if(orders[j].orderedKg > 0)
@@ -196,8 +194,7 @@ class SMSOrdering : AppCompatActivity() {
                     refreshHints(entry, orders[j])
 
                     finalizedPcView.doOnTextChanged { text, start, before, count ->
-                        orders[j].finalPc =
-                            NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedPcView))
+                        orders[j].finalPc = NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedPcView))
                         orders[j].appPc = if(NumberUtils.getIntOrZero(finalizedPcView.text.toString()) == 0) "" else finalizedPcView.text.toString()
                         refreshHints(entry, orders[j])
                         updateTotal()

@@ -122,13 +122,14 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="40dp"
             android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/smsorder_avg_wt1"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".15"
                 android:hint="wt1"
                 android:inputType="numberDecimal"
                 android:paddingHorizontal="10dp"
@@ -139,8 +140,9 @@
 
             <EditText
                 android:id="@+id/smsorder_avg_wt2"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".15"
                 android:hint="wt2"
                 android:inputType="numberDecimal"
                 android:paddingHorizontal="10dp"
@@ -151,16 +153,17 @@
             <AutoCompleteTextView
                 android:id="@+id/smsorder_customer_picker"
                 android:layout_width="150dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight=".45"
                 android:hint="+Customer"
                 android:paddingHorizontal="10dp"
                 android:textColorHint="#494848" />
 
             <AutoCompleteTextView
                 android:id="@+id/smsorder_inactive_customers_picker"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_weight=".5"
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".25"
                 android:hint="+Others"
                 android:paddingHorizontal="10dp"
                 android:textColorHint="#494848" />

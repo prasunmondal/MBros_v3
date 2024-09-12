@@ -10,8 +10,8 @@ data class SMSOrderModel(
     var id: String,
     var name: String,
     var orderedKg: Int,
-    var calculatedPc: Double,
-    var orderedPc: Int
+    var appPc: String,
+    var finalPc: Int
 ): Serializable
 object SMSOrderModelUtil: GSheetSerialized<SMSOrderModel> (
     context = ContextWrapper(AppContexts.get()),

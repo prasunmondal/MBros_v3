@@ -173,22 +173,30 @@ class SMSOrdering : AppCompatActivity() {
     }
 
     private fun populateCustomerListDropdown() {
-        val sortedList = ListUtils.getAllPossibleValuesList(
-            CustomerKYC.fetchAll().execute(),
-            CustomerKYCModel::nameEng
-        ).toList()
+        val activeCustomers = CustomerKYC.fetchAll().execute().filter { it.isActiveCustomer.toBoolean() }
+        val inActiveCustomers = CustomerKYC.fetchAll().execute().filter { !it.isActiveCustomer.toBoolean() }
+
+        val sortedActiveList = ListUtils.getAllPossibleValuesList(
+            activeCustomers, CustomerKYCModel::nameEng).toList()
+
+        val sortedInActiveList = ListUtils.getAllPossibleValuesList(
+            inActiveCustomers, CustomerKYCModel::nameEng).toList()
 
         // remove already showing names from dropdown
-        val alreadyInUI: List<String> = orders.stream()
-            .map(SMSOrderModel::name)
-            .collect(Collectors.toList())
-        val listToShow = CollectionUtils.subtract(sortedList, alreadyInUI).toList()
-        val adapter: ArrayAdapter<String> =
-            ArrayAdapter<String>(this, R.layout.template_dropdown_entry, listToShow)
+        val alreadyInUI: List<String> = orders.stream().map(SMSOrderModel::name).collect(Collectors.toList())
+
+        val listOfActiveCustomersToShow = CollectionUtils.subtract(sortedActiveList, alreadyInUI).toList()
+        val listOfInActiveCustomersToShow = CollectionUtils.subtract(sortedInActiveList, alreadyInUI).toList()
+
+        val adapterActiveCustomers: ArrayAdapter<String> =
+            ArrayAdapter<String>(this, R.layout.template_dropdown_entry, listOfActiveCustomersToShow)
+
+        val adapterInActiveCustomers: ArrayAdapter<String> =
+            ArrayAdapter<String>(this, R.layout.template_dropdown_entry, listOfInActiveCustomersToShow)
 
         runOnUiThread {
             val uiView = findViewById<AutoCompleteTextView>(R.id.smsorder_customer_picker)
-            uiView.setAdapter(adapter)
+            uiView.setAdapter(adapterActiveCustomers)
             uiView.threshold = 0
             uiView.setText("")
             uiView.setOnTouchListener { _, _ ->
@@ -201,6 +209,24 @@ class SMSOrdering : AppCompatActivity() {
                 populateCustomerListDropdown()
                 uiView.setText("")
                 uiView.hint = "+Customer"
+            }
+        }
+
+        runOnUiThread {
+            val uiView = findViewById<AutoCompleteTextView>(R.id.smsorder_inactive_customers_picker)
+            uiView.setAdapter(adapterInActiveCustomers)
+            uiView.threshold = 0
+            uiView.setText("")
+            uiView.setOnTouchListener { _, _ ->
+                uiView.showDropDown()
+                uiView.requestFocus()
+                false
+            }
+            uiView.setOnItemClickListener { adapterView, view, i, l ->
+                addCustomer(uiView.text.toString())
+                populateCustomerListDropdown()
+                uiView.setText("")
+                uiView.hint = "+Others"
             }
         }
     }
@@ -280,9 +306,11 @@ class SMSOrdering : AppCompatActivity() {
             .setPositiveButton("Confirm") { dialog, id ->
                 // CONFIRM
                 orders.remove(order)
+                listViews.remove(order.name)
                 orderListContainer.removeView(entry)
                 refreshHints(entry, order)
                 updateTotal()
+                populateCustomerListDropdown()
             }
             .setNegativeButton("Cancel") { dialog, id ->
                 // CANCEL
@@ -300,6 +328,7 @@ class SMSOrdering : AppCompatActivity() {
                 listViews.clear()
                 orderListContainer.removeAllViews()
                 updateTotal()
+                populateCustomerListDropdown()
             }
             .setNegativeButton("Cancel") { dialog, id ->
                 // CANCEL

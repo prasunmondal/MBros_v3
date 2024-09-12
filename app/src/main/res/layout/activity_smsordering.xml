@@ -127,10 +127,9 @@
 
             <EditText
                 android:id="@+id/smsorder_avg_wt1"
-                android:layout_width="wrap_content"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Avg Wt in KG"
+                android:hint="wt1"
                 android:inputType="numberDecimal"
                 android:paddingHorizontal="10dp"
                 android:textColor="@color/smso_avg1_grp_text_color"
@@ -140,10 +139,9 @@
 
             <EditText
                 android:id="@+id/smsorder_avg_wt2"
-                android:layout_width="wrap_content"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Avg Wt 2"
+                android:hint="wt2"
                 android:inputType="numberDecimal"
                 android:paddingHorizontal="10dp"
                 android:textColor="@color/smso_avg2_grp_text_color"
@@ -154,8 +152,16 @@
                 android:id="@+id/smsorder_customer_picker"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:hint="+Customer"
+                android:paddingHorizontal="10dp"
+                android:textColorHint="#494848" />
+
+            <AutoCompleteTextView
+                android:id="@+id/smsorder_inactive_customers_picker"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:hint="+Others"
                 android:paddingHorizontal="10dp"
                 android:textColorHint="#494848" />
 

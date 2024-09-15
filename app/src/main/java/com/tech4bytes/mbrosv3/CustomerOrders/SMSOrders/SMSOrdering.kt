@@ -3,6 +3,7 @@ package com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Typeface
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -64,7 +65,14 @@ class SMSOrdering : AppCompatActivity() {
             showEntries()
 //            processSMS()
             showTotal()
+            markUIReadyToUse()
+
         }.start()
+    }
+
+    private fun markUIReadyToUse() {
+        val labelsContainer = findViewById<LinearLayout>(R.id.smso_wait_labels_container)
+        labelsContainer.visibility = View.GONE
     }
 
     fun setUpUI() {

@@ -204,6 +204,32 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/smso_wait_labels_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="30dp">
+
+                <TextView
+                    android:id="@+id/smso_wait_label1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Processing Data."
+                    android:textColor="#74FFFFFF"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/smso_wait_label2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Please Wait..."
+                    android:textColor="#74FFFFFF"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/smsorders_order_list_view_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

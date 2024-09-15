@@ -41,9 +41,9 @@
 
                     <EditText
                         android:id="@+id/smsorder_listEntry_pc"
-                        android:layout_width="40dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:ems="10"
+                        android:layout_weight=".1"
                         android:inputType="number"
                         android:textColor="#EF8886"
                         android:textColorHint="#938C8C"
@@ -51,8 +51,9 @@
 
                     <EditText
                         android:id="@+id/smsorder_list_finalized_kg"
-                        android:layout_width="50dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight=".1"
                         android:hint="0"
                         android:inputType="number|numberDecimal"
                         android:paddingLeft="10dp"
@@ -62,10 +63,11 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/smsorder_listEntry_number"
-                        android:layout_width="100dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="5dp"
+                        android:layout_weight=".35"
                         android:gravity="center_vertical"
                         android:text="Name"
                         android:textColor="#B6BCE1"
@@ -73,11 +75,11 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/smsorder_listEntry_amount"
-                        android:layout_width="180dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="5dp"
-                        android:layout_weight="1"
+                        android:layout_weight=".35"
                         android:gravity="center_vertical"
                         android:text="Balance"
                         android:textColor="#EAA5C9"
@@ -87,7 +89,6 @@
                         android:id="@+id/smsorder_listEntry_remove"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:padding="3dp"
                         app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 

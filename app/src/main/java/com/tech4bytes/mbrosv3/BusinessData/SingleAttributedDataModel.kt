@@ -36,7 +36,5 @@ data class SingleAttributedDataModel(
     var numberOfPeopleTakingSalary: String = "",
     var salaryDivision: String = "",
     var police: String = "",
-    var police_breakdown: String = "",
-    var loadAvgWt1: String = "",
-    var loadAvgWt2: String = ""
+    var police_breakdown: String = ""
 ) : java.io.Serializable

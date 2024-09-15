@@ -156,7 +156,7 @@ class SMSOrdering : AppCompatActivity() {
                         namesArray[j].trim(),
                         valueArray[j].trim().toInt(),
                         "",
-                        finalPc, finalPc
+                        finalPc, finalPc, SMSOrderModelUtil.getAvgWt1(), SMSOrderModelUtil.getAvgWt2()
                     )
                 )
             }
@@ -166,10 +166,9 @@ class SMSOrdering : AppCompatActivity() {
 
     private fun fetchFromServer() {
         orders = SMSOrderModelUtil.fetchAll().execute() as MutableList<SMSOrderModel>
-        val SingleAttrObj = SingleAttributedDataUtils.getRecords()
         runOnUiThread {
-            findViewById<EditText>(R.id.smsorder_avg_wt1).setText(SingleAttrObj.loadAvgWt1)
-            findViewById<EditText>(R.id.smsorder_avg_wt2).setText(SingleAttrObj.loadAvgWt2)
+            findViewById<EditText>(R.id.smsorder_avg_wt1).setText(SMSOrderModelUtil.getAvgWt1())
+            findViewById<EditText>(R.id.smsorder_avg_wt2).setText(SMSOrderModelUtil.getAvgWt2())
         }
         populateCustomerListDropdown()
     }
@@ -177,7 +176,7 @@ class SMSOrdering : AppCompatActivity() {
     private fun addCustomer(name: String) {
         if (orders.none { it.name == name }) {
             // if the name is not already present in the list
-            orders.add(SMSOrderModel(System.currentTimeMillis().toString(), name, 0, "", 0, 0))
+            orders.add(SMSOrderModel(System.currentTimeMillis().toString(), name, 0, "", 0, 0, SMSOrderModelUtil.getAvgWt1(), SMSOrderModelUtil.getAvgWt2()))
             showEntries(true)
         }
     }
@@ -440,9 +439,6 @@ class SMSOrdering : AppCompatActivity() {
 
     fun onClickSaveSMSOrdersBtn(view: View) {
         val saveBtn = view as Button
-        var singleAttrObj = SingleAttributedDataUtils.getRecords()
-        singleAttrObj.loadAvgWt1 = findViewById<EditText>(R.id.smsorder_avg_wt1).text.toString()
-        singleAttrObj.loadAvgWt2 = findViewById<EditText>(R.id.smsorder_avg_wt2).text.toString()
 
         Thread {
             runOnUiThread {
@@ -458,10 +454,10 @@ class SMSOrdering : AppCompatActivity() {
 
             orders.forEach {
                 it.orderedPc = it.finalPc
+                it.avgWt1 = findViewById<EditText>(R.id.smsorder_avg_wt1).text.toString()
+                it.avgWt2 = findViewById<EditText>(R.id.smsorder_avg_wt2).text.toString()
             }
-            SMSOrderModelUtil.save(orders).queue()
-            SingleAttributedDataUtils.save(singleAttrObj).queue()
-            GScript.execute()
+            SMSOrderModelUtil.save(orders).execute()
 
             runOnUiThread {
                 saveBtn.isEnabled = true

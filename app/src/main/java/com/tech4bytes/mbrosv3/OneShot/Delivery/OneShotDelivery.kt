@@ -349,7 +349,6 @@ class OneShotDelivery : AppCompatActivity() {
 
             gatherSingleAttributedData()
 
-            DeliverToCustomerDataHandler.deleteAll().queue()
             SingleAttributedDataUtils.insert(SingleAttributedDataUtils.getRecords()).queue()
             saveDeliveryData()
             refuelUIObj.saveFuelData()
@@ -401,24 +400,11 @@ class OneShotDelivery : AppCompatActivity() {
 
         val filteredListToSave = filterListToGetDataToSave(allDeliveredRecords)
 
-        // TODO - 09-2024
-//        // save locally
-//        filteredListToSave.forEach {
-//            if(it.value.date.isEmpty()) {
-//                it.value.date = DateUtils.getDateInFormat("dd/MM/yyyy")
-//                it.value.customerAccount = it.value.name
-//            }
-//            DeliverToCustomerDataHandler.saveToLocal(it.value)
-//        }
-
-        // save to server
         filteredListToSave.forEach {
             it.value.deliveryStatus = "DELIVERED"
-
-
         }
         runOnUiThread { setSaveProgressBar(eachStep) }
-        DeliverToCustomerDataHandler.insert(filteredListToSave.values.toList()).queue()
+        DeliverToCustomerDataHandler.save(filteredListToSave.values.toList()).queue()
         runOnUiThread { setSaveProgressBar(100) }
     }
 

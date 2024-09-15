@@ -414,14 +414,11 @@ class OneShotDelivery : AppCompatActivity() {
         // save to server
         filteredListToSave.forEach {
             it.value.deliveryStatus = "DELIVERED"
-            DeliverToCustomerDataHandler.insert(it.value).queue()
-            if (eachStep + 10 < 100) {
-                eachStep += 10
-            } else {
-                eachStep = 100
-            }
-            runOnUiThread { setSaveProgressBar(eachStep) }
+
+
         }
+        runOnUiThread { setSaveProgressBar(eachStep) }
+        DeliverToCustomerDataHandler.insert(filteredListToSave.values.toList()).queue()
         runOnUiThread { setSaveProgressBar(100) }
     }
 

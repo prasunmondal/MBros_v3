@@ -3,7 +3,6 @@ package com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Typeface
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -13,10 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.prasunmondal.dev.libs.contexts.AppContexts
-import com.prasunmondal.dev.libs.gsheet.clients.GScript
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.BusinessLogic.Sorter
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel

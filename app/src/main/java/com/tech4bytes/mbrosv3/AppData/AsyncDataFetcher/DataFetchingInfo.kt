@@ -10,7 +10,6 @@ import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrderModelUtil
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerRecentData
-import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Sms.OneShotSMS.OSMS
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe

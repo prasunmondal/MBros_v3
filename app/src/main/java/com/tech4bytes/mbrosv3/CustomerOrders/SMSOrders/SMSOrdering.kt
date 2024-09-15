@@ -71,8 +71,10 @@ class SMSOrdering : AppCompatActivity() {
     }
 
     private fun markUIReadyToUse() {
-        val labelsContainer = findViewById<LinearLayout>(R.id.smso_wait_labels_container)
-        labelsContainer.visibility = View.GONE
+        runOnUiThread {
+            val labelsContainer = findViewById<LinearLayout>(R.id.smso_wait_labels_container)
+            labelsContainer.visibility = View.GONE
+        }
     }
 
     fun setUpUI() {

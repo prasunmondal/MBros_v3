@@ -146,7 +146,7 @@ class SMSOrdering : AppCompatActivity() {
                         namesArray[j].trim(),
                         valueArray[j].trim().toInt(),
                         "",
-                        finalPc
+                        finalPc, finalPc
                     )
                 )
             }
@@ -167,7 +167,7 @@ class SMSOrdering : AppCompatActivity() {
     private fun addCustomer(name: String) {
         if (orders.none { it.name == name }) {
             // if the name is not already present in the list
-            orders.add(SMSOrderModel(System.currentTimeMillis().toString(), name, 0, "", 0))
+            orders.add(SMSOrderModel(System.currentTimeMillis().toString(), name, 0, "", 0, 0))
             showEntries(true)
         }
     }
@@ -444,6 +444,10 @@ class SMSOrdering : AppCompatActivity() {
 
             runOnUiThread {
                 saveBtn.text = "Saving ${orders.size} reecords)"
+            }
+
+            orders.forEach {
+                it.orderedPc = it.finalPc
             }
             SMSOrderModelUtil.save(orders).queue()
             SingleAttributedDataUtils.save(singleAttrObj).queue()

@@ -96,11 +96,13 @@ object CustomerDataUtils : GSheetSerialized<CustomerData>(
         deliveredData.forEach {
             actualDeliveredKg += NumberUtils.getDoubleOrZero(it.deliveredKg)
         }
+
+        val finalizeDeliveryObjs = mutableListOf<CustomerData>()
         deliveredData.forEach {
             it.timestamp = DateUtils.getDateInFormat(Date(it.id.toLong()), "M/d/yyyy")
-            val record = CustomerData(it, actualDeliveredKg, totalProfit)
-            CustomerRecentData.insert(record).queue()
+            finalizeDeliveryObjs.add(CustomerData(it, actualDeliveredKg, totalProfit))
         }
+        CustomerRecentData.insert(finalizeDeliveryObjs).queue()
     }
 
     fun getCustomerDefaultRate(name: String): Int {

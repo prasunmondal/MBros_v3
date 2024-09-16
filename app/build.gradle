@@ -41,18 +41,17 @@ android {
         targetSdk 34
         versionCode 1
         versionName "${getLastGitCommitDate()} (${getLastGitHash()})"
-//        buildConfigField "String", "lastGitCommitHash", "\"${getLastGitHash()}\""
-//        buildConfigField "String", "lastGitCommitDate", "\"${getLastGitCommitDate()}\""
-//        setProperty("archivesBaseName", "MBros-${getLastGitHash()}-${getDateWithoutTime()}")
+        buildConfigField "String", "lastGitCommitHash", "\"${getLastGitHash()}\""
+        buildConfigField "String", "lastGitCommitDate", "\"${getLastGitCommitDate()}\""
+        setProperty("archivesBaseName", "MBros-${getLastGitHash()}-${getDateWithoutTime()}")
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         debug {
-            buildConfigField "String", "lastGitCommitHash", "\"${getLastGitHash()}\""
-            buildConfigField "String", "lastGitCommitDate", "\"${getLastGitCommitDate()}\""
-            setProperty("archivesBaseName", "MBros-${getLastGitHash()}-${getDateWithoutTime()}")
+//            buildConfigField "String", "lastGitCommitHash", "\"${getLastGitHash()}\""
+//            buildConfigField "String", "lastGitCommitDate", "\"${getLastGitCommitDate()}\""
             buildConfigField "String", "URL_SEARCH", "\"https://dev-search.example.com\""
         }
         release {

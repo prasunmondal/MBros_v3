@@ -259,17 +259,18 @@ class SMSOrdering : AppCompatActivity() {
                 refreshHints(entry, order)
 
                 finalizedPcView.doOnTextChanged { text, start, before, count ->
+                    refreshHints(entry, order)
                     order.finalPc = NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedPcView))
                     order.appPc =
                         if (NumberUtils.getIntOrZero(finalizedPcView.text.toString()) == 0) "" else finalizedPcView.text.toString()
-                    refreshHints(entry, order)
                     updateTotal()
                 }
 
                 finalizedKgView.doOnTextChanged { text, start, before, count ->
+                    refreshHints(entry, order)
                     order.orderedKg =
                         NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedKgView))
-                    refreshHints(entry, order)
+                    order.finalPc = NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedPcView))
                     updateTotal()
                 }
 

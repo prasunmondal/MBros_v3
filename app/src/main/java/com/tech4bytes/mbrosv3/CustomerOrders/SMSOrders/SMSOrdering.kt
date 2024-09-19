@@ -60,12 +60,9 @@ class SMSOrdering : AppCompatActivity() {
             populateCustomerListDropdown()
             setUpListeners()
             showSMS()
-
             showEntries()
-//            processSMS()
             showTotal()
             markUIReadyToUse()
-
         }.start()
     }
 

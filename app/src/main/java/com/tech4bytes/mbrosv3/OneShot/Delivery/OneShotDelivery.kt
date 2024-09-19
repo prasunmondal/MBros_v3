@@ -22,7 +22,7 @@ import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerCalculations
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
-import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderUtils
+import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrderModelUtil
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
@@ -157,7 +157,7 @@ class OneShotDelivery : AppCompatActivity() {
     @RequiresApi(34)
     private fun populateDeliveryMap() {
         deliverRecords = mutableMapOf()
-        val listOfOrderedCustomers = GetCustomerOrderUtils.getListOfOrderedCustomers()
+        val listOfOrderedCustomers = SMSOrderModelUtil.fetchAll().execute()
         listOfOrderedCustomers.forEach {
             var customerAccount = CustomerKYC.getByName(it.name)!!.referredBy
             if (customerAccount.isEmpty())
@@ -167,8 +167,8 @@ class OneShotDelivery : AppCompatActivity() {
                 id = "${System.currentTimeMillis()}",
                 timestamp = DateUtils.getCurrentTimestamp(),
                 name = it.name,
-                orderedPc = it.orderedPc,
-                orderedKg = it.orderedKg,
+                orderedPc = it.orderedPc.toString(),
+                orderedKg = it.orderedKg.toString(),
                 rate = "${CustomerDataUtils.getDeliveryRate(it.name)}",
                 prevDue = CustomerDueData.getLastFinalizedDue(it.name),
                 customerAccount = it.name,

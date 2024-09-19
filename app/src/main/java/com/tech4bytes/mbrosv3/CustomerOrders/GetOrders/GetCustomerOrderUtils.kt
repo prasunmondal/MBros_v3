@@ -5,6 +5,8 @@ import com.prasunmondal.dev.libs.gsheet.ContextWrapper
 import com.prasunmondal.dev.libs.gsheet.clients.GSheetSerialized
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
+import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrderModel
+import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrderModelUtil
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -88,9 +90,9 @@ object GetCustomerOrderUtils : GSheetSerialized<GetCustomerOrderModel>(
         }
     }
 
-    fun getListOfOrderedCustomers(): List<GetCustomerOrderModel> {
-        val list: MutableList<GetCustomerOrderModel> = mutableListOf()
-        val actualOrders = GetCustomerOrderUtils.fetchAll().execute()
+    fun getListOfOrderedCustomers(): List<SMSOrderModel> {
+        val list: MutableList<SMSOrderModel> = mutableListOf()
+        val actualOrders = SMSOrderModelUtil.fetchAll().execute()
         CustomerKYC.fetchAll().execute().forEach { masterList ->
             actualOrders.forEach { orderList ->
                 if (masterList.nameEng == orderList.name) {
@@ -101,8 +103,8 @@ object GetCustomerOrderUtils : GSheetSerialized<GetCustomerOrderModel>(
         return list
     }
 
-    fun getListOfUnOrderedCustomers(): List<GetCustomerOrderModel> {
-        val list: MutableList<GetCustomerOrderModel> = mutableListOf()
+    fun getListOfUnOrderedCustomers(): List<SMSOrderModel> {
+        val list: MutableList<SMSOrderModel> = mutableListOf()
         val actualOrders = fetchAll().execute()
         CustomerKYC.fetchAll().execute().forEach { masterList ->
             var isInOrderList = false
@@ -112,7 +114,7 @@ object GetCustomerOrderUtils : GSheetSerialized<GetCustomerOrderModel>(
                 }
             }
             if (!isInOrderList && masterList.isActiveCustomer.toBoolean()) {
-                list.add(GetCustomerOrderModel(name = masterList.nameEng))
+                list.add(SMSOrderModelUtil.createOrderObj(masterList.nameEng))
             }
         }
         return list

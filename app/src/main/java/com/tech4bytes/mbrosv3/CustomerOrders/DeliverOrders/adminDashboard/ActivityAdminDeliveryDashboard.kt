@@ -25,6 +25,7 @@ import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerCalculations
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderUtils
+import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrderModelUtil
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
@@ -258,7 +259,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     fun updateDeliveredInfo(useCache: Boolean) {
         val countersDelivered = DeliverToCustomerDataHandler.fetchAll(useCache).execute()
         val numberOfCustomersDelivered = countersDelivered.size
-        val totalNumberOfCustomers = GetCustomerOrderUtils.getNumberOfCustomersOrdered(useCache)
+        val totalNumberOfCustomers = SMSOrderModelUtil.fetchAll().execute().size
         val deliveredPc = DeliverToCustomerCalculations.getTotalPcDelivered()
         val deliveredKg = DeliverToCustomerCalculations.getTotalKgDelivered()
         val avgWt = deliveredKg / deliveredPc

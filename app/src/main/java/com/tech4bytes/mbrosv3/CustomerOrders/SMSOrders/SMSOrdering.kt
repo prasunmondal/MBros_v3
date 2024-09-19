@@ -38,6 +38,7 @@ class SMSOrdering : AppCompatActivity() {
     var orders = mutableListOf<SMSOrderModel>()
     var smsToProcess: String = ""
     var listViews: MutableMap<String, View> = mutableMapOf()
+    lateinit var latestBalances: MutableMap<String, Int>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +54,7 @@ class SMSOrdering : AppCompatActivity() {
         }.start()
 
         Thread {
+            latestBalances = CustomerDueData.getBalance()
             setUpUI()
             fetchFromServer()
             populateCustomerListDropdown()
@@ -261,7 +263,7 @@ class SMSOrdering : AppCompatActivity() {
             orders =
                 Sorter.sortByNameList(orders, SMSOrderModel::name) as MutableList<SMSOrderModel>
             orders.forEach { order ->
-                val balance = CustomerDueData.getBalance(order.name)
+                val balance = latestBalances[order.name]
                 val entry =
                     layoutInflater.inflate(R.layout.activity_sms_ordering_list_fragments, null)
                 val finalizedPcView = entry.findViewById<EditText>(R.id.smsorder_listEntry_pc)

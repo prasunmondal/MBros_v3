@@ -12,32 +12,34 @@ import androidx.appcompat.widget.AppCompatTextView
 import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.prasunmondal.dev.libs.gsheet.clients.GScript
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
+import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrderModel
+import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrderModelUtil
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 
 class OrdersMakeList : AppCompatActivity() {
 
-    lateinit var listOrders: List<GetCustomerOrderModel>
+    lateinit var listOrders: List<SMSOrderModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_orders_make_list)
         AppContexts.set(this)
 
-        listOrders = GetCustomerOrderUtils.fetchAll().execute()
+        listOrders = SMSOrderModelUtil.fetchAll().execute()
         showList()
     }
 
     private fun showList() {
         listOrders.forEach {
-            if ((it.orderedPc.isNotEmpty() && it.orderedPc.toInt() > 0) || (it.orderedKg.isNotEmpty() && it.orderedKg.toInt() > 0)) {
+            if ((it.orderedPc > 0) || it.orderedKg > 0) {
                 addEntry(it)
             }
         }
     }
 
-    private fun addEntry(order: GetCustomerOrderModel) {
+    private fun addEntry(order: SMSOrderModel) {
         val listContainer = findViewById<LinearLayout>(R.id.order_make_list_container)
         val layoutInflater = LayoutInflater.from(AppContexts.get())
         val entry = layoutInflater.inflate(R.layout.activity_orders_make_list_fragments, null)
@@ -47,8 +49,8 @@ class OrdersMakeList : AppCompatActivity() {
         val elementName = entry.findViewById<AppCompatTextView>(R.id.make_list_fragment_name)
         val elementDue = entry.findViewById<TextView>(R.id.make_list_fragment_due)
 
-        elementPc.text = getFinalPc(order)
-        elementKg.text = getFinalKg(order)
+        elementPc.text = order.finalPc.toString()
+        elementKg.text = order.orderedKg.toString()
         elementName.text = order.name
         elementDue.text = CustomerDueData.getBalance(order.name).toString()
 
@@ -85,8 +87,8 @@ class OrdersMakeList : AppCompatActivity() {
             var totalPc = 0
             var totalKg = 0
             GetCustomerOrderUtils.getListOfOrderedCustomers().forEach {
-                totalPc += NumberUtils.getIntOrZero(getFinalPc(it))
-                totalKg += NumberUtils.getIntOrZero(getFinalKg(it))
+                totalPc += it.finalPc
+                totalKg += it.orderedKg
             }
             metadataObj.estimatedLoadPc = totalPc.toString()
             metadataObj.estimatedLoadKg = totalKg.toString()

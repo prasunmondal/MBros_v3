@@ -23,6 +23,18 @@ object SMSOrderModelUtil: GSheetSerialized<SMSOrderModel> (
     tabName = "GetOrders",
     modelClass = SMSOrderModel::class.java
 ) {
+
+    fun createOrderObj(name: String): SMSOrderModel {
+        return SMSOrderModel(id = System.currentTimeMillis().toString(),
+        name = name,
+        orderedKg = 0,
+        appPc = "",
+        finalPc = 0,
+        orderedPc = 0,
+        avgWt1 = "0",
+            avgWt2 = "0")
+
+    }
     fun getOrder(name: String): SMSOrderModel? {
         val list = fetchAll().execute()
         return try {

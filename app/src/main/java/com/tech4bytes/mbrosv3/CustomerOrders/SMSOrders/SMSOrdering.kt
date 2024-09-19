@@ -189,7 +189,7 @@ class SMSOrdering : AppCompatActivity() {
             inActiveCustomers, CustomerKYCModel::nameEng).toList()
 
         // remove already showing names from dropdown
-        val alreadyInUI: List<String> = orders.stream().map(SMSOrderModel::name).collect(Collectors.toList())
+        val alreadyInUI: List<String> = alreadySelectedCustomers()
 
         val listOfActiveCustomersToShow = CollectionUtils.subtract(sortedActiveList, alreadyInUI).toList()
         val listOfInActiveCustomersToShow = CollectionUtils.subtract(sortedInActiveList, alreadyInUI).toList()
@@ -199,6 +199,9 @@ class SMSOrdering : AppCompatActivity() {
 
         val adapterInActiveCustomers: ArrayAdapter<String> =
             ArrayAdapter<String>(this, R.layout.template_dropdown_entry, listOfInActiveCustomersToShow)
+
+        val selectingActiveCustomers = mutableListOf<String>()
+        val selectingInactiveCustomers = mutableListOf<String>()
 
         runOnUiThread {
             val uiView = findViewById<AutoCompleteTextView>(R.id.smsorder_customer_picker)
@@ -210,11 +213,15 @@ class SMSOrdering : AppCompatActivity() {
                 uiView.requestFocus()
                 false
             }
-            uiView.setOnItemClickListener { adapterView, view, i, l ->
-                addCustomer(uiView.text.toString())
-                populateCustomerListDropdown()
+            uiView.setOnItemClickListener { _, _, _, _ ->
+                addCustomer(uiView.text.toString().trim())
                 uiView.setText("")
-                uiView.hint = "+Customer"
+                val remainingSuggestions = listOfActiveCustomersToShow.filterNot { it in alreadySelectedCustomers() }
+                val newAdapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, remainingSuggestions)
+                uiView.setAdapter(newAdapter)
+                uiView.post {
+                    uiView.showDropDown()
+                }
             }
         }
 
@@ -228,13 +235,21 @@ class SMSOrdering : AppCompatActivity() {
                 uiView.requestFocus()
                 false
             }
-            uiView.setOnItemClickListener { adapterView, view, i, l ->
-                addCustomer(uiView.text.toString())
-                populateCustomerListDropdown()
+            uiView.setOnItemClickListener { _, _, _, _ ->
+                addCustomer(uiView.text.toString().trim())
                 uiView.setText("")
-                uiView.hint = "+Others"
+                val remainingSuggestions = listOfInActiveCustomersToShow.filterNot { it in alreadySelectedCustomers() }
+                val newAdapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, remainingSuggestions)
+                uiView.setAdapter(newAdapter)
+                uiView.post {
+                    uiView.showDropDown()
+                }
             }
         }
+    }
+
+    private fun alreadySelectedCustomers(): List<String> {
+        return orders.stream().map(SMSOrderModel::name).collect(Collectors.toList()).toList()
     }
 
     private fun showEntries(clearPreviousEntries: Boolean = false) {

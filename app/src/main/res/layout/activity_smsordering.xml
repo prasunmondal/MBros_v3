@@ -157,6 +157,7 @@
                 android:layout_weight=".45"
                 android:hint="+Customer"
                 android:paddingHorizontal="10dp"
+                android:textColor="@color/due_show_including_finalized_transactions"
                 android:textColorHint="#494848" />
 
             <AutoCompleteTextView
@@ -166,6 +167,7 @@
                 android:layout_weight=".25"
                 android:hint="+Others"
                 android:paddingHorizontal="10dp"
+                android:textColor="@color/due_show_including_finalized_transactions"
                 android:textColorHint="#494848" />
 
         </LinearLayout>

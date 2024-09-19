@@ -3,6 +3,7 @@ package com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders
 import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.prasunmondal.dev.libs.gsheet.ContextWrapper
 import com.prasunmondal.dev.libs.gsheet.clients.GSheetSerialized
+import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import java.io.Serializable
@@ -42,6 +43,36 @@ object SMSOrderModelUtil: GSheetSerialized<SMSOrderModel> (
         } catch (e: Exception) {
             null
         }
+    }
+
+    fun getListOfOrderedCustomers(): List<SMSOrderModel> {
+        val list: MutableList<SMSOrderModel> = mutableListOf()
+        val actualOrders = SMSOrderModelUtil.fetchAll().execute()
+        CustomerKYC.fetchAll().execute().forEach { masterList ->
+            actualOrders.forEach { orderList ->
+                if (masterList.nameEng == orderList.name) {
+                    list.add(orderList)
+                }
+            }
+        }
+        return list
+    }
+
+    fun getListOfUnOrderedCustomers(): List<SMSOrderModel> {
+        val list: MutableList<SMSOrderModel> = mutableListOf()
+        val actualOrders = SMSOrderModelUtil.fetchAll().execute()
+        CustomerKYC.fetchAll().execute().forEach { masterList ->
+            var isInOrderList = false
+            actualOrders.forEach { orderList ->
+                if (masterList.nameEng == orderList.name) {
+                    isInOrderList = true
+                }
+            }
+            if (!isInOrderList && masterList.isActiveCustomer.toBoolean()) {
+                list.add(SMSOrderModelUtil.createOrderObj(masterList.nameEng))
+            }
+        }
+        return list
     }
 
     fun getAvgWt1(): String {

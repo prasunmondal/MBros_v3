@@ -5,8 +5,6 @@ import com.prasunmondal.dev.libs.gsheet.ContextWrapper
 import com.prasunmondal.dev.libs.gsheet.clients.GSheetSerialized
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
-import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrderModel
-import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrderModelUtil
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -51,20 +49,20 @@ data class GetCustomerOrderModel(
     }
 }
 
-object GetCustomerOrderUtils : GSheetSerialized<SMSOrderModel>(
+object GetCustomerOrderUtils : GSheetSerialized<GetCustomerOrderModel>(
     context = ContextWrapper(AppContexts.get()),
     scriptURL = ProjectConfig.dBServerScriptURLNew,
     sheetId = ProjectConfig.get_db_sheet_id(),
     tabName = "GetOrders",
     query = null,
-    modelClass = SMSOrderModel::class.java,
+    modelClass = GetCustomerOrderModel::class.java,
     appendInServer = false,
     appendInLocal = false) {
 
-    private var obj: MutableList<SMSOrderModel> = mutableListOf()
+    private var obj: MutableList<GetCustomerOrderModel> = mutableListOf()
 
-    fun updateObj(passedObj: SMSOrderModel) {
-        var toBeRemoved: SMSOrderModel? = null
+    fun updateObj(passedObj: GetCustomerOrderModel) {
+        var toBeRemoved: GetCustomerOrderModel? = null
         obj.forEach {
             if (it.name == passedObj.name) {
                 toBeRemoved = it
@@ -76,8 +74,8 @@ object GetCustomerOrderUtils : GSheetSerialized<SMSOrderModel>(
             LogMe.log("Updated: $passedObj")
         }
 
-        val nameMappedOrders: MutableMap<String, SMSOrderModel> = obj.stream()
-            .collect(Collectors.toMap(SMSOrderModel::name) { v -> v })
+        val nameMappedOrders: MutableMap<String, GetCustomerOrderModel> = obj.stream()
+            .collect(Collectors.toMap(GetCustomerOrderModel::name) { v -> v })
         LogMe.log(nameMappedOrders.toString())
 
         obj = mutableListOf()
@@ -90,9 +88,9 @@ object GetCustomerOrderUtils : GSheetSerialized<SMSOrderModel>(
         }
     }
 
-    fun getListOfOrderedCustomers(): MutableList<SMSOrderModel> {
-        val list: MutableList<SMSOrderModel> = mutableListOf()
-        val actualOrders = SMSOrderModelUtil.fetchAll().execute()
+    fun getListOfOrderedCustomers(): List<GetCustomerOrderModel> {
+        val list: MutableList<GetCustomerOrderModel> = mutableListOf()
+        val actualOrders = GetCustomerOrderUtils.fetchAll().execute()
         CustomerKYC.fetchAll().execute().forEach { masterList ->
             actualOrders.forEach { orderList ->
                 if (masterList.nameEng == orderList.name) {
@@ -103,8 +101,8 @@ object GetCustomerOrderUtils : GSheetSerialized<SMSOrderModel>(
         return list
     }
 
-    fun getListOfUnOrderedCustomers(): List<SMSOrderModel> {
-        val list: MutableList<SMSOrderModel> = mutableListOf()
+    fun getListOfUnOrderedCustomers(): List<GetCustomerOrderModel> {
+        val list: MutableList<GetCustomerOrderModel> = mutableListOf()
         val actualOrders = fetchAll().execute()
         CustomerKYC.fetchAll().execute().forEach { masterList ->
             var isInOrderList = false
@@ -114,7 +112,7 @@ object GetCustomerOrderUtils : GSheetSerialized<SMSOrderModel>(
                 }
             }
             if (!isInOrderList && masterList.isActiveCustomer.toBoolean()) {
-                list.add(SMSOrderModelUtil.createOrderObj(masterList.nameEng))
+                list.add(GetCustomerOrderModel(name = masterList.nameEng))
             }
         }
         return list
@@ -124,7 +122,7 @@ object GetCustomerOrderUtils : GSheetSerialized<SMSOrderModel>(
         return fetchAll(useCache).execute().size
     }
 
-    fun getByName(inputName: String): SMSOrderModel? {
+    fun getByName(inputName: String): GetCustomerOrderModel? {
         fetchAll().execute().forEach {
             if (it.name == inputName) {
                 return it
@@ -135,12 +133,12 @@ object GetCustomerOrderUtils : GSheetSerialized<SMSOrderModel>(
 
     fun save() {
         obj.forEach {
-            it.id = DateUtils.getCurrentTimestamp()
+            it.timestamp = DateUtils.getCurrentTimestamp()
         }
-        SMSOrderModelUtil.save(getRecordsForOnlyOrderedCustomers()).queue()
+        GetCustomerOrderUtils.save(getRecordsForOnlyOrderedCustomers()).queue()
     }
 
-    private fun getRecordsForOnlyOrderedCustomers(): MutableList<SMSOrderModel> {
+    private fun getRecordsForOnlyOrderedCustomers(): MutableList<GetCustomerOrderModel> {
         return obj.stream().filter { p -> p.id.isNotEmpty() }.collect(Collectors.toList())
     }
 }

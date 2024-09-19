@@ -21,8 +21,8 @@ import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
-import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrderModel
-import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrderModelUtil
+import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderModel
+import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
@@ -343,14 +343,16 @@ class DeliverToCustomerActivity : AppCompatActivity() {
                 return deliveryObj
             }
 
-            val orderObj: SMSOrderModel? = SMSOrderModelUtil.getOrder(inputName)
+            val orderObj: GetCustomerOrderModel? = GetCustomerOrderUtils.getByName(inputName)
             if (orderObj != null) {
                 deliveryObj = DeliverToCustomerDataModel(
                     id = "${System.currentTimeMillis()}",
                     timestamp = DateUtils.getCurrentTimestamp(),
                     name = orderObj.name,
-                    orderedPc = orderObj.orderedPc.toString(),
-                    orderedKg = orderObj.orderedKg.toString(),
+                    orderedPc = orderObj.orderedPc,
+                    orderedKg = orderObj.orderedKg,
+                    rate = orderObj.rate,
+                    prevDue = orderObj.prevDue,
                     deliveryStatus = "DELIVERING"
                 )
 

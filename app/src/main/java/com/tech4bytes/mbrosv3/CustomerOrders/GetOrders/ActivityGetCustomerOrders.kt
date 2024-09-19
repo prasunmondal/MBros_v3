@@ -15,8 +15,6 @@ import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
-import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrderModel
-import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrderModelUtil
 import com.tech4bytes.mbrosv3.Loading.LoadModel
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
@@ -29,7 +27,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
 
     lateinit var containerView: View
     var uiEntriesList = mutableListOf<View>()
-    lateinit var listOrders: List<SMSOrderModel>
+    lateinit var listOrders: List<GetCustomerOrderModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +41,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
     }
 
     private fun initializeUI(reset: Boolean) {
-        listOrders = SMSOrderModelUtil.fetchAll().execute()
+        listOrders = GetCustomerOrderUtils.fetchAll().execute()
         LogMe.log(listOrders.toString())
 
         val avg_wt = findViewById<EditText>(R.id.get_orders_avg_wt34)
@@ -59,9 +57,11 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
 
         listOrders.forEach {
             if (reset) {
-                it.appPc = ""
-                it.orderedKg = 0
-                it.orderedPc = 0
+                it.orderedKg = ""
+                it.orderedPc = ""
+                it.calculatedKg = ""
+                it.calculatedPc = ""
+                it.prevDue = ""
             }
             createEstimatesView(it)
         }
@@ -85,7 +85,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         UIUtils.setUIElementValue(LoadModel.getUiElementFromOrderingPage(containerView, LoadModel::requiredPc), pc)
     }
 
-    private fun createEstimatesView(order: SMSOrderModel) {
+    private fun createEstimatesView(order: GetCustomerOrderModel) {
         val listContainer = findViewById<LinearLayout>(R.id.activity_get_order_estimates__order_list_container)
         val layoutInflater = LayoutInflater.from(AppContexts.get())
         val entry = layoutInflater.inflate(R.layout.activity_get_order_estimates_fragment_customer_order, null)
@@ -93,17 +93,17 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
         val pcElement = entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_pc)
         val kgElement = entry.findViewById<AppCompatEditText>(R.id.fragment_customer_order_kg)
         UIUtils.setUIElementValue(entry.findViewById<AppCompatTextView>(R.id.fragment_customer_order_name), order.name)
-        UIUtils.setUIElementValue(pcElement, order.orderedPc.toString())
-        UIUtils.setUIElementValue(kgElement, order.orderedKg.toString())
+        UIUtils.setUIElementValue(pcElement, order.orderedPc)
+        UIUtils.setUIElementValue(kgElement, order.orderedKg)
 
         pcElement.doOnTextChanged { text, start, before, count ->
-            order.orderedPc = NumberUtils.getIntOrZero(pcElement.text.toString())
+            order.orderedPc = pcElement.text.toString()
             GetCustomerOrderUtils.updateObj(order)
             updateTotalPc()
         }
 
         kgElement.doOnTextChanged { text, start, before, count ->
-            order.orderedKg = NumberUtils.getIntOrZero(kgElement.text.toString())
+            order.orderedKg = kgElement.text.toString()
             GetCustomerOrderUtils.updateObj(order)
             updateTotalKg()
         }
@@ -122,7 +122,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
     private fun updateTotalKg() {
         var sum = 0
         GetCustomerOrderUtils.fetchAll().execute().forEach {
-            sum += getJustTheNumber(it.orderedKg.toString())
+            sum += getJustTheNumber(it.orderedKg)
         }
         UIUtils.setUIElementValue(containerView.findViewById(R.id.activity_get_order_estimates__total_kg), "$sum kg")
     }
@@ -130,7 +130,7 @@ class ActivityGetCustomerOrders : AppCompatActivity() {
     private fun updateTotalPc() {
         var sum = 0
         GetCustomerOrderUtils.fetchAll().execute().forEach {
-            sum += getJustTheNumber(it.orderedPc.toString())
+            sum += getJustTheNumber(it.orderedPc)
         }
         UIUtils.setUIElementValue(containerView.findViewById(R.id.activity_get_order_estimates__total_pc), "$sum pc")
     }

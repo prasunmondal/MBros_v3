@@ -13,8 +13,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
-import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrderModel
-import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrderModelUtil
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -23,14 +21,14 @@ import kotlin.math.roundToInt
 
 class GetOrdersFinalize : AppCompatActivity() {
 
-    private lateinit var listOrders: List<SMSOrderModel>
+    private lateinit var listOrders: List<GetCustomerOrderModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_get_orders_finalize)
         AppContexts.set(this)
 
-        listOrders = SMSOrderModelUtil.fetchAll().execute()
+        listOrders = GetCustomerOrderUtils.fetchAll().execute()
         LogMe.log(listOrders.toString())
         showList()
         updatePcs()
@@ -39,13 +37,13 @@ class GetOrdersFinalize : AppCompatActivity() {
 
     private fun showList() {
         listOrders.forEach {
-            if (it.orderedPc > 0 || it.orderedKg > 0) {
+            if ((it.orderedPc.isNotEmpty() && it.orderedPc.toInt() > 0) || (it.orderedKg.isNotEmpty() && it.orderedKg.toInt() > 0)) {
                 addEntry(it)
             }
         }
     }
 
-    private fun addEntry(order: SMSOrderModel) {
+    private fun addEntry(order: GetCustomerOrderModel) {
         val listContainer = findViewById<LinearLayout>(R.id.activity_get_orders_finalize_list_container)
         val layoutInflater = LayoutInflater.from(AppContexts.get())
         val entry = layoutInflater.inflate(R.layout.activity_get_orders_finalize_fragments, null)

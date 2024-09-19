@@ -13,8 +13,8 @@ import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerCalculations
+import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderModel
 import com.tech4bytes.mbrosv3.CustomerOrders.GetOrders.GetCustomerOrderUtils
-import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrderModel
 import com.tech4bytes.mbrosv3.Loading.ActivityDeliveringLoad
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
@@ -34,7 +34,7 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
         showOrders(GetCustomerOrderUtils.getListOfUnOrderedCustomers(), R.id.activity_delivering_deliver_unorder_list)
     }
 
-    fun showOrders(listOfCustomers: List<SMSOrderModel>, container: Int) {
+    fun showOrders(listOfCustomers: List<GetCustomerOrderModel>, container: Int) {
         listOfCustomers.forEach { order ->
             LogMe.log(order.toString())
 
@@ -48,10 +48,10 @@ class ActivityDeliveringListOrders : AppCompatActivity() {
             val pcElement = entry.findViewById<AppCompatTextView>(R.id.activity_delivering_deliver_fragment_order_pc)
             val kgElement = entry.findViewById<AppCompatTextView>(R.id.activity_delivering_deliver_fragment_order_kg)
 
-            UIUtils.setUIElementValue(seqNoElement, order.id + ".")
+            UIUtils.setUIElementValue(seqNoElement, order.seqNo + ".")
             UIUtils.setUIElementValue(nameElement, order.name)
-            UIUtils.setUIElementValue(pcElement, order.orderedPc.toString())
-            UIUtils.setUIElementValue(kgElement, order.orderedKg.toString())
+            UIUtils.setUIElementValue(pcElement, order.orderedPc)
+            UIUtils.setUIElementValue(kgElement, order.orderedKg)
             UIUtils.setUIElementValue(bengaliNameElement, CustomerKYC.getByName(order.name)!!.nameBeng)
 
             entry.setOnClickListener {

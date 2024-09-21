@@ -2,6 +2,7 @@ package com.tech4bytes.mbrosv3
 
 class ProjectConfig {
     companion object {
+//        https://docs.google.com/spreadsheets/d/1hrbaCuDJncjEot_14WPLOpRFeBq1QbtaE1wgv50ezZ4/edit?gid=936652995#gid=936652995
         private const val isTestEnv = false
         // Version 381 on Mar 2, 2024, 9:46 AM
         const val dBServerScriptURL = "https://script.google.com/macros/s/AKfycbydFleGsskEpliffhtHRzQ8b0hmq2cupDNhDZeSsQfoFUPirqvNtyIU07GZwMZbO8Y3eA/exec"

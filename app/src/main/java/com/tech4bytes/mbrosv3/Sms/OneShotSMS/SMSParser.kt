@@ -41,11 +41,10 @@ class SMSParser {
         }
 
         fun parseWithDeliveryData(template: String, deliveryData: DeliverToCustomerDataModel): String {
-           var splitedLines= template.split("\n")
-            var data:String =""
+           val splitedLines= template.split("\n")
+            var data = ""
             splitedLines.forEach{line ->
-                if(line.isNotEmpty() && formatString(line,deliveryData) == ""){}
-                else{
+                if (line.isEmpty() || formatString(line,deliveryData) != "") {
                     data +=  formatString(line,deliveryData)+"\n"
                 }
             }
@@ -115,24 +114,6 @@ class SMSParser {
             return null
         }
 
-//        private fun getConditionalVariable(input: String): String {
-//            val regex = "\\$(.*?)##"
-//            val pattern: Pattern = Pattern.compile(regex)
-//            val matcher: Matcher = pattern.matcher(input)
-//            if (matcher.find()) {
-//                return matcher.group(1)
-//            } else {
-//                return ""
-//            }
-//        }
-
-//        private fun getVariableName(string: String): String {
-//           if(string.contains("<")) {
-//               return string.substringAfter('<').substringBefore('>')
-//           }
-//            return ""
-//        }
-
         fun getValue(varNAme: String, deliveryData: DeliverToCustomerDataModel): String{
             return when(varNAme){
                 "date"-> DateUtils.getDateInFormat("dd/MM/yyyy")
@@ -152,7 +133,6 @@ class SMSParser {
             }
         }
 
-
         fun parseWithStagedPaymentDetails(template: String, stagedPayments: StagedPaymentsModel): String {
             val formattedDate = DateUtils.getDateInFormat("dd/MM/yyyy")
             return template.replace("<date>", formattedDate)
@@ -164,25 +144,37 @@ class SMSParser {
                 .replace("<balanceExcludingOtherBalances>", "stagedPayments.khataBalance")
         }
 
-        fun sendDeliverySMS(smsDetail: OSMSModel): List<SMS>? {
-            LogMe.log(smsDetail.toString())
-
-            // if delivery data is not available for the customer, send null - no communication required
-            val deliveryData = DeliverToCustomerActivity.getDeliveryRecord(smsDetail.inputData) ?: return null
-            val isEnabled = deliveryData.totalBalance.isNotEmpty()
-            if (!isEnabled)
-                return null
-
-            val text = parseWithDeliveryData(smsDetail.dataTemplate, deliveryData)
-            LogMe.log("$smsDetail: $text")
-            return listOf(SMS(smsDetail.platform, smsDetail.sendTo, text))
-        }
-
         fun sendViaDesiredMedium(medium: String, number: String, text: String) {
             when (medium) {
                 "SMS" -> SMSUtils.sendSMS(AppContexts.get(), text, number)
                 "WHATSAPP" -> Whatsapp.sendMessage(AppContexts.get(), number, text)
             }
+        }
+
+        fun deliverySMSToTransactingCustomers(smsDetail: OSMSModel): List<SMS>? {
+            LogMe.log(smsDetail.toString())
+
+            val entries = smsDetail.sendTo.split(",")
+            val list: MutableList<SMS> = mutableListOf()
+
+            entries.forEach {entry ->
+                val customerName =  entry.trim().split(":")[0].trim()
+                val customerNumber =  entry.trim().split(":")[1].trim()
+                // if delivery data is not available for the customer, send null - no communication required
+                val deliveryData = DeliverToCustomerActivity.getDeliveryRecord(customerName)
+
+                if(deliveryData!=null
+                    && (NumberUtils.getDoubleOrZero(deliveryData.deliveredKg) > 0.0
+                    || NumberUtils.getDoubleOrZero(deliveryData.paid) > 0)) {
+                    val text = parseWithDeliveryData(smsDetail.dataTemplate, deliveryData)
+                    LogMe.log("$smsDetail: $text")
+                    list.add(SMS(smsDetail.platform, customerNumber, text))
+                }
+            }
+
+            if(list.isEmpty())
+                return null
+            return list
         }
 
         fun deliverySMSToNonZeroKgCustomers(smsDetail: OSMSModel): List<SMS>? {

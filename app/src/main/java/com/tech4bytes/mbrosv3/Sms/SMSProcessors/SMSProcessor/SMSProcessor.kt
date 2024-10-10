@@ -23,7 +23,7 @@ class SMSProcessor {
                 if (it.isAuthorized() && it.isMsgEnabled(it) && getIndividualCommType(it).contains(selectedCommunications)) {
                     LogMe.log("Processing: $selectedCommunications")
                     val smsResult: List<SMS>? = when (it.communicationType) {
-                        "DELIVERY_SMS" -> SMSParser.sendDeliverySMS(it)
+                        "DELIVERY_SMS" -> SMSParser.deliverySMSToTransactingCustomers(it)
                         "DAY_SUMMARY", "LOAD_DETAILS" -> SMSParser.parseWithMetadata(it)
                         "DELIVERY_SMS_ONLY_NON_ZERO_KG" -> SMSParser.deliverySMSToNonZeroKgCustomers(it)
                         "DELIVERY_SMS_ONLY_PAYMENT" -> SMSParser.deliverySMSToOnlyPaymentCustomers(it)

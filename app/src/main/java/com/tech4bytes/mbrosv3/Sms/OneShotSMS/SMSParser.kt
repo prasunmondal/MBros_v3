@@ -11,6 +11,8 @@ import com.tech4bytes.mbrosv3.Sms.SMSUtils
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
+import java.util.regex.Pattern
+
 
 class SMSParser {
 
@@ -50,27 +52,86 @@ class SMSParser {
             return data.trim()
         }
 
-        fun formatString(string: String,deliveryData: DeliverToCustomerDataModel):String{
-            var string2 = string
-            while(!getVariableName(string2).equals("") ) {
-                var variableName = getVariableName(string2)
-                var value= getValue(variableName,deliveryData)
-                if(string2.contains("$")){
-                    if(value.isEmpty() || NumberUtils.getDoubleOrZero(value)==0.0){
-                        return ""
+        private fun formatString(inputLine: String, deliveryData: DeliverToCustomerDataModel):String{
+            var stringLine = inputLine
+
+            var conditionalParameterMap = getConditionalParameters(stringLine)
+            if(conditionalParameterMap != null) {
+                while (conditionalParameterMap != null) {
+                    if (conditionalParameterMap["condition"]!!.isNotEmpty()) {
+                        return if (isConditionTrue(conditionalParameterMap, deliveryData)) {
+                            formatString(conditionalParameterMap["trueStatement"]!!, deliveryData)
+                        } else {
+                            formatString(conditionalParameterMap["falseStatement"]!!, deliveryData)
+                        }
                     }
+                    conditionalParameterMap = getConditionalParameters(stringLine)
                 }
-                string2=string2.replace("<$variableName>",value)
             }
-            return string2
+            else {
+                while (getNextVariable(stringLine) != null) {
+                    val parameter = getNextVariable(stringLine)!!
+                    val parameterValue = getValue(parameter, deliveryData)
+                    stringLine = stringLine.replace("<$parameter>", parameterValue)
+                }
+            }
+            return stringLine
         }
 
-        private fun getVariableName(string: String): String {
-           if(string.contains("<")) {
-               return string.substringAfter('<').substringBefore('>')
-           }
-            return ""
+        private fun isConditionTrue(conditionalParameterMap: MutableMap<String, String>,
+                                    deliveryData: DeliverToCustomerDataModel): Boolean {
+            val conditionString = conditionalParameterMap["condition"]
+            return (!conditionString.isNullOrEmpty()
+                && NumberUtils.getDoubleOrZero(getValue(conditionString, deliveryData)) > 0.0)
         }
+
+        fun getConditionalParameters(inputLine: String): MutableMap<String, String>? {
+            val regex = "\\$(.*?)##(.*?)##(.*?)\\$"
+
+            // Compile the pattern
+            val pattern = Pattern.compile(regex)
+            val matcher = pattern.matcher(inputLine)
+
+            val map = mutableMapOf<String, String>()
+            if (matcher.find()) {
+                map.put("condition", matcher.group(1))
+                map.put("trueStatement", matcher.group(2))
+                map.put("falseStatement", matcher.group(3))
+            } else {
+                println("No match found.")
+                return null
+            }
+            return map
+        }
+
+        fun getNextVariable(inputLine: String): String? {
+            val regex = "<(.*?)>"
+            val pattern = Pattern.compile(regex)
+            val matcher = pattern.matcher(inputLine)
+
+            if (matcher.find()) {
+                return matcher.group(1)
+            }
+            return null
+        }
+
+//        private fun getConditionalVariable(input: String): String {
+//            val regex = "\\$(.*?)##"
+//            val pattern: Pattern = Pattern.compile(regex)
+//            val matcher: Matcher = pattern.matcher(input)
+//            if (matcher.find()) {
+//                return matcher.group(1)
+//            } else {
+//                return ""
+//            }
+//        }
+
+//        private fun getVariableName(string: String): String {
+//           if(string.contains("<")) {
+//               return string.substringAfter('<').substringBefore('>')
+//           }
+//            return ""
+//        }
 
         fun getValue(varNAme: String, deliveryData: DeliverToCustomerDataModel): String{
             return when(varNAme){

@@ -23,8 +23,6 @@ class BalanceCalculatingObj {
     override fun toString(): String {
         return "BalanceCalculatingObj(from='$from', to='$to', referral_type=$referral_type, transferAmount=$transferAmount, balanceOfReferered='$balanceOfReferered', message='$message')"
     }
-
-
 }
 
 enum class ReferralType {

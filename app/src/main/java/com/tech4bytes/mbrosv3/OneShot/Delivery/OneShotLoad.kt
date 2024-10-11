@@ -1,6 +1,7 @@
 package com.tech4bytes.mbrosv3.OneShot.Delivery
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -26,9 +27,11 @@ import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.SMSUtils
+import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Language.English.EnglishUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
+import java.util.Calendar
 import java.util.stream.Collectors
 
 
@@ -57,30 +60,13 @@ class OneShotLoad : AppCompatActivity() {
         initializeUI()
     }
 
-    private fun getServerChecksumString(): String {
-        val metadata = SingleAttributedDataUtils.getRecords()
-        return "companyName:${metadata.load_companyName} " +
-                "- companyBranch: ${metadata.load_branch} " +
-                "- companyArea: ${metadata.load_area}" +
-                "- loadAccount: ${metadata.load_account}" +
-                "- farmRate: ${metadata.finalFarmRate}" +
-                "- deliveryRate: ${DeliveryCalculations.getBaseDeliveryPrice(metadata.finalFarmRate, metadata.bufferRate)}" +
-                "- handExpense: ${metadata.extra_cash_given}" +
-                "- salary: ${metadata.salaryDivision}" +
-                "- totalNoOfPeople: ${metadata.numberOfPeopleTakingSalary}"
-    }
-
-    private fun getUIChecksumString(): String {
-//        val metadata = SingleAttributedDataUtils.getRecords()
-        return "\n- companyName:${companyLabel2.text} " +
-                "\n- companyBranch: ${companyBranch2.text} " +
-                "\n- companyArea: ${companyArea2.text}" +
-                "\n- loadAccount: ${companyAccount2.text}" +
-                "\n- farmRate: ${finalFarmRate.text}" +
-                "\n- deliveryRate: ${initialFarmRate.text}" +
-                "\n- handExpense: ${inHandCash.text}" +
-                "\n- salary: ${getSalaryDivisionFromUI()}" +
-                "\n- totalNoOfPeople: ${getTotalNoOfLaboursFromUI()}"
+    private fun summarySmsString(): String {
+        return "Load Details Updated"+
+                "\n\nLoad:${companyLabel2.text} / ${companyBranch2.text} / ${companyArea2.text}" +
+                "\nAccount: ${companyAccount2.text}" +
+                "\nRate: ${finalFarmRate.text} / ${initialFarmRate.text}" +
+                "\nSalary: ${getSalaryDivisionFromUI()}" +
+                "\nSMSReady: ${isReadyToSendMsg()}"
     }
 
     private fun initializeVariables() {
@@ -98,6 +84,7 @@ class OneShotLoad : AppCompatActivity() {
     private fun initializeUI() {
         setUIValues(false)
         setListeners()
+        initializeTodaysDate()
         updateUIFromObj()
         initializePays()
         processLabour2PayElements()
@@ -125,8 +112,7 @@ class OneShotLoad : AppCompatActivity() {
         val dataObj = SingleAttributedDataUtils.getRecords()
         labour2Enabled = NumberUtils.getIntOrZero(dataObj.numberOfPeopleTakingSalary) > 2
         val salaries = dataObj.salaryDivision.split("#")
-        if (salaries.isNotEmpty()) {
-            LogMe.log("Salaries not found. Setting default values.")
+        if (salaries.isNotEmpty() && SingleAttributedDataUtils.isPreviousDaysRecord()) {
             LogMe.log(dataObj.salaryDivision)
             salaries.forEach {
                 LogMe.log(it)
@@ -245,6 +231,7 @@ class OneShotLoad : AppCompatActivity() {
         val farmRate = initialFarmRate.text.toString()
         val finalFarmRate = finalFarmRate.text.toString()
 
+        obj.datetime = getDateFromUI()
         obj.load_companyName = companyName
         obj.load_branch = branch
         obj.load_account = account
@@ -298,7 +285,7 @@ class OneShotLoad : AppCompatActivity() {
             }
 
             try {
-                SMSUtils.sendSMS(this, "Load Information Updated\n\n" + getUIChecksumString(), AppConstants.get(AppConstants.SMS_NUMBER_ON_LOAD_INFO_UPDATE))
+                SMSUtils.sendSMS(this, "Load Information Updated\n\n" + summarySmsString(), AppConstants.get(AppConstants.SMS_NUMBER_ON_LOAD_INFO_UPDATE))
             } catch (e: Exception) {
                 LogMe.log(e, "Update Communication failed.")
                 Toast.makeText(this, "Update Communication failed.", Toast.LENGTH_SHORT).show()
@@ -317,19 +304,6 @@ class OneShotLoad : AppCompatActivity() {
         }
 
         this.isDataFresh = isDataFresh
-        val oslRateInnerContainerElement = findViewById<LinearLayout>(R.id.osl_rate_inner_container)
-        val oslRateOuterContainerElement = findViewById<LinearLayout>(R.id.osl_rate_outer_container)
-        val oslCompanyDetailsOuterContainerElement = findViewById<LinearLayout>(R.id.osl_company_details_outer_container)
-
-//        oslRateOuterContainerElement.backgroundTintList = if (isDataFresh) this.resources.getColorStateList(R.color.osl_data_status_fresh_light) else this.resources.getColorStateList(R.color.osl_data_status_stale_light)
-//        oslCompanyDetailsOuterContainerElement.backgroundTintList = if (isDataFresh) this.resources.getColorStateList(R.color.osl_data_status_fresh_light) else this.resources.getColorStateList(R.color.osl_data_status_stale_light)
-//        oslRateInnerContainerElement.backgroundTintList = if (isDataFresh) this.resources.getColorStateList(R.color.osl_data_status_fresh_dark) else this.resources.getColorStateList(R.color.osl_data_status_stale_dark)
-    }
-
-    fun onClickClearAmountsDetails(view: View) {
-        inHandCash.text!!.clear()
-        initialFarmRate.text!!.clear()
-        finalFarmRate.text!!.clear()
     }
 
     override fun onBackPressed() {
@@ -406,5 +380,33 @@ class OneShotLoad : AppCompatActivity() {
         totalPayUI.text = totalPay.toString()
 
         return if (isPaid) totalPay else 0
+    }
+
+    private fun getDateFromUI(): String {
+        val dateView = findViewById<TextView>(R.id.osl_date)
+        return dateView.text.toString()
+    }
+
+    private fun initializeTodaysDate() {
+        val dateView = findViewById<TextView>(R.id.osl_date)
+        dateView.text = DateUtils.getDateInFormat("dd/MM/yyyy")
+        dateView.setOnClickListener {
+            showDatePickerDialog(dateView)
+        }
+    }
+
+    private fun showDatePickerDialog(textView: TextView) {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
+            // Display the selected date
+            val date = "$selectedDay/${selectedMonth + 1}/$selectedYear"
+            textView.text = date
+        }, year, month, day)
+
+        datePickerDialog.show()
     }
 }

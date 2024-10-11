@@ -59,4 +59,11 @@ object SingleAttributedDataUtils : GSheetSerialized<SingleAttributedDataModel>(
     fun getExtraExpenseExcludingPolice(obj: SingleAttributedDataModel): Int {
         return NumberUtils.getIntOrZero(obj.extra_expenses) - NumberUtils.getIntOrZero(obj.police)
     }
+
+    fun isPreviousDaysRecord(): Boolean {
+        val todaysDate1 = DateUtils.getCurrentDate("yyyy-dd-MM 00:00:00")
+        val todaysDate2 = DateUtils.getCurrentDate("dd/MM/yyyy")
+        val lastDate = DateUtils.getDateString(getRecords().datetime)
+        return (lastDate == todaysDate1 || lastDate == todaysDate2)
+    }
 }

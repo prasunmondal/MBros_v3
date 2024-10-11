@@ -62,7 +62,7 @@ class OneShotLoad : AppCompatActivity() {
 
     private fun summarySmsString(): String {
         return "Load Details Updated"+
-                "\n\nLoad:${companyLabel2.text} / ${companyBranch2.text} / ${companyArea2.text}" +
+                "\n\nLoad: ${companyLabel2.text} / ${companyBranch2.text} / ${companyArea2.text}" +
                 "\nAccount: ${companyAccount2.text}" +
                 "\nRate: ${finalFarmRate.text} / ${initialFarmRate.text}" +
                 "\nSalary: ${getSalaryDivisionFromUI()}" +
@@ -290,7 +290,7 @@ class OneShotLoad : AppCompatActivity() {
             }
 
             try {
-                SMSUtils.sendSMS(this, "Load Information Updated\n\n" + summarySmsString(), AppConstants.get(AppConstants.SMS_NUMBER_ON_LOAD_INFO_UPDATE))
+                SMSUtils.sendSMS(this, summarySmsString(), AppConstants.get(AppConstants.SMS_NUMBER_ON_LOAD_INFO_UPDATE))
             } catch (e: Exception) {
                 LogMe.log(e, "Update Communication failed.")
                 Toast.makeText(this, "Update Communication failed.", Toast.LENGTH_SHORT).show()

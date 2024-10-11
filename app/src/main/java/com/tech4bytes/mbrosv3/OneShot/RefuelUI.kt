@@ -232,7 +232,10 @@ class RefuelUI(
             )
 
         (context as Activity).runOnUiThread {
-            UIUtils.setUIElementValue(salaryPaidElement, salaryPaid.toString())
+            salaryPaidElement.hint = SingleAttributedDataUtils.getEstimatedSalary().toString()
+            if(SingleAttributedDataUtils.getEstimatedSalary() != 0) {
+                UIUtils.setUIElementValue(salaryPaidElement, salaryPaid.toString())
+            }
             UIUtils.setUIElementValue(
                 extraExpensesElement,
                 singleAttributedDataUtils.extra_expenses
@@ -317,7 +320,7 @@ class RefuelUI(
 
     fun getSalaryPaid(uiFinalKmContainer: LinearLayout): Int {
         val salaryPaidElement = uiFinalKmContainer.findViewById<EditText>(R.id.osd_salary_paid)
-        return NumberUtils.getIntOrZero(salaryPaidElement.text.toString())
+        return NumberUtils.getIntOrZero(UIUtils.getTextOrHint(salaryPaidElement))
     }
 
     fun getExtraExpenses(uiFinalKmContainer: LinearLayout): Int {

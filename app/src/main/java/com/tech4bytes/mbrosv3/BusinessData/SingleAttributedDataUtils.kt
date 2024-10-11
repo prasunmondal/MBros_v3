@@ -66,4 +66,13 @@ object SingleAttributedDataUtils : GSheetSerialized<SingleAttributedDataModel>(
         val lastDate = DateUtils.getDateString(getRecords().datetime)
         return (lastDate == todaysDate1 || lastDate == todaysDate2)
     }
+
+    fun getEstimatedSalary(): Int {
+        var salaries = getRecords().salaryDivision.split("#")
+        var total = 0
+        salaries.forEach {
+            total += NumberUtils.getIntOrZero(it.trim())
+        }
+        return total
+    }
 }

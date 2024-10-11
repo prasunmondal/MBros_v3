@@ -242,6 +242,7 @@ class OneShotLoad : AppCompatActivity() {
         obj.numberOfPeopleTakingSalary = getTotalNoOfLaboursFromUI()
         obj.salaryDivision = getSalaryDivisionFromUI()
         obj.readyToSendMsg = isReadyToSendMsg()
+        obj.labour_expenses = "0"
 
         SingleAttributedDataUtils.saveToLocal(obj)
     }

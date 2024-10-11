@@ -22,12 +22,8 @@ class ActivityRefueling : AppCompatActivity() {
         setContentView(R.layout.activity_refueling)
         AppContexts.set(this)
         AppUtils.logError(this)
-
         mainContainer = findViewById<ConstraintLayout>(R.id.activity_refueling_container)
-
-        mainContainer.findViewById<EditText>(R.id.activity_refueling_km).setOnClickListener {
-
-        }
+        mainContainer.findViewById<EditText>(R.id.activity_refueling_km).setOnClickListener {}
     }
 
     fun getKM(): String {
@@ -49,7 +45,6 @@ class ActivityRefueling : AppCompatActivity() {
     fun onClickRefuelingSubmitBtn(view: View) {
         val obj = RefuelingModel(measure = getFuelMeasure(), amount = getRefuelingAmount(), refueling_km = getKM(), is_full_tank = isTankFulled())
         RefuelingUtils.insert(obj).execute()
-//        RefuelingUtils.saveToServer(obj)
         goToActivityDeliveringDeliveryComplete()
     }
 

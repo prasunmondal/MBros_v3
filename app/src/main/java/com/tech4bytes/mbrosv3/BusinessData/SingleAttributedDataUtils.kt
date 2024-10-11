@@ -27,14 +27,6 @@ object SingleAttributedDataUtils : GSheetSerialized<SingleAttributedDataModel>(
         return globalObject!!
     }
 
-    fun queueSaveToServer() {
-        insert(getRecords()).queue()
-    }
-
-    fun executeSaveToServer() {
-        insert(getRecords()).execute()
-    }
-
     fun getBufferRateInt(): Int {
         if (getRecords().bufferRate.isEmpty())
             return 0

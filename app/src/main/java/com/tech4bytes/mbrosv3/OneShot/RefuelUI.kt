@@ -157,7 +157,6 @@ class RefuelUI(
             "N/A"
     }
 
-
     @SuppressLint("SetTextI18n")
     fun updateFuelRate() {
         val oilRateLabel =
@@ -180,7 +179,6 @@ class RefuelUI(
             )
             oilRateLabel.setTextColor(ContextCompat.getColor(AppContexts.get(), R.color.white))
         } else {
-
             oilRateLabel.setBackgroundColor(0x00000000)
             oilRateLabel.setTextColor(
                 ContextCompat.getColor(

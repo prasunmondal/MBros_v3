@@ -9,7 +9,11 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.SwitchCompat

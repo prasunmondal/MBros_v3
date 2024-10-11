@@ -207,16 +207,6 @@ class ActivityLogin : AppCompatActivity() {
 
     private fun goToWebPortal() {
         val url = AppConstants.get(AppConstants.WEB_PORTAL_URL)
-//        val webpage = Uri.parse(url)
-//        val intent = Intent(Intent.ACTION_VIEW, webpage)
-//        if (intent.resolveActivity(packageManager) != null) {
-//            startActivity(intent)
-//        }
-
-
-//        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse())
-//        startActivity(browserIntent)
-
         val urlString = url
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(urlString))
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

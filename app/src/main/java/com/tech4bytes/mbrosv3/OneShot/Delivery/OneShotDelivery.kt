@@ -132,22 +132,6 @@ class OneShotDelivery : AppCompatActivity() {
         loadAvgWtElement = findViewById(R.id.osd_loading_avg_wt)
     }
 
-//    fun onClickSidebarIconRefuel(view: View) {
-//        scrollToRow(scrollview, findViewById(R.id.osd_scrollview_child), findViewById<LinearLayout>(R.id.osd_scroll_to_element_refuel))
-//    }
-//
-//    fun onClickSidebarIconDeliveryEntries(view: View) {
-//        scrollToRow(scrollview, findViewById(R.id.osd_scrollview_child), findViewById<LinearLayout>(R.id.osd_scroll_label_deliveries))
-//    }
-//
-//    fun onClickSidebarIconLoadInfo(view: View) {
-//        scrollToRow(scrollview, findViewById(R.id.osd_scrollview_child), findViewById<LinearLayout>(R.id.osd_scroll_label_load_info))
-//    }
-//
-//    fun onClickSidebarIconOtherExpenses(view: View) {
-//        scrollToRow(scrollview, findViewById(R.id.osd_scrollview_child), findViewById<LinearLayout>(R.id.osd_scroll_to_element_other_expenses))
-//    }
-
     private fun scrollToRow(scrollView: ScrollView, linearLayout: View, textViewToShow: View) {
         val delay: Long = 100 //delay to let finish with possible modifications to ScrollView
         scrollView.postDelayed({

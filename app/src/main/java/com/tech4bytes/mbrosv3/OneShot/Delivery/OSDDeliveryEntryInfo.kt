@@ -59,8 +59,6 @@ class OSDDeliveryEntryInfo {
             val paidElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid)
             val balanceElement =
                 entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
-            val moreDetailsContainer =
-                entry.findViewById<LinearLayout>(R.id.one_shot_delivery_fragment_more_details_container)
             val sendSMSBtn = entry.findViewById<TextView>(R.id.osd_fragment_send_details)
             rateElementContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
 
@@ -317,8 +315,7 @@ class OSDDeliveryEntryInfo {
             val balanceBeforeAdjustmentElement: TextView =
                 entry.findViewById(R.id.osd_fragment_balance_before_adjustments)
 
-            balanceBeforeAdjustmentElement.text =
-                (getIntOrZero(order.totalBalance) - autoAdjustments.transferAmount).toString()
+            balanceBeforeAdjustmentElement.text = order.totalBalance
             autoAdjustmentJustification.text = autoAdjustments.message
             autoAdjustmentBalance.text = autoAdjustments.transferAmount.toString()
             val adjustingBalance = autoAdjustmentBalance.text.toString()
@@ -326,10 +323,6 @@ class OSDDeliveryEntryInfo {
         }
 
         private fun updateDetailedInfo(order: DeliverToCustomerDataModel, entry: View) {
-            val container =
-                entry.findViewById<LinearLayout>(R.id.one_shot_delivery_fragment_more_details_container)
-
-//            if (container.visibility == View.VISIBLE) {
             val prevDue =
                 entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_prev_due)
             val kg =
@@ -368,7 +361,6 @@ class OSDDeliveryEntryInfo {
             lhBalanceElement.text = "${order.otherBalances}"
             finalTotalBalanceDue.text =
                 "${getIntOrZero(order.khataBalance) + getIntOrZero(order.otherBalances)}"
-//            }
         }
 
         private fun getDueBalance(order: DeliverToCustomerDataModel, entry: View): Int {

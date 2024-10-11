@@ -404,10 +404,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/rounded"
-                android:backgroundTint="#A3511313"
                 android:padding="10dp"
+                android:paddingStart="20dp"
                 android:text="Ready to send message to customer"
-                android:textColor="#C998958E"
+                android:textColor="#B1FFFFFF"
                 android:visibility="visible"
                 tools:visibility="visible" />
 

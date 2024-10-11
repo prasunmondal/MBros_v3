@@ -37,5 +37,5 @@ data class SingleAttributedDataModel(
     var salaryDivision: String = "",
     var police: String = "",
     var police_breakdown: String = "",
-    var commReady: Boolean = false // Ready to send messages to customers
+    var readyToSendMsg: Boolean = false // Ready to send messages to customers
 ) : java.io.Serializable

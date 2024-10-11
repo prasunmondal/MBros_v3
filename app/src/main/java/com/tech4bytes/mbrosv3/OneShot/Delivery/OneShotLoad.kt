@@ -26,7 +26,6 @@ import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.SMSUtils
-import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Language.English.EnglishUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
@@ -104,17 +103,22 @@ class OneShotLoad : AppCompatActivity() {
         processLabour2PayElements()
         updateAllPays()
         markDataFresh(true, true)
-        setCommunicationReadyBtn(SingleAttributedDataUtils.getRecords().commReady)
+        setCommunicationReadyBtn(SingleAttributedDataUtils.getRecords().readyToSendMsg)
     }
 
     private fun setCommunicationReadyBtn(isEnabled: Boolean) {
         val communicationReadyBtn = findViewById<SwitchCompat>(R.id.osl_readiness_for_customer_communication)
         communicationReadyBtn.isChecked = isEnabled
-        var tintColor = ColorStateList.valueOf(Color.RED)
+        var tintColor = ColorStateList.valueOf(Color.parseColor("#A3511313"))
         if(isEnabled) {
-            tintColor = ColorStateList.valueOf(Color.GREEN)
+            tintColor = ColorStateList.valueOf(Color.parseColor("#9E01562D"))
         }
         ViewCompat.setBackgroundTintList(communicationReadyBtn, tintColor)
+    }
+
+    private fun isReadyToSendMsg(): Boolean {
+        val communicationReadyBtn = findViewById<SwitchCompat>(R.id.osl_readiness_for_customer_communication)
+        return communicationReadyBtn.isChecked
     }
 
     private fun initializePays() {
@@ -250,6 +254,7 @@ class OneShotLoad : AppCompatActivity() {
         obj.extra_cash_given = extraCashProvider
         obj.numberOfPeopleTakingSalary = getTotalNoOfLaboursFromUI()
         obj.salaryDivision = getSalaryDivisionFromUI()
+        obj.readyToSendMsg = isReadyToSendMsg()
 
         SingleAttributedDataUtils.saveToLocal(obj)
     }

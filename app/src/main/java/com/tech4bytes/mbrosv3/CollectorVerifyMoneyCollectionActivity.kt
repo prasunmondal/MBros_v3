@@ -63,7 +63,6 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
 
     private fun sharePDF(file: File) {
         //  val file = File(pdfFilePath)
-        val uri = Uri.fromFile(file)
         val URI = FileProvider.getUriForFile(
             this,
             BuildConfig.APPLICATION_ID + ".provider",

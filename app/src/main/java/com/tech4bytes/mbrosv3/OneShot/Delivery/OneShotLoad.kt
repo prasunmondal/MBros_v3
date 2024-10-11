@@ -125,7 +125,7 @@ class OneShotLoad : AppCompatActivity() {
         val dataObj = SingleAttributedDataUtils.getRecords()
         labour2Enabled = NumberUtils.getIntOrZero(dataObj.numberOfPeopleTakingSalary) > 2
         val salaries = dataObj.salaryDivision.split("#")
-        if (salaries.isEmpty()) {
+        if (salaries.isNotEmpty()) {
             LogMe.log("Salaries not found. Setting default values.")
             LogMe.log(dataObj.salaryDivision)
             salaries.forEach {

@@ -112,7 +112,7 @@ class OneShotLoad : AppCompatActivity() {
         val dataObj = SingleAttributedDataUtils.getRecords()
         labour2Enabled = NumberUtils.getIntOrZero(dataObj.numberOfPeopleTakingSalary) > 2
         val salaries = dataObj.salaryDivision.split("#")
-        if (salaries.isNotEmpty() && SingleAttributedDataUtils.isPreviousDaysRecord()) {
+        if (salaries.isNotEmpty() && SingleAttributedDataUtils.isCurrentDayRecord()) {
             LogMe.log(dataObj.salaryDivision)
             salaries.forEach {
                 LogMe.log(it)
@@ -242,7 +242,16 @@ class OneShotLoad : AppCompatActivity() {
         obj.numberOfPeopleTakingSalary = getTotalNoOfLaboursFromUI()
         obj.salaryDivision = getSalaryDivisionFromUI()
         obj.readyToSendMsg = isReadyToSendMsg()
-        obj.labour_expenses = "0"
+
+        // Reset a few attributes
+        if(!SingleAttributedDataUtils.isCurrentDayRecord()) {
+            obj.labour_expenses = "0"
+            obj.extra_expenses = "0"
+            obj.police = "0"
+            obj.police_breakdown = ""
+            obj.actualLoadPc = "0"
+            obj.actualLoadKg = "0"
+        }
 
         SingleAttributedDataUtils.saveToLocal(obj)
     }

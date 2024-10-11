@@ -4,13 +4,16 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doOnTextChanged
 import com.google.android.material.button.MaterialButton
@@ -23,6 +26,7 @@ import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.SMSUtils
+import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Language.English.EnglishUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
@@ -52,15 +56,6 @@ class OneShotLoad : AppCompatActivity() {
         AppUtils.logError(this)
         initializeVariables()
         initializeUI()
-    }
-
-    fun onClickCommunicationReadyButton(view: View) {
-        val communicationReadyBtn = findViewById<Switch>(R.id.osl_readiness_for_customer_communication)
-        val isEnabled = communicationReadyBtn.isEnabled
-//        UIUtils.setUIElementValue(communicationReadyBtn, (!isEnabled).toString())
-//        val color: Long = if(isEnabled)  else
-//        communicationReadyBtn.set = isEnabled
-//        if(isEnabled) communicationReadyBtn.setBackgroundColor(Color.RED) else communicationReadyBtn.background = Color.GREEN
     }
 
     private fun getServerChecksumString(): String {
@@ -109,6 +104,17 @@ class OneShotLoad : AppCompatActivity() {
         processLabour2PayElements()
         updateAllPays()
         markDataFresh(true, true)
+        setCommunicationReadyBtn(SingleAttributedDataUtils.getRecords().commReady)
+    }
+
+    private fun setCommunicationReadyBtn(isEnabled: Boolean) {
+        val communicationReadyBtn = findViewById<SwitchCompat>(R.id.osl_readiness_for_customer_communication)
+        communicationReadyBtn.isChecked = isEnabled
+        var tintColor = ColorStateList.valueOf(Color.RED)
+        if(isEnabled) {
+            tintColor = ColorStateList.valueOf(Color.GREEN)
+        }
+        ViewCompat.setBackgroundTintList(communicationReadyBtn, tintColor)
     }
 
     private fun initializePays() {
@@ -178,14 +184,10 @@ class OneShotLoad : AppCompatActivity() {
         finalFarmRate.addTextChangedListener { markDataFresh(false) }
         inHandCash.addTextChangedListener { markDataFresh(false) }
 
-        val communicationReadyBtn = findViewById<Switch>(R.id.osl_readiness_for_customer_communication)
-        communicationReadyBtn.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
-//            communicationReadyBtn.backgroundTintList(0x511313)// else communicationReadyBtn.setBackgroundColor(0x04332F)
-            if(isChecked)
-            communicationReadyBtn.backgroundTintList = ColorStateList.valueOf(0x511313)
-            else
-            communicationReadyBtn.backgroundTintList = ColorStateList.valueOf(0x04332F)
-        })
+        val communicationReadyBtn = findViewById<SwitchCompat>(R.id.osl_readiness_for_customer_communication)
+        communicationReadyBtn.setOnCheckedChangeListener { buttonView, isChecked ->
+            setCommunicationReadyBtn(isChecked)
+        }
     }
 
     private fun getCompanyNames(): List<String> {

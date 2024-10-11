@@ -51,7 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/verify_delivery_valid"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout20"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout32"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout23">
@@ -69,9 +69,9 @@
     </ScrollView>
 
     <LinearLayout
+        android:id="@+id/linearLayout32"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_marginTop="20dp"
         android:background="#2C2C2C"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"

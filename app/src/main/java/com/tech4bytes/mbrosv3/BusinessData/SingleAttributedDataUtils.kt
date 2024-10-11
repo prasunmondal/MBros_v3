@@ -75,4 +75,14 @@ object SingleAttributedDataUtils : GSheetSerialized<SingleAttributedDataModel>(
         }
         return total
     }
+
+    fun resetForNextDay(obj: SingleAttributedDataModel): SingleAttributedDataModel {
+        obj.labour_expenses = "0"
+        obj.extra_expenses = "0"
+        obj.police = "0"
+        obj.police_breakdown = ""
+        obj.actualLoadPc = "0"
+        obj.actualLoadKg = "0"
+        return obj
+    }
 }

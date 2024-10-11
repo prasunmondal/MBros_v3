@@ -245,12 +245,7 @@ class OneShotLoad : AppCompatActivity() {
 
         // Reset a few attributes
         if(!SingleAttributedDataUtils.isCurrentDayRecord()) {
-            obj.labour_expenses = "0"
-            obj.extra_expenses = "0"
-            obj.police = "0"
-            obj.police_breakdown = ""
-            obj.actualLoadPc = "0"
-            obj.actualLoadKg = "0"
+            SingleAttributedDataUtils.resetForNextDay(obj)
         }
 
         SingleAttributedDataUtils.saveToLocal(obj)

@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.tech4bytes.mbrosv3.AppData.AppUtils
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
+import com.tech4bytes.mbrosv3.BusinessData.DayMetadata
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.listOrders.ActivityDeliveringListOrders
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
@@ -36,7 +36,7 @@ class ActivityDeliveringLoad : AppCompatActivity() {
     }
 
     private fun showLoadOrderData() {
-        val metadataObj = SingleAttributedDataUtils.getRecords()
+        val metadataObj = DayMetadata.getRecords()
         val loadOrderPc = metadataObj.estimatedLoadPc
         val loadOrderKg = metadataObj.estimatedLoadKg
         val loadActualPc = metadataObj.actualLoadPc
@@ -80,7 +80,7 @@ class ActivityDeliveringLoad : AppCompatActivity() {
     }
 
     private fun saveLoadActuals() {
-        val record = SingleAttributedDataUtils.getRecords()
+        val record = DayMetadata.getRecords()
         record.actualLoadPc = UIUtils.getUIElementValue(LoadModel.getUiElementFromLoadingPage(view, LoadModel::actualPc))
         record.actualLoadKg = UIUtils.getUIElementValue(LoadModel.getUiElementFromLoadingPage(view, LoadModel::actualKg))
 
@@ -91,7 +91,7 @@ class ActivityDeliveringLoad : AppCompatActivity() {
         if (bufferRateFromUI.isNotEmpty())
             record.bufferRate = bufferRateFromUI
 
-        SingleAttributedDataUtils.insert(record).execute()
+        DayMetadata.insert(record).execute()
     }
 
     fun goToDeliveringDeliverPage() {

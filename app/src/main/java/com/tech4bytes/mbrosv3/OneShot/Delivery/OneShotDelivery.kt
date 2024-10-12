@@ -22,7 +22,7 @@ import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.prasunmondal.dev.libs.gsheet.clients.GScript
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
+import com.tech4bytes.mbrosv3.BusinessData.DayMetadata
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
@@ -273,7 +273,7 @@ class OneShotDelivery : AppCompatActivity() {
 
     companion object {
         fun updateTotals(context: OneShotDelivery, needsSave: Boolean = true) {
-            val metadataObj = SingleAttributedDataUtils.getRecords()
+            val metadataObj = DayMetadata.getRecords()
             val totalPcElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_pc)
             val totalKgElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_kg)
             val totalSaleElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_sale)
@@ -297,10 +297,10 @@ class OneShotDelivery : AppCompatActivity() {
                 }
             }
 
-            val loadedKg = NumberUtils.getDoubleOrZero(SingleAttributedDataUtils.getRecords().actualLoadKg)
+            val loadedKg = NumberUtils.getDoubleOrZero(DayMetadata.getRecords().actualLoadKg)
             val shortage = (loadedKg - sumKg) * 100 / loadedKg
 
-            val loadedPc = NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().actualLoadPc)
+            val loadedPc = NumberUtils.getIntOrZero(DayMetadata.getRecords().actualLoadPc)
             totalPcElement.text = "$sumPc"
             if(sumPc != loadedPc) {
                 totalPcElement.setBackgroundColor(ContextCompat.getColor(context, R.color.osd_total_bar_incorrect_data_background))
@@ -320,7 +320,7 @@ class OneShotDelivery : AppCompatActivity() {
             totalBalanceDueElement.text = "$sumBalanceDue"
 
             if (needsSave)
-                SingleAttributedDataUtils.saveToLocal(metadataObj)
+                DayMetadata.saveToLocal(metadataObj)
 
             context.updateHiddenData()
         }
@@ -339,10 +339,10 @@ class OneShotDelivery : AppCompatActivity() {
 
             gatherSingleAttributedData()
 
-            SingleAttributedDataUtils.insert(SingleAttributedDataUtils.getRecords()).queue()
+            DayMetadata.insert(DayMetadata.getRecords()).queue()
             saveDeliveryData()
             refuelUIObj.saveFuelData()
-            SingleAttributedDataUtils.fetchAll().queue()
+            DayMetadata.fetchAll().queue()
             DeliverToCustomerDataHandler.fetchAll().queue()
             GScript.execute()
             runOnUiThread()
@@ -364,14 +364,14 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun gatherSingleAttributedData() {
-        val obj = SingleAttributedDataUtils.getRecords()
+        val obj = DayMetadata.getRecords()
         val salaryPaid = refuelUIObj.getSalaryPaid(findViewById(R.id.osd_scroll_to_element_car_expenses)) - NumberUtils.getIntOrZero(AppConstants.get(AppConstants.DRIVER_SALARY))
         obj.vehicle_finalKm = refuelUIObj.getFinalKm()
         obj.labour_expenses = salaryPaid.toString()
         obj.extra_expenses = refuelUIObj.getExtraExpenses(findViewById(R.id.osd_scroll_to_element_car_expenses)).toString()
         obj.actualLoadKg = loadKgElement.text.toString()
         obj.actualLoadPc = loadPcElement.text.toString()
-        SingleAttributedDataUtils.saveToLocal(obj)
+        DayMetadata.saveToLocal(obj)
     }
 
     private fun saveDeliveryData() {

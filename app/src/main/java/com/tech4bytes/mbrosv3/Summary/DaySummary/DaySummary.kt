@@ -7,7 +7,7 @@ import com.prasunmondal.dev.libs.gsheet.clients.GSheetSerialized
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
+import com.tech4bytes.mbrosv3.BusinessData.DayMetadata
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
@@ -58,7 +58,7 @@ object DaySummaryUtils: GSheetSerialized<DaySummary>(
 ) {
     fun getDaySummaryObjectForCurrentData(): DaySummary {
         val daySummaryObj = DaySummary()
-        val metadata = SingleAttributedDataUtils.getRecords()
+        val metadata = DayMetadata.getRecords()
 
         val loadAvgWt = NumberUtils.getDoubleOrZero(metadata.actualLoadKg) / NumberUtils.getDoubleOrZero(metadata.actualLoadPc)
 
@@ -107,26 +107,26 @@ object DaySummaryUtils: GSheetSerialized<DaySummary>(
     }
 
     fun getBirdCost(): Int {
-        return (NumberUtils.getDoubleOrZero(SingleAttributedDataUtils.getRecords().actualLoadKg)
-                * NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().finalFarmRate))
+        return (NumberUtils.getDoubleOrZero(DayMetadata.getRecords().actualLoadKg)
+                * NumberUtils.getIntOrZero(DayMetadata.getRecords().finalFarmRate))
             .toInt()
     }
 
     fun kmCost(): Int {
-        return (NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().vehicle_finalKm) - getPrevTripEndKm()) *
+        return (NumberUtils.getIntOrZero(DayMetadata.getRecords().vehicle_finalKm) - getPrevTripEndKm()) *
                 NumberUtils.getIntOrZero(AppConstants.get(AppConstants.CAR_RATE_PER_KM))
     }
 
     fun getLabourCost(): Int {
-        return NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().labour_expenses)
+        return NumberUtils.getIntOrZero(DayMetadata.getRecords().labour_expenses)
     }
 
     fun getExtraCost(): Int {
-        return NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().extra_expenses)
+        return NumberUtils.getIntOrZero(DayMetadata.getRecords().extra_expenses)
     }
 
     fun getDaySale(): Int {
-        return NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().daySale)
+        return NumberUtils.getIntOrZero(DayMetadata.getRecords().daySale)
     }
 
     fun getDayProfit(): Int {
@@ -150,7 +150,7 @@ object DaySummaryUtils: GSheetSerialized<DaySummary>(
     }
 
     fun isDayFinalized(useCache: Boolean = true): Boolean {
-        val bufferKm = NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords(useCache).vehicle_finalKm)
+        val bufferKm = NumberUtils.getIntOrZero(DayMetadata.getRecords(useCache).vehicle_finalKm)
         val lastFinalizedKm = getPrevTripEndKm(useCache)
         return (lastFinalizedKm == bufferKm || bufferKm == 0)
     }

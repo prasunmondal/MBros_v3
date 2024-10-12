@@ -8,7 +8,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
+import com.tech4bytes.mbrosv3.BusinessData.DayMetadata
 import com.tech4bytes.mbrosv3.CustomerOrders.MoneyDeposit.CustomerDeposit.CustomerMoneyDeposit
 import com.tech4bytes.mbrosv3.CustomerOrders.MoneyDeposit.CustomerDeposit.CustomerMoneyDepositModel
 import com.tech4bytes.mbrosv3.R
@@ -67,7 +67,7 @@ class CustomerMoneyDepositUI : AppCompatActivity() {
 
             if (beneficiaryList.isNotEmpty()) {
                 beneficiaryList = ListUtils.removeDuplicates(beneficiaryList)
-                populateEditText(beneficiaryList, beneficiaryView, SingleAttributedDataUtils.getRecords().load_account)
+                populateEditText(beneficiaryList, beneficiaryView, DayMetadata.getRecords().load_account)
             }
         }.start()
     }

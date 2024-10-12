@@ -26,7 +26,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.tech4bytes.mbrosv3.AppData.AppUtils
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
+import com.tech4bytes.mbrosv3.BusinessData.DayMetadata
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
@@ -94,7 +94,7 @@ class OneShotLoad : AppCompatActivity() {
         processLabour2PayElements()
         updateAllPays()
         markDataFresh(true, true)
-        setCommunicationReadyBtn(SingleAttributedDataUtils.getRecords().readyToSendMsg)
+        setCommunicationReadyBtn(DayMetadata.getRecords().readyToSendMsg)
     }
 
     private fun setCommunicationReadyBtn(isEnabled: Boolean) {
@@ -113,10 +113,10 @@ class OneShotLoad : AppCompatActivity() {
     }
 
     private fun initializePays() {
-        val dataObj = SingleAttributedDataUtils.getRecords()
+        val dataObj = DayMetadata.getRecords()
         labour2Enabled = NumberUtils.getIntOrZero(dataObj.numberOfPeopleTakingSalary) > 2
         val salaries = dataObj.salaryDivision.split("#")
-        if (salaries.isNotEmpty() && SingleAttributedDataUtils.isCurrentDayRecord()) {
+        if (salaries.isNotEmpty() && DayMetadata.isCurrentDayRecord()) {
             LogMe.log(dataObj.salaryDivision)
             salaries.forEach {
                 LogMe.log(it)
@@ -131,7 +131,7 @@ class OneShotLoad : AppCompatActivity() {
     }
 
     private fun setUIValues(fromUI: Boolean = true) {
-        val data = SingleAttributedDataUtils.getRecords()
+        val data = DayMetadata.getRecords()
         val companyName = if (fromUI) companyLabel2.text.toString() else data.load_companyName
         val branchName = if (fromUI) companyBranch2.text.toString() else data.load_branch
         val areaName = if (fromUI) companyArea2.text.toString() else data.load_area
@@ -217,7 +217,7 @@ class OneShotLoad : AppCompatActivity() {
     }
 
     private fun updateUIFromObj(useCache: Boolean = true) {
-        val obj = SingleAttributedDataUtils.getRecords(useCache)
+        val obj = DayMetadata.getRecords(useCache)
         val deliveryBasePrice = initialFarmRate
         inHandCash.setText(obj.extra_cash_given)
         deliveryBasePrice.setText(DeliveryCalculations.getBaseDeliveryPrice(obj.finalFarmRate, obj.bufferRate).toString())
@@ -226,7 +226,7 @@ class OneShotLoad : AppCompatActivity() {
     }
 
     private fun updateObjFromUI() {
-        val obj = SingleAttributedDataUtils.getRecords()
+        val obj = DayMetadata.getRecords()
         val companyName = companyLabel2.text.toString()
         val branch = companyBranch2.text.toString()
         val account = companyAccount2.text.toString()
@@ -248,11 +248,11 @@ class OneShotLoad : AppCompatActivity() {
         obj.readyToSendMsg = isReadyToSendMsg()
 
         // Reset a few attributes
-        if(!SingleAttributedDataUtils.isCurrentDayRecord()) {
-            SingleAttributedDataUtils.resetForNextDay(obj)
+        if(!DayMetadata.isCurrentDayRecord()) {
+            DayMetadata.resetForNextDay(obj)
         }
 
-        SingleAttributedDataUtils.saveToLocal(obj)
+        DayMetadata.saveToLocal(obj)
     }
 
     private fun getTotalNoOfLaboursFromUI(): String {
@@ -276,15 +276,15 @@ class OneShotLoad : AppCompatActivity() {
         updateCase()
         hideKeyboard()
         updateObjFromUI()
-        SingleAttributedDataUtils.saveToLocal(SingleAttributedDataUtils.getRecords())
+        DayMetadata.saveToLocal(DayMetadata.getRecords())
         Thread {
             runOnUiThread {
                 oslSaveBtn.isEnabled = false
                 oslSaveBtn.alpha = .5f
                 oslSaveBtn.isClickable = false
             }
-            SingleAttributedDataUtils.insert(SingleAttributedDataUtils.getRecords()).execute()
-            SingleAttributedDataUtils.getRecords(false)
+            DayMetadata.insert(DayMetadata.getRecords()).execute()
+            DayMetadata.getRecords(false)
             runOnUiThread {
                 markDataFresh(true)
                 Toast.makeText(this, "Data Saved!", Toast.LENGTH_LONG).show()

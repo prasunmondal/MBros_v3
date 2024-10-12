@@ -7,7 +7,7 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.tech4bytes.mbrosv3.ActivityDeliveringDeliveryComplete
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
+import com.tech4bytes.mbrosv3.BusinessData.DayMetadata
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 
@@ -28,9 +28,9 @@ class ActivityGetFinalKm : AppCompatActivity() {
     }
 
     fun onClickFinalKmSubmit(view: View) {
-        val data = SingleAttributedDataUtils.getRecords()
+        val data = DayMetadata.getRecords()
         data.vehicle_finalKm = getFinalKm().toString()
-        SingleAttributedDataUtils.insert(data).execute()
+        DayMetadata.insert(data).execute()
         goToActivityDeliveringDeliveryComplete()
     }
 

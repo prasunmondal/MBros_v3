@@ -13,7 +13,7 @@ import androidx.core.widget.doOnTextChanged
 import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.prasunmondal.dev.libs.gsheet.clients.GScript
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
+import com.tech4bytes.mbrosv3.BusinessData.DayMetadata
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
@@ -42,16 +42,16 @@ class RefuelUI(
         val refuelAmountElement = uiContainer.findViewById<EditText>(R.id.osd_refuel_amount)
 
         didRefuelElement.setOnCheckedChangeListener { _, isChecked ->
-            val obj = SingleAttributedDataUtils.getRecords()
+            val obj = DayMetadata.getRecords()
             obj.did_refueled = isChecked.toString()
-            SingleAttributedDataUtils.saveToLocal(obj)
+            DayMetadata.saveToLocal(obj)
             updateRefuelingUIDetails()
         }
 
         didTankFullElement.setOnCheckedChangeListener { _, isChecked ->
-            val obj = SingleAttributedDataUtils.getRecords()
+            val obj = DayMetadata.getRecords()
             obj.refueling_isFullTank = isChecked.toString()
-            SingleAttributedDataUtils.saveToLocal(obj)
+            DayMetadata.saveToLocal(obj)
             updateRefuelingUIDetails()
         }
 
@@ -65,19 +65,19 @@ class RefuelUI(
         (context as Activity).runOnUiThread {
             UIUtils.setUIElementValue(
                 didRefuelElement,
-                SingleAttributedDataUtils.getRecords().did_refueled
+                DayMetadata.getRecords().did_refueled
             )
             UIUtils.setUIElementValue(
                 didTankFullElement,
-                SingleAttributedDataUtils.getRecords().refueling_isFullTank
+                DayMetadata.getRecords().refueling_isFullTank
             )
             UIUtils.setUIElementValue(
                 refuelQtyElement,
-                SingleAttributedDataUtils.getRecords().refueling_qty
+                DayMetadata.getRecords().refueling_qty
             )
             UIUtils.setUIElementValue(
                 refuelAmountElement,
-                SingleAttributedDataUtils.getRecords().refueling_amount
+                DayMetadata.getRecords().refueling_amount
             )
             meteredFuelKms.setNumber(
                 context as Activity,
@@ -203,7 +203,7 @@ class RefuelUI(
 
     // kms
     fun initializeFinalKm() {
-        val singleAttributedDataUtils = SingleAttributedDataUtils.getRecords()
+        val singleAttributedDataUtils = DayMetadata.getRecords()
         val salaryPaidElement = uiFinalKmContainer.findViewById<EditText>(R.id.osd_salary_paid)
         val extraExpensesElement =
             uiFinalKmContainer.findViewById<EditText>(R.id.one_shot_delivery_extra_expenses)
@@ -230,8 +230,8 @@ class RefuelUI(
             )
 
         (context as Activity).runOnUiThread {
-            salaryPaidElement.hint = SingleAttributedDataUtils.getEstimatedSalary().toString()
-            if(NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().labour_expenses) != 0) {
+            salaryPaidElement.hint = DayMetadata.getEstimatedSalary().toString()
+            if(NumberUtils.getIntOrZero(DayMetadata.getRecords().labour_expenses) != 0) {
                 UIUtils.setUIElementValue(salaryPaidElement, salaryPaid.toString())
             }
             UIUtils.setUIElementValue(
@@ -247,7 +247,7 @@ class RefuelUI(
     }
 
     fun saveFuelData() {
-        val obj = SingleAttributedDataUtils.getRecords()
+        val obj = DayMetadata.getRecords()
         val didRefuelElement = uiContainer.findViewById<Switch>(R.id.one_shot_delivery_did_refuel)
         obj.refueling_km = ""
         obj.refueling_prevKm = ""
@@ -277,7 +277,7 @@ class RefuelUI(
                 obj.refuel_mileage = ""
             }
         }
-        SingleAttributedDataUtils.saveToLocal(obj)
+        DayMetadata.saveToLocal(obj)
     }
 
     fun getFinalKm(): String {
@@ -299,9 +299,9 @@ class RefuelUI(
             val kmDiff = DeliveryCalculations.getKmDiff(currentKmOnUI)
             val kmCost = DeliveryCalculations.getKmCost(currentKmOnUI)
 
-            val singleDataObj = SingleAttributedDataUtils.getRecords()
+            val singleDataObj = DayMetadata.getRecords()
             singleDataObj.vehicle_finalKm = currentKm.toString()
-            SingleAttributedDataUtils.saveToLocal(singleDataObj)
+            DayMetadata.saveToLocal(singleDataObj)
 
             activity.runOnUiThread {
                 prevKmElement.text = prevKm.toString()
@@ -328,7 +328,7 @@ class RefuelUI(
     }
 
     fun saveKmData() {
-        val obj = SingleAttributedDataUtils.getRecords()
+        val obj = DayMetadata.getRecords()
         val salaryPaid = getSalaryPaid(uiFinalKmContainer) - NumberUtils.getIntOrZero(
             AppConstants.get(AppConstants.DRIVER_SALARY)
         )
@@ -342,14 +342,14 @@ class RefuelUI(
             sum += NumberUtils.getIntOrZero(it.trim())
         }
         obj.police = sum.toString()
-        SingleAttributedDataUtils.saveToLocal(obj)
+        DayMetadata.saveToLocal(obj)
     }
     fun saveDataFromThisUI(saveToServer: Boolean = true) {
         saveKmData()
         saveFuelData()
         if(saveToServer) {
-            SingleAttributedDataUtils.insert(SingleAttributedDataUtils.getRecords()).queue()
-            SingleAttributedDataUtils.fetchAll().queue()
+            DayMetadata.insert(DayMetadata.getRecords()).queue()
+            DayMetadata.fetchAll().queue()
             GScript.execute()
         }
     }

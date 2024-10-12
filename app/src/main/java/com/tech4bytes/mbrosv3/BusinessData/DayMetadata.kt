@@ -9,17 +9,17 @@ import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 
-object SingleAttributedDataUtils : GSheetSerialized<SingleAttributedDataModel>(
+object DayMetadata : GSheetSerialized<DayMetadataModel>(
     ContextWrapper(AppContexts.get()),
     ProjectConfig.dBServerScriptURLNew,
     "1X6HriHjIE0XfAblDlE7Uf5a8JTHu00kW2SWvTFKL78w",
     "metadata",
     query = null,
-    modelClass = SingleAttributedDataModel::class.java,
-    filter = ClientFilter("latestRecordById") { list: List<SingleAttributedDataModel> -> arrayListOf(list.maxBy { (it).id }) }) {
+    modelClass = DayMetadataModel::class.java,
+    filter = ClientFilter("latestRecordById") { list: List<DayMetadataModel> -> arrayListOf(list.maxBy { (it).id }) }) {
 
-    var globalObject: SingleAttributedDataModel? = null
-    fun getRecords(useCache: Boolean = true): SingleAttributedDataModel {
+    var globalObject: DayMetadataModel? = null
+    fun getRecords(useCache: Boolean = true): DayMetadataModel {
         if(globalObject != null)
             return globalObject!!
 
@@ -27,7 +27,7 @@ object SingleAttributedDataUtils : GSheetSerialized<SingleAttributedDataModel>(
         return globalObject!!
     }
 
-    fun saveToLocal(obj: SingleAttributedDataModel?) {
+    fun saveToLocal(obj: DayMetadataModel?) {
         if (obj != null) {
             obj.id = System.currentTimeMillis().toString()
             obj.recordGeneratorDevice = DeviceUtils.getUniqueID(AppContexts.get())
@@ -48,7 +48,7 @@ object SingleAttributedDataUtils : GSheetSerialized<SingleAttributedDataModel>(
         return getRecords().finalFarmRate.toInt()
     }
 
-    fun getExtraExpenseExcludingPolice(obj: SingleAttributedDataModel): Int {
+    fun getExtraExpenseExcludingPolice(obj: DayMetadataModel): Int {
         return NumberUtils.getIntOrZero(obj.extra_expenses) - NumberUtils.getIntOrZero(obj.police)
     }
 
@@ -68,7 +68,7 @@ object SingleAttributedDataUtils : GSheetSerialized<SingleAttributedDataModel>(
         return total
     }
 
-    fun resetForNextDay(obj: SingleAttributedDataModel): SingleAttributedDataModel {
+    fun resetForNextDay(obj: DayMetadataModel): DayMetadataModel {
         obj.labour_expenses = "0"
         obj.extra_expenses = "0"
         obj.police = "0"

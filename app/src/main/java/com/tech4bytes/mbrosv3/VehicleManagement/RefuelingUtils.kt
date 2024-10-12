@@ -3,7 +3,7 @@ package com.tech4bytes.mbrosv3.VehicleManagement
 import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.prasunmondal.dev.libs.gsheet.ContextWrapper
 import com.prasunmondal.dev.libs.gsheet.clients.GSheetSerialized
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
+import com.tech4bytes.mbrosv3.BusinessData.DayMetadata
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
@@ -43,7 +43,7 @@ object RefuelingUtils : GSheetSerialized<RefuelingModel>(
     }
 
     fun spoolRefuelingData() {
-        val singleAttributedObj = SingleAttributedDataUtils.getRecords()
+        val singleAttributedObj = DayMetadata.getRecords()
         if (singleAttributedObj.did_refueled.toBoolean()) {
             val refuelingObj = RefuelingModel("", "", "", false)
             refuelingObj.id = singleAttributedObj.id

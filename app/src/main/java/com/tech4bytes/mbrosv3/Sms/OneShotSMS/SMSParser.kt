@@ -1,7 +1,7 @@
 package com.tech4bytes.mbrosv3.Sms.OneShotSMS
 
 import com.prasunmondal.dev.libs.contexts.AppContexts
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
+import com.tech4bytes.mbrosv3.BusinessData.DayMetadata
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
@@ -19,7 +19,7 @@ class SMSParser {
     companion object {
 
         fun parseWithMetadata(smsDetail: OSMSModel): List<SMS>? {
-            val metadata = SingleAttributedDataUtils.getRecords()
+            val metadata = DayMetadata.getRecords()
             if (smsDetail.inputData.equals(metadata.load_account, true) || smsDetail.inputData.isEmpty()) {
                 val templateToSendInfo = smsDetail.dataTemplate
 
@@ -32,7 +32,7 @@ class SMSParser {
                     .replace("<shortage>", DeliveryCalculations.getShortage(metadata.actualLoadKg, DeliveryCalculations.getTotalDeliveredKg().toString()).toString())
                     .replace("<km>", DeliveryCalculations.getKmDiff(metadata.vehicle_finalKm).toString())
                     .replace("<policeBreakdown>", metadata.police_breakdown)
-                    .replace("<labourExpense>", SingleAttributedDataUtils.getExtraExpenseExcludingPolice(metadata).toString())
+                    .replace("<labourExpense>", DayMetadata.getExtraExpenseExcludingPolice(metadata).toString())
 
                 return listOf(SMS(smsDetail.platform, smsDetail.sendTo, text))
             } else {

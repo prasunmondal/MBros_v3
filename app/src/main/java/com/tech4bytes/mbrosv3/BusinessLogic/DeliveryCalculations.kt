@@ -1,7 +1,7 @@
 package com.tech4bytes.mbrosv3.BusinessLogic
 
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
+import com.tech4bytes.mbrosv3.BusinessData.DayMetadata
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerRecentData
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
@@ -55,7 +55,7 @@ class DeliveryCalculations {
         }
 
         fun getKmCost(): Int {
-            val currentKm = SingleAttributedDataUtils.getRecords().vehicle_finalKm
+            val currentKm = DayMetadata.getRecords().vehicle_finalKm
             return AppConstants.get(AppConstants.CAR_RATE_PER_KM).toInt() * getKmDiff(currentKm)
         }
 
@@ -71,7 +71,7 @@ class DeliveryCalculations {
         }
 
         fun getTotalOtherExpenses(): Int {
-            val metadata = SingleAttributedDataUtils.getRecords()
+            val metadata = DayMetadata.getRecords()
             val kmCost = getKmCost(metadata.vehicle_finalKm)
             val labourCost = NumberUtils.getIntOrZero(metadata.labour_expenses)
             val inHandCashExpenses = NumberUtils.getIntOrZero(metadata.extra_expenses)

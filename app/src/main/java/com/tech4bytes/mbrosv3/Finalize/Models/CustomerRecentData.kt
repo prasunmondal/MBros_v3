@@ -5,7 +5,7 @@ import com.prasunmondal.dev.libs.gsheet.ContextWrapper
 import com.prasunmondal.dev.libs.gsheet.clients.ClientFilter
 import com.prasunmondal.dev.libs.gsheet.clients.GScript
 import com.prasunmondal.dev.libs.gsheet.clients.GSheetSerialized
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
+import com.tech4bytes.mbrosv3.BusinessData.DayMetadata
 import com.tech4bytes.mbrosv3.BusinessLogic.Sorter
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
@@ -97,7 +97,7 @@ object CustomerRecentData : GSheetSerialized<CustomerData>(
     }
 
     fun getCustomerDefaultRate(name: String): Int {
-        return SingleAttributedDataUtils.getFinalRateInt() + SingleAttributedDataUtils.getBufferRateInt() + CustomerKYC.getByName(name)!!.rateDifference.toInt()
+        return DayMetadata.getFinalRateInt() + DayMetadata.getBufferRateInt() + CustomerKYC.getByName(name)!!.rateDifference.toInt()
     }
 
     fun getDeliveryRate(name: String): Int {

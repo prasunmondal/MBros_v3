@@ -3,7 +3,7 @@ package com.tech4bytes.mbrosv3.Finalize.Models
 import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.prasunmondal.dev.libs.gsheet.ContextWrapper
 import com.prasunmondal.dev.libs.gsheet.clients.GSheetSerialized
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
+import com.tech4bytes.mbrosv3.BusinessData.DayMetadata
 import com.tech4bytes.mbrosv3.BusinessLogic.Sorter
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
@@ -106,7 +106,7 @@ object CustomerDataUtils : GSheetSerialized<CustomerData>(
     }
 
     fun getCustomerDefaultRate(name: String): Int {
-        return SingleAttributedDataUtils.getFinalRateInt() + SingleAttributedDataUtils.getBufferRateInt() + NumberUtils.getIntOrZero(CustomerKYC.getByName(name)!!.rateDifference)
+        return DayMetadata.getFinalRateInt() + DayMetadata.getBufferRateInt() + NumberUtils.getIntOrZero(CustomerKYC.getByName(name)!!.rateDifference)
     }
 
     fun getDeliveryRate(name: String): Int {

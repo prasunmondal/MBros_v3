@@ -1,6 +1,6 @@
 package com.tech4bytes.mbrosv3.BusinessData
 
-data class SingleAttributedDataModel(
+data class DayMetadataModel(
     var recordGeneratorDevice: String = "",
     var id: String = "",
     var datetime: String = "",

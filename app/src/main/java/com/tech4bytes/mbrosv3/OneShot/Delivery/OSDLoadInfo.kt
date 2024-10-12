@@ -8,7 +8,7 @@ import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
-import com.tech4bytes.mbrosv3.BusinessData.SingleAttributedDataUtils
+import com.tech4bytes.mbrosv3.BusinessData.DayMetadata
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.SendInfoTexts.Whatsapp.Whatsapp
@@ -21,7 +21,7 @@ class OSDLoadInfo {
 
     companion object {
         private fun isSendLoadInfoEnabled(): Boolean {
-            val metadata = SingleAttributedDataUtils.getRecords()
+            val metadata = DayMetadata.getRecords()
             val numberToSendInfo = AppConstants.GeneratedKeys.getWhatsappNumber(metadata.load_account)
             val templateToSendInfo = AppConstants.GeneratedKeys.getTemplateToSendInfo(metadata.load_account)
             val isSendLoadInfoEnabled = numberToSendInfo.isNotEmpty() && templateToSendInfo.isNotEmpty()
@@ -36,7 +36,7 @@ class OSDLoadInfo {
         }
 
         fun initializeUI(context: OneShotDelivery, loadPcElement: EditText, loadKgElement: EditText, loadAvgWtElement: TextView) {
-            val record = SingleAttributedDataUtils.getRecords()
+            val record = DayMetadata.getRecords()
 
             val loadCompanyBranchArea = context.findViewById<TextView>(R.id.osd_load_company_branch_area)
             context.runOnUiThread {
@@ -45,7 +45,7 @@ class OSDLoadInfo {
         }
 
         fun setListeners(context: OneShotDelivery, loadPcElement: EditText, loadKgElement: EditText, loadAvgWtElement: TextView, deliveryPriceElement: EditText) {
-            val record = SingleAttributedDataUtils.getRecords()
+            val record = DayMetadata.getRecords()
 
             UIUtils.addDebouncedOnTextChangeListener(loadPcElement) {
                 record.actualLoadPc = loadPcElement.text.toString()
@@ -62,7 +62,7 @@ class OSDLoadInfo {
             UIUtils.addDebouncedOnTextChangeListener(deliveryPriceElement) {
                 record.bufferRate = DeliveryCalculations.getBufferPrice(record.finalFarmRate, deliveryPriceElement.text.toString()).toString()
 
-                SingleAttributedDataUtils.saveToLocal(record)
+                DayMetadata.saveToLocal(record)
                 OSDDeliveryEntryInfo.updateRates()
             }
         }
@@ -80,7 +80,7 @@ class OSDLoadInfo {
         }
 
         fun sendLoadInfoToCompany(loadedPc: String, loadedKg: String) {
-            val metadata = SingleAttributedDataUtils.getRecords()
+            val metadata = DayMetadata.getRecords()
             val numberToSendInfo = AppConstants.GeneratedKeys.getWhatsappNumber(metadata.load_account)
             val templateToSendInfo = AppConstants.GeneratedKeys.getTemplateToSendInfo(metadata.load_account)
 
@@ -99,16 +99,16 @@ class OSDLoadInfo {
                     context.findViewById<TextView>(R.id.osd_btn_send_load_info_to_account_payee).visibility = View.GONE
                 }
 
-                loadPcElement.setText(SingleAttributedDataUtils.getRecords().actualLoadPc)
-                loadKgElement.setText(SingleAttributedDataUtils.getRecords().actualLoadKg)
-                context.findViewById<TextView>(R.id.osd_company_name).text = SingleAttributedDataUtils.getRecords().load_account
+                loadPcElement.setText(DayMetadata.getRecords().actualLoadPc)
+                loadKgElement.setText(DayMetadata.getRecords().actualLoadKg)
+                context.findViewById<TextView>(R.id.osd_company_name).text = DayMetadata.getRecords().load_account
             }
 
             if (AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_DELIVERY_RATE)) {
                 val deliveryPriceElement = context.findViewById<EditText>(R.id.one_shot_delivery_price)
                 context.runOnUiThread {
                     deliveryPriceElement.setText(
-                        DeliveryCalculations.getBaseDeliveryPrice(SingleAttributedDataUtils.getRecords().finalFarmRate, SingleAttributedDataUtils.getRecords().bufferRate).toString()
+                        DeliveryCalculations.getBaseDeliveryPrice(DayMetadata.getRecords().finalFarmRate, DayMetadata.getRecords().bufferRate).toString()
                     )
                 }
             } else {

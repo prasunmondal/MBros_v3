@@ -86,7 +86,8 @@
                 android:layout_weight="1"
                 android:checked="false"
                 android:gravity="right|center_vertical"
-                android:text="Make List  "
+                android:paddingHorizontal="8dp"
+                android:text="Show Final List  "
                 android:textColor="#D5FFFFFF" />
         </LinearLayout>
 

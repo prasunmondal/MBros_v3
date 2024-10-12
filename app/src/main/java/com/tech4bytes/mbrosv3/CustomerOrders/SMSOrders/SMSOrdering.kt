@@ -90,9 +90,11 @@ class SMSOrdering : AppCompatActivity() {
             listDateUI.text = DateUtils.getDateInFormat(listDate, "dd/MM/yyyy")
         }
 
-        var helperSwitch = findViewById<SwitchCompat>(R.id.smso_helper_view_switch)
+        val helperSwitch = findViewById<SwitchCompat>(R.id.smso_helper_view_switch)
         helperSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            refreshEntries()
+            listViews.forEach {
+                toggleHelperVisible(it.value, isChecked)
+            }
         }
     }
 
@@ -384,12 +386,16 @@ class SMSOrdering : AppCompatActivity() {
         totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_amount)?.text = ""
     }
 
-    fun refreshHints(entry: View, isHelperVisible: Boolean) {
-        entry.findViewById<LinearLayout>(R.id.smso_helper_estimates).visibility = if(isHelperVisible)
+    fun toggleHelperVisible(entry: View, isHelperVisible: Boolean) {
+        val visibility = if(isHelperVisible)
             View.VISIBLE
         else
             View.GONE
+        entry.findViewById<LinearLayout>(R.id.smso_helper_estimates).visibility = visibility
+        totalEntryView?.findViewById<LinearLayout>(R.id.smso_helper_estimates)?.visibility = visibility
+    }
 
+    fun refreshHints(entry: View, isHelperVisible: Boolean) {
         val estimatedPcsHintView1 =
             entry.findViewById<TextView>(R.id.smsorder_listEntry_calculated_pc)
         val estimatedKgsHintView1 = entry.findViewById<TextView>(R.id.smsorder_listEntry_approx_kg)

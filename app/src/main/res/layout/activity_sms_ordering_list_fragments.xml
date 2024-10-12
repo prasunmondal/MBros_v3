@@ -41,7 +41,7 @@
 
                     <EditText
                         android:id="@+id/smsorder_listEntry_pc"
-                        android:layout_width="wrap_content"
+                        android:layout_width="25dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".1"
                         android:inputType="number"
@@ -51,7 +51,7 @@
 
                     <EditText
                         android:id="@+id/smsorder_list_finalized_kg"
-                        android:layout_width="wrap_content"
+                        android:layout_width="25dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".1"
                         android:hint="0"
@@ -63,7 +63,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/smsorder_listEntry_number"
-                        android:layout_width="wrap_content"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="5dp"
@@ -75,7 +75,7 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/smsorder_listEntry_amount"
-                        android:layout_width="wrap_content"
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="5dp"
@@ -89,9 +89,10 @@
 
                     <ImageView
                         android:id="@+id/smsorder_listEntry_remove"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="3dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:padding="8dp"
                         app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
                 </LinearLayout>

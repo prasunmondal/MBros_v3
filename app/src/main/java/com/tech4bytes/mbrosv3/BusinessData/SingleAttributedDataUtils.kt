@@ -27,6 +27,15 @@ object SingleAttributedDataUtils : GSheetSerialized<SingleAttributedDataModel>(
         return globalObject!!
     }
 
+    fun saveToLocal(obj: SingleAttributedDataModel?) {
+        if (obj != null) {
+            obj.id = System.currentTimeMillis().toString()
+            obj.recordGeneratorDevice = DeviceUtils.getUniqueID(AppContexts.get())
+            obj.date = DateUtils.getCurrentTimestamp()
+            globalObject = obj
+        }
+    }
+
     fun getBufferRateInt(): Int {
         if (getRecords().bufferRate.isEmpty())
             return 0
@@ -37,15 +46,6 @@ object SingleAttributedDataUtils : GSheetSerialized<SingleAttributedDataModel>(
         if (getRecords().finalFarmRate.isEmpty())
             return 0
         return getRecords().finalFarmRate.toInt()
-    }
-
-    fun saveToLocal(obj: SingleAttributedDataModel?) {
-        if (obj != null) {
-            obj.id = System.currentTimeMillis().toString()
-            obj.recordGeneratorDevice = DeviceUtils.getUniqueID(AppContexts.get())
-            obj.date = DateUtils.getCurrentTimestamp()
-            globalObject = obj
-        }
     }
 
     fun getExtraExpenseExcludingPolice(obj: SingleAttributedDataModel): Int {

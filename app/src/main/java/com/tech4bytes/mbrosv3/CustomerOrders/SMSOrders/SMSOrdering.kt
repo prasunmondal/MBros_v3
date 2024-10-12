@@ -16,6 +16,7 @@ import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.prasunmondal.dev.libs.contexts.AppContexts
@@ -87,6 +88,11 @@ class SMSOrdering : AppCompatActivity() {
         runOnUiThread {
             val listDateUI = findViewById<TextView>(R.id.smsordering_list_date)
             listDateUI.text = DateUtils.getDateInFormat(listDate, "dd/MM/yyyy")
+        }
+
+        var helperSwitch = findViewById<SwitchCompat>(R.id.smso_helper_view_switch)
+        helperSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            refreshEntries()
         }
     }
 
@@ -258,10 +264,10 @@ class SMSOrdering : AppCompatActivity() {
                 finalizedPcView.setText(order.appPc)
                 if (order.orderedKg > 0)
                     finalizedKgView.setText(order.orderedKg.toString())
-                refreshHints(entry, order)
+                refreshHints(entry, isHelperVisible())
 
                 finalizedPcView.doOnTextChanged { text, start, before, count ->
-                    refreshHints(entry, order)
+                    refreshHints(entry, isHelperVisible())
                     order.finalPc = NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedPcView))
                     order.appPc =
                         if (NumberUtils.getIntOrZero(finalizedPcView.text.toString()) == 0) "" else finalizedPcView.text.toString()
@@ -269,7 +275,7 @@ class SMSOrdering : AppCompatActivity() {
                 }
 
                 finalizedKgView.doOnTextChanged { text, start, before, count ->
-                    refreshHints(entry, order)
+                    refreshHints(entry, isHelperVisible())
                     order.orderedKg =
                         NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedKgView))
                     order.finalPc = NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedPcView))
@@ -317,7 +323,7 @@ class SMSOrdering : AppCompatActivity() {
                 orders.remove(order)
                 listViews.remove(order.name)
                 orderListContainer.removeView(entry)
-                refreshHints(entry, order)
+                refreshHints(entry, isHelperVisible())
                 updateTotal()
                 populateCustomerListDropdown()
             }
@@ -378,7 +384,12 @@ class SMSOrdering : AppCompatActivity() {
         totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_amount)?.text = ""
     }
 
-    fun refreshHints(entry: View, order: SMSOrderModel?) {
+    fun refreshHints(entry: View, isHelperVisible: Boolean) {
+        entry.findViewById<LinearLayout>(R.id.smso_helper_estimates).visibility = if(isHelperVisible)
+            View.VISIBLE
+        else
+            View.GONE
+
         val estimatedPcsHintView1 =
             entry.findViewById<TextView>(R.id.smsorder_listEntry_calculated_pc)
         val estimatedKgsHintView1 = entry.findViewById<TextView>(R.id.smsorder_listEntry_approx_kg)
@@ -470,10 +481,13 @@ class SMSOrdering : AppCompatActivity() {
 
     fun refreshEntries() {
         listViews.forEach {
-            val orderObj = orders.stream()
-                .filter { person -> person.name.equals(it.key) }
-                .findFirst().get()
-            refreshHints(it.value, orderObj)
+            refreshHints(it.value, isHelperVisible())
+//            if(isHelperVisible()) {
+//
+//            }
+//            else {
+////                val helperView =
+//            }
         }
         updateTotal()
     }
@@ -483,5 +497,9 @@ class SMSOrdering : AppCompatActivity() {
         val b = findViewById<TextView>(R.id.smsordering_toggle_sms_text)
         c.visibility = if (c.visibility == View.VISIBLE) View.GONE else View.VISIBLE
         b.text = if (c.visibility == View.VISIBLE) "HIDE SMS" else "SHOW SMS"
+    }
+
+    fun isHelperVisible(): Boolean {
+        return findViewById<SwitchCompat>(R.id.smso_helper_view_switch).isChecked
     }
 }

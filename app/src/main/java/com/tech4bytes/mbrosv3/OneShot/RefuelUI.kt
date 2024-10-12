@@ -351,6 +351,7 @@ class RefuelUI(
             DayMetadata.insert(DayMetadata.getRecords()).queue()
             DayMetadata.fetchAll().queue()
             GScript.execute()
+            DayMetadata.clearLocalObj()
         }
     }
 }

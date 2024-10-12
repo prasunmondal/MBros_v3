@@ -92,6 +92,7 @@ class ActivityDeliveringLoad : AppCompatActivity() {
             record.bufferRate = bufferRateFromUI
 
         DayMetadata.insert(record).execute()
+        DayMetadata.clearLocalObj()
     }
 
     fun goToDeliveringDeliverPage() {

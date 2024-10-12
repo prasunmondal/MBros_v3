@@ -18,7 +18,7 @@ object DayMetadata : GSheetSerialized<DayMetadataModel>(
     modelClass = DayMetadataModel::class.java,
     filter = ClientFilter("latestRecordById") { list: List<DayMetadataModel> -> arrayListOf(list.maxBy { (it).id }) }) {
 
-    var globalObject: DayMetadataModel? = null
+    private var globalObject: DayMetadataModel? = null
     fun getRecords(useCache: Boolean = true): DayMetadataModel {
         if(globalObject != null)
             return globalObject!!
@@ -34,6 +34,10 @@ object DayMetadata : GSheetSerialized<DayMetadataModel>(
             obj.date = DateUtils.getCurrentTimestamp()
             globalObject = obj
         }
+    }
+
+    fun clearLocalObj() {
+        globalObject = null
     }
 
     fun getBufferRateInt(): Int {
@@ -60,7 +64,7 @@ object DayMetadata : GSheetSerialized<DayMetadataModel>(
     }
 
     fun getEstimatedSalary(): Int {
-        var salaries = getRecords().salaryDivision.split("#")
+        val salaries = getRecords().salaryDivision.split("#")
         var total = 0
         salaries.forEach {
             total += NumberUtils.getIntOrZero(it.trim())

@@ -42,7 +42,7 @@ object RefuelingUtils : GSheetSerialized<RefuelingModel>(
         return "$rounded"
     }
 
-    fun spoolRefuelingData() {
+    fun queueRefuelData() {
         val singleAttributedObj = DayMetadata.getRecords()
         if (singleAttributedObj.did_refueled.toBoolean()) {
             val refuelingObj = RefuelingModel("", "", "", false)

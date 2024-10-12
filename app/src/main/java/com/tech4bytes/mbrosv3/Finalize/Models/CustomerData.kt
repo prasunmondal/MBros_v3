@@ -86,7 +86,7 @@ object CustomerDataUtils : GSheetSerialized<CustomerData>(
         return fetchAll().execute().map { it.name }.toHashSet()
     }
 
-    fun spoolDeliveringData() {
+    fun queueDeliveryData() {
         var deliveredData = DeliverToCustomerDataHandler.fetchAll().execute()
         deliveredData = Sorter.sortByNameList(deliveredData, DeliverToCustomerDataModel::name) as List<DeliverToCustomerDataModel>
 

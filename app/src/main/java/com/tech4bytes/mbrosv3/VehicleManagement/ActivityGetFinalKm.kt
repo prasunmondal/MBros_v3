@@ -31,6 +31,7 @@ class ActivityGetFinalKm : AppCompatActivity() {
         val data = DayMetadata.getRecords()
         data.vehicle_finalKm = getFinalKm().toString()
         DayMetadata.insert(data).execute()
+        DayMetadata.clearLocalObj()
         goToActivityDeliveringDeliveryComplete()
     }
 

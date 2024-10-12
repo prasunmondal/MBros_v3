@@ -284,6 +284,7 @@ class OneShotLoad : AppCompatActivity() {
                 oslSaveBtn.isClickable = false
             }
             DayMetadata.insert(DayMetadata.getRecords()).execute()
+            DayMetadata.clearLocalObj()
             DayMetadata.getRecords(false)
             runOnUiThread {
                 markDataFresh(true)

@@ -304,10 +304,11 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
             val deliveryRate = UIUtils.getUIElementValue(deliveryRateElement)
             obj.bufferRate = DeliveryCalculations.getBufferPrice(obj.finalFarmRate, deliveryRate).toString()
             DayMetadata.insert(obj).queue()
-            CustomerDataUtils.spoolDeliveringData()
+            CustomerDataUtils.queueDeliveryData()
             DaySummaryUtils.insert(DaySummaryUtils.getDaySummaryObjectForCurrentData()).queue()
-            RefuelingUtils.spoolRefuelingData()
+            RefuelingUtils.queueRefuelData()
             GScript.execute()
+            DayMetadata.clearLocalObj()
             setStatuses(false)
         }.start()
     }

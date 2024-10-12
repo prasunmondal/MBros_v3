@@ -1,5 +1,7 @@
 package com.tech4bytes.mbrosv3.Finalize.Models
 
+import com.prasunmondal.dev.libs.gsheet.clients.APIRequests.APIRequestsQueue
+import com.prasunmondal.dev.libs.gsheet.clients.GScript
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
 import com.tech4bytes.mbrosv3.Payments.Staged.StagedPaymentUtils
@@ -12,12 +14,20 @@ class CustomerDueData {
     companion object {
         var getLastFinalizedDue: MutableMap<String, Int> = mutableMapOf()
         fun getBalance(shouldIncludePostDeliveryUpdates: Boolean = true, includeStagedPayments: Boolean = true, useCache: Boolean = true): MutableMap<String, Int> {
+
+            val reqQ = APIRequestsQueue()
+            CustomerRecentData.fetchAll(useCache).queue(reqQ)
+            DeliverToCustomerDataHandler.fetchAll(useCache).queue(reqQ)
+            reqQ.execute()
+
             val dueMap: MutableMap<String, Int> = mutableMapOf()
-            CustomerRecentData.getAllLatestRecordsByAccount(useCache).forEach {
+            // fetched using useCache at the start of the method
+            CustomerRecentData.getAllLatestRecordsByAccount().forEach {
                 dueMap[it.customerAccount] = NumberUtils.getIntOrZero(it.khataBalance)
             }
             if (shouldIncludePostDeliveryUpdates) {
-                DeliverToCustomerDataHandler.fetchAll(useCache).execute().forEach {
+                // fetched using useCache at the start of the method
+                DeliverToCustomerDataHandler.fetchAll().execute().forEach {
                     dueMap[it.customerAccount] = NumberUtils.getIntOrZero(it.khataBalance)
                 }
             }

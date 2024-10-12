@@ -385,7 +385,7 @@ class SMSOrdering : AppCompatActivity() {
         totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_amount)?.text = ""
     }
 
-    fun setHelperVisibility() {
+    private fun setHelperVisibility() {
         val visibility = if(findViewById<SwitchCompat>(R.id.smso_helper_view_switch).isChecked)
             View.GONE
         else
@@ -395,6 +395,7 @@ class SMSOrdering : AppCompatActivity() {
             it.value.findViewById<LinearLayout>(R.id.smso_helper_estimates).visibility = visibility
         }
 
+        findViewById<LinearLayout>(R.id.osms_helper_input_container).visibility = visibility
         totalEntryView?.findViewById<LinearLayout>(R.id.smso_helper_estimates)?.visibility = visibility
     }
 

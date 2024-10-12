@@ -83,6 +83,8 @@
                         android:gravity="center_vertical"
                         android:text="Balance"
                         android:textColor="#EAA5C9"
+
+                        android:textColorHint="#5CFFFFFF"
                         android:textSize="14sp" />
 
                     <ImageView

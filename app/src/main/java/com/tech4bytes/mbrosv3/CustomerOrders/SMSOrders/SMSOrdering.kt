@@ -14,6 +14,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
@@ -94,6 +95,7 @@ class SMSOrdering : AppCompatActivity() {
         val helperSwitch = findViewById<SwitchCompat>(R.id.smso_helper_view_switch)
         helperSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             setHelperVisibility()
+            refreshBalance(isChecked)
         }
     }
 
@@ -431,6 +433,32 @@ class SMSOrdering : AppCompatActivity() {
             estimatedPcsHintView2.text = ""
             estimatedKgsHintView2.text = ""
         }
+    }
+
+    fun refreshBalance(isMakeListMode: Boolean) {
+        Thread {
+            if (isMakeListMode) {
+                listViews.forEach { (_, entry) ->
+                    val balView = entry.findViewById<TextView>(R.id.smsorder_listEntry_amount)
+                    runOnUiThread {
+                        balView.text = ""
+                        balView.hint = "Updating..."
+                    }
+                }
+//                Toast.makeText(this, "Fetching Latest Balance", Toast.LENGTH_LONG).show()
+                latestBalances = CustomerDueData.getBalance(useCache = false)
+            }
+            listViews.forEach { (name, entry) ->
+                val balView = entry.findViewById<TextView>(R.id.smsorder_listEntry_amount)
+                runOnUiThread {
+                    if (!isMakeListMode || CustomerKYC.showBalance(name)) {
+                        balView.text = latestBalances[name].toString()
+                    } else {
+                        balView.text = "* * * * *"
+                    }
+                }
+            }
+        }.start()
     }
 
     fun getAvgWt1(): Double {

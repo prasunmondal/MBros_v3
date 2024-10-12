@@ -41,7 +41,7 @@
 
                     <EditText
                         android:id="@+id/smsorder_listEntry_pc"
-                        android:layout_width="25dp"
+                        android:layout_width="30dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".1"
                         android:inputType="number"
@@ -51,7 +51,7 @@
 
                     <EditText
                         android:id="@+id/smsorder_list_finalized_kg"
-                        android:layout_width="25dp"
+                        android:layout_width="30dp"
                         android:layout_height="wrap_content"
                         android:layout_weight=".1"
                         android:hint="0"
@@ -59,7 +59,7 @@
                         android:paddingLeft="10dp"
                         android:textColor="#B6BCE1"
                         android:textColorHint="#938C8C"
-                        android:textSize="14sp" />
+                        android:textSize="15sp" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/smsorder_listEntry_number"
@@ -72,7 +72,7 @@
                         android:paddingStart="7dp"
                         android:text="Name"
                         android:textColor="#B6BCE1"
-                        android:textSize="14sp" />
+                        android:textSize="15sp" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/smsorder_listEntry_amount"

@@ -231,7 +231,7 @@ class RefuelUI(
 
         (context as Activity).runOnUiThread {
             salaryPaidElement.hint = SingleAttributedDataUtils.getEstimatedSalary().toString()
-            if(SingleAttributedDataUtils.getEstimatedSalary() != 0) {
+            if(NumberUtils.getIntOrZero(SingleAttributedDataUtils.getRecords().labour_expenses) != 0) {
                 UIUtils.setUIElementValue(salaryPaidElement, salaryPaid.toString())
             }
             UIUtils.setUIElementValue(

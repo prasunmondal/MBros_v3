@@ -344,7 +344,6 @@ class OneShotDelivery : AppCompatActivity() {
             refuelUIObj.saveFuelData()
             SingleAttributedDataUtils.fetchAll().queue()
             DeliverToCustomerDataHandler.fetchAll().queue()
-            DeliverToCustomerDataHandler.fetchAll().queue()
             GScript.execute()
             runOnUiThread()
             {

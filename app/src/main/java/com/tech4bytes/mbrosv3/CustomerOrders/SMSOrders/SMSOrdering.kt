@@ -69,6 +69,7 @@ class SMSOrdering : AppCompatActivity() {
             showSMS()
             showEntries()
             showTotal()
+            setHelperVisibility()
             markUIReadyToUse()
         }.start()
     }
@@ -92,9 +93,7 @@ class SMSOrdering : AppCompatActivity() {
 
         val helperSwitch = findViewById<SwitchCompat>(R.id.smso_helper_view_switch)
         helperSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            listViews.forEach {
-                toggleHelperVisible(it.value, isChecked)
-            }
+            setHelperVisibility()
         }
     }
 
@@ -266,10 +265,10 @@ class SMSOrdering : AppCompatActivity() {
                 finalizedPcView.setText(order.appPc)
                 if (order.orderedKg > 0)
                     finalizedKgView.setText(order.orderedKg.toString())
-                refreshHints(entry, isHelperVisible())
+                refreshHints(entry)
 
                 finalizedPcView.doOnTextChanged { text, start, before, count ->
-                    refreshHints(entry, isHelperVisible())
+                    refreshHints(entry)
                     order.finalPc = NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedPcView))
                     order.appPc =
                         if (NumberUtils.getIntOrZero(finalizedPcView.text.toString()) == 0) "" else finalizedPcView.text.toString()
@@ -277,7 +276,7 @@ class SMSOrdering : AppCompatActivity() {
                 }
 
                 finalizedKgView.doOnTextChanged { text, start, before, count ->
-                    refreshHints(entry, isHelperVisible())
+                    refreshHints(entry)
                     order.orderedKg =
                         NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedKgView))
                     order.finalPc = NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedPcView))
@@ -325,7 +324,7 @@ class SMSOrdering : AppCompatActivity() {
                 orders.remove(order)
                 listViews.remove(order.name)
                 orderListContainer.removeView(entry)
-                refreshHints(entry, isHelperVisible())
+                refreshHints(entry)
                 updateTotal()
                 populateCustomerListDropdown()
             }
@@ -386,16 +385,20 @@ class SMSOrdering : AppCompatActivity() {
         totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_amount)?.text = ""
     }
 
-    fun toggleHelperVisible(entry: View, isHelperVisible: Boolean) {
-        val visibility = if(isHelperVisible)
-            View.VISIBLE
-        else
+    fun setHelperVisibility() {
+        val visibility = if(findViewById<SwitchCompat>(R.id.smso_helper_view_switch).isChecked)
             View.GONE
-        entry.findViewById<LinearLayout>(R.id.smso_helper_estimates).visibility = visibility
+        else
+            View.VISIBLE
+
+        listViews.forEach {
+            it.value.findViewById<LinearLayout>(R.id.smso_helper_estimates).visibility = visibility
+        }
+
         totalEntryView?.findViewById<LinearLayout>(R.id.smso_helper_estimates)?.visibility = visibility
     }
 
-    fun refreshHints(entry: View, isHelperVisible: Boolean) {
+    fun refreshHints(entry: View) {
         val estimatedPcsHintView1 =
             entry.findViewById<TextView>(R.id.smsorder_listEntry_calculated_pc)
         val estimatedKgsHintView1 = entry.findViewById<TextView>(R.id.smsorder_listEntry_approx_kg)
@@ -487,13 +490,7 @@ class SMSOrdering : AppCompatActivity() {
 
     fun refreshEntries() {
         listViews.forEach {
-            refreshHints(it.value, isHelperVisible())
-//            if(isHelperVisible()) {
-//
-//            }
-//            else {
-////                val helperView =
-//            }
+            refreshHints(it.value)
         }
         updateTotal()
     }
@@ -503,9 +500,5 @@ class SMSOrdering : AppCompatActivity() {
         val b = findViewById<TextView>(R.id.smsordering_toggle_sms_text)
         c.visibility = if (c.visibility == View.VISIBLE) View.GONE else View.VISIBLE
         b.text = if (c.visibility == View.VISIBLE) "HIDE SMS" else "SHOW SMS"
-    }
-
-    fun isHelperVisible(): Boolean {
-        return findViewById<SwitchCompat>(R.id.smso_helper_view_switch).isChecked
     }
 }

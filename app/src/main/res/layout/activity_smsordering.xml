@@ -281,7 +281,7 @@
         android:id="@+id/ordering_extra_pc"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#10FFFFFF"
+        android:background="#1A00B0FF"
         android:orientation="vertical"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/constraintLayout5"

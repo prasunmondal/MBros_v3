@@ -25,7 +25,7 @@ object SMSOrderModelUtil: GSheetSerialized<SMSOrderModel> (
     modelClass = SMSOrderModel::class.java
 ) {
 
-    fun createOrderObj(name: String): SMSOrderModel {
+    private fun createOrderObj(name: String): SMSOrderModel {
         return SMSOrderModel(id = System.currentTimeMillis().toString(),
             name = name,
             orderedKg = 0,
@@ -73,7 +73,7 @@ object SMSOrderModelUtil: GSheetSerialized<SMSOrderModel> (
                 }
             }
             if (!isInOrderList && masterList.isActiveCustomer.toBoolean()) {
-                list.add(SMSOrderModelUtil.createOrderObj(masterList.nameEng))
+                list.add(createOrderObj(masterList.nameEng))
             }
         }
         return list
@@ -81,17 +81,17 @@ object SMSOrderModelUtil: GSheetSerialized<SMSOrderModel> (
 
     fun getAvgWt1(): String {
         return try {
-            NumberUtils.getIntOrBlank(fetchAll().execute()[0].avgWt1)
+            fetchAll().execute()[0].avgWt1.toInt().toString()
         } catch (e: Exception) {
-            ""
+            NumberUtils.getDoubleOrBlank(fetchAll().execute()[0].avgWt1)
         }
     }
 
     fun getAvgWt2(): String {
         return try {
-            NumberUtils.getIntOrBlank(fetchAll().execute()[0].avgWt2)
+            fetchAll().execute()[0].avgWt2.toInt().toString()
         } catch (e: Exception) {
-            ""
+            NumberUtils.getDoubleOrBlank(fetchAll().execute()[0].avgWt2)
         }
     }
 }

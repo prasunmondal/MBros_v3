@@ -358,10 +358,10 @@ class SMSOrdering : AppCompatActivity() {
         val totalKgByAvgWt2 = findViewById<TextView>(R.id.ordering_totalKg_by_avgWt2)
 
         runOnUiThread {
-            totalPcsField.text = totalPc.toString()
-            totalKgsField.text = totalKg.toString() + " kg"
-            totalKgByAvgWt1.text = String.format("%.1f", totalPc * getAvgWt1())
-            totalKgByAvgWt2.text = String.format("%.1f", totalPc * getAvgWt2())
+            totalPcsField.text = if (totalPc > 0) totalPc.toString() else ""
+            totalKgsField.text = if (totalKg > 0) totalKg.toString() + " kg" else ""
+            totalKgByAvgWt1.text = if((totalPc * getAvgWt1()) > 0.0) String.format("%.1f", totalPc * getAvgWt1()) else ""
+            totalKgByAvgWt2.text = if((totalPc * getAvgWt2()) > 0.0) String.format("%.1f", totalPc * getAvgWt2()) else ""
         }
     }
 

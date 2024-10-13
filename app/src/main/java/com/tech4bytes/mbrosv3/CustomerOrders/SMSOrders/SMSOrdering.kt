@@ -183,6 +183,8 @@ class SMSOrdering : AppCompatActivity() {
             findViewById<EditText>(R.id.smsorder_avg_wt2).setText(SMSOrderModelUtil.getAvgWt2())
             findViewById<EditText>(R.id.order_extra_pc).setText(orders[0].extraPc)
             findViewById<EditText>(R.id.order_extra_kg).setText(orders[0].extraKg)
+            if(NumberUtils.getDoubleOrZero(orders[0].extraPc) + NumberUtils.getDoubleOrZero(orders[0].extraKg) > 0)
+                showExtraBirdsUI()
         }
         populateCustomerListDropdown()
     }

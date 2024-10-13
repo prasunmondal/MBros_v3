@@ -44,6 +44,7 @@ class SMSOrdering : AppCompatActivity() {
     private var smsToProcess: String = ""
     private var listViews: MutableMap<String, View> = mutableMapOf()
     private lateinit var latestBalances: MutableMap<String, Int>
+    private val extra_label = "Extra"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -177,6 +178,10 @@ class SMSOrdering : AppCompatActivity() {
     }
 
     private fun addCustomer(name: String) {
+        if(name == extra_label) {
+            showExtraBirdsUI()
+            return
+        }
         if (orders.none { it.name == name }) {
             // if the name is not already present in the list
             orders.add(SMSOrderModel(System.currentTimeMillis().toString(), name, 0, "", 0, 0, SMSOrderModelUtil.getAvgWt1(), SMSOrderModelUtil.getAvgWt2()))
@@ -188,7 +193,7 @@ class SMSOrdering : AppCompatActivity() {
         val activeCustomers = CustomerKYC.fetchAll().execute().filter { it.isActiveCustomer.toBoolean() }
         val inActiveCustomers = CustomerKYC.fetchAll().execute().filter { !it.isActiveCustomer.toBoolean() }
 
-        val sortedActiveList = ListUtils.getAllPossibleValuesList(activeCustomers, CustomerKYCModel::nameEng).toList()
+        val sortedActiveList = ListUtils.getAllPossibleValuesList(activeCustomers, CustomerKYCModel::nameEng).toList().plus(extra_label)
         val sortedInActiveList = ListUtils.getAllPossibleValuesList(inActiveCustomers, CustomerKYCModel::nameEng).toList()
 
         runOnUiThread {
@@ -485,6 +490,10 @@ class SMSOrdering : AppCompatActivity() {
             refreshHints(it.value)
         }
         updateTotal()
+    }
+
+    private fun showExtraBirdsUI() {
+        TODO("Not yet implemented")
     }
 
     fun onClickToggleSMSView(view: View) {

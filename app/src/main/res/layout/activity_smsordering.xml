@@ -224,7 +224,7 @@
         android:id="@+id/scrollView6"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout5"
+        app:layout_constraintBottom_toTopOf="@+id/ordering_extra_pc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -277,12 +277,71 @@
         </LinearLayout>
     </ScrollView>
 
+    <LinearLayout
+        android:id="@+id/ordering_extra_pc"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/constraintLayout5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView6">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="10dp"
+            android:background="#44FFFFFF"
+            android:orientation="vertical"></LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingHorizontal="5dp">
+
+            <EditText
+                android:id="@+id/order_extra_pc"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:hint="pc"
+                android:inputType="number"
+                android:textColor="#EF8886"
+                android:textColorHint="#938C8C"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/order_extra_kg"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:hint="kg"
+                android:inputType="number|numberDecimal"
+                android:paddingLeft="10dp"
+                android:textColor="#B6BCE1"
+                android:textColorHint="#938C8C"
+                android:textSize="15sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/order_extra_name_label"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:paddingStart="7dp"
+                android:text="Extra"
+                android:textColor="#B6BCE1"
+                android:textSize="15sp" />
+        </LinearLayout>
+    </LinearLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout5"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginHorizontal="5dp"
-        android:background="#4DF4D19D"
+        android:background="#62F4D19D"
         app:layout_constraintBottom_toTopOf="@+id/ordering_save_progress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

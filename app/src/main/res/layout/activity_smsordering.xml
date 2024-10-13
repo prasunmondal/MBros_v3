@@ -312,6 +312,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+        <ImageView
+            android:id="@+id/smso_delete_all_btn"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:onClick="onClickDeleteAllBtn"
+            android:padding="10dp"
+            app:srcCompat="@android:drawable/ic_menu_delete" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -332,15 +340,16 @@
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="5dp"
                     android:text="Total"
-                    android:textColor="#90FFFFFF" />
+                    android:textColor="#66FFFFFF" />
 
                 <TextView
                     android:id="@+id/ordering_totalPc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Total Pc"
+                    android:hint="000"
                     android:textColor="@color/delivery_pending"
-                    android:textSize="16sp" />
+                    android:textColorHint="#36FFFFFF"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/textView85"
@@ -355,9 +364,10 @@
                     android:id="@+id/ordering_totalKg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Total Kg"
+                    android:hint="0000"
                     android:textColor="@color/delivery_pending"
-                    android:textSize="16sp" />
+                    android:textColorHint="#36FFFFFF"
+                    android:textSize="14sp" />
 
                 <LinearLayout
                     android:id="@+id/smso_helper_estimates"
@@ -381,8 +391,9 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"
-                            android:text="00.000"
+                            android:hint="0000.0"
                             android:textColor="@color/smso_avg1_grp_text_color"
+                            android:textColorHint="#36FFFFFF"
                             android:textSize="12sp" />
 
                         <TextView
@@ -396,8 +407,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="00.000"
+                            android:hint="0000.0"
                             android:textColor="@color/smso_avg2_grp_text_color"
+                            android:textColorHint="#36FFFFFF"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
@@ -420,14 +432,6 @@
                 android:onClick="onClickSaveSMSOrdersBtn"
                 android:padding="10dp"
                 app:srcCompat="@android:drawable/ic_menu_save" />
-
-            <ImageView
-                android:id="@+id/smso_delete_all_btn"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:onClick="onClickDeleteAllBtn"
-                android:padding="10dp"
-                app:srcCompat="@android:drawable/ic_menu_delete" />
 
         </LinearLayout>
 

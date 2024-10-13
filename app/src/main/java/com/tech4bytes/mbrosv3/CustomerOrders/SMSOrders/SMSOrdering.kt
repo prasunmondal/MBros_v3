@@ -156,18 +156,13 @@ class SMSOrdering : AppCompatActivity() {
         orders = mutableListOf()
         for (j in 0 until minSize) {
             if (NumberUtils.getIntOrZero(valueArray[j].trim()) != 0) {
-                var avgWt1 = getAvgWt1()
-                if (avgWt1 == 0.0) {
-                    avgWt1 = 1.0
-                }
-                val finalPc = (NumberUtils.getIntOrZero(valueArray[j].trim()) / avgWt1).toInt()
                 orders.add(
                     SMSOrderModel(
                         System.currentTimeMillis().toString(),
                         namesArray[j].trim(),
                         valueArray[j].trim().toInt(),
                         "",
-                        finalPc, finalPc, SMSOrderModelUtil.getAvgWt1(), SMSOrderModelUtil.getAvgWt2()
+                        0, 0, SMSOrderModelUtil.getAvgWt1(), SMSOrderModelUtil.getAvgWt2()
                     )
                 )
             }
@@ -264,24 +259,20 @@ class SMSOrdering : AppCompatActivity() {
                 val finalizedKgView = entry.findViewById<EditText>(R.id.smsorder_list_finalized_kg)
                 val removeBtn = entry.findViewById<ImageView>(R.id.smsorder_listEntry_remove)
 
-                finalizedPcView.setText(order.appPc)
+                finalizedPcView.setText(getAppPc(entry))
                 if (order.orderedKg > 0)
                     finalizedKgView.setText(order.orderedKg.toString())
                 refreshHints(entry)
 
                 finalizedPcView.doOnTextChanged { text, start, before, count ->
                     refreshHints(entry)
-                    order.finalPc = NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedPcView))
-                    order.appPc =
-                        if (NumberUtils.getIntOrZero(finalizedPcView.text.toString()) == 0) "" else finalizedPcView.text.toString()
                     updateTotal()
                 }
 
                 finalizedKgView.doOnTextChanged { text, start, before, count ->
                     refreshHints(entry)
-                    order.orderedKg =
-                        NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedKgView))
-                    order.finalPc = NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedPcView))
+//                    order.orderedKg =
+//                        NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedKgView))
                     updateTotal()
                 }
 
@@ -357,9 +348,9 @@ class SMSOrdering : AppCompatActivity() {
     fun updateTotal() {
         var totalKg = 0
         var totalPc = 0
-        for (j in 0 until orders.size) {
-            totalPc += orders[j].finalPc
-            totalKg += orders[j].orderedKg
+        listViews.forEach {
+            totalPc += getFinalPc(it.value)
+            totalKg += getFinalKg(it.value)
         }
 
         val totalPcsField = totalEntryView?.findViewById<EditText>(R.id.smsorder_listEntry_pc)
@@ -490,6 +481,16 @@ class SMSOrdering : AppCompatActivity() {
         val saveBtn = view as Button
 
         Thread {
+            listViews.forEach { (name, fragView) ->
+                val order = SMSOrderModelUtil.getOrder(orders, name)!!
+                order.appPc = getAppPc(fragView)
+                order.finalPc = getFinalPc(fragView)
+                order.orderedPc = getFinalPc(fragView)
+                order.orderedKg = getFinalKg(fragView)
+                order.avgWt1 = getAvgWt1().toString()
+                order.avgWt2 = getAvgWt2().toString()
+            }
+
             runOnUiThread {
                 saveBtn.isEnabled = false
                 saveBtn.alpha = .5f
@@ -498,13 +499,7 @@ class SMSOrdering : AppCompatActivity() {
             }
 
             runOnUiThread {
-                saveBtn.text = "Saving ${orders.size} reecords)"
-            }
-
-            orders.forEach {
-                it.orderedPc = it.finalPc
-                it.avgWt1 = findViewById<EditText>(R.id.smsorder_avg_wt1).text.toString()
-                it.avgWt2 = findViewById<EditText>(R.id.smsorder_avg_wt2).text.toString()
+                saveBtn.text = "Saving ${orders.size} records)"
             }
             SMSOrderModelUtil.save(orders).execute()
 
@@ -529,5 +524,20 @@ class SMSOrdering : AppCompatActivity() {
         val b = findViewById<TextView>(R.id.smsordering_toggle_sms_text)
         c.visibility = if (c.visibility == View.VISIBLE) View.GONE else View.VISIBLE
         b.text = if (c.visibility == View.VISIBLE) "HIDE SMS" else "SHOW SMS"
+    }
+
+    fun getAppPc(fragView: View): String {
+        val fragPcView = fragView.findViewById<EditText>(R.id.smsorder_listEntry_pc)
+        return fragPcView.text.toString()
+    }
+
+    fun getFinalPc(fragView: View): Int {
+        val fragPcView = fragView.findViewById<EditText>(R.id.smsorder_listEntry_pc)
+        return NumberUtils.getIntOrZero(UIUtils.getTextOrHint(fragPcView))
+    }
+
+    fun getFinalKg(fragView: View): Int {
+        val fragPcView = fragView.findViewById<EditText>(R.id.smsorder_list_finalized_kg)
+        return NumberUtils.getIntOrZero(UIUtils.getTextOrHint(fragPcView))
     }
 }

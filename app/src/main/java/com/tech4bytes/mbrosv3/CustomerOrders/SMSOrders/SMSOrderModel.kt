@@ -36,13 +36,17 @@ object SMSOrderModelUtil: GSheetSerialized<SMSOrderModel> (
             avgWt2 = "0")
     }
 
-    fun getOrder(name: String): SMSOrderModel? {
-        val list = fetchAll().execute()
+    fun getOrder(list: List<SMSOrderModel>, name: String): SMSOrderModel? {
         return try {
             list.filter { it.name == name }.stream().findFirst().get()
         } catch (e: Exception) {
             null
         }
+    }
+
+    fun getOrder(name: String): SMSOrderModel? {
+        val list = fetchAll().execute()
+        return getOrder(list, name)
     }
 
     fun getListOfOrderedCustomers(): List<SMSOrderModel> {

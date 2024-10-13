@@ -390,6 +390,10 @@ class SMSOrdering : AppCompatActivity() {
         makeListIncludeExtraPc.text = totalPc.toString()
         makeListIncludeExtraKg.text = totalKg.toString()
 
+        findViewById<LinearLayout>(R.id.order_make_list_extra_birds_container).visibility = if(getExtraPc() > 0 || getExtraKg() > 0)
+            View.VISIBLE
+        else
+            View.GONE
 
         runOnUiThread {
             totalPcsField.text = if (totalPc > 0) totalPc.toString() else ""

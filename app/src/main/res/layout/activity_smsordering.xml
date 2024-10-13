@@ -363,11 +363,11 @@
                     android:id="@+id/smso_helper_estimates"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginHorizontal="8dp"
                     android:background="@drawable/rounded"
                     android:backgroundTint="#BF201F1F"
                     android:orientation="horizontal"
-                    android:paddingHorizontal="20dp"
+                    android:paddingHorizontal="8dp"
                     android:paddingVertical="3dp">
 
                     <LinearLayout

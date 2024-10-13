@@ -293,12 +293,6 @@ class SMSOrdering : AppCompatActivity() {
     var totalEntryView: View? = null
     fun showTotal() {
         runOnUiThread {
-            val orderListContainer =
-                findViewById<LinearLayout>(R.id.smsorders_order_extra_aand_total_view_container)
-            orderListContainer.removeAllViews()
-            totalEntryView =
-                layoutInflater.inflate(R.layout.activity_sms_ordering_list_fragments, null)
-            orderListContainer.addView(totalEntryView)
             updateTotal()
         }
     }
@@ -363,13 +357,12 @@ class SMSOrdering : AppCompatActivity() {
         val totalKgByAvgWt1 = findViewById<TextView>(R.id.ordering_totalKg_by_avgWt1)
         val totalKgByAvgWt2 = findViewById<TextView>(R.id.ordering_totalKg_by_avgWt2)
 
-        totalPcsField.text = totalPc.toString()
-        totalKgsField.text = totalKg.toString() + " kg"
-        totalKgByAvgWt1.text = String.format("%.1f", totalPc * getAvgWt1())
-        totalKgByAvgWt2.text = String.format("%.1f", totalPc * getAvgWt2())
-
-        totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_number)?.text = "TOTAL"
-        totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_amount)?.text = ""
+        runOnUiThread {
+            totalPcsField.text = totalPc.toString()
+            totalKgsField.text = totalKg.toString() + " kg"
+            totalKgByAvgWt1.text = String.format("%.1f", totalPc * getAvgWt1())
+            totalKgByAvgWt2.text = String.format("%.1f", totalPc * getAvgWt2())
+        }
     }
 
     private fun setHelperVisibility() {

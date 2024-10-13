@@ -17,6 +17,8 @@ data class SMSOrderModel(
     var orderedPc: Int,
     var avgWt1: String,
     var avgWt2: String,
+    var extraPc: String,
+    var extraKg: String
 ): Serializable
 object SMSOrderModelUtil: GSheetSerialized<SMSOrderModel> (
     context = ContextWrapper(AppContexts.get()),
@@ -33,7 +35,9 @@ object SMSOrderModelUtil: GSheetSerialized<SMSOrderModel> (
             finalPc = 0,
             orderedPc = 0,
             avgWt1 = "0",
-            avgWt2 = "0")
+            avgWt2 = "0",
+            extraPc = "",
+            extraKg = "")
     }
 
     fun getOrder(list: List<SMSOrderModel>, name: String): SMSOrderModel? {

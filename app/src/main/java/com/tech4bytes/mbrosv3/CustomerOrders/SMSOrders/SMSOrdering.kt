@@ -104,6 +104,12 @@ class SMSOrdering : AppCompatActivity() {
         findViewById<EditText>(R.id.smsorder_avg_wt2).doOnTextChanged { text, start, before, count ->
             refreshEntries()
         }
+        findViewById<EditText>(R.id.order_extra_pc).doOnTextChanged { text, start, before, count ->
+            updateTotal()
+        }
+        findViewById<EditText>(R.id.order_extra_kg).doOnTextChanged { text, start, before, count ->
+            updateTotal()
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -160,7 +166,9 @@ class SMSOrdering : AppCompatActivity() {
                         namesArray[j].trim(),
                         valueArray[j].trim().toInt(),
                         "",
-                        0, 0, SMSOrderModelUtil.getAvgWt1(), SMSOrderModelUtil.getAvgWt2()
+                        0, 0, SMSOrderModelUtil.getAvgWt1(), SMSOrderModelUtil.getAvgWt2(),
+                        extraPc = "",
+                        extraKg = ""
                     )
                 )
             }
@@ -173,6 +181,8 @@ class SMSOrdering : AppCompatActivity() {
         runOnUiThread {
             findViewById<EditText>(R.id.smsorder_avg_wt1).setText(SMSOrderModelUtil.getAvgWt1())
             findViewById<EditText>(R.id.smsorder_avg_wt2).setText(SMSOrderModelUtil.getAvgWt2())
+            findViewById<EditText>(R.id.order_extra_pc).setText(orders[0].extraPc)
+            findViewById<EditText>(R.id.order_extra_kg).setText(orders[0].extraKg)
         }
         populateCustomerListDropdown()
     }
@@ -184,7 +194,7 @@ class SMSOrdering : AppCompatActivity() {
         }
         if (orders.none { it.name == name }) {
             // if the name is not already present in the list
-            orders.add(SMSOrderModel(System.currentTimeMillis().toString(), name, 0, "", 0, 0, SMSOrderModelUtil.getAvgWt1(), SMSOrderModelUtil.getAvgWt2()))
+            orders.add(SMSOrderModel(System.currentTimeMillis().toString(), name, 0, "", 0, 0, SMSOrderModelUtil.getAvgWt1(), SMSOrderModelUtil.getAvgWt2(), "", ""))
             showEntries(true)
         }
     }
@@ -207,11 +217,14 @@ class SMSOrdering : AppCompatActivity() {
                 false
             }
             uiView.setOnItemClickListener { _, _, _, _ ->
-                addCustomer(uiView.text.toString().trim())
+                val name = uiView.text.toString().trim()
+                addCustomer(name)
                 uiView.setText("")
                 uiView.setAdapter(getListAdapter(sortedActiveList, alreadySelectedCustomers()))
                 uiView.post {
-                    uiView.showDropDown()
+                    if(name != extra_label) {
+                        uiView.showDropDown()
+                    }
                 }
             }
         }
@@ -352,6 +365,8 @@ class SMSOrdering : AppCompatActivity() {
             totalPc += getFinalPc(it.value)
             totalKg += getFinalKg(it.value)
         }
+        totalPc += getExtraPc()
+        totalKg += getExtraKg()
 
         val totalPcsField = findViewById<TextView>(R.id.ordering_totalPc)
         val totalKgsField = findViewById<TextView>(R.id.ordering_totalKg)
@@ -477,6 +492,8 @@ class SMSOrdering : AppCompatActivity() {
                 order.orderedKg = getFinalKg(fragView)
                 order.avgWt1 = getAvgWt1().toString()
                 order.avgWt2 = getAvgWt2().toString()
+                order.extraPc = findViewById<EditText>(R.id.order_extra_pc).text.toString()
+                order.extraKg = findViewById<EditText>(R.id.order_extra_kg).text.toString()
             }
 
             callInProgress(saveBtn, true)
@@ -493,7 +510,7 @@ class SMSOrdering : AppCompatActivity() {
     }
 
     private fun showExtraBirdsUI() {
-        TODO("Not yet implemented")
+        findViewById<LinearLayout>(R.id.ordering_extra_pc).visibility = View.VISIBLE
     }
 
     fun onClickToggleSMSView(view: View) {
@@ -510,6 +527,16 @@ class SMSOrdering : AppCompatActivity() {
 
     fun getFinalPc(fragView: View): Int {
         val fragPcView = fragView.findViewById<EditText>(R.id.smsorder_listEntry_pc)
+        return NumberUtils.getIntOrZero(UIUtils.getTextOrHint(fragPcView))
+    }
+
+    fun getExtraPc(): Int {
+        val fragPcView = findViewById<EditText>(R.id.order_extra_pc)
+        return NumberUtils.getIntOrZero(UIUtils.getTextOrHint(fragPcView))
+    }
+
+    fun getExtraKg(): Int {
+        val fragPcView = findViewById<EditText>(R.id.order_extra_kg)
         return NumberUtils.getIntOrZero(UIUtils.getTextOrHint(fragPcView))
     }
 
@@ -535,5 +562,11 @@ class SMSOrdering : AppCompatActivity() {
                 view.isClickable = true
             }
         }
+    }
+
+    fun onClickExtraCloseUIBtn(view: View) {
+        findViewById<EditText>(R.id.order_extra_pc).setText("")
+        findViewById<EditText>(R.id.order_extra_kg).setText("")
+        findViewById<LinearLayout>(R.id.ordering_extra_pc).visibility = View.GONE
     }
 }

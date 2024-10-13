@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
@@ -309,17 +310,20 @@ class SMSOrdering : AppCompatActivity() {
     }
 
     private fun confirmOrderDeletion(orderListContainer: LinearLayout, order: SMSOrderModel, entry: View) {
+        val deleteAllBtn = findViewById<ImageView>(R.id.smso_delete_all_btn)
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         builder.setMessage("Deleting order for: " + order.name)
             .setTitle("Delete Order?")
             .setPositiveButton("Confirm") { dialog, id ->
                 // CONFIRM
+                callInProgress(deleteAllBtn, true)
                 orders.remove(order)
                 listViews.remove(order.name)
                 orderListContainer.removeView(entry)
                 refreshHints(entry)
                 updateTotal()
                 populateCustomerListDropdown()
+                callInProgress(deleteAllBtn, false)
             }
             .setNegativeButton("Cancel") { dialog, id ->
                 // CANCEL
@@ -360,7 +364,7 @@ class SMSOrdering : AppCompatActivity() {
         val totalKgByAvgWt2 = findViewById<TextView>(R.id.ordering_totalKg_by_avgWt2)
 
         totalPcsField.text = totalPc.toString()
-        totalKgsField.text = totalKg.toString()
+        totalKgsField.text = totalKg.toString() + " kg"
         totalKgByAvgWt1.text = String.format("%.1f", totalPc * getAvgWt1())
         totalKgByAvgWt2.text = String.format("%.1f", totalPc * getAvgWt2())
 
@@ -468,7 +472,7 @@ class SMSOrdering : AppCompatActivity() {
     }
 
     fun onClickSaveSMSOrdersBtn(view: View) {
-        val saveBtn = view as Button
+        val saveBtn = view as ImageView
 
         Thread {
             listViews.forEach { (name, fragView) ->
@@ -481,24 +485,9 @@ class SMSOrdering : AppCompatActivity() {
                 order.avgWt2 = getAvgWt2().toString()
             }
 
-            runOnUiThread {
-                saveBtn.isEnabled = false
-                saveBtn.alpha = .5f
-                saveBtn.isClickable = false
-                saveBtn.text = "Deleting previous data"
-            }
-
-            runOnUiThread {
-                saveBtn.text = "Saving ${orders.size} records)"
-            }
+            callInProgress(saveBtn, true)
             SMSOrderModelUtil.save(orders).execute()
-
-            runOnUiThread {
-                saveBtn.isEnabled = true
-                saveBtn.alpha = 1.0f
-                saveBtn.isClickable = true
-                saveBtn.text = "Save"
-            }
+            callInProgress(saveBtn, false)
         }.start()
     }
 
@@ -529,5 +518,24 @@ class SMSOrdering : AppCompatActivity() {
     fun getFinalKg(fragView: View): Int {
         val fragPcView = fragView.findViewById<EditText>(R.id.smsorder_list_finalized_kg)
         return NumberUtils.getIntOrZero(UIUtils.getTextOrHint(fragPcView))
+    }
+
+    fun callInProgress(view: View, inProgress: Boolean) {
+        val saveProgressView = findViewById<ProgressBar>(R.id.ordering_save_progress)
+        if(inProgress) {
+            runOnUiThread {
+                saveProgressView.setVisibility(View.VISIBLE)
+                view.isEnabled = false
+                view.alpha = .5f
+                view.isClickable = false
+            }
+        } else {
+            runOnUiThread {
+                saveProgressView.setVisibility(View.GONE)
+                view.isEnabled = true
+                view.alpha = 1.0f
+                view.isClickable = true
+            }
+        }
     }
 }

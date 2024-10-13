@@ -353,26 +353,11 @@ class SMSOrdering : AppCompatActivity() {
             totalKg += getFinalKg(it.value)
         }
 
-        val totalPcsField = totalEntryView?.findViewById<EditText>(R.id.smsorder_listEntry_pc)
-        val totalKgsField = totalEntryView?.findViewById<EditText>(R.id.smsorder_list_finalized_kg)
+        val totalPcsField = findViewById<TextView>(R.id.ordering_totalPc)
+        val totalKgsField = findViewById<TextView>(R.id.ordering_totalKg)
 
         totalPcsField?.setText(totalPc.toString())
-        totalPcsField?.setTextColor(
-            ContextCompat.getColor(
-                this,
-                androidx.appcompat.R.color.material_blue_grey_800
-            )
-        )
-        totalPcsField?.setTypeface(null, Typeface.BOLD)
-
         totalKgsField?.setText(totalKg.toString())
-        totalKgsField?.setTextColor(
-            ContextCompat.getColor(
-                this,
-                androidx.appcompat.R.color.material_blue_grey_800
-            )
-        )
-        totalKgsField?.setTypeface(null, Typeface.BOLD)
 
         totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_number)?.text = "TOTAL"
         totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_amount)?.text = ""

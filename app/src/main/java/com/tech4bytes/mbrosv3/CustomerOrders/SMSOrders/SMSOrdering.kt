@@ -2,24 +2,20 @@ package com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
-import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.tech4bytes.mbrosv3.AppData.AppUtils
@@ -44,10 +40,10 @@ import kotlin.math.ceil
 
 class SMSOrdering : AppCompatActivity() {
 
-    var orders = mutableListOf<SMSOrderModel>()
-    var smsToProcess: String = ""
-    var listViews: MutableMap<String, View> = mutableMapOf()
-    lateinit var latestBalances: MutableMap<String, Int>
+    private var orders = mutableListOf<SMSOrderModel>()
+    private var smsToProcess: String = ""
+    private var listViews: MutableMap<String, View> = mutableMapOf()
+    private lateinit var latestBalances: MutableMap<String, Int>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,7 +79,7 @@ class SMSOrdering : AppCompatActivity() {
         }
     }
 
-    fun setUpUI() {
+    private fun setUpUI() {
         val offset = 1000L * 60 * 60 * 12
         val currentDate = System.currentTimeMillis()
         val listDate = Date(currentDate + offset)

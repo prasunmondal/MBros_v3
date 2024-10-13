@@ -68,7 +68,7 @@ class SMSOrdering : AppCompatActivity() {
             showSMS()
             showEntries()
             showTotal()
-            setHelperVisibility()
+            convertToMakeListUI()
             markUIReadyToUse()
         }.start()
     }
@@ -92,7 +92,7 @@ class SMSOrdering : AppCompatActivity() {
 
         val helperSwitch = findViewById<SwitchCompat>(R.id.smso_helper_view_switch)
         helperSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
-            setHelperVisibility()
+            convertToMakeListUI()
             refreshBalance(isChecked)
         }
     }
@@ -363,17 +363,33 @@ class SMSOrdering : AppCompatActivity() {
     fun updateTotal() {
         var totalKg = 0
         var totalPc = 0
-        listViews.forEach {
-            totalPc += getFinalPc(it.value)
-            totalKg += getFinalKg(it.value)
-        }
-        totalPc += getExtraPc()
-        totalKg += getExtraKg()
 
         val totalPcsField = findViewById<TextView>(R.id.ordering_totalPc)
         val totalKgsField = findViewById<TextView>(R.id.ordering_totalKg)
         val totalKgByAvgWt1 = findViewById<TextView>(R.id.ordering_totalKg_by_avgWt1)
         val totalKgByAvgWt2 = findViewById<TextView>(R.id.ordering_totalKg_by_avgWt2)
+        val makeListExtraPc = findViewById<TextView>(R.id.order_make_list_extra_pc)
+        val makeListExtraKg = findViewById<TextView>(R.id.order_make_list_extra_kg)
+        val makeListExcludeExtraPc = findViewById<TextView>(R.id.order_make_list_excluding_extra_total_pc)
+        val makeListExcludeExtraKg = findViewById<TextView>(R.id.order_make_list_excluding_extra_total_kg)
+        val makeListIncludeExtraPc = findViewById<TextView>(R.id.order_make_list_including_extra_total_pc)
+        val makeListIncludeExtraKg = findViewById<TextView>(R.id.order_make_list_including_extra_total_kg)
+
+        listViews.forEach {
+            totalPc += getFinalPc(it.value)
+            totalKg += getFinalKg(it.value)
+        }
+        makeListExcludeExtraPc.text = totalPc.toString()
+        makeListExcludeExtraKg.text = totalKg.toString()
+
+        totalPc += getExtraPc()
+        totalKg += getExtraKg()
+
+        makeListExtraPc.text = getExtraPc().toString()
+        makeListExtraKg.text = getExtraKg().toString()
+        makeListIncludeExtraPc.text = totalPc.toString()
+        makeListIncludeExtraKg.text = totalKg.toString()
+
 
         runOnUiThread {
             totalPcsField.text = if (totalPc > 0) totalPc.toString() else ""
@@ -383,7 +399,7 @@ class SMSOrdering : AppCompatActivity() {
         }
     }
 
-    private fun setHelperVisibility() {
+    private fun convertToMakeListUI() {
         val visibility = if(findViewById<SwitchCompat>(R.id.smso_helper_view_switch).isChecked)
             View.GONE
         else

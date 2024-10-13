@@ -280,7 +280,8 @@
     <LinearLayout
         android:id="@+id/ordering_extra_pc"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
+        android:background="#10FFFFFF"
         android:orientation="vertical"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/constraintLayout5"
@@ -341,8 +342,8 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
-                android:padding="8dp"
                 android:onClick="onClickExtraCloseUIBtn"
+                android:padding="8dp"
                 app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
         </LinearLayout>
     </LinearLayout>

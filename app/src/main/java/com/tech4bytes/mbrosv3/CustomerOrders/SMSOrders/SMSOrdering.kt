@@ -345,6 +345,7 @@ class SMSOrdering : AppCompatActivity() {
             .show()
     }
 
+    @SuppressLint("DefaultLocale")
     fun updateTotal() {
         var totalKg = 0
         var totalPc = 0
@@ -355,9 +356,13 @@ class SMSOrdering : AppCompatActivity() {
 
         val totalPcsField = findViewById<TextView>(R.id.ordering_totalPc)
         val totalKgsField = findViewById<TextView>(R.id.ordering_totalKg)
+        val totalKgByAvgWt1 = findViewById<TextView>(R.id.ordering_totalKg_by_avgWt1)
+        val totalKgByAvgWt2 = findViewById<TextView>(R.id.ordering_totalKg_by_avgWt2)
 
-        totalPcsField?.setText(totalPc.toString())
-        totalKgsField?.setText(totalKg.toString())
+        totalPcsField.text = totalPc.toString()
+        totalKgsField.text = totalKg.toString()
+        totalKgByAvgWt1.text = String.format("%.1f", totalPc * getAvgWt1())
+        totalKgByAvgWt2.text = String.format("%.1f", totalPc * getAvgWt2())
 
         totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_number)?.text = "TOTAL"
         totalEntryView?.findViewById<TextView>(R.id.smsorder_listEntry_amount)?.text = ""

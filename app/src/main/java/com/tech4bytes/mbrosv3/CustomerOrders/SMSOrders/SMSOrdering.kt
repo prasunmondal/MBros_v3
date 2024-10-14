@@ -439,8 +439,12 @@ class SMSOrdering : AppCompatActivity() {
             it.value.findViewById<LinearLayout>(R.id.smso_helper_estimates).visibility = helpersVisibility
         }
 
-        findViewById<LinearLayout>(R.id.osms_helper_input_container).visibility = helpersVisibility
-        findViewById<LinearLayout>(R.id.orders_final_list_total_view_container).visibility = extraBirdsContainerVisibility
+        runOnUiThread {
+            findViewById<LinearLayout>(R.id.osms_helper_input_container).visibility =
+                helpersVisibility
+            findViewById<LinearLayout>(R.id.orders_final_list_total_view_container).visibility =
+                extraBirdsContainerVisibility
+        }
     }
 
     fun refreshHints(entry: View) {

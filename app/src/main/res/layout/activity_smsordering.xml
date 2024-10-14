@@ -305,18 +305,22 @@
                             <TextView
                                 android:id="@+id/order_make_list_excluding_extra_total_pc"
                                 android:layout_width="50dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="30dp"
+                                android:gravity="right|center_vertical"
                                 android:hint="pc"
                                 android:textColor="#D1CBCB"
-                                android:textColorHint="#8D898686" />
+                                android:textColorHint="#8D898686"
+                                android:textSize="16sp" />
 
                             <TextView
                                 android:id="@+id/order_make_list_excluding_extra_total_kg"
                                 android:layout_width="50dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="30dp"
+                                android:gravity="right|center_vertical"
                                 android:hint="kg"
                                 android:textColor="#D1CBCB"
-                                android:textColorHint="#8D898686" />
+                                android:textColorHint="#8D898686"
+                                android:textSize="16sp" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -336,24 +340,29 @@
                         <TextView
                             android:id="@+id/order_make_list_extra_pc"
                             android:layout_width="50dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="right|center_vertical"
                             android:hint="pc"
                             android:textColor="#D1CBCB"
-                            android:textColorHint="#8D898686" />
+                            android:textColorHint="#8D898686"
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/order_make_list_extra_kg"
                             android:layout_width="50dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="right|center_vertical"
                             android:hint="kg"
                             android:textColor="#D1CBCB"
-                            android:textColorHint="#8D898686" />
+                            android:textColorHint="#8D898686"
+                            android:textSize="16sp" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="140dp"
                         android:layout_height="1dp"
-                        android:background="#E2DBDB"
+                        android:layout_marginVertical="5dp"
+                        android:background="#F0B970"
                         android:orientation="vertical"></LinearLayout>
 
                     <LinearLayout
@@ -364,18 +373,22 @@
                         <TextView
                             android:id="@+id/order_make_list_including_extra_total_pc"
                             android:layout_width="50dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="right|center_vertical"
                             android:hint="pc"
                             android:textColor="#D1CBCB"
-                            android:textColorHint="#8D898686" />
+                            android:textColorHint="#8D898686"
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/order_make_list_including_extra_total_kg"
                             android:layout_width="50dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="30dp"
+                            android:gravity="right|center_vertical"
                             android:hint="kg"
                             android:textColor="#D1CBCB"
-                            android:textColorHint="#8D898686" />
+                            android:textColorHint="#8D898686"
+                            android:textSize="16sp" />
                     </LinearLayout>
                 </LinearLayout>
 

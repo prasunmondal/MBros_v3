@@ -307,20 +307,22 @@
 
                             <TextView
                                 android:id="@+id/order_make_list_excluding_extra_total_pc"
-                                android:layout_width="50dp"
+                                android:layout_width="60dp"
                                 android:layout_height="30dp"
-                                android:gravity="right|center_vertical"
+                                android:gravity="left|center_vertical"
                                 android:hint="pc"
+                                android:paddingStart="6dp"
                                 android:textColor="#D1CBCB"
                                 android:textColorHint="#8D898686"
                                 android:textSize="16sp" />
 
                             <TextView
                                 android:id="@+id/order_make_list_excluding_extra_total_kg"
-                                android:layout_width="50dp"
+                                android:layout_width="60dp"
                                 android:layout_height="30dp"
-                                android:gravity="right|center_vertical"
+                                android:gravity="left|center_vertical"
                                 android:hint="kg"
+                                android:paddingStart="6dp"
                                 android:textColor="#D1CBCB"
                                 android:textColorHint="#8D898686"
                                 android:textSize="16sp" />
@@ -341,21 +343,34 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/order_make_list_extra_pc"
-                            android:layout_width="50dp"
+                            android:layout_width="15dp"
                             android:layout_height="30dp"
-                            android:gravity="right|center_vertical"
+                            android:gravity="left|center_vertical"
                             android:hint="pc"
+                            android:paddingStart="6dp"
+                            android:text="+"
+                            android:textColor="#D1CBCB"
+                            android:textColorHint="#8D898686"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/order_make_list_extra_pc"
+                            android:layout_width="40dp"
+                            android:layout_height="30dp"
+                            android:gravity="left|center_vertical"
+                            android:hint="pc"
+                            android:paddingStart="2dp"
                             android:textColor="#D1CBCB"
                             android:textColorHint="#8D898686"
                             android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/order_make_list_extra_kg"
-                            android:layout_width="50dp"
+                            android:layout_width="60dp"
                             android:layout_height="30dp"
-                            android:gravity="right|center_vertical"
+                            android:gravity="left|center_vertical"
                             android:hint="kg"
+                            android:paddingStart="6dp"
                             android:textColor="#D1CBCB"
                             android:textColorHint="#8D898686"
                             android:textSize="16sp" />
@@ -377,20 +392,22 @@
 
                         <TextView
                             android:id="@+id/order_make_list_including_extra_total_pc"
-                            android:layout_width="50dp"
+                            android:layout_width="60dp"
                             android:layout_height="30dp"
-                            android:gravity="right|center_vertical"
+                            android:gravity="left|center_vertical"
                             android:hint="pc"
+                            android:paddingStart="6dp"
                             android:textColor="#D1CBCB"
                             android:textColorHint="#8D898686"
                             android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/order_make_list_including_extra_total_kg"
-                            android:layout_width="50dp"
+                            android:layout_width="60dp"
                             android:layout_height="30dp"
-                            android:gravity="right|center_vertical"
+                            android:gravity="left|center_vertical"
                             android:hint="kg"
+                            android:paddingStart="6dp"
                             android:textColor="#D1CBCB"
                             android:textColorHint="#8D898686"
                             android:textSize="16sp" />

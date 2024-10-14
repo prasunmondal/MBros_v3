@@ -442,6 +442,7 @@ class SMSOrdering : AppCompatActivity() {
         runOnUiThread {
             findViewById<LinearLayout>(R.id.osms_helper_input_container).visibility =
                 helpersVisibility
+            findViewById<LinearLayout>(R.id.order_extra_pc).visibility = helpersVisibility
             findViewById<LinearLayout>(R.id.orders_final_list_total_view_container).visibility =
                 extraBirdsContainerVisibility
         }

@@ -363,6 +363,8 @@ class SMSOrdering : AppCompatActivity() {
     fun updateTotal() {
         var totalKg = 0
         var totalPc = 0
+        var extraPc = getExtraPc()
+        var extraKg = getExtraKg()
 
         val totalPcsField = findViewById<TextView>(R.id.ordering_totalPc)
         val totalKgsField = findViewById<TextView>(R.id.ordering_totalKg)
@@ -379,27 +381,44 @@ class SMSOrdering : AppCompatActivity() {
             totalPc += getFinalPc(it.value)
             totalKg += getFinalKg(it.value)
         }
+
         makeListExcludeExtraPc.text = totalPc.toString()
         makeListExcludeExtraKg.text = totalKg.toString()
 
         totalPc += getExtraPc()
         totalKg += getExtraKg()
 
-        makeListExtraPc.text = getExtraPc().toString()
-        makeListExtraKg.text = getExtraKg().toString()
+        totalPcsField.text = if (totalPc > 0) totalPc.toString() else ""
+        totalKgsField.text = if (totalKg > 0) totalKg.toString() + " kg" else ""
+        totalKgByAvgWt1.text = if((totalPc * getAvgWt1()) > 0.0) String.format("%.1f", totalPc * getAvgWt1()) else ""
+        totalKgByAvgWt2.text = if((totalPc * getAvgWt2()) > 0.0) String.format("%.1f", totalPc * getAvgWt2()) else ""
+
+        makeListExtraPc.text = extraPc.toString()
+        makeListExtraKg.text = extraKg.toString()
         makeListIncludeExtraPc.text = totalPc.toString()
         makeListIncludeExtraKg.text = totalKg.toString()
 
-        findViewById<LinearLayout>(R.id.order_make_list_extra_birds_container).visibility = if(getExtraPc() > 0 || getExtraKg() > 0)
-            View.VISIBLE
-        else
-            View.GONE
-
         runOnUiThread {
-            totalPcsField.text = if (totalPc > 0) totalPc.toString() else ""
-            totalKgsField.text = if (totalKg > 0) totalKg.toString() + " kg" else ""
-            totalKgByAvgWt1.text = if((totalPc * getAvgWt1()) > 0.0) String.format("%.1f", totalPc * getAvgWt1()) else ""
-            totalKgByAvgWt2.text = if((totalPc * getAvgWt2()) > 0.0) String.format("%.1f", totalPc * getAvgWt2()) else ""
+            findViewById<LinearLayout>(R.id.order_make_list_extra_birds_container).visibility = if(getExtraPc() > 0 || getExtraKg() > 0)
+                View.VISIBLE
+            else
+                View.GONE
+
+            if(extraPc == 0) {
+                makeListExtraPc.visibility = View.INVISIBLE
+                makeListIncludeExtraPc.visibility = View.INVISIBLE
+            } else {
+                makeListExtraPc.visibility = View.VISIBLE
+                makeListIncludeExtraPc.visibility = View.VISIBLE
+            }
+
+            if(extraKg == 0) {
+                makeListExtraKg.visibility = View.INVISIBLE
+                makeListIncludeExtraKg.visibility = View.INVISIBLE
+            } else {
+                makeListExtraKg.visibility = View.VISIBLE
+                makeListIncludeExtraKg.visibility = View.VISIBLE
+            }
         }
     }
 

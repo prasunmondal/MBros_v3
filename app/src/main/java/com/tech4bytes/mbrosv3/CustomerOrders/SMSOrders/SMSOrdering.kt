@@ -183,20 +183,33 @@ class SMSOrdering : AppCompatActivity() {
             findViewById<EditText>(R.id.smsorder_avg_wt2).setText(SMSOrderModelUtil.getAvgWt2())
             findViewById<EditText>(R.id.order_extra_pc).setText(orders[0].extraPc)
             findViewById<EditText>(R.id.order_extra_kg).setText(orders[0].extraKg)
-            if(NumberUtils.getDoubleOrZero(orders[0].extraPc) + NumberUtils.getDoubleOrZero(orders[0].extraKg) > 0)
+            if (NumberUtils.getDoubleOrZero(orders[0].extraPc) + NumberUtils.getDoubleOrZero(orders[0].extraKg) > 0)
                 showExtraBirdsUI()
         }
         populateCustomerListDropdown()
     }
 
     private fun addCustomer(name: String) {
-        if(name == extra_label) {
+        if (name == extra_label) {
             showExtraBirdsUI()
             return
         }
         if (orders.none { it.name == name }) {
             // if the name is not already present in the list
-            orders.add(SMSOrderModel(System.currentTimeMillis().toString(), name, 0, "", 0, 0, SMSOrderModelUtil.getAvgWt1(), SMSOrderModelUtil.getAvgWt2(), "", ""))
+            orders.add(
+                SMSOrderModel(
+                    System.currentTimeMillis().toString(),
+                    name,
+                    0,
+                    "",
+                    0,
+                    0,
+                    SMSOrderModelUtil.getAvgWt1(),
+                    SMSOrderModelUtil.getAvgWt2(),
+                    "",
+                    ""
+                )
+            )
             showEntries(true)
         }
     }
@@ -204,7 +217,6 @@ class SMSOrdering : AppCompatActivity() {
     private fun populateCustomerListDropdown() {
         val activeCustomers = CustomerKYC.fetchAll().execute().filter { it.isActiveCustomer.toBoolean() }
         val inActiveCustomers = CustomerKYC.fetchAll().execute().filter { !it.isActiveCustomer.toBoolean() }
-
         val sortedActiveList = ListUtils.getAllPossibleValuesList(activeCustomers, CustomerKYCModel::nameEng).toList().plus(extra_label)
         val sortedInActiveList = ListUtils.getAllPossibleValuesList(inActiveCustomers, CustomerKYCModel::nameEng).toList()
 
@@ -224,7 +236,7 @@ class SMSOrdering : AppCompatActivity() {
                 uiView.setText("")
                 uiView.setAdapter(getListAdapter(sortedActiveList, alreadySelectedCustomers()))
                 uiView.post {
-                    if(name != extra_label) {
+                    if (name != extra_label) {
                         uiView.showDropDown()
                     }
                 }
@@ -252,10 +264,18 @@ class SMSOrdering : AppCompatActivity() {
         }
     }
 
-    private fun getListAdapter(masterList: List<String>, toBeDuducted: List<String>): ArrayAdapter<String> {
+    private fun getListAdapter(
+        masterList: List<String>,
+        toBeDuducted: List<String>
+    ): ArrayAdapter<String> {
         val remainingSuggestions = masterList.filterNot { it in toBeDuducted }
-        return ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, remainingSuggestions)
+        return ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_dropdown_item,
+            remainingSuggestions
+        )
     }
+
     private fun alreadySelectedCustomers(): List<String> {
         return orders.stream().map(SMSOrderModel::name).collect(Collectors.toList()).toList()
     }
@@ -317,7 +337,11 @@ class SMSOrdering : AppCompatActivity() {
         confirmDeleteAllOrder(orderListContainer)
     }
 
-    private fun confirmOrderDeletion(orderListContainer: LinearLayout, order: SMSOrderModel, entry: View) {
+    private fun confirmOrderDeletion(
+        orderListContainer: LinearLayout,
+        order: SMSOrderModel,
+        entry: View
+    ) {
         val deleteAllBtn = findViewById<ImageView>(R.id.smso_delete_all_btn)
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         builder.setMessage("Deleting order for: " + order.name)
@@ -361,8 +385,8 @@ class SMSOrdering : AppCompatActivity() {
     fun updateTotal() {
         var totalKg = 0
         var totalPc = 0
-        var extraPc = getExtraPc()
-        var extraKg = getExtraKg()
+        val extraPc = getExtraPc()
+        val extraKg = getExtraKg()
 
         val totalPcsField = findViewById<TextView>(R.id.ordering_totalPc)
         val totalKgsField = findViewById<TextView>(R.id.ordering_totalKg)
@@ -370,10 +394,14 @@ class SMSOrdering : AppCompatActivity() {
         val totalKgByAvgWt2 = findViewById<TextView>(R.id.ordering_totalKg_by_avgWt2)
         val makeListExtraPc = findViewById<TextView>(R.id.order_make_list_extra_pc)
         val makeListExtraKg = findViewById<TextView>(R.id.order_make_list_extra_kg)
-        val makeListExcludeExtraPc = findViewById<TextView>(R.id.order_make_list_excluding_extra_total_pc)
-        val makeListExcludeExtraKg = findViewById<TextView>(R.id.order_make_list_excluding_extra_total_kg)
-        val makeListIncludeExtraPc = findViewById<TextView>(R.id.order_make_list_including_extra_total_pc)
-        val makeListIncludeExtraKg = findViewById<TextView>(R.id.order_make_list_including_extra_total_kg)
+        val makeListExcludeExtraPc =
+            findViewById<TextView>(R.id.order_make_list_excluding_extra_total_pc)
+        val makeListExcludeExtraKg =
+            findViewById<TextView>(R.id.order_make_list_excluding_extra_total_kg)
+        val makeListIncludeExtraPc =
+            findViewById<TextView>(R.id.order_make_list_including_extra_total_pc)
+        val makeListIncludeExtraKg =
+            findViewById<TextView>(R.id.order_make_list_including_extra_total_kg)
 
         listViews.forEach {
             totalPc += getFinalPc(it.value)
@@ -387,9 +415,11 @@ class SMSOrdering : AppCompatActivity() {
         totalKg += getExtraKg()
 
         totalPcsField.text = if (totalPc > 0) totalPc.toString() else ""
-        totalKgsField.text = if (totalKg > 0) totalKg.toString() + " kg" else ""
-        totalKgByAvgWt1.text = if((totalPc * getAvgWt1()) > 0.0) String.format("%.1f", totalPc * getAvgWt1()) else ""
-        totalKgByAvgWt2.text = if((totalPc * getAvgWt2()) > 0.0) String.format("%.1f", totalPc * getAvgWt2()) else ""
+        totalKgsField.text = if (totalKg > 0) "$totalKg kg" else ""
+        totalKgByAvgWt1.text =
+            if ((totalPc * getAvgWt1()) > 0.0) String.format("%.1f", totalPc * getAvgWt1()) else ""
+        totalKgByAvgWt2.text =
+            if ((totalPc * getAvgWt2()) > 0.0) String.format("%.1f", totalPc * getAvgWt2()) else ""
 
         makeListExtraPc.text = extraPc.toString()
         makeListExtraKg.text = extraKg.toString()
@@ -397,12 +427,13 @@ class SMSOrdering : AppCompatActivity() {
         makeListIncludeExtraKg.text = totalKg.toString()
 
         runOnUiThread {
-            findViewById<LinearLayout>(R.id.order_make_list_extra_birds_container).visibility = if(getExtraPc() > 0 || getExtraKg() > 0)
-                View.VISIBLE
-            else
-                View.GONE
+            findViewById<LinearLayout>(R.id.order_make_list_extra_birds_container).visibility =
+                if (getExtraPc() > 0 || getExtraKg() > 0)
+                    View.VISIBLE
+                else
+                    View.GONE
 
-            if(extraPc == 0) {
+            if (extraPc == 0) {
                 makeListExtraPc.visibility = View.INVISIBLE
                 makeListIncludeExtraPc.visibility = View.INVISIBLE
             } else {
@@ -410,7 +441,7 @@ class SMSOrdering : AppCompatActivity() {
                 makeListIncludeExtraPc.visibility = View.VISIBLE
             }
 
-            if(extraKg == 0) {
+            if (extraKg == 0) {
                 makeListExtraKg.visibility = View.INVISIBLE
                 makeListIncludeExtraKg.visibility = View.INVISIBLE
             } else {
@@ -425,15 +456,15 @@ class SMSOrdering : AppCompatActivity() {
         val extraBirdsContainerVisibility: Int
         val extraInputContainer: Int
 
-        if(findViewById<SwitchCompat>(R.id.smso_helper_view_switch).isChecked) {
+        if (findViewById<SwitchCompat>(R.id.smso_helper_view_switch).isChecked) {
             helpersVisibility = View.GONE
             extraBirdsContainerVisibility = View.VISIBLE
             extraInputContainer = View.GONE
-        }
-        else {
+        } else {
             helpersVisibility = View.VISIBLE
             extraBirdsContainerVisibility = View.GONE
-            extraInputContainer = if (orders.size > 0 && (NumberUtils.getIntOrZero(orders[0].extraPc) > 0 || NumberUtils.getIntOrZero(orders[0].extraKg) > 0)) {
+            extraInputContainer =
+                if (orders.size > 0 && (NumberUtils.getIntOrZero(orders[0].extraPc) > 0 || NumberUtils.getIntOrZero(orders[0].extraKg) > 0)) {
                     View.VISIBLE
                 } else {
                     View.GONE
@@ -441,7 +472,8 @@ class SMSOrdering : AppCompatActivity() {
         }
 
         listViews.forEach {
-            it.value.findViewById<LinearLayout>(R.id.smso_helper_estimates).visibility = helpersVisibility
+            it.value.findViewById<LinearLayout>(R.id.smso_helper_estimates).visibility =
+                helpersVisibility
         }
 
         runOnUiThread {
@@ -605,16 +637,16 @@ class SMSOrdering : AppCompatActivity() {
 
     fun callInProgress(view: View, inProgress: Boolean) {
         val saveProgressView = findViewById<ProgressBar>(R.id.ordering_save_progress)
-        if(inProgress) {
+        if (inProgress) {
             runOnUiThread {
-                saveProgressView.setVisibility(View.VISIBLE)
+                saveProgressView.visibility = View.VISIBLE
                 view.isEnabled = false
                 view.alpha = .5f
                 view.isClickable = false
             }
         } else {
             runOnUiThread {
-                saveProgressView.setVisibility(View.GONE)
+                saveProgressView.visibility = View.GONE
                 view.isEnabled = true
                 view.alpha = 1.0f
                 view.isClickable = true

@@ -276,7 +276,7 @@ class SMSOrdering : AppCompatActivity() {
                 val finalizedKgView = entry.findViewById<EditText>(R.id.smsorder_list_finalized_kg)
                 val removeBtn = entry.findViewById<ImageView>(R.id.smsorder_listEntry_remove)
 
-                finalizedPcView.setText(getAppPc(entry))
+                finalizedPcView.setText(order.appPc)
                 if (order.orderedKg > 0)
                     finalizedKgView.setText(order.orderedKg.toString())
                 refreshHints(entry)
@@ -288,8 +288,6 @@ class SMSOrdering : AppCompatActivity() {
 
                 finalizedKgView.doOnTextChanged { text, start, before, count ->
                     refreshHints(entry)
-//                    order.orderedKg =
-//                        NumberUtils.getIntOrZero(UIUtils.getTextOrHint(finalizedKgView))
                     updateTotal()
                 }
 
@@ -442,7 +440,13 @@ class SMSOrdering : AppCompatActivity() {
         runOnUiThread {
             findViewById<LinearLayout>(R.id.osms_helper_input_container).visibility =
                 helpersVisibility
-            findViewById<LinearLayout>(R.id.ordering_extra_pc).visibility = helpersVisibility
+            findViewById<LinearLayout>(R.id.ordering_extra_pc).visibility =
+                if (NumberUtils.getIntOrZero(orders[0].extraPc) > 0 || NumberUtils.getIntOrZero(orders[0].extraKg) > 0) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+//            findViewById<LinearLayout>(R.id.ordering_extra_pc).visibility = helpersVisibility
             findViewById<LinearLayout>(R.id.orders_final_list_total_view_container).visibility =
                 extraBirdsContainerVisibility
         }

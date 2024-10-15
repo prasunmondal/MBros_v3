@@ -423,14 +423,21 @@ class SMSOrdering : AppCompatActivity() {
     private fun convertToMakeListUI() {
         val helpersVisibility: Int
         val extraBirdsContainerVisibility: Int
+        val extraInputContainer: Int
 
         if(findViewById<SwitchCompat>(R.id.smso_helper_view_switch).isChecked) {
             helpersVisibility = View.GONE
             extraBirdsContainerVisibility = View.VISIBLE
+            extraInputContainer = View.GONE
         }
         else {
             helpersVisibility = View.VISIBLE
             extraBirdsContainerVisibility = View.GONE
+            extraInputContainer = if (orders.size > 0 && (NumberUtils.getIntOrZero(orders[0].extraPc) > 0 || NumberUtils.getIntOrZero(orders[0].extraKg) > 0)) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
         }
 
         listViews.forEach {
@@ -440,13 +447,7 @@ class SMSOrdering : AppCompatActivity() {
         runOnUiThread {
             findViewById<LinearLayout>(R.id.osms_helper_input_container).visibility =
                 helpersVisibility
-            findViewById<LinearLayout>(R.id.ordering_extra_pc).visibility =
-                if (NumberUtils.getIntOrZero(orders[0].extraPc) > 0 || NumberUtils.getIntOrZero(orders[0].extraKg) > 0) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
-//            findViewById<LinearLayout>(R.id.ordering_extra_pc).visibility = helpersVisibility
+            findViewById<LinearLayout>(R.id.ordering_extra_pc).visibility = extraInputContainer
             findViewById<LinearLayout>(R.id.orders_final_list_total_view_container).visibility =
                 extraBirdsContainerVisibility
         }

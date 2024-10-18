@@ -86,3 +86,4 @@ lint/tmp/
 .idea/kotlinc.xml
 .idea/migrations.xml
 /.idea
+.DS_Store

@@ -221,6 +221,17 @@
             android:textColor="@color/app_dark_buttons_text_color" />
 
         <TextView
+            android:id="@+id/add_trans_save_btn"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@color/app_dark_buttons_background_color"
+            android:gravity="center"
+            android:onClick="onClickSaveTransactionBtn"
+            android:text="Save"
+            android:textColor="@color/app_dark_buttons_text_color" />
+
+        <TextView
             android:id="@+id/addTransaction_submit_btn"
             android:layout_width="100dp"
             android:layout_height="50dp"

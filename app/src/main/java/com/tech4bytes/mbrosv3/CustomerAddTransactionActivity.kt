@@ -17,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import com.prasunmondal.dev.libs.contexts.AppContexts
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
@@ -35,7 +37,6 @@ import java.util.Locale
 class CustomerAddTransactionActivity : AppCompatActivity() {
     private var smsList: MutableList<SMS> = mutableListOf()
     private lateinit var nameElement: Spinner
-    private lateinit var prevAmount: EditText
     private lateinit var paidAmountElement: EditText
     private lateinit var notesElement: EditText
 
@@ -112,7 +113,7 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
 
     private fun setCurrentBalance() {
         val uiIndicator = findViewById<TextView>(R.id.addTransaction_currentBalance)
-        val name = findViewById<Spinner>(R.id.addTransaction_name).selectedItem.toString()
+        val name = getNameFromUI()
         if (name.trim().isEmpty()) {
             runOnUiThread {
                 uiIndicator.text = "Select Customer"
@@ -225,5 +226,40 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
         val switchActivityIntent = Intent(this, ActivityLogin::class.java)
         switchActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(switchActivityIntent)
+    }
+
+    fun onClickSaveTransactionBtn(view: View) {
+        onClickSendMessageBtn(view)
+        val deliveryList = DeliverToCustomerDataHandler.fetchAll().execute() as MutableList
+        var isUpdated = false
+        deliveryList.forEach {
+            if(it.name == getNameFromUI()) {
+                val paidOnline = NumberUtils.getIntOrZero((NumberUtils.getIntOrZero(it.paidOnline) + getTransactionAmount()).toString())
+                it.paidOnline = "$paidOnline"
+                isUpdated = true
+            }
+        }
+        if(!isUpdated) {
+            val objectToInsert = DeliverToCustomerDataModel(
+                id = "${System.currentTimeMillis()}",
+                timestamp = DateUtils.getCurrentTimestamp(),
+                name = getNameFromUI(),
+                orderedPc = "0",
+                orderedKg = "0",
+                deliveryStatus = "DELIVERING"
+            )
+            objectToInsert.paidOnline = getTransactionAmount().toString()
+            deliveryList.add(objectToInsert)
+        }
+        DeliverToCustomerDataHandler.save(deliveryList).execute()
+    }
+
+    private fun getNameFromUI(): String {
+        return findViewById<Spinner>(R.id.addTransaction_name).selectedItem.toString()
+    }
+
+    private fun getTransactionAmount(): Int {
+        val result = NumberUtils.getIntOrZero(paidAmountElement.text.toString())
+        return result
     }
 }

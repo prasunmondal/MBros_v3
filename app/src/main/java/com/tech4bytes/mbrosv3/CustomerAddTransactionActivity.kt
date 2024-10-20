@@ -17,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import com.prasunmondal.dev.libs.contexts.AppContexts
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliveringUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
@@ -230,7 +230,7 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
 
     fun onClickSaveTransactionBtn(view: View) {
         onClickSendMessageBtn(view)
-        val deliveryList = DeliverToCustomerDataHandler.fetchAll().execute() as MutableList
+        val deliveryList = DeliveringUtils.fetchAll().execute() as MutableList
         var isUpdated = false
         deliveryList.forEach {
             if(it.name == getNameFromUI()) {
@@ -251,7 +251,7 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
             objectToInsert.paidOnline = getTransactionAmount().toString()
             deliveryList.add(objectToInsert)
         }
-        DeliverToCustomerDataHandler.save(deliveryList).execute()
+        DeliveringUtils.save(deliveryList).execute()
     }
 
     private fun getNameFromUI(): String {

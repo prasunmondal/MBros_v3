@@ -2,7 +2,7 @@ package com.tech4bytes.mbrosv3.BusinessLogic
 
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
 import com.tech4bytes.mbrosv3.BusinessData.DayMetadata
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliveringUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerRecentData
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -24,7 +24,7 @@ class DeliveryCalculations {
 
         fun getDaySaleAmount(): Int {
             var sum = 0
-            DeliverToCustomerDataHandler.fetchAll().execute().forEach {
+            DeliveringUtils.fetchAll().execute().forEach {
                 sum += NumberUtils.getIntOrZero(it.deliverAmount)
             }
             return sum
@@ -32,7 +32,7 @@ class DeliveryCalculations {
 
         fun getTotalOfPaidAmounts(): Int {
             var sum = 0
-            DeliverToCustomerDataHandler.fetchAll().execute().forEach {
+            DeliveringUtils.fetchAll().execute().forEach {
                 sum += NumberUtils.getIntOrZero(it.paid)
             }
             return sum
@@ -40,7 +40,7 @@ class DeliveryCalculations {
 
         fun getTotalDeliveredPc(): Int {
             var sum = 0
-            DeliverToCustomerDataHandler.fetchAll().execute().forEach {
+            DeliveringUtils.fetchAll().execute().forEach {
                 sum += NumberUtils.getIntOrZero(it.deliveredPc)
             }
             return sum
@@ -48,7 +48,7 @@ class DeliveryCalculations {
 
         fun getTotalDeliveredKg(): Double {
             var sum = 0.0
-            DeliverToCustomerDataHandler.fetchAll().execute().forEach {
+            DeliveringUtils.fetchAll().execute().forEach {
                 sum += NumberUtils.getDoubleOrZero(it.deliveredKg)
             }
             return sum
@@ -83,7 +83,7 @@ class DeliveryCalculations {
             CustomerRecentData.getAllLatestRecords().forEach {
                 dueMap[it.name] = NumberUtils.getIntOrZero(it.khataBalance)
             }
-            DeliverToCustomerDataHandler.fetchAll().execute().forEach {
+            DeliveringUtils.fetchAll().execute().forEach {
                 dueMap[it.name] = NumberUtils.getIntOrZero(it.khataBalance)
             }
 

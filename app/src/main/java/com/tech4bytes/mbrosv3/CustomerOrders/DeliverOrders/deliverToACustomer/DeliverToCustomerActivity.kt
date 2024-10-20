@@ -291,7 +291,7 @@ class DeliverToCustomerActivity : AppCompatActivity() {
                 saveBtnElement.text = "Saving..."
             }
 
-            DeliverToCustomerDataHandler.insert(record).execute()
+            DeliveringUtils.insert(record).execute()
 //            DeliverToCustomerDataHandler.saveToServer(record)
             runOnUiThread {
                 saveBtnElement.isEnabled = true

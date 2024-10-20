@@ -23,7 +23,7 @@ import com.tech4bytes.mbrosv3.BusinessData.SheetCalculatorUtil
 import com.tech4bytes.mbrosv3.BusinessData.DayMetadata
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerCalculations
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliveringUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrderModelUtil
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
@@ -192,7 +192,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         if (isResetDone != null) {
             return isResetDone!!
         }
-        isResetDone = DeliverToCustomerDataHandler.fetchAll(useCache).execute().isEmpty()
+        isResetDone = DeliveringUtils.fetchAll(useCache).execute().isEmpty()
         return isResetDone!!
     }
 
@@ -256,7 +256,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
     }
 
     fun updateDeliveredInfo(useCache: Boolean) {
-        val countersDelivered = DeliverToCustomerDataHandler.fetchAll(useCache).execute()
+        val countersDelivered = DeliveringUtils.fetchAll(useCache).execute()
         val numberOfCustomersDelivered = countersDelivered.size
         val totalNumberOfCustomers = SMSOrderModelUtil.fetchAll().execute().size
         val deliveredPc = DeliverToCustomerCalculations.getTotalPcDelivered()
@@ -279,7 +279,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
 
     fun updateDashboard(useCache: Boolean) {
         DayMetadata.getRecords(useCache)
-        DeliverToCustomerDataHandler.fetchAll(useCache).execute()
+        DeliveringUtils.fetchAll(useCache).execute()
         SMSOrderModelUtil.fetchAll(useCache).execute()
 
         updateLoadInfo(useCache)
@@ -339,7 +339,7 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
 
     fun onClickDeleteDeliveryDataBtn() {
         Thread {
-            DeliverToCustomerDataHandler.deleteAll().execute()
+            DeliveringUtils.deleteAll().execute()
             setStatuses(false)
         }.start()
     }

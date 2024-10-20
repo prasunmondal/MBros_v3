@@ -27,7 +27,7 @@ import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerCalculations
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliveringUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrderModelUtil
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
@@ -169,7 +169,7 @@ class OneShotDelivery : AppCompatActivity() {
             deliverRecords[it.name] = deliverCustomersOrders
         }
 
-        val t = DeliverToCustomerDataHandler.fetchAll().execute()
+        val t = DeliveringUtils.fetchAll().execute()
         t.forEach {
             var customerAccount = CustomerKYC.getByName(it.name)!!.referredBy
             if (customerAccount.isEmpty())
@@ -343,7 +343,7 @@ class OneShotDelivery : AppCompatActivity() {
             saveDeliveryData()
             refuelUIObj.saveFuelData()
             DayMetadata.fetchAll().queue()
-            DeliverToCustomerDataHandler.fetchAll().queue()
+            DeliveringUtils.fetchAll().queue()
             GScript.execute()
             DayMetadata.clearLocalObj()
             runOnUiThread()
@@ -394,7 +394,7 @@ class OneShotDelivery : AppCompatActivity() {
             it.value.deliveryStatus = "DELIVERED"
         }
         runOnUiThread { setSaveProgressBar(eachStep) }
-        DeliverToCustomerDataHandler.save(filteredListToSave.values.toList()).queue()
+        DeliveringUtils.save(filteredListToSave.values.toList()).queue()
         runOnUiThread { setSaveProgressBar(100) }
     }
 
@@ -439,7 +439,7 @@ class OneShotDelivery : AppCompatActivity() {
                 deleteDeliveryDataButton.alpha = 0.5f
                 deleteDeliveryDataButton.isClickable = false
             }
-            DeliverToCustomerDataHandler.deleteAll()
+            DeliveringUtils.deleteAll()
             runOnUiThread()
             {
                 deleteDeliveryDataButton.isEnabled = true

@@ -16,7 +16,7 @@ import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.tech4bytes.mbrosv3.AppData.AppUtils
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliveringUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.Sms.OneShotSMS.OtherExpensesActivity
@@ -101,7 +101,7 @@ class CollectorVerifyMoneyCollectionActivity : AppCompatActivity() {
     var map: MutableMap<String, VerifyElements> = mutableMapOf()
 
     private fun showDeliveryData() {
-        var deliveredData = DeliverToCustomerDataHandler.fetchAll().execute()
+        var deliveredData = DeliveringUtils.fetchAll().execute()
         var bundlesCount = 0
 
         val listContainer = findViewById<LinearLayout>(R.id.activity_collector_verify_money_collection_container)

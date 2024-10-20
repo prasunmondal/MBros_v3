@@ -6,7 +6,7 @@ import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstantsUtil
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.ActivityAuthEnums
 import com.tech4bytes.mbrosv3.BusinessData.DayMetadata
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliveringUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrderModelUtil
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerRecentData
@@ -27,7 +27,7 @@ class DataFetchingInfo {
                 CustomerRecentData::fetchAll.toString() -> "Getting Previous Recents"
                 CustomerDataUtils::fetchAll.toString() -> "Previous delivery reports"
                 DayMetadata::fetchAll.toString() -> "Metadata"
-                DeliverToCustomerDataHandler::fetchAll.toString() -> "Current delivery reports"
+                DeliveringUtils::fetchAll.toString() -> "Current delivery reports"
                 DaySummaryUtils::fetchAll.toString() -> "Transaction reports"
                 RefuelingUtils::fetchAll.toString() -> "Fuel data"
                 AppConstantsUtil::fetchAll.toString() -> "App Constants Data"
@@ -48,7 +48,7 @@ class DataFetchingInfo {
                     executingMethods.add(CustomerKYC::fetchAll, { CustomerKYC.fetchAll().queue() })
                     executingMethods.add(SMSOrderModelUtil::fetchAll, { SMSOrderModelUtil.fetchAll().queue() })
                     executingMethods.add(CustomerRecentData::fetchAll, {CustomerRecentData.fetchAll().queue() })
-                    executingMethods.add(DeliverToCustomerDataHandler::fetchAll, {DeliverToCustomerDataHandler.fetchAll().queue() })
+                    executingMethods.add(DeliveringUtils::fetchAll, {DeliveringUtils.fetchAll().queue() })
                     executingMethods.add(DaySummaryUtils::fetchAll, {DaySummaryUtils.fetchAll().queue()})
                     executingMethods.add(RefuelingUtils::fetchAll, {RefuelingUtils.fetchAll().queue() })
                     executingMethods.add(AppConstantsUtil::fetchAll, {AppConstantsUtil.fetchAll().queue() })
@@ -56,13 +56,13 @@ class DataFetchingInfo {
                 ActivityAuthEnums.DELIVERY -> {
                     executingMethods.add(CustomerKYC::fetchAll, {CustomerKYC.fetchAll().queue() })
                     executingMethods.add(SMSOrderModelUtil::fetchAll, { SMSOrderModelUtil.fetchAll().queue() })
-                    executingMethods.add(DeliverToCustomerDataHandler::fetchAll, {DeliverToCustomerDataHandler.fetchAll().queue() })
+                    executingMethods.add(DeliveringUtils::fetchAll, {DeliveringUtils.fetchAll().queue() })
                     executingMethods.add(CustomerRecentData::fetchAll, {CustomerRecentData.fetchAll().queue() })
                 }
                 ActivityAuthEnums.BALANCE_VIEW -> {
                     executingMethods.add(CustomerKYC::fetchAll, {CustomerKYC.fetchAll().queue() })
                     executingMethods.add(CustomerRecentData::fetchAll, {CustomerRecentData.fetchAll().queue() })
-                    executingMethods.add(DeliverToCustomerDataHandler::fetchAll, {DeliverToCustomerDataHandler.fetchAll().queue() })
+                    executingMethods.add(DeliveringUtils::fetchAll, {DeliveringUtils.fetchAll().queue() })
                 }
                 ActivityAuthEnums.ORDER_COLLECTOR -> {
                     executingMethods.add(DayMetadata::fetchAll, {DayMetadata.fetchAll().queue() })
@@ -76,7 +76,7 @@ class DataFetchingInfo {
                 }
                 ActivityAuthEnums.MONEY_CALCULATOR -> {
                     executingMethods.add(DayMetadata::fetchAll, {DayMetadata.fetchAll().queue() })
-                    executingMethods.add(DeliverToCustomerDataHandler::fetchAll, {DeliverToCustomerDataHandler.fetchAll().queue() })
+                    executingMethods.add(DeliveringUtils::fetchAll, {DeliveringUtils.fetchAll().queue() })
                     executingMethods.add(AppConstantsUtil::fetchAll, {AppConstantsUtil.fetchAll().queue() })
                 }
                 ActivityAuthEnums.SMS_ORDERING -> {
@@ -84,7 +84,7 @@ class DataFetchingInfo {
                     executingMethods.add(SMSOrderModelUtil::fetchAll, {SMSOrderModelUtil.fetchAll().queue() })
                     executingMethods.add(CustomerKYC::fetchAll, {CustomerKYC.fetchAll().queue() })
                     executingMethods.add(AppConstantsUtil::fetchAll, {AppConstantsUtil.fetchAll().queue() })
-                    executingMethods.add(DeliverToCustomerDataHandler::fetchAll, {DeliverToCustomerDataHandler.fetchAll().queue() })
+                    executingMethods.add(DeliveringUtils::fetchAll, {DeliveringUtils.fetchAll().queue() })
                     executingMethods.add(CustomerRecentData::fetchAll, {CustomerRecentData.fetchAll().queue() })
                 }
                 ActivityAuthEnums.CUSTOMER_TRANSACTIONS -> {
@@ -95,7 +95,7 @@ class DataFetchingInfo {
                     executingMethods.add(CustomerRecentData::fetchAll, {CustomerRecentData.fetchAll().queue() })
                     executingMethods.add(CustomerDataUtils::fetchAll, {CustomerDataUtils.fetchAll().queue() })
                     executingMethods.add(DaySummaryUtils::fetchAll, {DaySummaryUtils.fetchAll().queue() })
-                    executingMethods.add(DeliverToCustomerDataHandler::fetchAll, {DeliverToCustomerDataHandler.fetchAll().queue() })
+                    executingMethods.add(DeliveringUtils::fetchAll, {DeliveringUtils.fetchAll().queue() })
                     executingMethods.add(OSMS::fetchAll, {OSMS.fetchAll().queue() })
                 }
                 else -> {}

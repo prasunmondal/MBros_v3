@@ -8,7 +8,7 @@ import com.tech4bytes.mbrosv3.BusinessLogic.Sorter
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.Customer.CustomerKYCModel
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliveringUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.ProjectConfig
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
@@ -87,7 +87,7 @@ object CustomerDataUtils : GSheetSerialized<CustomerData>(
     }
 
     fun queueDeliveryData() {
-        var deliveredData = DeliverToCustomerDataHandler.fetchAll().execute()
+        var deliveredData = DeliveringUtils.fetchAll().execute()
         deliveredData = Sorter.sortByNameList(deliveredData, DeliverToCustomerDataModel::name) as List<DeliverToCustomerDataModel>
 
         val totalProfit = DaySummaryUtils.getDayProfit()

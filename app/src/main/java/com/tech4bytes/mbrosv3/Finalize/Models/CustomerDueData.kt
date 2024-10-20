@@ -2,7 +2,7 @@ package com.tech4bytes.mbrosv3.Finalize.Models
 
 import com.prasunmondal.dev.libs.gsheet.clients.APIRequests.APIRequestsQueue
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataHandler
+import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliveringUtils
 import com.tech4bytes.mbrosv3.Payments.Staged.StagedPaymentUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
@@ -15,7 +15,7 @@ class CustomerDueData {
 
             val reqQ = APIRequestsQueue()
             CustomerRecentData.fetchAll(useCache).queue(reqQ)
-            DeliverToCustomerDataHandler.fetchAll(useCache).queue(reqQ)
+            DeliveringUtils.fetchAll(useCache).queue(reqQ)
             reqQ.execute()
 
             val dueMap: MutableMap<String, Int> = mutableMapOf()
@@ -25,7 +25,7 @@ class CustomerDueData {
             }
             if (shouldIncludePostDeliveryUpdates) {
                 // fetched using useCache at the start of the method
-                DeliverToCustomerDataHandler.fetchAll().execute().forEach {
+                DeliveringUtils.fetchAll().execute().forEach {
                     dueMap[it.customerAccount] = NumberUtils.getIntOrZero(it.khataBalance)
                 }
             }

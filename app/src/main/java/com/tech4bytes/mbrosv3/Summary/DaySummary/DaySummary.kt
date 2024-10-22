@@ -129,20 +129,20 @@ object DaySummaryUtils: GSheetSerialized<DaySummary>(
         return NumberUtils.getIntOrZero(DayMetadata.getRecords().daySale)
     }
 
-    fun getDayProfit(): Int {
+    fun getDayProfit(daySale: Int? = null): Int {
         // Sale - birdCost - kmCost - labCost - extraCost
-        LogMe.log(getDaySale())
-        LogMe.log(getBirdCost())
-        LogMe.log(kmCost())
-        LogMe.log(getLabourCost())
-        LogMe.log(getExtraCost())
-        return getDaySale() - getBirdCost() - kmCost() - getLabourCost() - getExtraCost()
+        if(daySale == null) {
+            return getDaySale() - getBirdCost() - kmCost() - getLabourCost() - getExtraCost()
+        }
+        return daySale - getBirdCost() - kmCost() - getLabourCost() - getExtraCost()
     }
 
-    fun showDayProfit(): String {
+    fun showDayProfit(daySale: Int? = null): String {
         return if (AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_PROFITS)) {
-            LogMe.log("Showing Profit: " + getDayProfit())
-            getDayProfit().toString()
+            if(daySale == null)
+                getDayProfit().toString()
+            else
+                getDayProfit(daySale).toString()
         } else {
             LogMe.log("Showing Profit: Expected Permission: SHOW_PROFITS <PERMISSION DENIED>")
             "Sunshine"

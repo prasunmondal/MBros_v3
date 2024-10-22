@@ -51,15 +51,10 @@ class OneShotDelivery : AppCompatActivity() {
     lateinit var sidebarIconRefuel: ImageView
     lateinit var sidebarIconOtherExpenses: ImageView
     lateinit var scrollview: ScrollView
-    private lateinit var extraExpensesElement: EditText
     private lateinit var loadPcElement: EditText
     private lateinit var loadKgElement: EditText
     private lateinit var loadAvgWtElement: TextView
     private lateinit var refuelUIObj: RefuelUI
-
-
-//    private lateinit var refuelQtyElement: EditText
-//    private lateinit var refuelAmountElement: EditText
 
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -142,7 +137,7 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun initiallizeUI() {
-        OSDLoadInfo.initializeUI(this, loadPcElement, loadKgElement, loadAvgWtElement)
+        OSDLoadInfo.initializeUI(this)
     }
 
     @RequiresApi(34)
@@ -150,10 +145,6 @@ class OneShotDelivery : AppCompatActivity() {
         deliverRecords = mutableMapOf()
         val listOfOrderedCustomers = SMSOrderModelUtil.fetchAll().execute()
         listOfOrderedCustomers.forEach {
-            var customerAccount = CustomerKYC.getByName(it.name)!!.referredBy
-            if (customerAccount.isEmpty())
-                customerAccount = it.name
-
             val deliverCustomersOrders = DeliverToCustomerDataModel(
                 id = "${System.currentTimeMillis()}",
                 timestamp = DateUtils.getCurrentTimestamp(),
@@ -171,9 +162,6 @@ class OneShotDelivery : AppCompatActivity() {
 
         val t = DeliveringUtils.fetchAll().execute()
         t.forEach {
-            var customerAccount = CustomerKYC.getByName(it.name)!!.referredBy
-            if (customerAccount.isEmpty())
-                customerAccount = it.name
             val deliverCustomersOrders = DeliverToCustomerDataModel(
                 id = "${System.currentTimeMillis()}",
                 timestamp = DateUtils.getCurrentTimestamp(),
@@ -195,7 +183,7 @@ class OneShotDelivery : AppCompatActivity() {
         val key = addToUnOrderedMap(name)
         val uiFragment = OSDDeliveryEntryInfo.createOrderCard(this, key)
         OSDDeliveryEntryInfo.setListeners(this, key)
-        showOrder(key, uiFragment)
+        findViewById<LinearLayout>(R.id.one_shot_delivery_unordered_customers_entry_container).addView(uiFragment)
         BalanceReferralCalculations.calculate(key)
     }
 
@@ -214,19 +202,12 @@ class OneShotDelivery : AppCompatActivity() {
         return deliverCustomersOrders
     }
 
-    private fun showOrder(key: DeliverToCustomerDataModel, value: View) {
-        OSDDeliveryEntryInfo.updateEntry(this, key, value)
-        OSDDeliveryEntryInfo.updateAvgKg(value)
-        findViewById<LinearLayout>(R.id.one_shot_delivery_unordered_customers_entry_container).addView(value)
-    }
-
     private fun showOrders() {
         var t = showOrders(deliverRecords, R.id.one_shot_delivery_ordered_customers_entry_container)
         findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).removeAllViews()
 
         t.forEach { (key, value) ->
-            OSDDeliveryEntryInfo.updateEntry(this, key, value, false)
-            OSDDeliveryEntryInfo.updateAvgKg(value)
+//            OSDDeliveryEntryInfo.updateAvgKg(value)
             findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).addView(value)
         }
         updateTotals(this, false)
@@ -253,10 +234,7 @@ class OneShotDelivery : AppCompatActivity() {
     private fun updateHiddenData() {
         val profitViewContainer = findViewById<LinearLayout>(R.id.osd_profit_details_container)
         if (profitViewContainer.visibility == View.VISIBLE) {
-            val profitElement = findViewById<TextView>(R.id.osd_profit)
             val totalDueElement = findViewById<TextView>(R.id.osd_total_due)
-
-            profitElement.text = DaySummaryUtils.showDayProfit()
             totalDueElement.text = "---"
         }
         updateTotalDueBalance()
@@ -272,7 +250,7 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     companion object {
-        fun updateTotals(context: OneShotDelivery, needsSave: Boolean = true) {
+        fun updateTotals(context: OneShotDelivery = AppContexts.get() as OneShotDelivery, needsSave: Boolean = true) {
             val metadataObj = DayMetadata.getRecords()
             val totalPcElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_pc)
             val totalKgElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_kg)
@@ -280,6 +258,8 @@ class OneShotDelivery : AppCompatActivity() {
             val totalShortageElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_shortage)
             val totalCollectedElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_collected_amount)
             val totalBalanceDueElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_balance_due)
+            val profitElement = context.findViewById<TextView>(R.id.osd_profit)
+            val totalDueElement = context.findViewById<TextView>(R.id.osd_total_due)
 
             var sumPc = 0
             var sumKg = 0.0
@@ -288,7 +268,10 @@ class OneShotDelivery : AppCompatActivity() {
             var sumBalanceDue = 0
 
             context.deliverRecords.forEach {
-                sumPc += NumberUtils.getIntOrZero(it.value.deliveredPc)
+                val kg = NumberUtils.getDoubleOrZero(it.value.deliveredKg)
+                if(kg > 0.0) {
+                    sumPc += NumberUtils.getIntOrZero(it.value.deliveredPc)
+                }
                 sumKg += NumberUtils.getDoubleOrZero(it.value.deliveredKg)
                 sumSale += NumberUtils.getIntOrZero(it.value.deliverAmount)
                 sumAmountCollected += NumberUtils.getIntOrZero(it.value.paid)
@@ -297,11 +280,21 @@ class OneShotDelivery : AppCompatActivity() {
                 }
             }
 
+            val sumCashPayments = DeliverToCustomerCalculations.getTotalAmountPaidInCashTodayByCustomers()
+            val sumOnlinePayments = DeliverToCustomerCalculations.getTotalAmountPaidOnlineTodayByCustomers()
             val loadedKg = NumberUtils.getDoubleOrZero(DayMetadata.getRecords().actualLoadKg)
             val shortage = (loadedKg - sumKg) * 100 / loadedKg
-
             val loadedPc = NumberUtils.getIntOrZero(DayMetadata.getRecords().actualLoadPc)
+
             totalPcElement.text = "$sumPc"
+            totalKgElement.text = "%.3f".format(sumKg)
+            totalSaleElement.text = "$sumSale"
+            totalShortageElement.text = "▼ ${"%.3f".format(shortage)} kg"
+            totalCollectedElement.text = "$sumAmountCollected"
+            totalCollectedElement.tooltipText="Cash:   $sumCashPayments\nOnline: $sumOnlinePayments "
+            totalBalanceDueElement.text = "$sumBalanceDue"
+            profitElement.text = DaySummaryUtils.showDayProfit(sumSale)
+
             if(sumPc != loadedPc) {
                 totalPcElement.setBackgroundColor(ContextCompat.getColor(context, R.color.osd_total_bar_incorrect_data_background))
                 totalPcElement.setTextColor(ContextCompat.getColor(context, R.color.white))
@@ -309,15 +302,6 @@ class OneShotDelivery : AppCompatActivity() {
                 totalPcElement.setBackgroundColor(0x00000000)
                 totalPcElement.setTextColor(ContextCompat.getColor(context, R.color.osd_total_bar_total_pc_correct_text_color))
             }
-
-            totalKgElement.text = "%.3f".format(sumKg)
-            totalSaleElement.text = "$sumSale"
-            metadataObj.daySale = sumSale.toString()
-
-            totalShortageElement.text = "▼ ${"%.3f".format(shortage)} kg"
-            totalCollectedElement.text = "$sumAmountCollected"
-            totalCollectedElement.tooltipText="Cash:   ${DeliverToCustomerCalculations.getTotalAmountPaidInCashTodayByCustomers()}\nOnline: ${DeliverToCustomerCalculations.getTotalAmountPaidOnlineTodayByCustomers()} "
-            totalBalanceDueElement.text = "$sumBalanceDue"
 
             if (needsSave)
                 DayMetadata.saveToLocal(metadataObj)
@@ -452,6 +436,4 @@ class OneShotDelivery : AppCompatActivity() {
     fun onClickSendLoadInfoToCompany(view: View) {
         OSDLoadInfo.sendLoadInfoToCompany(loadPcElement.text.toString(), loadKgElement.text.toString())
     }
-
-
 }

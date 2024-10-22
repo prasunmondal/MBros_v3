@@ -35,7 +35,7 @@ class OSDLoadInfo {
             return isSendLoadInfoEnabled
         }
 
-        fun initializeUI(context: OneShotDelivery, loadPcElement: EditText, loadKgElement: EditText, loadAvgWtElement: TextView) {
+        fun initializeUI(context: OneShotDelivery) {
             val record = DayMetadata.getRecords()
 
             val loadCompanyBranchArea = context.findViewById<TextView>(R.id.osd_load_company_branch_area)

@@ -35,39 +35,29 @@ class OSDLoadInfo {
             return isSendLoadInfoEnabled
         }
 
-        fun initializeUI(context: OneShotDelivery) {
-            val record = DayMetadata.getRecords()
-
-            val loadCompanyBranchArea = context.findViewById<TextView>(R.id.osd_load_company_branch_area)
-            context.runOnUiThread {
-                loadCompanyBranchArea.text = "${record.load_companyName} / ${record.load_branch} / ${record.load_area}"
-            }
-        }
-
         fun setListeners(context: OneShotDelivery, loadPcElement: EditText, loadKgElement: EditText, loadAvgWtElement: TextView, deliveryPriceElement: EditText) {
             val record = DayMetadata.getRecords()
 
             UIUtils.addDebouncedOnTextChangeListener(loadPcElement) {
                 record.actualLoadPc = loadPcElement.text.toString()
-                updateRelatedFields_LoadPcKg(loadPcElement, loadKgElement, loadAvgWtElement)
+                updateLoadAvgWt(loadPcElement, loadKgElement, loadAvgWtElement)
                 OneShotDelivery.updateTotals(context)
             }
 
             UIUtils.addDebouncedOnTextChangeListener(loadKgElement) {
                 record.actualLoadKg = loadKgElement.text.toString()
-                updateRelatedFields_LoadPcKg(loadPcElement, loadKgElement, loadAvgWtElement)
+                updateLoadAvgWt(loadPcElement, loadKgElement, loadAvgWtElement)
                 OneShotDelivery.updateTotals(context)
             }
 
             UIUtils.addDebouncedOnTextChangeListener(deliveryPriceElement) {
                 record.bufferRate = DeliveryCalculations.getBufferPrice(record.finalFarmRate, deliveryPriceElement.text.toString()).toString()
-
                 DayMetadata.saveToLocal(record)
                 OSDDeliveryEntryInfo.updateRates()
             }
         }
 
-        fun updateRelatedFields_LoadPcKg(loadPcElement: EditText, loadKgElement: EditText, loadAvgWtElement: TextView) {
+        fun updateLoadAvgWt(loadPcElement: EditText, loadKgElement: EditText, loadAvgWtElement: TextView) {
             var avgWt = "N/A"
             try {
                 avgWt = NumberUtils.roundOff3places(NumberUtils.getDoubleOrZero(loadKgElement.text.toString()) / NumberUtils.getIntOrZero(loadPcElement.text.toString())).toString()
@@ -99,9 +89,13 @@ class OSDLoadInfo {
                     context.findViewById<TextView>(R.id.osd_btn_send_load_info_to_account_payee).visibility = View.GONE
                 }
 
+                val record = DayMetadata.getRecords()
+                val loadCompanyBranchArea = context.findViewById<TextView>(R.id.osd_load_company_branch_area)
+
                 loadPcElement.setText(DayMetadata.getRecords().actualLoadPc)
                 loadKgElement.setText(DayMetadata.getRecords().actualLoadKg)
                 context.findViewById<TextView>(R.id.osd_company_name).text = DayMetadata.getRecords().load_account
+                loadCompanyBranchArea.text = "${record.load_companyName} / ${record.load_branch} / ${record.load_area}"
             }
 
             if (AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_DELIVERY_RATE)) {

@@ -77,12 +77,11 @@ class OneShotDelivery : AppCompatActivity() {
         Thread {
             populateDeliveryMap()
             OSDLoadInfo.updateSingleAttributedDataOnUI(this, loadPcElement, loadKgElement)
-            initiallizeUI()
             refuelUIObj.initializeFinalKm()
             refuelUIObj.initiallizeRefuelUI()
             runOnUiThread {
                 showOrders()
-                OSDLoadInfo.updateRelatedFields_LoadPcKg(loadPcElement, loadKgElement, loadAvgWtElement)
+                OSDLoadInfo.updateLoadAvgWt(loadPcElement, loadKgElement, loadAvgWtElement)
                 populateCustomerListDropdown()
                 OSDLoadInfo.setListeners(this, loadPcElement, loadKgElement, loadAvgWtElement, deliveryPriceElement)
             }
@@ -134,10 +133,6 @@ class OneShotDelivery : AppCompatActivity() {
             textViewToShow.getHitRect(textRect) //fills textRect with coordinates of TextView relative to its parent (LinearLayout)
             scrollView.requestChildRectangleOnScreen(linearLayout, textRect, false) //ScrollView will make sure, the given textRect is visible
         }, delay)
-    }
-
-    private fun initiallizeUI() {
-        OSDLoadInfo.initializeUI(this)
     }
 
     @RequiresApi(34)
@@ -206,9 +201,9 @@ class OneShotDelivery : AppCompatActivity() {
         var t = showOrders(deliverRecords, R.id.one_shot_delivery_ordered_customers_entry_container)
         findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).removeAllViews()
 
-        t.forEach { (key, value) ->
-//            OSDDeliveryEntryInfo.updateAvgKg(value)
-            findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).addView(value)
+        t.forEach { (deliverObj, view) ->
+            findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).addView(view)
+            updateTotals()
         }
         updateTotals(this, false)
     }
@@ -231,24 +226,6 @@ class OneShotDelivery : AppCompatActivity() {
         return entryMap
     }
 
-    private fun updateHiddenData() {
-        val profitViewContainer = findViewById<LinearLayout>(R.id.osd_profit_details_container)
-        if (profitViewContainer.visibility == View.VISIBLE) {
-            val totalDueElement = findViewById<TextView>(R.id.osd_total_due)
-            totalDueElement.text = "---"
-        }
-        updateTotalDueBalance()
-    }
-
-    fun updateTotalDueBalance() {
-        var sum = 0
-        CustomerDueData.getBalance().forEach { (s, i) -> sum += i }
-        val totalDueElement = findViewById<TextView>(R.id.osd_total_due)
-        runOnUiThread {
-            totalDueElement.text = NumberUtils.getIntOrZero(sum.toString()).toString()
-        }
-    }
-
     companion object {
         fun updateTotals(context: OneShotDelivery = AppContexts.get() as OneShotDelivery, needsSave: Boolean = true) {
             val metadataObj = DayMetadata.getRecords()
@@ -257,7 +234,7 @@ class OneShotDelivery : AppCompatActivity() {
             val totalSaleElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_sale)
             val totalShortageElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_shortage)
             val totalCollectedElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_collected_amount)
-            val totalBalanceDueElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_balance_due)
+            val khataDue = context.findViewById<TextView>(R.id.osd_khata_due)
             val profitElement = context.findViewById<TextView>(R.id.osd_profit)
             val totalDueElement = context.findViewById<TextView>(R.id.osd_total_due)
 
@@ -265,7 +242,8 @@ class OneShotDelivery : AppCompatActivity() {
             var sumKg = 0.0
             var sumSale = 0
             var sumAmountCollected = 0
-            var sumBalanceDue = 0
+            var sumKhataDue = 0
+            var sumTotalDue = 0
 
             context.deliverRecords.forEach {
                 val kg = NumberUtils.getDoubleOrZero(it.value.deliveredKg)
@@ -276,7 +254,8 @@ class OneShotDelivery : AppCompatActivity() {
                 sumSale += NumberUtils.getIntOrZero(it.value.deliverAmount)
                 sumAmountCollected += NumberUtils.getIntOrZero(it.value.paid)
                 if (NumberUtils.getDoubleOrZero(it.value.deliveredKg) > 0 || NumberUtils.getIntOrZero(it.value.paid) > 0) {
-                    sumBalanceDue += NumberUtils.getIntOrZero(it.value.totalBalance)
+                    sumKhataDue += NumberUtils.getIntOrZero(it.value.khataBalance)
+                    sumTotalDue += NumberUtils.getIntOrZero(it.value.totalBalance)
                 }
             }
 
@@ -292,8 +271,9 @@ class OneShotDelivery : AppCompatActivity() {
             totalShortageElement.text = "▼ ${"%.3f".format(shortage)} kg"
             totalCollectedElement.text = "$sumAmountCollected"
             totalCollectedElement.tooltipText="Cash:   $sumCashPayments\nOnline: $sumOnlinePayments "
-            totalBalanceDueElement.text = "$sumBalanceDue"
+            khataDue.text = "$sumKhataDue"
             profitElement.text = DaySummaryUtils.showDayProfit(sumSale)
+            totalDueElement.text = "$sumTotalDue"
 
             if(sumPc != loadedPc) {
                 totalPcElement.setBackgroundColor(ContextCompat.getColor(context, R.color.osd_total_bar_incorrect_data_background))
@@ -305,8 +285,6 @@ class OneShotDelivery : AppCompatActivity() {
 
             if (needsSave)
                 DayMetadata.saveToLocal(metadataObj)
-
-            context.updateHiddenData()
         }
     }
 
@@ -391,7 +369,7 @@ class OneShotDelivery : AppCompatActivity() {
     fun onClickToggleProfitViewUI(view: View) {
         val profitViewContainer = findViewById<LinearLayout>(R.id.osd_profit_details_container)
         profitViewContainer.visibility = if (profitViewContainer.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-        updateHiddenData()
+//        updateHiddenData()
     }
 
     override fun onBackPressed() {

@@ -137,40 +137,15 @@ class OneShotDelivery : AppCompatActivity() {
 
     @RequiresApi(34)
     private fun populateDeliveryMap() {
+        val orderList = SMSOrderModelUtil.fetchAll().execute()
+        val availableDeliveryObjects = DeliveringUtils.fetchAll().execute()
+
         deliverRecords = mutableMapOf()
-        val listOfOrderedCustomers = SMSOrderModelUtil.fetchAll().execute()
-        listOfOrderedCustomers.forEach {
-            val deliverCustomersOrders = DeliverToCustomerDataModel(
-                id = "${System.currentTimeMillis()}",
-                timestamp = DateUtils.getCurrentTimestamp(),
-                name = it.name,
-                orderedPc = it.orderedPc.toString(),
-                orderedKg = it.orderedKg.toString(),
-                rate = "${CustomerDataUtils.getDeliveryRate(it.name)}",
-                prevDue = CustomerDueData.getLastFinalizedDue(it.name),
-                customerAccount = it.name,
-                deliveryStatus = "DELIVERING"
-            )
-
-            deliverRecords[it.name] = deliverCustomersOrders
+        orderList.forEach {
+            deliverRecords[it.name] = DeliverToCustomerDataModel.getDeliverObjectFromOrder(it)
         }
-
-        val t = DeliveringUtils.fetchAll().execute()
-        t.forEach {
-            val deliverCustomersOrders = DeliverToCustomerDataModel(
-                id = "${System.currentTimeMillis()}",
-                timestamp = DateUtils.getCurrentTimestamp(),
-                name = it.name,
-                orderedPc = "0",
-                orderedKg = "0",
-                deliveredPc = it.deliveredPc,
-                deliveredKg = it.deliveredKg,
-                rate = "${CustomerDataUtils.getDeliveryRate(it.name)}",
-                customerAccount = it.name,
-                prevDue = CustomerDueData.getLastFinalizedDue(it.name),
-                deliveryStatus = "DELIVERING"
-            )
-            deliverRecords[it.name] = deliverCustomersOrders
+        availableDeliveryObjects.forEach {
+            deliverRecords[it.name] = it
         }
     }
 
@@ -198,29 +173,25 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun showOrders() {
-        var t = showOrders(deliverRecords, R.id.one_shot_delivery_ordered_customers_entry_container)
         findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).removeAllViews()
 
-        t.forEach { (deliverObj, view) ->
+        val deliveryList = createDeliveryViews(deliverRecords, R.id.one_shot_delivery_ordered_customers_entry_container)
+        deliveryList.forEach { (_, view) ->
             findViewById<LinearLayout>(R.id.one_shot_delivery_ordered_customers_entry_container).addView(view)
-            updateTotals()
         }
         updateTotals(this, false)
     }
 
 
-    private fun showOrders(listOfCustomers: MutableMap<String, DeliverToCustomerDataModel>, container: Int): MutableMap<DeliverToCustomerDataModel, View> {
+    private fun createDeliveryViews(listOfCustomers: MutableMap<String, DeliverToCustomerDataModel>, container: Int): MutableMap<DeliverToCustomerDataModel, View> {
         val listContainer = findViewById<LinearLayout>(container)
         val entryMap: MutableMap<DeliverToCustomerDataModel, View> = mutableMapOf()
 
         listContainer.removeAllViews()
 
         listOfCustomers.forEach { order ->
-            val entry = OSDDeliveryEntryInfo.createOrderCard(this, order.value)
-            entryMap[order.value] = entry
-        }
-
-        listOfCustomers.forEach { order ->
+            entryMap[order.value] = OSDDeliveryEntryInfo.createOrderCard(this, order.value)
+            order.value.calculate(entryMap[order.value])
             OSDDeliveryEntryInfo.setListeners(this, order.value)
         }
         return entryMap

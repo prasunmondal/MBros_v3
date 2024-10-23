@@ -3,7 +3,11 @@ package com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer
 import android.view.View
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliveringUtils.calculateDeliverAmount
+import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrderModel
+import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
+import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OSDDeliveryEntryInfo
+import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils.Companion.getIntOrZero
 
@@ -60,20 +64,40 @@ data class DeliverToCustomerDataModel(
         calculate(view)
     }
 
-    private fun calculate(view: View?) {
+    fun calculate(view: View?) {
         val deliveredAmount = calculateDeliverAmount(deliveredKg, rate)
-        val prevAmount = getIntOrZero(prevDue)
+//        val prevAmount = getIntOrZero(prevDue)
 //        val adjustments = referAdjustBalanceTransfer()
         val adjustments = 0
         val discounts = 0
 
+        prevDue = CustomerDueData.getLastFinalizedDue(name)
         deliverAmount = deliveredAmount.toString()
         paid = (getIntOrZero(paidCash) + getIntOrZero(paidOnline)).toString()
-        khataBalance = (prevAmount + deliveredAmount + adjustments - discounts - getIntOrZero(paidCash) - getIntOrZero(paidOnline)).toString()
+        khataBalance =
+            (getIntOrZero(prevDue) + deliveredAmount + adjustments - discounts - getIntOrZero(paidCash) - getIntOrZero(
+                paidOnline
+            )).toString()
         otherBalances = CustomerKYC.getByName(name)!!.otherBalances
         totalBalance = (getIntOrZero(khataBalance) + getIntOrZero(otherBalances)).toString()
 
-        if(view != null)
-            OSDDeliveryEntryInfo.updateOsdUiEntry(view, this)
+        if (view != null)
+            OSDDeliveryEntryInfo.updateDerivedAttributesInUi(view, this)
+    }
+
+        companion object {
+            fun getDeliverObjectFromOrder(order: SMSOrderModel): DeliverToCustomerDataModel {
+            return DeliverToCustomerDataModel(
+            id = "${System.currentTimeMillis()}",
+            timestamp = DateUtils.getCurrentTimestamp(),
+            name = order.name,
+            orderedPc = order.orderedPc.toString(),
+            orderedKg = order.orderedKg.toString(),
+            rate = "${CustomerDataUtils.getDeliveryRate(order.name)}",
+//            prevDue = CustomerDueData.getLastFinalizedDue(order.name),
+            customerAccount = order.name,
+            deliveryStatus = "DELIVERING"
+            )
+        }
     }
 }

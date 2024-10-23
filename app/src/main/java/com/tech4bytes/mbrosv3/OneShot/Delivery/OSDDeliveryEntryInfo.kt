@@ -43,9 +43,10 @@ class OSDDeliveryEntryInfo {
         }
 
         private var entrynumber = 1
-        fun createOrderCard(context: Context, value: DeliverToCustomerDataModel): View {
+        fun createOrderCard(context: Context, deliveryObj: DeliverToCustomerDataModel): View {
             val layoutInflater = LayoutInflater.from(AppContexts.get())
             val entry = layoutInflater.inflate(R.layout.activity_one_shot_delivery_fragment, null)
+            updatePrimaryAttributesInUi(entry, deliveryObj)
 
             val nameElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_name)
             val rateElementContainer =
@@ -63,32 +64,30 @@ class OSDDeliveryEntryInfo {
             val sendSMSBtn = entry.findViewById<TextView>(R.id.osd_fragment_send_details)
             rateElementContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
 
-            value.customerAccount = value.name
-            nameElement.text = value.name
-            balanceElement.text = value.prevDue
-            val deliveryRecord = DeliverToCustomerActivity.getDeliveryRecord(value.name)
-            paidOnlineElement.text =
-                NumberUtils.getIntOrBlank(StagedPaymentUtils.getStagedPayments(value.name).paidAmount)
+            deliveryObj.customerAccount = deliveryObj.name
+//            nameElement.text = deliveryObj.name
+//            balanceElement.text = deliveryObj.prevDue
+            val deliveryRecord = DeliverToCustomerActivity.getDeliveryRecord(deliveryObj.name)
+//            paidOnlineElement.text =
+//                NumberUtils.getIntOrBlank(StagedPaymentUtils.getStagedPayments(deliveryObj.name).paidAmount)
 
             if (deliveryRecord != null) {
-                pcElement.setText(NumberUtils.getIntOrBlank(deliveryRecord.deliveredPc))
-                kgElement.text = NumberUtils.getDoubleOrBlank(deliveryRecord.deliveredKg)
-                paidOnlineElement.text = NumberUtils.getIntOrBlank(deliveryRecord.paidOnline)
-                paidElement.text =
-                    (getIntOrZero(deliveryRecord.paidCash) + getIntOrZero(paidOnlineElement.text.toString())).toString()
-                paidCashElement.text = NumberUtils.getIntOrBlank(deliveryRecord.paidCash)
-                val pcHintText =
-                    if (getIntOrZero(deliveryRecord.orderedPc) == 0) "pc" else deliveryRecord.orderedPc
-                pcElement.hint = pcHintText
+//                pcElement.setText(NumberUtils.getIntOrBlank(deliveryRecord.deliveredPc))
+//                kgElement.text = NumberUtils.getDoubleOrBlank(deliveryRecord.deliveredKg)
+//                paidOnlineElement.text = NumberUtils.getIntOrBlank(deliveryRecord.paidOnline)
+//                paidElement.text =
+//                    (getIntOrZero(deliveryRecord.paidCash) + getIntOrZero(paidOnlineElement.text.toString())).toString()
+//                paidCashElement.text = NumberUtils.getIntOrBlank(deliveryRecord.paidCash)
+
             }
 
-            if (SendSMSDetailsUtils.getSendSMSDetailsNumber(value.name) != null) {
+            if (SendSMSDetailsUtils.getSendSMSDetailsNumber(deliveryObj.name) != null) {
                 sendSMSBtn.visibility = View.VISIBLE
                 sendSMSBtn.setOnClickListener {
-                    val smsNumber = CustomerKYC.getCustomerByEngName(value.name)!!.smsNumber
-                    val t = DateUtils.getDate(value.timestamp)
+                    val smsNumber = CustomerKYC.getCustomerByEngName(deliveryObj.name)!!.smsNumber
+                    val t = DateUtils.getDate(deliveryObj.timestamp)
                     val formattedDate = DateUtils.getDateInFormat(t!!, "dd/MM/yyyy")
-                    val smsText = CustomerKYC.getCustomerByEngName(value.name)!!.smsText
+                    val smsText = CustomerKYC.getCustomerByEngName(deliveryObj.name)!!.smsText
                         .replace("<date>", formattedDate)
                         .replace("<pc>", pcElement.text.toString())
                         .replace("<kg>", kgElement.text.toString())
@@ -101,8 +100,8 @@ class OSDDeliveryEntryInfo {
                 }
             }
 
-            rateElement.setText("${CustomerDataUtils.getDeliveryRate(value.name)}")
-            fragmentUpdateCustomerWiseRateView(context, value, entry)
+            rateElement.setText("${CustomerDataUtils.getDeliveryRate(deliveryObj.name)}")
+            fragmentUpdateCustomerWiseRateView(context, deliveryObj, entry)
 
             val recordContainer =
                 entry.findViewById<CardView>(R.id.one_shot_delivery_fragment_record_container)
@@ -114,7 +113,7 @@ class OSDDeliveryEntryInfo {
             }
             entrynumber++
             recordContainer.setBackgroundColor(cardColor)
-            uiMaps[value.name] = entry
+            uiMaps[deliveryObj.name] = entry
 
             return entry
         }
@@ -242,7 +241,31 @@ class OSDDeliveryEntryInfo {
             order.khataBalance = (getIntOrZero(order.khataBalance) + getIntOrZero(adjustingBalance)).toString()
         }
 
-        fun updateOsdUiEntry(view: View, obj: DeliverToCustomerDataModel) {
+        fun updatePrimaryAttributesInUi(view: View, obj: DeliverToCustomerDataModel) {
+            val viewName = view.findViewById<TextView>(R.id.one_shot_delivery_fragment_name)
+            val viewDeliveredPc = view.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc)
+            val viewDeliveredKg = view.findViewById<TextView>(R.id.one_shot_delivery_fragment_kg)
+            val viewPaidCash = view.findViewById<TextView>(R.id.one_shot_delivery_fragment_paidCash)
+            val viewPaidOnline = view.findViewById<TextView>(R.id.one_shot_delivery_fragment_paidOnline)
+            val viewRate = view.findViewById<TextView>(R.id.osd_rate_for_customer)
+
+            val pcHintText =
+                if (getIntOrZero(obj.orderedPc) == 0) "pc" else obj.orderedPc
+
+            viewName.text = obj.name
+            viewDeliveredPc.hint = pcHintText
+            viewPaidCash.text = obj.paidCash
+            viewPaidOnline.text = obj.paidOnline
+            viewRate.text = obj.rate
+
+            if(pcHintText != obj.deliveredPc && getIntOrZero(obj.deliveredPc) != 0)
+                viewDeliveredPc.text = obj.deliveredPc
+
+            if(getDoubleOrZero(obj.deliveredKg) > 0.0)
+                viewDeliveredKg.text = obj.deliveredKg
+        }
+
+        fun updateDerivedAttributesInUi(view: View, obj: DeliverToCustomerDataModel) {
             val viewAvgKg = view.findViewById<TextView>(R.id.osd_entry_avg_kg)
             val viewPaid1 = view.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid)
             val viewKhataDue1 = view.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)

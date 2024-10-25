@@ -64,16 +64,16 @@ class UIUtils : AppCompatActivity() {
                 SwitchCompat::class.simpleName -> (uIElement as SwitchCompat).isChecked = value.toBoolean()
 
                 AppCompatImageView::class.simpleName -> {
-                    var colorToSet = R.color.button_disabled
-                    var tag = false.toString()
+                    val colorToSet: Int
+                    val tag: String
                     when (value.toBoolean()) {
                         true -> {
                             colorToSet = R.color.button_enabled
                             tag = true.toString()
                         }
                         else -> {
-                            var colorToSet = R.color.button_disabled
-                            var tag = false.toString()
+                            colorToSet = R.color.button_disabled
+                            tag = false.toString()
                         }
                     }
                     (uIElement as AppCompatImageView).setColorFilter(ContextCompat.getColor(AppContexts.get(), colorToSet))
@@ -91,6 +91,7 @@ class UIUtils : AppCompatActivity() {
                 debounceJob = CoroutineScope(Dispatchers.Main).launch {
                     delay(debouncePeriod) // Wait for the debounce period
                     func.invoke()
+                    debounceJob?.cancel()
                 }
             }
         }

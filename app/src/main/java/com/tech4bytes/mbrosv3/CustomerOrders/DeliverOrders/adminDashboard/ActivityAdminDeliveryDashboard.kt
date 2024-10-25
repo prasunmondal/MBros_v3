@@ -110,10 +110,6 @@ class ActivityAdminDeliveryDashboard : AppCompatActivity() {
         }.start()
     }
 
-    private fun isKhataGreen() {
-
-    }
-
     private fun setFinalizedIndicator(useCache: Boolean) {
         Thread {
             if (isFinalised(useCache)) {

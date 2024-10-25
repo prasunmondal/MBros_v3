@@ -1,6 +1,12 @@
 package com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer
 
+import android.content.Context
 import android.view.View
+import android.widget.ImageView
+import androidx.core.content.ContextCompat
+import com.google.android.material.textfield.TextInputEditText
+import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
+import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliveringUtils.calculateDeliverAmount
@@ -10,6 +16,7 @@ import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OSDDeliveryEntryInfo
 import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
 import com.tech4bytes.mbrosv3.OneShot.Delivery.ReferralType
+import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils.Companion.getDoubleOrZero
@@ -63,9 +70,23 @@ data class DeliverToCustomerDataModel(
         calculate(view)
     }
 
-    fun setRate(rate: Int, view: View) {
+    fun setRate(context: Context, rate: Int, view: View) {
         this.rate = rate.toString()
         calculate(view)
+
+        // update rate view colors
+        val rateElement = view.findViewById<TextInputEditText>(R.id.osd_rate_for_customer)
+        rateElement.setText(rate.toString())
+        val refreshRateButton = view.findViewById<ImageView>(R.id.one_shot_delivery_fragment_refresh_btn)
+        if (AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_RATE_RESET_BUTTON) && getIntOrZero(rateElement.text.toString()) != CustomerDataUtils.getCustomerDefaultRate(this.name)) {
+            rateElement.setBackgroundColor(ContextCompat.getColor(context, R.color.red))
+            rateElement.setTextColor(ContextCompat.getColor(context, R.color.white))
+            refreshRateButton.visibility = View.VISIBLE
+        } else {
+            rateElement.setBackgroundColor(0x00000000)
+            rateElement.setTextColor(rateElement.textColors.defaultColor)
+            refreshRateButton.visibility = View.GONE
+        }
     }
 
     fun calculate(view: View?) {

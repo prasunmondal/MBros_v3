@@ -79,8 +79,7 @@ class OSDDeliveryEntryInfo {
                 }
             }
 
-            rateElement.setText("${CustomerDataUtils.getDeliveryRate(deliveryObj.name)}")
-            fragmentUpdateCustomerWiseRateView(context, deliveryObj, entry)
+            deliveryObj.setRate(context, CustomerDataUtils.getDeliveryRate(deliveryObj.name), entry)
 
             val recordContainer =
                 entry.findViewById<CardView>(R.id.one_shot_delivery_fragment_record_container)
@@ -113,8 +112,7 @@ class OSDDeliveryEntryInfo {
                 entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_paidCash)
 
             UIUtils.addDebouncedOnTextChangeListener(rateElement) {
-                value.setRate(getIntOrZero(rateElement.text.toString()), entry)
-                fragmentUpdateCustomerWiseRateView(context, value, entry)
+                value.setRate(context, getIntOrZero(rateElement.text.toString()), entry)
             }
 
             UIUtils.addDebouncedOnTextChangeListener(pcElement) {
@@ -145,8 +143,7 @@ class OSDDeliveryEntryInfo {
                             .setTitle("Restore Rate")
                             .setPositiveButton("Yes") { dialog, id ->
                                 // CONFIRM
-                                rateElement.setText("${CustomerDataUtils.getCustomerDefaultRate(value.name)}")
-                                fragmentUpdateCustomerWiseRateView(context, value, entry)
+                                value.setRate(context, CustomerDataUtils.getCustomerDefaultRate(value.name), entry)
                             }
                             .setNegativeButton("No") { dialog, id ->
                                 // CANCEL
@@ -165,24 +162,6 @@ class OSDDeliveryEntryInfo {
                 } else {
                     moreDetailsContainer.visibility = View.VISIBLE
                 }
-            }
-        }
-
-        fun fragmentUpdateCustomerWiseRateView(
-            context: Context,
-            value: DeliverToCustomerDataModel,
-            entry: View
-        ) {
-            val rateElement = entry.findViewById<TextInputEditText>(R.id.osd_rate_for_customer)
-            val refreshRateButton = entry.findViewById<ImageView>(R.id.one_shot_delivery_fragment_refresh_btn)
-            if (AuthorizationUtils.isAuthorized(AuthorizationEnums.SHOW_RATE_RESET_BUTTON) && getIntOrZero(rateElement.text.toString()) != CustomerDataUtils.getCustomerDefaultRate(value.name)) {
-                rateElement.setBackgroundColor(ContextCompat.getColor(context, R.color.red))
-                rateElement.setTextColor(ContextCompat.getColor(context, R.color.white))
-                refreshRateButton.visibility = View.VISIBLE
-            } else {
-                rateElement.setBackgroundColor(0x00000000)
-                rateElement.setTextColor(rateElement.textColors.defaultColor)
-                refreshRateButton.visibility = View.GONE
             }
         }
 

@@ -43,43 +43,24 @@ class OSDDeliveryEntryInfo {
         }
 
         private var entrynumber = 1
-        fun createOrderCard(context: Context, deliveryObj: DeliverToCustomerDataModel): View {
+        fun createOrderCard(context: Context = activity, deliveryObj: DeliverToCustomerDataModel): View {
             val layoutInflater = LayoutInflater.from(AppContexts.get())
             val entry = layoutInflater.inflate(R.layout.activity_one_shot_delivery_fragment, null)
             updatePrimaryAttributesInUi(entry, deliveryObj)
+            deliveryObj.calculate(entry)
+            updateDerivedAttributesInUi(entry, deliveryObj)
 
-            val nameElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_name)
             val rateElementContainer =
                 entry.findViewById<TextInputLayout>(R.id.osd_rate_for_customer_container)
             val rateElement = entry.findViewById<TextInputEditText>(R.id.osd_rate_for_customer)
             val pcElement = entry.findViewById<EditText>(R.id.one_shot_delivery_fragment_pc)
             val kgElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_kg)
-            val paidCashElement =
-                entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paidCash)
-            val paidOnlineElement =
-                entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paidOnline)
             val paidElement = entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid)
             val balanceElement =
                 entry.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
             val sendSMSBtn = entry.findViewById<TextView>(R.id.osd_fragment_send_details)
             rateElementContainer.boxBackgroundMode = TextInputLayout.BOX_BACKGROUND_NONE
-
             deliveryObj.customerAccount = deliveryObj.name
-//            nameElement.text = deliveryObj.name
-//            balanceElement.text = deliveryObj.prevDue
-            val deliveryRecord = DeliverToCustomerActivity.getDeliveryRecord(deliveryObj.name)
-//            paidOnlineElement.text =
-//                NumberUtils.getIntOrBlank(StagedPaymentUtils.getStagedPayments(deliveryObj.name).paidAmount)
-
-            if (deliveryRecord != null) {
-//                pcElement.setText(NumberUtils.getIntOrBlank(deliveryRecord.deliveredPc))
-//                kgElement.text = NumberUtils.getDoubleOrBlank(deliveryRecord.deliveredKg)
-//                paidOnlineElement.text = NumberUtils.getIntOrBlank(deliveryRecord.paidOnline)
-//                paidElement.text =
-//                    (getIntOrZero(deliveryRecord.paidCash) + getIntOrZero(paidOnlineElement.text.toString())).toString()
-//                paidCashElement.text = NumberUtils.getIntOrBlank(deliveryRecord.paidCash)
-
-            }
 
             if (SendSMSDetailsUtils.getSendSMSDetailsNumber(deliveryObj.name) != null) {
                 sendSMSBtn.visibility = View.VISIBLE
@@ -241,6 +222,10 @@ class OSDDeliveryEntryInfo {
             order.khataBalance = (getIntOrZero(order.khataBalance) + getIntOrZero(adjustingBalance)).toString()
         }
 
+        fun getName(view: View?): String {
+            return view!!.findViewById<TextView>(R.id.one_shot_delivery_fragment_name).text.toString()
+        }
+
         fun updatePrimaryAttributesInUi(view: View, obj: DeliverToCustomerDataModel) {
             val viewName = view.findViewById<TextView>(R.id.one_shot_delivery_fragment_name)
             val viewDeliveredPc = view.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc)
@@ -266,6 +251,7 @@ class OSDDeliveryEntryInfo {
         }
 
         fun updateDerivedAttributesInUi(view: View, obj: DeliverToCustomerDataModel) {
+//            OneShotDelivery.updateTotals()
             val viewAvgKg = view.findViewById<TextView>(R.id.osd_entry_avg_kg)
             val viewPaid1 = view.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid)
             val viewKhataDue1 = view.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)
@@ -297,8 +283,6 @@ class OSDDeliveryEntryInfo {
             viewKhataDue2.text = obj.khataBalance
             viewOtherBalance.text = obj.otherBalances
             viewTotalBalance.text = obj.totalBalance
-
-            OneShotDelivery.updateTotals()
         }
     }
 }

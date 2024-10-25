@@ -30,20 +30,16 @@ import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.De
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliveringUtils
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrderModelUtil
-import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
-import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.OneShot.RefuelUI
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
-import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 import org.apache.commons.collections4.CollectionUtils
 
 class OneShotDelivery : AppCompatActivity() {
 
-    var deliverRecords: MutableMap<String, DeliverToCustomerDataModel> = mutableMapOf()
     lateinit var saveOneSortDeliveryButton: TextView
     lateinit var deleteDeliveryDataButton: TextView
     lateinit var sidebarIconLoadDetails: ImageView
@@ -150,26 +146,17 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     private fun addNewCustomer(name: String) {
-        val key = addToUnOrderedMap(name)
-        val uiFragment = OSDDeliveryEntryInfo.createOrderCard(this, key)
-        OSDDeliveryEntryInfo.setListeners(this, key)
+        val deliveryObj = DeliverToCustomerDataModel.getDeliverObjectFromOrder(name)
+        deliverRecords[name] = deliveryObj
+        val uiFragment = OSDDeliveryEntryInfo.createOrderCard(this, deliveryObj)
+        OSDDeliveryEntryInfo.setListeners(this, deliveryObj)
         findViewById<LinearLayout>(R.id.one_shot_delivery_unordered_customers_entry_container).addView(uiFragment)
-        BalanceReferralCalculations.calculate(key)
-    }
+        BalanceReferralCalculations.calculate(deliveryObj)
 
-    private fun addToUnOrderedMap(name: String): DeliverToCustomerDataModel {
-        val deliverCustomersOrders = DeliverToCustomerDataModel(
-            id = "${System.currentTimeMillis()}",
-            timestamp = DateUtils.getCurrentTimestamp(),
-            name = name,
-            orderedPc = "0",
-            orderedKg = "0",
-            rate = "${CustomerDataUtils.getDeliveryRate(name)}",
-            prevDue = CustomerDueData.getLastFinalizedDue(name),
-            deliveryStatus = "DELIVERING"
-        )
-        deliverRecords[name] = deliverCustomersOrders
-        return deliverCustomersOrders
+        val referredBy = CustomerKYC.getByName(name)!!.referredBy
+        if(referredBy.isNotBlank() && !OSDDeliveryEntryInfo.uiMaps.containsKey(referredBy)) {
+            addNewCustomer(referredBy)
+        }
     }
 
     private fun showOrders() {
@@ -198,6 +185,8 @@ class OneShotDelivery : AppCompatActivity() {
     }
 
     companion object {
+        var deliverRecords: MutableMap<String, DeliverToCustomerDataModel> = mutableMapOf()
+
         fun updateTotals(context: OneShotDelivery = AppContexts.get() as OneShotDelivery, needsSave: Boolean = true) {
             val metadataObj = DayMetadata.getRecords()
             val totalPcElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_pc)
@@ -216,7 +205,7 @@ class OneShotDelivery : AppCompatActivity() {
             var sumKhataDue = 0
             var sumTotalDue = 0
 
-            context.deliverRecords.forEach {
+            deliverRecords.forEach {
                 val kg = NumberUtils.getDoubleOrZero(it.value.deliveredKg)
                 if(kg > 0.0) {
                     sumPc += NumberUtils.getIntOrZero(it.value.deliveredPc)

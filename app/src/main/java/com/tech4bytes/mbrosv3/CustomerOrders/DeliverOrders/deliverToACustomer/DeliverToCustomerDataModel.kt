@@ -4,7 +4,6 @@ import android.view.View
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliveringUtils.calculateDeliverAmount
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliveringUtils.get
 import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrderModel
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDueData
@@ -13,7 +12,6 @@ import com.tech4bytes.mbrosv3.OneShot.Delivery.OneShotDelivery
 import com.tech4bytes.mbrosv3.OneShot.Delivery.ReferralType
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
-import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils.Companion.getDoubleOrZero
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils.Companion.getIntOrZero
 
@@ -76,14 +74,15 @@ data class DeliverToCustomerDataModel(
         val deliveredAmount = calculateDeliverAmount(deliveredKg, rate)
         val discounts = 0
 
-        val referredByView = OSDDeliveryEntryInfo.uiMaps[customerProfile.referredBy]
-        if(referredByView != null)
-            OneShotDelivery.deliverRecords[customerProfile.referredBy]!!.calculate(referredByView)
-
         prevDue = CustomerDueData.getLastFinalizedDue(nameFromView)
         deliverAmount = deliveredAmount.toString()
         paid = (getIntOrZero(paidCash) + getIntOrZero(paidOnline)).toString()
         calculateAdjustmentAmount()
+
+        val referredByView = OSDDeliveryEntryInfo.uiMaps[customerProfile.referredBy]
+        if(referredByView != null)
+            OneShotDelivery.deliverRecords[customerProfile.referredBy]!!.calculate(referredByView)
+
         khataBalance =
             (getIntOrZero(prevDue) + deliveredAmount + MoneyAdjustments.getAdjustmentAmount(nameFromView) - discounts - getIntOrZero(paidCash) - getIntOrZero(
                 paidOnline

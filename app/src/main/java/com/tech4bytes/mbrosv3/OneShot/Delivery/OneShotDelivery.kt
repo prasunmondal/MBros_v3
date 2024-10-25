@@ -151,7 +151,7 @@ class OneShotDelivery : AppCompatActivity() {
         val uiFragment = OSDDeliveryEntryInfo.createOrderCard(this, deliveryObj)
         OSDDeliveryEntryInfo.setListeners(this, deliveryObj)
         findViewById<LinearLayout>(R.id.one_shot_delivery_unordered_customers_entry_container).addView(uiFragment)
-        BalanceReferralCalculations.calculate(deliveryObj)
+//        BalanceReferralCalculations.calculate(deliveryObj)
 
         val referredBy = CustomerKYC.getByName(name)!!.referredBy
         if(referredBy.isNotBlank() && !OSDDeliveryEntryInfo.uiMaps.containsKey(referredBy)) {
@@ -303,12 +303,12 @@ class OneShotDelivery : AppCompatActivity() {
         val allDeliveredRecords: MutableMap<String, DeliverToCustomerDataModel> = mutableMapOf()
         allDeliveredRecords.putAll(deliverRecords)
 
-        allDeliveredRecords.forEach { (s, deliveryObj) ->
-            val referCalcObj = BalanceReferralCalculations.getTotalDiscountFor(deliveryObj.name)
-            deliveryObj.adjustments = referCalcObj.transferAmount.toString()
-            deliveryObj.totalBalance = (NumberUtils.getIntOrZero(deliveryObj.totalBalance) - referCalcObj.balanceOfReferered).toString()
-            deliveryObj.notes = referCalcObj.message
-        }
+//        allDeliveredRecords.forEach { (s, deliveryObj) ->
+//            val referCalcObj = BalanceReferralCalculations.getTotalDiscountFor(deliveryObj.name)
+//            deliveryObj.adjustments = referCalcObj.transferAmount.toString()
+//            deliveryObj.totalBalance = (NumberUtils.getIntOrZero(deliveryObj.totalBalance) - referCalcObj.balanceOfReferered).toString()
+//            deliveryObj.notes = referCalcObj.message
+//        }
 
         val filteredListToSave = filterListToGetDataToSave(allDeliveredRecords)
 

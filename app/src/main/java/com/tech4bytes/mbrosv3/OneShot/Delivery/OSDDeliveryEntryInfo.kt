@@ -20,10 +20,8 @@ import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.Customer.CustomerKYC
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.SMSDetails.SendSMSDetailsUtils
-import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerActivity
 import com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer.DeliverToCustomerDataModel
 import com.tech4bytes.mbrosv3.Finalize.Models.CustomerDataUtils
-import com.tech4bytes.mbrosv3.Payments.Staged.StagedPaymentUtils
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.SMSUtils
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
@@ -196,32 +194,6 @@ class OSDDeliveryEntryInfo {
             }
         }
 
-        private fun updateAutoAdjustmentBalance(order: DeliverToCustomerDataModel, entry: View) {
-            val autoAdjustments = BalanceReferralCalculations.getTotalDiscountFor(order.name)
-            val autoAdjustmentLayout: LinearLayout =
-                entry.findViewById(R.id.osd_fragment_auto_adjustments_layout)
-
-            autoAdjustmentLayout.visibility =
-                if (autoAdjustments.transferAmount == 0) {
-                    View.GONE
-                } else {
-                    View.VISIBLE
-                }
-
-            val autoAdjustmentBalance: TextView =
-                entry.findViewById(R.id.osd_fragment_auto_adjustments)
-            val autoAdjustmentJustification: TextView =
-                entry.findViewById(R.id.osd_fragment_auto_adjustments_justification)
-            val balanceBeforeAdjustmentElement: TextView =
-                entry.findViewById(R.id.osd_fragment_balance_before_adjustments)
-
-            balanceBeforeAdjustmentElement.text = order.totalBalance
-            autoAdjustmentJustification.text = autoAdjustments.message
-            autoAdjustmentBalance.text = autoAdjustments.transferAmount.toString()
-            val adjustingBalance = autoAdjustmentBalance.text.toString()
-            order.khataBalance = (getIntOrZero(order.khataBalance) + getIntOrZero(adjustingBalance)).toString()
-        }
-
         fun getName(view: View?): String {
             return view!!.findViewById<TextView>(R.id.one_shot_delivery_fragment_name).text.toString()
         }
@@ -251,7 +223,6 @@ class OSDDeliveryEntryInfo {
         }
 
         fun updateDerivedAttributesInUi(view: View, obj: DeliverToCustomerDataModel) {
-//            OneShotDelivery.updateTotals()
             val viewAvgKg = view.findViewById<TextView>(R.id.osd_entry_avg_kg)
             val viewPaid1 = view.findViewById<TextView>(R.id.one_shot_delivery_fragment_paid)
             val viewKhataDue1 = view.findViewById<TextView>(R.id.one_shot_delivery_fragment_balance_due)

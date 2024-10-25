@@ -214,6 +214,7 @@ class OSDDeliveryEntryInfo {
             val viewKhataDue2 = view.findViewById<TextView>(R.id.one_shot_delivery_fragment_more_details_container_balance_due)
             val viewOtherBalance = view.findViewById<TextView>(R.id.osd_lh_balance)
             val viewTotalBalance = view.findViewById<TextView>(R.id.osd_total_balance_including_lh)
+            val adjustment1 = view.findViewById<TextView>(R.id.osd_delivery_frag_adjustments)
 
             val kg = getDoubleOrZero(obj.deliveredKg)
             val pc = getIntOrZero(obj.orderedPc)
@@ -233,6 +234,7 @@ class OSDDeliveryEntryInfo {
             viewKhataDue2.text = obj.khataBalance
             viewOtherBalance.text = obj.otherBalances
             viewTotalBalance.text = obj.totalBalance
+            adjustment1.text = obj.adjustments
         }
     }
 }

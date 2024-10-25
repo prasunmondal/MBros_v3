@@ -20,6 +20,7 @@ import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils.Companion.getDoubleOrZero
+import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils.Companion.getIntOrBlank
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils.Companion.getIntOrZero
 
 data class DeliverToCustomerDataModel(
@@ -44,6 +45,7 @@ data class DeliverToCustomerDataModel(
     var adjustments: String = "",
     var notes: String = "",
     var otherBalances: String = "",
+    var adjustmentNotes: String = ""
 ) : java.io.Serializable {
 
     override fun toString(): String {
@@ -104,10 +106,10 @@ data class DeliverToCustomerDataModel(
         if (referredByView != null)
             OneShotDelivery.deliverRecords[customerProfile.referredBy]!!.calculate(referredByView)
 
+        adjustments = getIntOrBlank(MoneyAdjustments.getAdjustmentAmount(nameFromView).toString())
+        adjustmentNotes = MoneyAdjustments.getAdjustmentMessages(nameFromView)
         khataBalance =
-            (getIntOrZero(prevDue) + deliveredAmount + MoneyAdjustments.getAdjustmentAmount(
-                nameFromView
-            ) - discounts - getIntOrZero(paidCash) - getIntOrZero(
+            (getIntOrZero(prevDue) + deliveredAmount + getIntOrZero(adjustments) - discounts - getIntOrZero(paidCash) - getIntOrZero(
                 paidOnline
             )).toString()
         otherBalances = CustomerKYC.getByName(nameFromView)!!.otherBalances
@@ -130,7 +132,7 @@ data class DeliverToCustomerDataModel(
             ReferralType.BALANCE_TRANSFER -> {
                 val khataBalance =
                     getIntOrZero(prevDue) + getIntOrZero(deliverAmount) - getIntOrZero(paid) - discount
-                val msg = "$adjustmentType: ${this.name} -- ₹$khataBalance --> $adjustmentWith"
+                val msg = "$adjustmentType: ${this.name} -> $adjustmentWith > ₹$khataBalance"
                 LogMe.log("Balance Transfer from '${this.name}' to '${adjustmentWith}' of amount: $khataBalance")
                 MoneyAdjustments.addTransaction(this.name, khataBalance, adjustmentWith, khataBalance, adjustmentType, msg, msg)
             }
@@ -265,6 +267,19 @@ class MoneyAdjustments {
                 }
             }
             return sumAdjustment
+        }
+
+        fun getAdjustmentMessages(name: String): String {
+            var msg = ""
+            DeliveryCalculations.adjustments.forEach {
+                if (it.to.name == name) {
+                    msg += it.to.msg
+                }
+                if (it.from.name == name) {
+                    msg += it.from.msg
+                }
+            }
+            return msg
         }
     }
 }

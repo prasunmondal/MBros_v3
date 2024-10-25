@@ -186,10 +186,19 @@
                         android:textColor="#AFACAC" />
 
                     <TextView
+                        android:id="@+id/osd_delivery_frag_adjustments"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right|center_vertical"
+                        android:paddingHorizontal="10dp"
+                        android:text="Adjustments"
+                        android:textColor="#9ED9D3D3" />
+
+                    <TextView
                         android:id="@+id/one_shot_delivery_fragment_balance_due"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
-                        android:layout_weight="1"
                         android:fontFamily="sans-serif-medium"
                         android:gravity="right|center_vertical"
                         android:hint="Balance"

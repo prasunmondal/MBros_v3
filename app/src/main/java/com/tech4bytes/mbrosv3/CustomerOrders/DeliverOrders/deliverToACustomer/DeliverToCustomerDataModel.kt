@@ -90,8 +90,10 @@ data class DeliverToCustomerDataModel(
         otherBalances = CustomerKYC.getByName(nameFromView)!!.otherBalances
         totalBalance = (getIntOrZero(khataBalance) + getIntOrZero(otherBalances)).toString()
 
-        if (view != null)
+        if (view != null) {
             OSDDeliveryEntryInfo.updateDerivedAttributesInUi(view, this)
+            OneShotDelivery.updateTotals()
+        }
     }
     
     fun calculateAdjustmentAmount() {
@@ -124,33 +126,37 @@ data class DeliverToCustomerDataModel(
     }
 
         companion object {
-            fun getDeliverObjectFromOrder(order: SMSOrderModel): DeliverToCustomerDataModel {
-            return DeliverToCustomerDataModel(
-            id = "${System.currentTimeMillis()}",
-            timestamp = DateUtils.getCurrentTimestamp(),
-            name = order.name,
-            orderedPc = order.orderedPc.toString(),
-            orderedKg = order.orderedKg.toString(),
-            rate = "${CustomerDataUtils.getDeliveryRate(order.name)}",
-            customerAccount = order.name,
-            deliveryStatus = "DELIVERING"
-            )
-        }
-
-            fun getDeliverObjectFromOrder(name: String): DeliverToCustomerDataModel {
+            fun getDeliverObjectFromOrder(
+                name: String,
+                orderedPc: String,
+                orderedKg: String
+            ): DeliverToCustomerDataModel {
                 return DeliverToCustomerDataModel(
                     id = "${System.currentTimeMillis()}",
                     timestamp = DateUtils.getCurrentTimestamp(),
                     name = name,
-                    orderedPc = "0",
-                    orderedKg = "0",
+                    orderedPc = orderedPc,
+                    orderedKg = orderedKg,
                     rate = "${CustomerDataUtils.getDeliveryRate(name)}",
                     customerAccount = name,
                     deliveryStatus = "DELIVERING"
                 )
             }
+
+            fun getDeliverObjectFromOrder(order: SMSOrderModel): DeliverToCustomerDataModel {
+                return getDeliverObjectFromOrder(
+                    order.name,
+                    order.orderedPc.toString(),
+                    order.orderedKg.toString()
+                )
+            }
+
+            fun getDeliverObjectFromOrder(name: String): DeliverToCustomerDataModel {
+                return getDeliverObjectFromOrder(name, "0", "0")
+            }
+        }
     }
-}
+
 
 class MoneyAdjustments {
 

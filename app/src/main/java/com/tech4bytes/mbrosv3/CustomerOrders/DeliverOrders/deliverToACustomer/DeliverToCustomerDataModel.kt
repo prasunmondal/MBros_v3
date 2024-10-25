@@ -80,11 +80,13 @@ data class DeliverToCustomerDataModel(
         calculateAdjustmentAmount()
 
         val referredByView = OSDDeliveryEntryInfo.uiMaps[customerProfile.referredBy]
-        if(referredByView != null)
+        if (referredByView != null)
             OneShotDelivery.deliverRecords[customerProfile.referredBy]!!.calculate(referredByView)
 
         khataBalance =
-            (getIntOrZero(prevDue) + deliveredAmount + MoneyAdjustments.getAdjustmentAmount(nameFromView) - discounts - getIntOrZero(paidCash) - getIntOrZero(
+            (getIntOrZero(prevDue) + deliveredAmount + MoneyAdjustments.getAdjustmentAmount(
+                nameFromView
+            ) - discounts - getIntOrZero(paidCash) - getIntOrZero(
                 paidOnline
             )).toString()
         otherBalances = CustomerKYC.getByName(nameFromView)!!.otherBalances
@@ -95,7 +97,7 @@ data class DeliverToCustomerDataModel(
             OneShotDelivery.updateTotals()
         }
     }
-    
+
     fun calculateAdjustmentAmount() {
         LogMe.log("Calculating Adjustment Amount for: " + this.name)
         val customerProfile = CustomerKYC.getCustomerByEngName(this.name)
@@ -103,15 +105,17 @@ data class DeliverToCustomerDataModel(
         val adjustmentType = customerProfile.referralType
         val discount = 0
 
-        when(adjustmentType) {
+        when (adjustmentType) {
             ReferralType.BALANCE_TRANSFER -> {
-                val khataBalance = getIntOrZero(prevDue) + getIntOrZero(deliverAmount) - getIntOrZero(paid) - discount
+                val khataBalance =
+                    getIntOrZero(prevDue) + getIntOrZero(deliverAmount) - getIntOrZero(paid) - discount
                 val msg = "$adjustmentType: ${this.name} -- ₹$khataBalance --> $adjustmentWith"
                 LogMe.log("Balance Transfer from '${this.name}' to '${adjustmentWith}' of amount: $khataBalance")
                 MoneyAdjustments.addTransaction(this.name, khataBalance, adjustmentWith, khataBalance, adjustmentType, msg, msg)
             }
+
             ReferralType.CREDIT_PER_KG_SALE -> {
-                val deliveredKg= getDoubleOrZero(this.deliveredKg)
+                val deliveredKg = getDoubleOrZero(this.deliveredKg)
                 val bonusPerUnit = getDoubleOrZero(customerProfile.referralInput)
                 val creditAmount = (deliveredKg * bonusPerUnit).toInt()
                 val msg = "$adjustmentType: ${this.name} (${this.deliveredKg}kg) --> ₹$khataBalance"
@@ -119,43 +123,43 @@ data class DeliverToCustomerDataModel(
                 MoneyAdjustments.addTransaction(this.name, 0, adjustmentWith, creditAmount, adjustmentType, msg, msg)
                 LogMe.log("Adding amount: Name: ${this.name} - ${getIntOrZero(this.khataBalance)}")
             }
+
             ReferralType.NONE -> {
             }
-            else -> {}
         }
     }
 
-        companion object {
-            fun getDeliverObjectFromOrder(
-                name: String,
-                orderedPc: String,
-                orderedKg: String
-            ): DeliverToCustomerDataModel {
-                return DeliverToCustomerDataModel(
-                    id = "${System.currentTimeMillis()}",
-                    timestamp = DateUtils.getCurrentTimestamp(),
-                    name = name,
-                    orderedPc = orderedPc,
-                    orderedKg = orderedKg,
-                    rate = "${CustomerDataUtils.getDeliveryRate(name)}",
-                    customerAccount = name,
-                    deliveryStatus = "DELIVERING"
-                )
-            }
+    companion object {
+        fun getDeliverObjectFromOrder(
+            name: String,
+            orderedPc: String,
+            orderedKg: String
+        ): DeliverToCustomerDataModel {
+            return DeliverToCustomerDataModel(
+                id = "${System.currentTimeMillis()}",
+                timestamp = DateUtils.getCurrentTimestamp(),
+                name = name,
+                orderedPc = orderedPc,
+                orderedKg = orderedKg,
+                rate = "${CustomerDataUtils.getDeliveryRate(name)}",
+                customerAccount = name,
+                deliveryStatus = "DELIVERING"
+            )
+        }
 
-            fun getDeliverObjectFromOrder(order: SMSOrderModel): DeliverToCustomerDataModel {
-                return getDeliverObjectFromOrder(
-                    order.name,
-                    order.orderedPc.toString(),
-                    order.orderedKg.toString()
-                )
-            }
+        fun getDeliverObjectFromOrder(order: SMSOrderModel): DeliverToCustomerDataModel {
+            return getDeliverObjectFromOrder(
+                order.name,
+                order.orderedPc.toString(),
+                order.orderedKg.toString()
+            )
+        }
 
-            fun getDeliverObjectFromOrder(name: String): DeliverToCustomerDataModel {
-                return getDeliverObjectFromOrder(name, "0", "0")
-            }
+        fun getDeliverObjectFromOrder(name: String): DeliverToCustomerDataModel {
+            return getDeliverObjectFromOrder(name, "0", "0")
         }
     }
+}
 
 
 class MoneyAdjustments {
@@ -188,16 +192,23 @@ class MoneyAdjustments {
     }
 
 
-
     companion object {
 
-        fun addTransaction(from: String, debitAmount: Int, to: String, creditAmount: Int, referralType: ReferralType, debitMsg: String, creditMsg: String) {
+        fun addTransaction(
+            from: String,
+            debitAmount: Int,
+            to: String,
+            creditAmount: Int,
+            referralType: ReferralType,
+            debitMsg: String,
+            creditMsg: String
+        ) {
             if (from == to) {
                 throw Exception("Trying to add adjustment from $from to $to. Same person adjustments are not allowed.")
             }
 
             var dataObj = getDataIfAvailable(from, to, referralType)
-            if(dataObj == null) {
+            if (dataObj == null) {
                 dataObj = MoneyAdjustments()
                 DeliveryCalculations.adjustments.add(dataObj)
             }
@@ -207,9 +218,13 @@ class MoneyAdjustments {
             dataObj.to.addCredit(to, creditAmount, creditMsg)
         }
 
-        private fun getDataIfAvailable(fromName: String, toName: String, referralType: ReferralType): MoneyAdjustments? {
+        private fun getDataIfAvailable(
+            fromName: String,
+            toName: String,
+            referralType: ReferralType
+        ): MoneyAdjustments? {
             DeliveryCalculations.adjustments.forEach {
-                if(it.from.name == fromName && it.to.name == toName && referralType == it.referralType) {
+                if (it.from.name == fromName && it.to.name == toName && referralType == it.referralType) {
                     return it
                 }
             }
@@ -219,11 +234,11 @@ class MoneyAdjustments {
         fun getAdjustmentAmount(name: String): Int {
             var sumAdjustment = 0
             DeliveryCalculations.adjustments.forEach {
-                if(it.to.name == name) {
+                if (it.to.name == name) {
                     sumAdjustment += it.to.credit
                     sumAdjustment -= it.to.debit
                 }
-                if(it.from.name == name) {
+                if (it.from.name == name) {
                     sumAdjustment += it.from.credit
                     sumAdjustment -= it.from.debit
                 }

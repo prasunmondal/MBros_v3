@@ -56,7 +56,9 @@ class DeliverToCustomerCalculations {
         }
 
         fun filterToOnlyLatest(resultFromServer: List<DeliverToCustomerDataModel>): List<DeliverToCustomerDataModel> {
-            val sorted = ListUtils.sortListByAttribute(resultFromServer, DeliverToCustomerDataModel::id).reversed()
+            val sorted =
+                ListUtils.sortListByAttribute(resultFromServer, DeliverToCustomerDataModel::id)
+                    .reversed()
             val map = mutableMapOf<String, DeliverToCustomerDataModel>()
 
             sorted.forEach {

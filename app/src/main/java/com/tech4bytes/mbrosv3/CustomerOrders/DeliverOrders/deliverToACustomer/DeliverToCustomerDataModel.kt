@@ -121,7 +121,7 @@ data class DeliverToCustomerDataModel(
         }
     }
 
-    fun calculateAdjustmentAmount() {
+    private fun calculateAdjustmentAmount() {
         LogMe.log("Calculating Adjustment Amount for: " + this.name)
         val customerProfile = CustomerKYC.getCustomerByEngName(this.name)
         val adjustmentWith = customerProfile!!.referredBy
@@ -153,7 +153,7 @@ data class DeliverToCustomerDataModel(
     }
 
     companion object {
-        fun getDeliverObjectFromOrder(
+        private fun getDeliverObjectFromOrder(
             name: String,
             orderedPc: String,
             orderedKg: String

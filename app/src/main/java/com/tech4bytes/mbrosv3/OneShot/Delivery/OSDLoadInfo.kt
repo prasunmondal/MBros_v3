@@ -10,6 +10,7 @@ import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.BusinessData.DayMetadata
 import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
+import com.tech4bytes.mbrosv3.CustomerOrders.SMSOrders.SMSOrderModelUtil
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.SendInfoTexts.Whatsapp.Whatsapp
 import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
@@ -39,14 +40,16 @@ class OSDLoadInfo {
             val record = DayMetadata.getRecords()
 
             UIUtils.addDebouncedOnTextChangeListener(loadPcElement) {
-                record.actualLoadPc = loadPcElement.text.toString()
-                updateLoadAvgWt(loadPcElement, loadKgElement, loadAvgWtElement)
+                val loadPc = UIUtils.getTextOrHint(loadPcElement)
+                record.actualLoadPc = loadPc
+                updateLoadAvgWt(NumberUtils.getIntOrZero(loadPc), loadKgElement, loadAvgWtElement)
                 OneShotDelivery.updateTotals(context)
             }
 
             UIUtils.addDebouncedOnTextChangeListener(loadKgElement) {
+                val loadPc = NumberUtils.getIntOrZero(UIUtils.getTextOrHint(loadPcElement))
                 record.actualLoadKg = loadKgElement.text.toString()
-                updateLoadAvgWt(loadPcElement, loadKgElement, loadAvgWtElement)
+                updateLoadAvgWt(loadPc, loadKgElement, loadAvgWtElement)
                 OneShotDelivery.updateTotals(context)
             }
 
@@ -57,10 +60,10 @@ class OSDLoadInfo {
             }
         }
 
-        fun updateLoadAvgWt(loadPcElement: EditText, loadKgElement: EditText, loadAvgWtElement: TextView) {
+        fun updateLoadAvgWt(loadPc: Int, loadKgElement: EditText, loadAvgWtElement: TextView) {
             var avgWt = "N/A"
             try {
-                avgWt = NumberUtils.roundOff3places(NumberUtils.getDoubleOrZero(loadKgElement.text.toString()) / NumberUtils.getIntOrZero(loadPcElement.text.toString())).toString()
+                avgWt = NumberUtils.roundOff3places(NumberUtils.getDoubleOrZero(loadKgElement.text.toString()) / loadPc).toString()
             } catch (_: Exception) {
                 LogMe.log("Error while getting avg")
             } finally {
@@ -92,6 +95,7 @@ class OSDLoadInfo {
                 val record = DayMetadata.getRecords()
                 val loadCompanyBranchArea = context.findViewById<TextView>(R.id.osd_load_company_branch_area)
 
+                loadPcElement.hint = "${SMSOrderModelUtil.getTotalOrderedPc()}"
                 loadPcElement.setText(DayMetadata.getRecords().actualLoadPc)
                 loadKgElement.setText(DayMetadata.getRecords().actualLoadKg)
                 context.findViewById<TextView>(R.id.osd_company_name).text = DayMetadata.getRecords().load_account

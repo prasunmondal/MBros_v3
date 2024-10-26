@@ -98,4 +98,15 @@ object SMSOrderModelUtil: GSheetSerialized<SMSOrderModel> (
             NumberUtils.getDoubleOrBlank(fetchAll().execute()[0].avgWt2)
         }
     }
+
+    fun getTotalOrderedPc(): Int {
+        val actualOrders = SMSOrderModelUtil.fetchAll().execute()
+        var sumPc = 0
+        actualOrders.forEach {
+            sumPc += it.orderedPc
+        }
+        if(actualOrders.isNotEmpty())
+            sumPc += NumberUtils.getIntOrZero(actualOrders[0].extraPc)
+        return sumPc
+    }
 }

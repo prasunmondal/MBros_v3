@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
+import android.provider.Contacts.Intents.UI
 import android.view.View
 import android.view.WindowManager
 import android.widget.ArrayAdapter
@@ -34,6 +35,7 @@ import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.OneShot.RefuelUI
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Summary.DaySummary.DaySummaryUtils
+import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Numbers.NumberUtils
 import com.tech4bytes.mbrosv3.Utils.ObjectUtils.ListUtils
 import org.apache.commons.collections4.CollectionUtils
@@ -77,7 +79,7 @@ class OneShotDelivery : AppCompatActivity() {
             refuelUIObj.initiallizeRefuelUI()
             runOnUiThread {
                 showOrders()
-                OSDLoadInfo.updateLoadAvgWt(loadPcElement, loadKgElement, loadAvgWtElement)
+                OSDLoadInfo.updateLoadAvgWt(NumberUtils.getIntOrZero(UIUtils.getTextOrHint(loadPcElement)), loadKgElement, loadAvgWtElement)
                 populateCustomerListDropdown()
                 OSDLoadInfo.setListeners(this, loadPcElement, loadKgElement, loadAvgWtElement, deliveryPriceElement)
             }
@@ -189,6 +191,7 @@ class OneShotDelivery : AppCompatActivity() {
 
         fun updateTotals(context: OneShotDelivery = AppContexts.get() as OneShotDelivery, needsSave: Boolean = true) {
             val metadataObj = DayMetadata.getRecords()
+            val loadPcElement = context.findViewById<TextView>(R.id.one_shot_delivery_pc)
             val totalPcElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_pc)
             val totalKgElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_kg)
             val totalSaleElement = context.findViewById<TextView>(R.id.one_shot_delivery_total_sale)
@@ -223,7 +226,7 @@ class OneShotDelivery : AppCompatActivity() {
             val sumOnlinePayments = DeliverToCustomerCalculations.getTotalAmountPaidOnlineTodayByCustomers()
             val loadedKg = NumberUtils.getDoubleOrZero(DayMetadata.getRecords().actualLoadKg)
             val shortage = (loadedKg - sumKg) * 100 / loadedKg
-            val loadedPc = NumberUtils.getIntOrZero(DayMetadata.getRecords().actualLoadPc)
+//            val loadedPc = NumberUtils.getIntOrZero(DayMetadata.getRecords().actualLoadPc)
 
             totalPcElement.text = "$sumPc"
             totalKgElement.text = "%.3f".format(sumKg)
@@ -235,6 +238,7 @@ class OneShotDelivery : AppCompatActivity() {
             profitElement.text = DaySummaryUtils.showDayProfit(sumSale)
             totalDueElement.text = "$sumTotalDue"
 
+            val loadedPc = NumberUtils.getIntOrZero(UIUtils.getTextOrHint(loadPcElement))
             if(sumPc != loadedPc) {
                 totalPcElement.setBackgroundColor(ContextCompat.getColor(context, R.color.osd_total_bar_incorrect_data_background))
                 totalPcElement.setTextColor(ContextCompat.getColor(context, R.color.white))

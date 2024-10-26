@@ -55,12 +55,12 @@ data class DeliverToCustomerDataModel(
 
     fun setDeliveredPc(deliveredPc: Int, view: View) {
         this.deliveredPc = deliveredPc.toString()
-        calculate(view)
+        calculate(this, view)
     }
 
     fun setDeliveredKg(deliveredKg: Double, view: View) {
         this.deliveredKg = deliveredKg.toString()
-        calculate(view)
+        calculate(this, view)
 
         // update hint color for pc when kg > 0
         val pcView = view.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc)
@@ -68,17 +68,17 @@ data class DeliverToCustomerDataModel(
 
     fun setPaidCash(paidCash: Int, view: View) {
         this.paidCash = paidCash.toString()
-        calculate(view)
+        calculate(this, view)
     }
 
-    fun setPaidOnline(paidOnline: Int, view: View) {
+    fun setPaidOnline(paidOnline: Int, view: View?) {
         this.paidOnline = paidOnline.toString()
-        calculate(view)
+        calculate(this, view)
     }
 
     fun setRate(context: Context, rate: Int, view: View) {
         this.rate = rate.toString()
-        calculate(view)
+        calculate(this, view)
 
         // update rate view colors
         val rateElement = view.findViewById<TextInputEditText>(R.id.osd_rate_for_customer)
@@ -95,8 +95,14 @@ data class DeliverToCustomerDataModel(
         }
     }
 
-    fun calculate(view: View?) {
-        val nameFromView = OSDDeliveryEntryInfo.getName(view)
+    fun calculate(deliverObj: DeliverToCustomerDataModel, view: View?) {
+        if(view == null)
+            calculate(deliverObj.name, view)
+        calculate(OSDDeliveryEntryInfo.getName(view), view)
+    }
+
+    fun calculate(name: String, view: View?) {
+        val nameFromView = name
         val customerProfile = CustomerKYC.getCustomerByEngName(nameFromView)!!
         val deliveredAmount = calculateDeliverAmount(deliveredKg, rate)
         val discounts = 0
@@ -108,7 +114,7 @@ data class DeliverToCustomerDataModel(
 
         val referredByView = OSDDeliveryEntryInfo.uiMaps[customerProfile.referredBy]
         if (referredByView != null)
-            OneShotDelivery.deliverRecords[customerProfile.referredBy]!!.calculate(referredByView)
+            OneShotDelivery.deliverRecords[customerProfile.referredBy]!!.calculate(OneShotDelivery.deliverRecords[customerProfile.referredBy]!!, referredByView)
 
         adjustments = getIntOrBlank(MoneyAdjustments.getAdjustmentAmount(nameFromView).toString())
         adjustmentNotes = MoneyAdjustments.getAdjustmentMessages(nameFromView)

@@ -180,7 +180,7 @@ class OneShotDelivery : AppCompatActivity() {
 
         listOfCustomers.forEach { order ->
             entryMap[order.value] = OSDDeliveryEntryInfo.createOrderCard(this, order.value)
-            order.value.calculate(entryMap[order.value])
+            order.value.calculate(order.value, entryMap[order.value])
             OSDDeliveryEntryInfo.setListeners(this, order.value)
         }
         return entryMap

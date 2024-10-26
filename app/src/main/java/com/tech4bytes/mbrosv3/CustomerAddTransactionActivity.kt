@@ -234,6 +234,7 @@ class CustomerAddTransactionActivity : AppCompatActivity() {
         var isUpdated = false
         deliveryList.forEach {
             if(it.name == getNameFromUI()) {
+                it.setPaidOnline(NumberUtils.getIntOrZero(it.paidOnline), null)
                 val paidOnline = NumberUtils.getIntOrZero((NumberUtils.getIntOrZero(it.paidOnline) + getTransactionAmount()).toString())
                 it.paidOnline = "$paidOnline"
                 isUpdated = true

@@ -235,7 +235,7 @@ class OneShotDelivery : AppCompatActivity() {
             totalCollectedElement.text = "$sumAmountCollected"
             totalCollectedElement.tooltipText="Cash:   $sumCashPayments\nOnline: $sumOnlinePayments "
             khataDue.text = "$sumKhataDue"
-            profitElement.text = DaySummaryUtils.showDayProfit(sumSale)
+            profitElement.text = DaySummaryUtils.showDayProfit()
             totalDueElement.text = "$sumTotalDue"
 
             val loadedPc = NumberUtils.getIntOrZero(UIUtils.getTextOrHint(loadPcElement))

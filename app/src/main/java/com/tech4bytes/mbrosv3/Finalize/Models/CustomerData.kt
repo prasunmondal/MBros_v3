@@ -65,7 +65,7 @@ class CustomerData : java.io.Serializable {
         this.khataBalance = deliveryObj.khataBalance
         this.otherBalances = deliveryObj.otherBalances
         this.totalBalance = deliveryObj.totalBalance
-        this.avgWt = NumberUtils.roundOff3places(deliveredKg.toDouble() / deliveredPc.toInt()).toString()
+        this.avgWt = NumberUtils.roundOff3places(NumberUtils.getDoubleOrZero(deliveredKg) / NumberUtils.getIntOrZero(deliveredPc)).toString()
         this.profit = NumberUtils.roundOff2places(profitByCustomer).toString()
         this.profitPercent = NumberUtils.roundOff2places(profitPercentByCustomer).toString()
         this.notes = deliveryObj.notes

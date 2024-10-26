@@ -79,7 +79,7 @@
                                 android:background="#00000000"
                                 android:inputType="number"
                                 android:textColor="#FBC02D"
-                                android:textColorHint="#B7E2CE8B"
+                                android:textColorHint="#BEF8D682"
                                 android:textSize="14sp" />
                         </LinearLayout>
 
@@ -106,7 +106,7 @@
                                 android:hint="0.000"
                                 android:inputType="number|numberDecimal"
                                 android:textColor="#FBC02D"
-                                android:textColorHint="#B7E2CE8B"
+                                android:textColorHint="#BEF8D682"
                                 android:textSize="14sp" />
 
                         </LinearLayout>

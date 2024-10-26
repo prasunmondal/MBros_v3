@@ -26,7 +26,7 @@ import kotlin.math.abs
 
 class MoneyCounter : AppCompatActivity() {
 
-    private val availableDenominations: List<Int> = listOf(2000, 500, 200, 100, 50, 20, 10)
+    private val availableDenominations: List<Int> = listOf(500, 200, 100, 50, 20, 10)
     private lateinit var deductedCashField: EditText
     private lateinit var addedCashField: EditText
     private lateinit var viewDetailsBtn: ImageView
@@ -51,9 +51,18 @@ class MoneyCounter : AppCompatActivity() {
         val aimingAmountField = findViewById<EditText>(R.id.mc_aiming_amount)
         viewDetailsBtn = findViewById(R.id.mc_view_details_btn)
 
-        deductedCashField.addTextChangedListener { setAimingAmount() }
-        addedCashField.addTextChangedListener { setAimingAmount() }
-        aimingAmountField.addTextChangedListener { updateSuccessColors() }
+        deductedCashField.addTextChangedListener {
+            setAimingAmount()
+            updateTotalAmount()
+        }
+        addedCashField.addTextChangedListener {
+            setAimingAmount()
+            updateTotalAmount()
+        }
+        aimingAmountField.addTextChangedListener {
+            updateSuccessColors()
+            updateTotalAmount()
+        }
 
         viewDetailsBtn.tooltipText = "Not populated"
 

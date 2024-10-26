@@ -116,7 +116,7 @@ class OneShotLoad : AppCompatActivity() {
         val dataObj = DayMetadata.getRecords()
         labour2Enabled = NumberUtils.getIntOrZero(dataObj.numberOfPeopleTakingSalary) > 2
         val salaries = dataObj.salaryDivision.split("#")
-        if (salaries.isNotEmpty() && DayMetadata.isCurrentDayRecord()) {
+        if (salaries.isNotEmpty() && DayMetadata.didDateChanged()) {
             LogMe.log(dataObj.salaryDivision)
             salaries.forEach {
                 LogMe.log(it)
@@ -248,7 +248,7 @@ class OneShotLoad : AppCompatActivity() {
         obj.readyToSendMsg = isReadyToSendMsg()
 
         // Reset a few attributes
-        if(!DayMetadata.isCurrentDayRecord()) {
+        if(DayMetadata.didDateChanged()) {
             DayMetadata.resetForNextDay(obj)
         }
 
@@ -285,7 +285,7 @@ class OneShotLoad : AppCompatActivity() {
             }
             DayMetadata.insert(DayMetadata.getRecords()).execute()
             DayMetadata.clearLocalObj()
-            DayMetadata.getRecords(false)
+            DayMetadata.getRecords(true)
             runOnUiThread {
                 markDataFresh(true)
                 Toast.makeText(this, "Data Saved!", Toast.LENGTH_LONG).show()

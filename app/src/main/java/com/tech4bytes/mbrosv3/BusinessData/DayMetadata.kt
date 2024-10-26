@@ -56,7 +56,7 @@ object DayMetadata : GSheetSerialized<DayMetadataModel>(
         return NumberUtils.getIntOrZero(obj.extra_expenses) - NumberUtils.getIntOrZero(obj.police)
     }
 
-    fun isCurrentDayRecord(): Boolean {
+    fun didDateChanged(): Boolean {
         val todaysDate1 = DateUtils.getCurrentDate("yyyy-dd-MM 00:00:00")
         val todaysDate2 = DateUtils.getCurrentDate("dd/MM/yyyy")
         val lastDate = DateUtils.getDateString(getRecords().datetime)

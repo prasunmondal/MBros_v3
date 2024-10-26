@@ -235,6 +235,14 @@ class OSDDeliveryEntryInfo {
             viewOtherBalance.text = obj.otherBalances
             viewTotalBalance.text = obj.totalBalance
             adjustment1.text = obj.adjustments
+
+            // update hint color for pc when kg > 0
+            val pcView = view.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc)
+            var pcHintColor = R.color.osd_pc_hint_color_1
+            if (getDoubleOrZero(obj.deliveredKg) > 0.0) {
+                pcHintColor = R.color.osd_pc_hint_color_2
+            }
+            pcView.setHintTextColor(ContextCompat.getColor(AppContexts.get(), pcHintColor))
         }
     }
 }

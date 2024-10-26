@@ -3,6 +3,7 @@ package com.tech4bytes.mbrosv3.CustomerOrders.DeliverOrders.deliverToACustomer
 import android.content.Context
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.google.android.material.textfield.TextInputEditText
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
@@ -60,6 +61,9 @@ data class DeliverToCustomerDataModel(
     fun setDeliveredKg(deliveredKg: Double, view: View) {
         this.deliveredKg = deliveredKg.toString()
         calculate(view)
+
+        // update hint color for pc when kg > 0
+        val pcView = view.findViewById<TextView>(R.id.one_shot_delivery_fragment_pc)
     }
 
     fun setPaidCash(paidCash: Int, view: View) {

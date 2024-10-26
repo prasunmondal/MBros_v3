@@ -45,7 +45,7 @@ class OSDDeliveryEntryInfo {
             val layoutInflater = LayoutInflater.from(AppContexts.get())
             val entry = layoutInflater.inflate(R.layout.activity_one_shot_delivery_fragment, null)
             updatePrimaryAttributesInUi(entry, deliveryObj)
-            deliveryObj.calculate(deliveryObj, entry)
+            deliveryObj.calculate(entry)
             updateDerivedAttributesInUi(entry, deliveryObj)
 
             val rateElementContainer =

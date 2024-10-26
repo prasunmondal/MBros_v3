@@ -324,7 +324,7 @@ class RefuelUI(
     fun getExtraExpenses(uiFinalKmContainer: LinearLayout): Int {
         val extraExpensesElement =
             uiFinalKmContainer.findViewById<EditText>(R.id.one_shot_delivery_extra_expenses)
-        return NumberUtils.getIntOrZero(extraExpensesElement.text.toString())
+        return NumberUtils.getIntOrZero(UIUtils.getTextOrHint(extraExpensesElement))
     }
 
     fun saveKmData() {

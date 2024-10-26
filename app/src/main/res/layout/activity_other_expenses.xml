@@ -129,10 +129,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
                             android:background="#00000000"
+                            android:hint="100"
                             android:inputType="number"
                             android:paddingLeft="10dp"
                             android:textColor="#FBC02D"
-                            android:textColorHint="#8DD8D4D4"
+                            android:textColorHint="#BEF8D682"
                             android:textSize="16sp" />
                     </LinearLayout>
 

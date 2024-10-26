@@ -74,11 +74,11 @@ object DayMetadata : GSheetSerialized<DayMetadataModel>(
 
     fun resetForNextDay(obj: DayMetadataModel): DayMetadataModel {
         obj.labour_expenses = "0"
-        obj.extra_expenses = "0"
+        obj.extra_expenses = ""
         obj.police = "0"
         obj.police_breakdown = ""
-        obj.actualLoadPc = "0"
-        obj.actualLoadKg = "0"
+        obj.actualLoadPc = ""
+        obj.actualLoadKg = ""
         return obj
     }
 }

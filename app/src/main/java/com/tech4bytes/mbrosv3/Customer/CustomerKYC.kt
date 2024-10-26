@@ -2,6 +2,7 @@ package com.tech4bytes.mbrosv3.Customer
 
 import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.prasunmondal.dev.libs.gsheet.ContextWrapper
+import com.prasunmondal.dev.libs.gsheet.clients.ClientFilter
 import com.prasunmondal.dev.libs.gsheet.clients.GSheetSerialized
 import com.tech4bytes.mbrosv3.OneShot.Delivery.ReferralType
 import com.tech4bytes.mbrosv3.ProjectConfig
@@ -31,7 +32,8 @@ object CustomerKYC : GSheetSerialized<CustomerKYCModel>(
     sheetId = ProjectConfig.get_db_sheet_id(),
     tabName = "customerDetails",
     query = null,
-    modelClass = CustomerKYCModel::class.java
+    modelClass = CustomerKYCModel::class.java,
+    filter = ClientFilter("removeBlankNames") { list: List<CustomerKYCModel> -> list.filter { it.nameEng.isNotBlank() }}
 ) {
 
     fun getByName(englishName: String): CustomerKYCModel? {

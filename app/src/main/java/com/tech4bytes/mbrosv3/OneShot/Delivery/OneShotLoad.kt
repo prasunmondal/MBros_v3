@@ -116,7 +116,7 @@ class OneShotLoad : AppCompatActivity() {
         val dataObj = DayMetadata.getRecords()
         labour2Enabled = NumberUtils.getIntOrZero(dataObj.numberOfPeopleTakingSalary) > 2
         val salaries = dataObj.salaryDivision.split("#")
-        if (salaries.isNotEmpty() && DayMetadata.didDateChanged()) {
+        if (salaries.isNotEmpty() && !DayMetadata.didDateChanged()) {
             LogMe.log(dataObj.salaryDivision)
             salaries.forEach {
                 LogMe.log(it)

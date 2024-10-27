@@ -60,7 +60,7 @@ object DayMetadata : GSheetSerialized<DayMetadataModel>(
         val todaysDate1 = DateUtils.getCurrentDate("yyyy-dd-MM 00:00:00")
         val todaysDate2 = DateUtils.getCurrentDate("dd/MM/yyyy")
         val lastDate = DateUtils.getDateString(getRecords().datetime)
-        return (lastDate == todaysDate1 || lastDate == todaysDate2)
+        return !(lastDate == todaysDate1 || lastDate == todaysDate2)
     }
 
     fun getEstimatedSalary(): Int {

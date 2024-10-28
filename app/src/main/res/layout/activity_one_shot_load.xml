@@ -360,7 +360,7 @@
                                     android:paddingLeft="10dp"
                                     android:paddingTop="10dp"
                                     android:textColor="@color/osl_ui_attribute_value_text_color"
-                                    android:textColorHint="#3A3939"
+                                    android:textColorHint="#7EC88005"
                                     android:textSize="17sp"
                                     android:textStyle="bold" />
                             </LinearLayout>
@@ -393,7 +393,7 @@
                                 android:paddingLeft="10dp"
                                 android:paddingTop="10dp"
                                 android:textColor="@color/osl_ui_attribute_value_text_color"
-                                android:textColorHint="#3A3939"
+                                android:textColorHint="#7EC88005"
                                 android:textSize="24sp"
                                 android:textStyle="bold" />
 

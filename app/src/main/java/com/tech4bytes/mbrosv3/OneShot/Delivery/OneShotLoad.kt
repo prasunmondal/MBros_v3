@@ -31,6 +31,7 @@ import com.tech4bytes.mbrosv3.BusinessLogic.DeliveryCalculations
 import com.tech4bytes.mbrosv3.Login.ActivityLogin
 import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.SMSUtils
+import com.tech4bytes.mbrosv3.Utils.Android.UIUtils
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
 import com.tech4bytes.mbrosv3.Utils.Language.English.EnglishUtils
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
@@ -220,8 +221,9 @@ class OneShotLoad : AppCompatActivity() {
         val obj = DayMetadata.getRecords(useCache)
         val deliveryBasePrice = initialFarmRate
         inHandCash.setText(obj.extra_cash_given)
-        deliveryBasePrice.setText(DeliveryCalculations.getBaseDeliveryPrice(obj.finalFarmRate, obj.bufferRate).toString())
-        finalFarmRate.setText(obj.finalFarmRate)
+        deliveryBasePrice.hint = DeliveryCalculations.getBaseDeliveryPrice(obj.finalFarmRate, obj.bufferRate).toString()
+        finalFarmRate.hint = obj.finalFarmRate
+//        finalFarmRate.setText(obj.finalFarmRate)
         findViewById<TextView>(R.id.osl_estimated_load_kg).text = "Coming soon..."
     }
 
@@ -232,8 +234,8 @@ class OneShotLoad : AppCompatActivity() {
         val account = companyAccount2.text.toString()
         val loadingArea = companyArea2.text.toString()
         val extraCashProvider = inHandCash.text.toString()
-        val farmRate = initialFarmRate.text.toString()
-        val finalFarmRate = finalFarmRate.text.toString()
+        val farmRate = UIUtils.getTextOrHint(initialFarmRate)
+        val finalFarmRate = UIUtils.getTextOrHint(finalFarmRate)
 
         obj.datetime = getDateFromUI()
         obj.load_companyName = companyName

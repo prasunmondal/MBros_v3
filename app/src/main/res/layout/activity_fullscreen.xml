@@ -149,7 +149,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#000000"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -158,9 +158,21 @@
             android:id="@+id/menu_refreshBtn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center"
             android:onClick="loginPageOnClickRefresh"
             android:text="REFRESH"
+            android:textColor="#D3D1D1"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/menu_update_btn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:onClick="onClickUpdate"
+            android:text="UPDATE"
             android:textColor="#D3D1D1"
             android:textSize="14sp" />
     </LinearLayout>

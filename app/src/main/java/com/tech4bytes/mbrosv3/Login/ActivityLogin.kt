@@ -2,17 +2,12 @@ package com.tech4bytes.mbrosv3.Login
 
 //import com.tech4bytes.mbrosv3.BuildConfig
 import android.annotation.SuppressLint
-import android.app.DownloadManager
 import android.content.ActivityNotFoundException
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +16,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.FileProvider
 import com.prasunmondal.dev.libs.caching.CentralCacheObj
 import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.tech4bytes.mbrosv3.AppData.AppUtils
@@ -340,110 +334,5 @@ class ActivityLogin : AppCompatActivity() {
         refreshBtn.isClickable = false
         refreshBtn.text = "Refreshing... .. ."
         AppUtils.invalidateAllDataAndRestartApp()
-    }
-
-    fun onClickUpdate(view: View) {
-        downloadApk(this)
-    }
-
-    @SuppressLint("Range")
-    fun downloadApk(context: Context) {
-        val request = DownloadManager.Request(Uri.parse("https://github.com/prasunmondal/MBros_v3/releases/download/1.0.1/MBros-a0d0524f-2024.10.27-debug.apk"))
-        request.setTitle("App Update")
-        request.setDescription("Downloading new version")
-        request.setDestinationInExternalFilesDir(context, Environment.DIRECTORY_DOWNLOADS, "app-update.apk")
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
-
-        val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        var downloadId: Long = 30
-        try {
-            downloadId = downloadManager.enqueue(request)
-        } catch (e: Exception)
-        {
-            val query = DownloadManager.Query().setFilterById(downloadId)
-            val cursor = downloadManager.query(query)
-            if (cursor != null && cursor.moveToFirst()) {
-                val columnIndex = cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)
-                val status = cursor.getInt(columnIndex)
-                if (status == DownloadManager.STATUS_FAILED) {
-                    val reason = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_REASON))
-                    Log.e("Download Error", "Failed with reason: $reason")
-                }
-            }
-        }
-
-        try {
-            context.registerReceiver(object : BroadcastReceiver() {
-                override fun onReceive(context: Context?, intent: Intent?) {
-                    try {
-                        if (intent != null && intent.getLongExtra(
-                                DownloadManager.EXTRA_DOWNLOAD_ID,
-                                -1
-                            ) == downloadId
-                        ) {
-                            val uri = downloadManager.getUriForDownloadedFile(downloadId)
-                            if (uri != null) {
-                                installApk(context!!, uri)
-                            } else {
-                                Toast.makeText(
-                                    context,
-                                    "Download failed or URI is null",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                            context?.unregisterReceiver(this)
-                        }
-                    } catch (e: Exception) {
-                        val query = DownloadManager.Query().setFilterById(downloadId)
-                        val cursor = downloadManager.query(query)
-                        if (cursor != null && cursor.moveToFirst()) {
-                            val columnIndex = cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)
-                            val status = cursor.getInt(columnIndex)
-                            if (status == DownloadManager.STATUS_FAILED) {
-                                val reason = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_REASON))
-                                Log.e("Download Error", "Failed with reason: $reason")
-                            }
-                        }
-                        e.printStackTrace()
-                        Toast.makeText(
-                            context,
-                            "Error during download: ${e.message}",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                }
-            }, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
-        } catch (e: Exception) {
-            val query = DownloadManager.Query().setFilterById(downloadId)
-            val cursor = downloadManager.query(query)
-            if (cursor != null && cursor.moveToFirst()) {
-                val columnIndex = cursor.getColumnIndex(DownloadManager.COLUMN_STATUS)
-                val status = cursor.getInt(columnIndex)
-                if (status == DownloadManager.STATUS_FAILED) {
-                    val reason = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_REASON))
-                    Log.e("Download Error", "Failed with reason: $reason")
-                }
-            }
-        }
-    }
-
-    fun installApk(context: Context, apkUri: Uri) {
-        val intent = Intent(Intent.ACTION_VIEW).apply {
-            setDataAndType(apkUri, "application/vnd.android.package-archive")
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                val apkFileUri = FileProvider.getUriForFile(
-                    context,
-                    "${context.packageName}.provider",
-                    File(apkUri.path!!)
-                )
-                data = apkFileUri
-            } else {
-                data = apkUri
-            }
-        }
-        context.startActivity(intent)
     }
 }

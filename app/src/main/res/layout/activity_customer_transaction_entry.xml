@@ -17,18 +17,18 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/ct_date"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:text="88/88/88" />
-
-        <TextView
             android:id="@+id/ct_name"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:text="TextView"
             android:visibility="visible"
             tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/ct_date"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="88/88/88" />
 
         <TextView
             android:id="@+id/ct_pc"

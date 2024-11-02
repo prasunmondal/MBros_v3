@@ -2,12 +2,17 @@ package com.tech4bytes.mbrosv3.Login
 
 //import com.tech4bytes.mbrosv3.BuildConfig
 import android.annotation.SuppressLint
+import android.app.DownloadManager
 import android.content.ActivityNotFoundException
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +21,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.FileProvider
 import com.prasunmondal.dev.libs.caching.CentralCacheObj
 import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.tech4bytes.mbrosv3.AppData.AppUtils
@@ -46,6 +52,8 @@ import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.OneShotSMS.OneShotSMS
 import com.tech4bytes.mbrosv3.Sms.SMSUtils
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
+import com.tech4bytes.mbrosv3.Utils.FileDownload.DownloadableFiles
+import com.tech4bytes.mbrosv3.Utils.FileDownload.FileManagerUtil
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import java.io.File
 
@@ -70,11 +78,13 @@ class ActivityLogin : AppCompatActivity() {
         updateAppVerOnUI()
         getDeviceDetails()
 
-        askPermissions(listOf(
-            android.Manifest.permission.READ_CONTACTS,
-            android.Manifest.permission.SEND_SMS,
-            android.Manifest.permission.READ_SMS
-        ))
+        askPermissions(
+            listOf(
+                android.Manifest.permission.READ_CONTACTS,
+                android.Manifest.permission.SEND_SMS,
+                android.Manifest.permission.READ_SMS
+            )
+        )
 
         updateWelcomeDetails()
         Thread {
@@ -89,10 +99,18 @@ class ActivityLogin : AppCompatActivity() {
                     // Send SMS when a new device registration is requested.
                     var deviceDetails = Build.BRAND
                     try {
-                        SMSUtils.sendSMS(this, "New Registration Requested.\n\nDevice ID: " + getPhoneId() + "\nModel: " + getDeviceDetails(), AppConstants.get(AppConstants.SMS_NUMBER_ON_DEVICE_REG_REQUEST))
+                        SMSUtils.sendSMS(
+                            this,
+                            "New Registration Requested.\n\nDevice ID: " + getPhoneId() + "\nModel: " + getDeviceDetails(),
+                            AppConstants.get(AppConstants.SMS_NUMBER_ON_DEVICE_REG_REQUEST)
+                        )
                     } catch (e: Exception) {
                         LogMe.log(e, "Failed to Communicate Registration Request.")
-                        Toast.makeText(this, "Failed to Communicate Registration Request.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this,
+                            "Failed to Communicate Registration Request.",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
                 logUnIdentifiedDevice()
@@ -140,14 +158,15 @@ class ActivityLogin : AppCompatActivity() {
     private fun getPendingPermissions(permissionsList: List<String>): MutableList<String> {
         var pendingPermissions = mutableListOf<String>()
         permissionsList.forEach {
-            if(checkSelfPermission(it) == PackageManager.PERMISSION_DENIED) {
+            if (checkSelfPermission(it) == PackageManager.PERMISSION_DENIED) {
                 pendingPermissions.add(it)
             }
         }
         return pendingPermissions
     }
+
     private fun askPermissions(permissionsList: List<String>) {
-        if(getPendingPermissions(permissionsList).isNotEmpty())
+        if (getPendingPermissions(permissionsList).isNotEmpty())
             getReadContactsPermission(permissionsList)
     }
 
@@ -166,6 +185,7 @@ class ActivityLogin : AppCompatActivity() {
             requestPermissions(permissions, PERMISSION_REQUEST_CODE)
         }
     }
+
     private fun updateWelcomeDetails() {
         findViewById<TextView>(R.id.welcome_date).text = DateUtils.getCurrentDate("dd")
         findViewById<TextView>(R.id.welcome_month).text = DateUtils.getCurrentDate("MMMM")
@@ -282,7 +302,10 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     fun goToAddCustomerTransaction() {
-        goToDataFetchActivity(ActivityAuthEnums.ADD_TRANSACTION, CustomerAddTransactionActivity::class.java)
+        goToDataFetchActivity(
+            ActivityAuthEnums.ADD_TRANSACTION,
+            CustomerAddTransactionActivity::class.java
+        )
     }
 
     private fun goToCustomerTransactions() {
@@ -310,14 +333,23 @@ class ActivityLogin : AppCompatActivity() {
 
     fun showToastConnectToAdmin() {
         runOnUiThread {
-            Toast.makeText(AppContexts.get(), "Device Registration Pending. Connect Admin", Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                AppContexts.get(),
+                "Device Registration Pending. Connect Admin",
+                Toast.LENGTH_LONG
+            ).show()
         }
 
         try {
-            SMSUtils.sendSMS(this, "MBros\nFollow Up: New Registration Requested.\n\nDevice ID: " + getPhoneId() + " - " + getDeviceDetails(), AppConstants.get(AppConstants.SMS_NUMBER_ON_DEVICE_REG_REQUEST))
+            SMSUtils.sendSMS(
+                this,
+                "MBros\nFollow Up: New Registration Requested.\n\nDevice ID: " + getPhoneId() + " - " + getDeviceDetails(),
+                AppConstants.get(AppConstants.SMS_NUMBER_ON_DEVICE_REG_REQUEST)
+            )
         } catch (e: Exception) {
             LogMe.log(e, "Failed to Communicate Registration Request.")
-            Toast.makeText(this, "Failed to Communicate Registration Request.", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Failed to Communicate Registration Request.", Toast.LENGTH_LONG)
+                .show()
         }
         CentralCacheObj.centralCache.invalidateFullCache(AppContexts.get())
     }
@@ -335,4 +367,129 @@ class ActivityLogin : AppCompatActivity() {
         refreshBtn.text = "Refreshing... .. ."
         AppUtils.invalidateAllDataAndRestartApp()
     }
+
+    fun onClickUpdateAppBtn(view: View) {
+        downloadApk("https://github.com/prasunmondal/MBros_v3/releases/download/1.0.1/MBros-a0d0524f-2024.10.27-debug.apk")
+    }
+
+    private var downloadId: Long = 0
+    private fun downloadApk(url: String) {
+        val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val uri = Uri.parse(url)
+
+        val request = DownloadManager.Request(uri).apply {
+            setTitle("Downloading APK")
+            setDescription("Please wait while the APK is being downloaded.")
+            setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "your_apk_name.apk")
+            setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+        }
+
+        downloadId = downloadManager.enqueue(request)
+
+        // Register a BroadcastReceiver to listen for download completion
+        registerReceiver(onDownloadComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+    }
+
+    // BroadcastReceiver to handle the download completion
+    private val onDownloadComplete = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
+            if (id == downloadId) {
+                Toast.makeText(context, "Download Completed", Toast.LENGTH_SHORT).show()
+                installApk()
+            }
+        }
+    }
+
+    private fun installApk() {
+        val apkFile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "your_apk_name.apk")
+        val apkUri: Uri = FileProvider.getUriForFile(this, "com.tech4bytes.mbrosv3.fileprovider", apkFile)
+
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            setDataAndType(apkUri, "application/vnd.android.package-archive")
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+
+        startActivity(intent)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Unregister the BroadcastReceiver
+        unregisterReceiver(onDownloadComplete)
+    }
+
+    lateinit var updateAPK: DownloadableFiles
+
+//    private fun downloadAndUpdate() {
+////        ToSheets.logs.post(listOf(LogActions.CLICKED.name, "Update App"), applicationContext)
+//
+////            FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.APP_DOWNLOAD_LINK)
+////        ToSheets.logs.post(
+////            listOf(LogActions.DOWNLOAD_START.name, "UPDATE APK - $apkUrl"),
+////            applicationContext
+////        )
+//
+//
+//        val apkUrl = "https://github.com/prasunmondal/MBros_v3/releases/download/1.0.1/MBros-a0d0524f-2024.10.27-debug.apk"
+//        var updateAPK = DownloadableFiles(this,
+//            "mbros",
+//            "mbros_update.apk",
+//            apkUrl,
+//            "",
+//            "update.apk",
+////            "E203",
+////            "Downloading Update"
+//        ) { installUpdate() }
+//
+//        updateAPK.download(this)
+//    }
+
+//    fun installUpdate() {
+//
+//        val i = Intent(this, Intent.CATEGORY_APP_BROWSER::class.java)
+//        startActivity(i)
+//        finish()
+//
+////        ToSheets.logs.post(listOf(LogActions.APP_UPDATE.name, "Initiated"), applicationContext)
+//
+//        val FILE_BASE_PATH = "file://"
+//        val MIME_TYPE = "application/vnd.android.package-archive"
+//        val PROVIDER_PATH = ".fileprovider"
+//        val APP_INSTALL_PATH: String = "\"application/vnd.android.package-archive\""
+//
+//        var updateAPK = DownloadableFiles(this,
+//            "mbros",
+//            "", "update.apk",
+//            "E203", "downloading update"
+//        ) {}
+//
+//        val destination = updateAPK.getLocalURL()
+//        val uri = Uri.parse("${FILE_BASE_PATH}$destination")
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            val contentUri = FileProvider.getUriForFile(
+//                this,
+//                BuildConfig.APPLICATION_ID + PROVIDER_PATH,
+//                File(destination)
+//            )
+//            val install = Intent(Intent.ACTION_VIEW)
+//            install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+//            install.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//            install.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true)
+//            install.data = contentUri
+//            this.startActivity(install)
+////            context.unregisterReceiver(This)
+//        } else {
+//            val install = Intent(Intent.ACTION_VIEW)
+//            install.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+//            install.setDataAndType(
+//                uri,
+//                APP_INSTALL_PATH
+//            )
+//            this.startActivity(install)
+////            context.unregisterReceiver(This)
+//        }
+//    }
 }

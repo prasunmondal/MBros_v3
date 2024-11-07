@@ -25,6 +25,7 @@ import androidx.core.content.FileProvider
 import com.prasunmondal.dev.libs.caching.CentralCacheObj
 import com.prasunmondal.dev.libs.contexts.AppContexts
 import com.tech4bytes.mbrosv3.AppData.AppUtils
+import com.tech4bytes.mbrosv3.AppData.AppVersion
 import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetchActivity
 import com.tech4bytes.mbrosv3.AppData.AsyncDataFetcher.DataFetchingInfo
 import com.tech4bytes.mbrosv3.AppData.RemoteAppConstants.AppConstants
@@ -193,8 +194,15 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     private fun updateAppVerOnUI() {
-        findViewById<TextView>(R.id.app_ver_label).text =
-            "App Version: ${BuildConfig.lastGitCommitHash} (${BuildConfig.lastGitCommitDate})"
+        LogMe.log("App Version: " + AppVersion.getAppVersionString())
+        findViewById<TextView>(R.id.app_ver_label).text = AppVersion.getAppVersionString()
+
+        val user = RolesUtils.getAppUser()
+        findViewById<TextView>(R.id.landing_updateAppBtn).visibility =
+            if(user != null && AppVersion.isUpdateAvailable(user.recommended_app_version))
+                View.VISIBLE
+            else
+                View.GONE
     }
 
     private fun getRoleAndActivityMapping(role: ActivityAuthEnums): (() -> Unit)? {
@@ -269,7 +277,8 @@ class ActivityLogin : AppCompatActivity() {
             time,
             getPhoneId(),
             ActivityAuthEnums.UNIDENTIFIED.toString(),
-            AuthorizationEnums.NONE.toString()
+            AuthorizationEnums.NONE.toString(),
+            ""
         )
         RolesUtils.insert(obj).execute()
         CentralCacheObj.centralCache.invalidateFullCache(AppContexts.get())
@@ -369,7 +378,12 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     fun onClickUpdateAppBtn(view: View) {
-        downloadApk("https://github.com/prasunmondal/MBros_v3/releases/download/1.0.1/MBros-a0d0524f-2024.10.27-debug.apk")
+        val downloadLink = AppVersion.getUpdateLink(RolesUtils.getAppUser()!!.recommended_app_version)
+        if(downloadLink.isNullOrBlank()) {
+            Toast.makeText(this, "Invalid download link: $downloadLink", Toast.LENGTH_LONG).show()
+            return
+        }
+        downloadApk(AppVersion.getUpdateLink(RolesUtils.getAppUser()!!.recommended_app_version)!!)
     }
 
     private var downloadId: Long = 0
@@ -378,9 +392,9 @@ class ActivityLogin : AppCompatActivity() {
         val uri = Uri.parse(url)
 
         val request = DownloadManager.Request(uri).apply {
-            setTitle("Downloading APK")
-            setDescription("Please wait while the APK is being downloaded.")
-            setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "your_apk_name.apk")
+            setTitle("Downloading Update")
+            setDescription("Downloading Update.. Please wait.")
+            setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "mbros_update.apk")
             setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
         }
 
@@ -419,77 +433,4 @@ class ActivityLogin : AppCompatActivity() {
         // Unregister the BroadcastReceiver
         unregisterReceiver(onDownloadComplete)
     }
-
-    lateinit var updateAPK: DownloadableFiles
-
-//    private fun downloadAndUpdate() {
-////        ToSheets.logs.post(listOf(LogActions.CLICKED.name, "Update App"), applicationContext)
-//
-////            FetchedMetaData.Singleton.instance.getValue(FetchedMetaData.Singleton.instance.APP_DOWNLOAD_LINK)
-////        ToSheets.logs.post(
-////            listOf(LogActions.DOWNLOAD_START.name, "UPDATE APK - $apkUrl"),
-////            applicationContext
-////        )
-//
-//
-//        val apkUrl = "https://github.com/prasunmondal/MBros_v3/releases/download/1.0.1/MBros-a0d0524f-2024.10.27-debug.apk"
-//        var updateAPK = DownloadableFiles(this,
-//            "mbros",
-//            "mbros_update.apk",
-//            apkUrl,
-//            "",
-//            "update.apk",
-////            "E203",
-////            "Downloading Update"
-//        ) { installUpdate() }
-//
-//        updateAPK.download(this)
-//    }
-
-//    fun installUpdate() {
-//
-//        val i = Intent(this, Intent.CATEGORY_APP_BROWSER::class.java)
-//        startActivity(i)
-//        finish()
-//
-////        ToSheets.logs.post(listOf(LogActions.APP_UPDATE.name, "Initiated"), applicationContext)
-//
-//        val FILE_BASE_PATH = "file://"
-//        val MIME_TYPE = "application/vnd.android.package-archive"
-//        val PROVIDER_PATH = ".fileprovider"
-//        val APP_INSTALL_PATH: String = "\"application/vnd.android.package-archive\""
-//
-//        var updateAPK = DownloadableFiles(this,
-//            "mbros",
-//            "", "update.apk",
-//            "E203", "downloading update"
-//        ) {}
-//
-//        val destination = updateAPK.getLocalURL()
-//        val uri = Uri.parse("${FILE_BASE_PATH}$destination")
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//            val contentUri = FileProvider.getUriForFile(
-//                this,
-//                BuildConfig.APPLICATION_ID + PROVIDER_PATH,
-//                File(destination)
-//            )
-//            val install = Intent(Intent.ACTION_VIEW)
-//            install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//            install.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//            install.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true)
-//            install.data = contentUri
-//            this.startActivity(install)
-////            context.unregisterReceiver(This)
-//        } else {
-//            val install = Intent(Intent.ACTION_VIEW)
-//            install.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-//            install.setDataAndType(
-//                uri,
-//                APP_INSTALL_PATH
-//            )
-//            this.startActivity(install)
-////            context.unregisterReceiver(This)
-//        }
-//    }
 }

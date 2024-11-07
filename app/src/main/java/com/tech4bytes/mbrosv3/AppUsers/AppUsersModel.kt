@@ -5,7 +5,8 @@ data class AppUsersModel(
     val timestamp: String,
     val device_id: String,
     var roles: String,
-    var permissions: String
+    var permissions: String,
+    var recommended_app_version: String
 ) : java.io.Serializable {
 
     override fun toString(): String {

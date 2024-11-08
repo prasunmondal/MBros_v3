@@ -17,6 +17,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -35,7 +36,6 @@ import com.tech4bytes.mbrosv3.AppUsers.Authorization.ActivityAuth.UserRoleUtils
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationEnums
 import com.tech4bytes.mbrosv3.AppUsers.Authorization.DataAuth.AuthorizationUtils
 import com.tech4bytes.mbrosv3.AppUsers.RolesUtils
-import com.tech4bytes.mbrosv3.BuildConfig
 import com.tech4bytes.mbrosv3.CollectorVerifyMoneyCollectionActivity
 import com.tech4bytes.mbrosv3.Customer.DueShow
 import com.tech4bytes.mbrosv3.CustomerAddTransactionActivity
@@ -53,8 +53,6 @@ import com.tech4bytes.mbrosv3.R
 import com.tech4bytes.mbrosv3.Sms.OneShotSMS.OneShotSMS
 import com.tech4bytes.mbrosv3.Sms.SMSUtils
 import com.tech4bytes.mbrosv3.Utils.Date.DateUtils
-import com.tech4bytes.mbrosv3.Utils.FileDownload.DownloadableFiles
-import com.tech4bytes.mbrosv3.Utils.FileDownload.FileManagerUtil
 import com.tech4bytes.mbrosv3.Utils.Logs.LogMe.LogMe
 import java.io.File
 
@@ -378,16 +376,31 @@ class ActivityLogin : AppCompatActivity() {
     }
 
     fun onClickUpdateAppBtn(view: View) {
-        val downloadLink = AppVersion.getUpdateLink(RolesUtils.getAppUser()!!.recommended_app_version)
-        if(downloadLink.isNullOrBlank()) {
-            Toast.makeText(this, "Invalid download link: $downloadLink", Toast.LENGTH_LONG).show()
-            return
-        }
-        downloadApk(AppVersion.getUpdateLink(RolesUtils.getAppUser()!!.recommended_app_version)!!)
+
+
+        Thread {
+            runOnUiThread()
+            {
+//                findViewById<ProgressBar>(R.id.login_progress_bar).visibility = View.VISIBLE
+            }
+            try {
+                val downloadLink = AppVersion.getUpdateLink(RolesUtils.getAppUser()!!.recommended_app_version)
+                if(downloadLink.isNullOrBlank()) {
+                    Toast.makeText(this, "Invalid download link: $downloadLink", Toast.LENGTH_LONG).show()
+                } else {
+                    downloadAndInstallApk(AppVersion.getUpdateLink(RolesUtils.getAppUser()!!.recommended_app_version)!!)
+                }
+            } finally {
+                runOnUiThread()
+                {
+//                    findViewById<ProgressBar>(R.id.login_progress_bar).visibility = View.GONE
+                }
+            }
+        }.start()
     }
 
     private var downloadId: Long = 0
-    private fun downloadApk(url: String) {
+    private fun downloadAndInstallApk(url: String) {
         val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         val uri = Uri.parse(url)
 
